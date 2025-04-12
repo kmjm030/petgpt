@@ -11,7 +11,7 @@ class ShopApplicationTests {
     @Test
     void contextLoads() {
 
-        log.info("test");
+        log.info("shop test");
 
     }
 
