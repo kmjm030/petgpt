@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mc.app.repository.PetBoardRepository">
+
+    <select id="findAllByItem" parameterType="int" resultType="com.mc.app.dto.PetBoard">
+        SELECT * FROM petboard WHERE item_key = #{itemKey}
+    </select>
+
+    <select id="findById" parameterType="int" resultType="com.mc.app.dto.PetBoard">
+        SELECT * FROM petboard WHERE pboard_key = #{pboardKey}
+    </select>
+
+    <insert id="insert" parameterType="com.mc.app.dto.PetBoard">
+        INSERT INTO petboard (
+            cust_key, item_key, pboard_title, pboard_rdate, pboard_content,
+            pboard_option, pboard_rate, pboard_update, pboard_hit,
+            pboard_type, pboard_img1, pboard_img2, pboard_img3
+        ) VALUES (
+                     #{custKey}, #{itemKey}, #{pboardTitle}, #{pboardRdate}, #{pboardContent},
+                     #{pboardOption}, #{pboardRate}, #{pboardUpdate}, #{pboardHit},
+                     #{pboardType}, #{pboardImg1}, #{pboardImg2}, #{pboardImg3}
+                 )
+    </insert>
+
+    <update id="update" parameterType="com.mc.app.dto.PetBoard">
+        UPDATE petboard SET
+                            pboard_title = #{pboardTitle},
+                            pboard_content = #{pboardContent},
+                            pboard_option = #{pboardOption},
+                            pboard_rate = #{pboardRate},
+                            pboard_update = #{pboardUpdate},
+                            pboard_hit = #{pboardHit},
+                            pboard_type = #{pboardType},
+                            pboard_img1 = #{pboardImg1},
+                            pboard_img2 = #{pboardImg2},
+                            pboard_img3 = #{pboardImg3}
+        WHERE pboard_key = #{pboardKey}
+    </update>
+
+    <delete id="delete" parameterType="int">
+        DELETE FROM petboard WHERE pboard_key = #{pboardKey}
+    </delete>
+
+</mapper>

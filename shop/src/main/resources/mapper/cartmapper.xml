@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mc.app.repository.CartRepository">
+    <!-- selectOne은 custId만으로 여러 옵션이 있을 수 있어 부적합. 주석 처리 -->
+    <!-- <select id="selectOne" parameterType="String" resultType="cart">
+        SELECT item_key, cust_id, cart_cnt, cart_rdate, option_key FROM cart WHERE cust_id = #{custId}
+    </select> -->
+    <select id="select" resultType="cart">
+        SELECT item_key, cust_id, cart_cnt, cart_rdate, option_key FROM cart
+    </select>
+    <select id="selectCartWithItems" parameterType="String" resultType="map">
+        SELECT
+            c.item_key, c.cust_id, c.cart_cnt, c.cart_rdate, c.option_key,
+            i.item_name, i.item_price, i.item_img1,
+            o.size, o.color, o.additional_price  
+        FROM cart c
+        JOIN item i ON c.item_key = i.item_key
+        LEFT JOIN `option` o ON c.option_key = o.option_key -- LEFT JOIN(옵션 없는 상품 고려)
+        WHERE c.cust_id = #{custId}
+    </select>
+    <insert id="insert" parameterType="cart">
+        INSERT INTO cart (cust_id, item_key, cart_cnt, cart_rdate, option_key)
+        VALUES (#{custId}, #{itemKey}, #{cartCnt}, NOW(), #{optionKey})
+        ON DUPLICATE KEY UPDATE
+        cart_cnt = cart_cnt + VALUES(cart_cnt)
+    </insert>
+<update id="update" parameterType="cart">
+        UPDATE cart SET cart_cnt = #{cartCnt}
+        WHERE cust_id = #{custId} AND item_key = #{itemKey}
+          <choose>
+              <when test="optionKey != null and optionKey != ''">
+                  AND option_key = #{optionKey}
+              </when>
+              <otherwise>
+                  AND option_key IS NULL
+              </otherwise>
+          </choose>
+    </update>
+    <delete id="delete" parameterType="cart">
+        DELETE FROM cart
+        WHERE cust_id = #{custId} AND item_key = #{itemKey}
+          <choose>
+              <when test="optionKey != null and optionKey != ''">
+                  AND option_key = #{optionKey}
+              </when>
+              <otherwise>
+                  AND option_key IS NULL
+              </otherwise>
+          </choose>
+    </delete>
+</mapper>

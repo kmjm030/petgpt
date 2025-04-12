@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mc.app.repository.OrderDetailRepository">
+
+    <select id="findAllByOrder" parameterType="int" resultType="com.mc.app.dto.OrderDetail">
+        SELECT * FROM order_detail WHERE order_key = #{orderKey}
+    </select>
+
+    <insert id="insert" parameterType="com.mc.app.dto.OrderDetail">
+        INSERT INTO order_detail (
+            orderdetail_key, item_key, option_key, order_key,
+            orderdetail_price, orderdetail_count
+        ) VALUES (
+                     #{orderDetailKey}, #{itemKey}, #{optionKey}, #{orderKey},
+                     #{orderDetailPrice}, #{orderDetailCount}
+                 )
+    </insert>
+
+    <delete id="deleteByOrderKey" parameterType="int">
+        DELETE FROM order_detail WHERE order_key = #{orderKey}
+    </delete>
+
+</mapper>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mc.app.repository.LikeRepository">
+
+    <select id="findAllByCustomer" parameterType="int" resultType="com.mc.app.dto.Like">
+        SELECT * FROM `like` WHERE cust_key = #{custKey}
+    </select>
+
+    <insert id="insert" parameterType="com.mc.app.dto.Like">
+        INSERT INTO `like` (
+            like_key, cust_key, item_key
+        ) VALUES (
+                     #{likeKey}, #{custKey}, #{itemKey}
+                 )
+    </insert>
+
+    <delete id="delete" parameterType="com.mc.app.dto.Like">
+        DELETE FROM `like`
+        WHERE cust_key = #{custKey} AND item_key = #{itemKey}
+    </delete>
+
+</mapper>

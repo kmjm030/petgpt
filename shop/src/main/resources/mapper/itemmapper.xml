@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mc.app.repository.ItemRepository">
+    <select id="select" resultType="item">
+        SELECT * FROM item
+    </select>
+    <select id="selectOne" parameterType="Integer" resultType="item">
+        SELECT * FROM item WHERE item_key=#{itemKey}
+    </select>
+    <select id="findByCategory" parameterType="Integer" resultType="item">
+        SELECT * FROM item WHERE category_key=#{categoryKey}
+    </select>
+    <insert id="insert" parameterType="item">
+        INSERT INTO item VALUES (null, #{categoryKey}, #{itemName}, #{itemContent},
+                                 #{itemPrice}, #{itemSprice}, #{itemCount}, now(),
+                                 #{itemImg1}, #{itemImg2}, #{itemImg3})
+    </insert>
+    <update id="update" parameterType="item">
+        UPDATE item SET
+                        category_key=#{categoryKey},
+                        item_name=#{itemName},
+                        item_content=#{itemContent},
+                        item_price=#{itemPrice},
+                        item_sprice=#{itemSprice},
+                        item_count=#{itemCount},
+                        item_img1=#{itemImg1},
+                        item_img2=#{itemImg2},
+                        item_img3=#{itemImg3}
+        WHERE item_key=#{itemKey}
+    </update>
+    <delete id="delete" parameterType="Integer">
+        DELETE FROM item WHERE item_key=#{itemKey}
+    </delete>
+
+</mapper>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mc.app.repository.NoticeRepository">
+
+    <select id="findAll" resultType="com.mc.app.dto.Notice">
+        SELECT * FROM notice
+    </select>
+
+    <select id="findById" parameterType="int" resultType="com.mc.app.dto.Notice">
+        SELECT * FROM notice WHERE notice_key = #{noticeKey}
+    </select>
+
+    <insert id="insert" parameterType="com.mc.app.dto.Notice">
+        INSERT INTO notice (
+            notice_key, admin_key, notice_title, notice_writer,
+            notice_img, notice_hit, notice_rdate
+        ) VALUES (
+                     #{noticeKey}, #{adminKey}, #{noticeTitle}, #{noticeWriter},
+                     #{noticeImg}, #{noticeHit}, #{noticeRdate}
+                 )
+    </insert>
+
+    <update id="update" parameterType="com.mc.app.dto.Notice">
+        UPDATE notice SET
+                          notice_title = #{noticeTitle},
+                          notice_writer = #{noticeWriter},
+                          notice_img = #{noticeImg},
+                          notice_hit = #{noticeHit},
+                          notice_rdate = #{noticeRdate}
+        WHERE notice_key = #{noticeKey}
+    </update>
+
+    <delete id="delete" parameterType="int">
+        DELETE FROM notice WHERE notice_key = #{noticeKey}
+    </delete>
+
+</mapper>

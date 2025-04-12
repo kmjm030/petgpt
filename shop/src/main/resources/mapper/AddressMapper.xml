@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mc.app.repository.AddressRepository">
+
+    <select id="findAllByCustomer" parameterType="String" resultType="address">
+        SELECT * FROM address WHERE cust_id = #{custId}
+    </select>
+
+    <select id="findById" parameterType="int" resultType="address">
+        SELECT * FROM address WHERE addr_key = #{addrKey}
+    </select>
+
+    <select id="selectOne" parameterType="Integer" resultType="address">
+        SELECT * FROM address WHERE addr_key=#{addrKey}
+    </select>
+
+    <select id="select" resultType="address">
+        SELECT * FROM address
+    </select>
+
+    <insert id="insert" parameterType="com.mc.app.dto.Address">
+        INSERT INTO address (
+            cust_id, addr_name, addr_address, addr_detail,
+            addr_tel, addr_req, addr_def, addr_homecode
+        ) VALUES (
+                     #{custId}, #{addrName}, #{addrAddress}, #{addrDetail},
+                     #{addrTel}, #{addrReq}, #{addrDef}, #{addrHomecode}
+                 )
+    </insert>
+
+    <update id="update" parameterType="com.mc.app.dto.Address">
+        UPDATE address SET
+                           addr_name = #{addrName},
+                           addr_address = #{addrAddress},
+                           addr_detail = #{addrDetail},
+                           addr_tel = #{addrTel},
+                           addr_req = #{addrReq},
+                           addr_def = #{addrDef},
+                           addr_homecode = #{addrHomecode}
+        WHERE addr_key = #{addrKey}
+    </update>
+
+    <delete id="delete" parameterType="int">
+        DELETE FROM address WHERE addr_key = #{addrKey}
+    </delete>
+
+</mapper>

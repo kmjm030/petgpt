@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mc.app.repository.AdminRepository">
+
+    <insert id="insert" parameterType="com.mc.app.dto.Admin">
+        INSERT INTO admin (admin_id, admin_pwd, admin_name, admin_auth)
+        VALUES (#{adminId}, #{adminPwd}, #{adminName}, #{adminAuth})
+    </insert>
+
+    <update id="update" parameterType="com.mc.app.dto.Admin">
+        UPDATE admin
+        SET admin_pwd = #{adminPwd},
+            admin_name = #{adminName},
+            admin_auth = #{adminAuth}
+        WHERE admin_id = #{adminId}
+    </update>
+
+    <delete id="delete" parameterType="String">
+        DELETE FROM admin WHERE admin_id = #{adminId}
+    </delete>
+
+    <select id="select" parameterType="String" resultType="com.mc.app.dto.Admin">
+        SELECT * FROM admin WHERE admin_id = #{adminId}
+    </select>
+
+    <select id="selectAll" resultType="com.mc.app.dto.Admin">
+        SELECT * FROM admin
+    </select>
+
+</mapper>

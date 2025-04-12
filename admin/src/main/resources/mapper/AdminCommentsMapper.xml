@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mc.app.repository.AdminCommentsRepository">
+
+    <select id="findAllByBoard" parameterType="int" resultType="com.mc.app.dto.AdminComments">
+        SELECT * FROM admin_comments WHERE board_key = #{boardKey}
+    </select>
+
+    <select id="findById" parameterType="int" resultType="com.mc.app.dto.AdminComments">
+        SELECT * FROM admin_comments WHERE adcomments_key = #{adcommentsKey}
+    </select>
+
+    <insert id="insert" parameterType="com.mc.app.dto.AdminComments">
+        INSERT INTO admin_comments (
+            board_key, admin_key, adcomments_content,
+            adcomments_rdate, adcomments_update
+        ) VALUES (
+                     #{boardKey}, #{adminKey}, #{adcommentsContent},
+                     #{adcommentsRdate}, #{adcommentsUpdate}
+                 )
+    </insert>
+
+    <update id="update" parameterType="com.mc.app.dto.AdminComments">
+        UPDATE admin_comments SET
+                                  adcomments_content = #{adcommentsContent},
+                                  adcomments_update = #{adcommentsUpdate}
+        WHERE adcomments_key = #{adcommentsKey}
+    </update>
+
+    <delete id="delete" parameterType="int">
+        DELETE FROM admin_comments WHERE adcomments_key = #{adcommentsKey}
+    </delete>
+
+</mapper>

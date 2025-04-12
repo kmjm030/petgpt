@@ -1,0 +1,43 @@
+# 1. Server Config
+server:
+  port: 8088
+  servlet:
+    encoding:
+      charset: UTF-8
+      force: true
+
+# 2. Spring Config
+spring:
+  mvc:
+    view:
+      prefix: /views/
+      suffix: .jsp
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/petgpt?characterEncoding=utf8
+    username: root
+    password: 1234
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+# 3. Mybatis
+mybatis:
+  type-aliases-package: com.mc.app.dto
+  mapper-locations: classpath:/mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+
+# 4. Log Level
+logging:
+  level:
+    root: info
+
+# 5. User Define App
+app:
+  key:
+    algo: PBEWithMD5AndDES
+    skey: mykey
+  dir:
+    imgdir: /img/item/
+    uploadimgdir: C:/Users/Administrator/IdeaProjects/petgpt/admin/src/main/webapp/img/item/
