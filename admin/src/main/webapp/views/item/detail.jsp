@@ -56,17 +56,6 @@
                 </div>
 
                 <div class="form-group">
-                    <label>재고 수량</label>
-                    <input type="number" class="form-control" name="itemCount" value="${item.itemCount}">
-                </div>
-
-                <div class="form-group">
-                    <label>등록일</label><br>
-                    <fmt:formatDate value="${item.itemRdate}" pattern="yyyy년 MM월 dd일" />
-                </div>
-
-                <!-- 기존 이미지 미리보기 -->
-                <div class="form-group">
                     <label>이미지 1</label><br>
                     <img src="<c:url value='/img/item/${item.itemImg1}'/>" width="100"><br>
                     <input type="hidden" name="itemImg1" value="${item.itemImg1}">
@@ -96,6 +85,15 @@
                     <input type="file" class="form-control" name="img3">
                 </div>
 
+                <hr>
+                <h5 class="mt-4">옵션 정보</h5>
+                <table class="table table-bordered">
+                    <tr><th>사이즈</th><td>${option.size}</td></tr>
+                    <tr><th>색상</th><td>${option.color}</td></tr>
+                    <tr><th>재고</th><td>${option.stock}</td></tr>
+                    <tr><th>추가 금액</th><td><fmt:formatNumber value="${option.additionalPrice}" pattern="#,###"/></td></tr>
+                </table>
+
                 <button id="btn_update" type="button" class="btn btn-primary">수정</button>
                 <button id="btn_delete" type="button" class="btn btn-danger">삭제</button>
 
@@ -104,61 +102,5 @@
     </div>
 </div>
 
-
-
-
-<div class="container-fluid">
-
-    <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800">Tables</h1>
-
-    <!-- DataTales Example -->
-    <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
-        </div>
-        <div class="card-body">
-            <div class="table-responsive">
-                <form id="item_update_form">
-                    <div class="form-group">
-                        <label for="id">ID:</label>
-                        <input type="text"  readonly="readonly" value="${item.itemId}" class="form-control" id="id" placeholder="Enter id" name="itemId">
-
-                    </div>
-                    <div class="form-group">
-                        <label for="name">Name:</label>
-                        <input type="text"  value="${item.itemName}"  class="form-control" id="name" placeholder="Enter password" name="itemName">
-
-                    </div>
-                    <div class="form-group">
-                        <label for="price">Price:</label>
-                        <input type="number" value="${item.itemPrice}"  class="form-control" id="price" placeholder="Enter name" name="itemPrice">
-
-                    </div>
-                    <div class="form-group">
-                        <h6>
-                            <fmt:formatDate pattern="yyyy년 MM월 dd일" value="${ item.itemRdate }" />
-                        </h6>
-
-                    </div>
-                    <div class="form-group">
-                       <img src="<c:url value="/imgs"/>/${item.itemImgname}">
-                       <input type="hidden" name="itemImgname" value="${item.itemImgname}"/>
-                    </div>
-                    <div class="form-group">
-                        <label for="newimage">New Image:</label>
-                        <input type="file"  class="form-control" id="newimage" placeholder="Enter name" name="image">
-
-
-                    </div>
-                    <button id="btn_update" type="button" class="btn btn-primary">Update</button>
-                    <button id="btn_delete" type="button" class="btn btn-primary">Delete</button>
-
-                </form>
-            </div>
-        </div>
-    </div>
-
-</div>
 
 

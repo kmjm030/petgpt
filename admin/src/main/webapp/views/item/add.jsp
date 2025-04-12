@@ -1,6 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
     let item_add = {
         init:function(){
@@ -28,6 +30,7 @@
             <div class="table-responsive">
                 <form id="item_add_form">
 
+                    <!-- 상품 정보 입력 -->
                     <div class="form-group">
                         <label>카테고리 번호</label>
                         <input type="number" class="form-control" name="categoryKey" required>
@@ -54,11 +57,6 @@
                     </div>
 
                     <div class="form-group">
-                        <label>재고 수량</label>
-                        <input type="number" class="form-control" name="itemCount">
-                    </div>
-
-                    <div class="form-group">
                         <label>대표 이미지 (img1)</label>
                         <input type="file" class="form-control" name="img1">
                     </div>
@@ -71,13 +69,37 @@
                         <input type="file" class="form-control" name="img3">
                     </div>
 
-                    <button id="btn_add" type="button" class="btn btn-primary">등록하기</button>
+                    <hr>
+                    <h5 class="mb-3 mt-4">옵션 정보</h5>
+
+                    <div class="form-group">
+                        <label>사이즈</label>
+                        <input type="text" class="form-control" name="size" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>색상</label>
+                        <input type="text" class="form-control" name="color" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>추가 금액</label>
+                        <input type="number" class="form-control" name="additionalPrice" value="0" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>재고 수량</label>
+                        <input type="number" class="form-control" name="stock" required>
+                    </div>
+
+                    <button id="btn_add" type="button" class="btn btn-primary mt-3">등록하기</button>
 
                 </form>
             </div>
         </div>
     </div>
 </div>
+
 
 
 

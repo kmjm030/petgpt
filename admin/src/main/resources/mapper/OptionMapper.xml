@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mc.app.repository.OptionRepository">
+
+    <select id="findAllByItem" parameterType="int" resultType="com.mc.app.dto.Option">
+        SELECT
+            option_key, item_key, size, color, stock, additional_price
+        FROM `option`
+        WHERE item_key = #{itemKey}
+    </select>
+
+    <select id="findById" parameterType="int" resultType="com.mc.app.dto.Option">
+        SELECT
+            option_key, item_key, size, color, stock, additional_price
+        FROM `option`
+        WHERE option_key = #{optionKey}
+    </select>
+
+    <insert id="insert" parameterType="com.mc.app.dto.Option">
+        INSERT INTO `option` (
+            item_key, size, color, stock, additional_price
+        ) VALUES (
+            #{itemKey}, #{size}, #{color}, #{stock}, #{additionalPrice}
+        )
+    </insert>
+
+    <delete id="delete" parameterType="int">
+        DELETE FROM `option` WHERE option_key = #{optionKey}
+    </delete>
+
+</mapper>
