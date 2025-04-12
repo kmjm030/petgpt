@@ -1,0 +1,114 @@
+# ===================================================================
+# 이 파일은 프로젝트 전체에 적용됩니다.
+# 개별 모듈의 .gitignore는 삭제하고 이 파일을 사용하세요.
+# ===================================================================
+
+####################################
+# 기본 빌드 결과물 및 컴파일된 파일
+####################################
+# Java
+*.class
+
+# Maven
+target/
+
+# Gradle
+.gradle/
+build/
+
+# Gradle Wrapper
+!gradle/wrapper/gradle-wrapper.jar
+
+# Gradle의 특정 내부 빌드 폴더 제외
+# 주석 처리: !**/src/main/**/build/ 와 같은 규칙은 매우 이례적이며,
+# 소스 폴더 내의 빌드 결과물을 포함시키는 것은 보통 권장되지 않습니다.
+# 정말 필요한 경우가 아니라면 사용하지 않는 것이 좋습니다.
+# !**/src/main/**/build/
+# !**/src/test/**/build/
+
+# 기타 빌드 폴더 (IntelliJ, Eclipse 등)
+out/
+bin/
+
+# 기타 빌드 관련 파일
+*.jar
+*.war
+*.ear
+
+####################################
+# IDE 설정 파일
+####################################
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws  # .idea/ 하위지만 명시적으로 추가
+*.ipr  # .idea/ 하위지만 명시적으로 추가
+
+# VSCode
+.vscode/
+*.code-workspace # 멀티 루트 워크스페이스 설정 파일
+
+# Eclipse / STS
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+# Eclipse의 bin 폴더도 위의 bin/ 규칙으로 커버됨
+# !**/src/main/**/bin/ # 위 build와 같은 이유로 주석 처리
+# !**/src/test/**/bin/ # 위 build와 같은 이유로 주석 처리
+
+# NetBeans
+nbproject/private/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+####################################
+# OS 생성 파일
+####################################
+# Mac
+.DS_Store
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+Icon?
+$RECYCLE.BIN/
+
+####################################
+# 로그 및 임시 파일
+####################################
+*.log
+*.log.*
+logs/
+
+# 임시 파일 / 스왑 / 백업
+*.swp
+*.swo
+*~
+*.bak
+*.tmp
+
+####################################
+# 환경변수 및 민감 정보 파일
+####################################
+.env
+.env.*
+!.env.example # 예제 파일은 보통 포함시킴
+
+####################################
+# 기타 도구 캐시 등
+####################################
+# VSCode Local History
+.history/
+
+# 데이터베이스 덤프 (필요에 따라 주석 해제)
+# *.sql
+# *.dump
