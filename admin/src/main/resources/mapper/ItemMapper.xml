@@ -5,17 +5,14 @@
 
 <mapper namespace="com.mc.app.repository.ItemRepository">
 
-    <!-- 단일 조회 -->
     <select id="selectOne" parameterType="int" resultType="com.mc.app.dto.Item">
         SELECT * FROM item WHERE item_key = #{itemKey}
     </select>
 
-    <!-- 전체 조회 -->
     <select id="select" resultType="com.mc.app.dto.Item">
-        SELECT * FROM item ORDER BY item_key DESC
+        SELECT * FROM item ORDER BY item_key ASC
     </select>
 
-    <!-- 등록 -->
     <insert id="insert" parameterType="com.mc.app.dto.Item">
         INSERT INTO item (
         category_key, item_name, item_content, item_price,
@@ -32,7 +29,6 @@
         </selectKey>
     </insert>
 
-    <!-- 수정 -->
     <update id="update" parameterType="com.mc.app.dto.Item">
         UPDATE item SET
                         category_key = #{categoryKey},
@@ -47,7 +43,6 @@
         WHERE item_key = #{itemKey}
     </update>
 
-    <!-- 삭제 -->
     <delete id="delete" parameterType="int">
         DELETE FROM item WHERE item_key = #{itemKey}
     </delete>

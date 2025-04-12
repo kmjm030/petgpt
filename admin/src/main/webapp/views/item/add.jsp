@@ -30,7 +30,6 @@
             <div class="table-responsive">
                 <form id="item_add_form">
 
-                    <!-- 상품 정보 입력 -->
                     <div class="form-group">
                         <label>카테고리 번호</label>
                         <input type="number" class="form-control" name="categoryKey" required>
@@ -57,15 +56,15 @@
                     </div>
 
                     <div class="form-group">
-                        <label>대표 이미지 (img1)</label>
+                        <label>대표 이미지</label>
                         <input type="file" class="form-control" name="img1">
                     </div>
                     <div class="form-group">
-                        <label>추가 이미지 2 (img2)</label>
+                        <label>추가 이미지</label>
                         <input type="file" class="form-control" name="img2">
                     </div>
                     <div class="form-group">
-                        <label>추가 이미지 3 (img3)</label>
+                        <label>추가 이미지</label>
                         <input type="file" class="form-control" name="img3">
                     </div>
 

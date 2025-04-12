@@ -9,11 +9,9 @@
 
 <div class="container-fluid">
 
-    <!-- Page Heading -->
     <h1 class="h3 mb-2 text-gray-800">상품 목록</h1>
     <p class="mb-4">DataTables를 사용하여 동적 테이블을 구성합니다.</p>
 
-    <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">상품 목록 테이블</h6>
@@ -27,7 +25,6 @@
                         <th>Item Key</th>
                         <th>Name</th>
                         <th>Price</th>
-                        <th>Reg Date</th>
                     </tr>
                     </thead>
 
@@ -36,16 +33,20 @@
                         <tr>
                             <td>
                                 <a href="<c:url value='/item/detail'/>?item_key=${item.itemKey}">
-                                    <img src="<c:url value='/img/item/${item.itemImg1}'/>">
+                                    <c:choose>
+                                        <c:when test="${not empty item.itemImg1}">
+                                            <img src="<c:url value='/img/item/${item.itemImg1}'/>">
+                                        </c:when>
+                                        <c:otherwise>
+                                            <span class="text-muted">이미지 없음</span>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </a>
                             </td>
                             <td>${item.itemKey}</td>
                             <td>${item.itemName}</td>
                             <td>
                                 <fmt:formatNumber type="number" pattern="###,###원" value="${item.itemPrice}" />
-                            </td>
-                            <td>
-                                <fmt:formatDate value="${item.itemRdate}" pattern="yyyy-MM-dd" />
                             </td>
                         </tr>
                     </c:forEach>
@@ -56,5 +57,19 @@
     </div>
 
 </div>
+
+<script>
+    $(document).ready(function () {
+        $('#dataTable').DataTable({
+            columnDefs: [
+                { orderable: true, targets: 1 },
+                { orderable: false, targets: [0, 2, 3] }
+            ],
+            order: [[1, "asc"]]
+        });
+    });
+</script>
+
+
 
 
