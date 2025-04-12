@@ -84,10 +84,11 @@
                   <div class="card-body">
                     <div class="shop__sidebar__categories">
                       <ul class="nice-scroll">
-                        <li><a href="<c:url value='/shop'/>">전체 상품</a></li>
- 
-                        <li><a href="<c:url value='/shop?categoryKey=1'/>" class="${selectedCategoryKey == 1 ? 'active' : ''}">카테고리 1</a></li>
-                        <li><a href="<c:url value='/shop?categoryKey=2'/>" class="${selectedCategoryKey == 2 ? 'active' : ''}">카테고리 2</a></li>
+                        <li><a href="<c:url value='/shop'/>" class="${empty selectedCategoryKey ? 'active' : ''}">전체 상품</a></li>
+                        <c:forEach items="${categories}" var="category">
+                          <li><a href="<c:url value='/shop?categoryKey=${category.categoryKey}'/>" 
+                                class="${selectedCategoryKey == category.categoryKey ? 'active' : ''}">${category.categoryName}</a></li>
+                        </c:forEach>
                       </ul>
                     </div>
                   </div>

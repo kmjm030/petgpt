@@ -1,7 +1,9 @@
 package com.mc.controller;
 
+import com.mc.app.dto.Category;
 import com.mc.app.dto.Item;
 import com.mc.app.dto.Option;
+import com.mc.app.service.CategoryService;
 import com.mc.app.service.ItemService;
 import com.mc.app.service.OptionService;
 import jakarta.servlet.http.HttpSession;
@@ -22,7 +24,8 @@ import java.util.List;
 @RequestMapping("/shop")
 public class ShopController {
     private final ItemService itemService;
-    private final OptionService optionService; 
+    private final OptionService optionService;
+    private final CategoryService categoryService;
 
     @GetMapping("")
     public String shop(@RequestParam(name = "categoryKey", required = false) Integer categoryKey, Model model, HttpSession session) {
@@ -30,14 +33,17 @@ public class ShopController {
 
         List<Item> itemList = new ArrayList<>();
         try {
+            List<Category> categories = categoryService.findAll();
+            model.addAttribute("categories", categories);
+            
             if (categoryKey != null) {
                 itemList = itemService.findByCategory(categoryKey);
-                model.addAttribute("categoryKey", categoryKey);
+                model.addAttribute("selectedCategoryKey", categoryKey);
             } else {
                 itemList = itemService.get();
             }
         } catch (Exception e) {
-            System.out.println("아이템 목록 조회 중 오류 발생: " + e.getMessage());
+            log.error("아이템 목록 또는 카테고리 조회 중 오류 발생: {}", e.getMessage());
         }
 
         model.addAttribute("itemList", itemList);
