@@ -12,6 +12,21 @@
     <select id="findByCategory" parameterType="Integer" resultType="item">
         SELECT * FROM item WHERE category_key=#{categoryKey}
     </select>
+    <select id="findByItemKeys" resultType="item">
+        SELECT * FROM item 
+        WHERE item_key IN 
+        <foreach item="itemKey" collection="itemKeys" open="(" separator="," close=")">
+            #{itemKey}
+        </foreach>
+    </select>
+    <select id="findByPriceRange" resultType="item">
+        SELECT * FROM item 
+        WHERE item_price BETWEEN #{minPrice} AND #{maxPrice}
+    </select>
+    <select id="findByPriceGreaterThan" resultType="item">
+        SELECT * FROM item 
+        WHERE item_price >= #{minPrice}
+    </select>
     <insert id="insert" parameterType="item">
         INSERT INTO item VALUES (null, #{categoryKey}, #{itemName}, #{itemContent},
                                  #{itemPrice}, #{itemSprice}, #{itemCount}, now(),

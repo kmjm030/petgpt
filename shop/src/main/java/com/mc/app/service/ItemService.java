@@ -42,4 +42,44 @@ public class ItemService implements MCService<Item, Integer> {
     public List<Item> findByCategory(int categoryKey) throws Exception {
         return itemRepository.findByCategory(categoryKey);
     }
+    
+    public List<Item> findByItemKeys(List<Integer> itemKeys) throws Exception {
+        if (itemKeys == null || itemKeys.isEmpty()) {
+            return List.of();
+        }
+        return itemRepository.findByItemKeys(itemKeys);
+    }
+    
+    public List<Item> findByPriceRange(int minPrice, int maxPrice) throws Exception {
+        return itemRepository.findByPriceRange(minPrice, maxPrice);
+    }
+    
+    public List<Item> findByPriceGreaterThan(int minPrice) throws Exception {
+        return itemRepository.findByPriceGreaterThan(minPrice);
+    }
+    
+    public List<Item> findByPriceFilter(String priceFilter) throws Exception {
+        if (priceFilter == null || priceFilter.isEmpty()) {
+            return get();
+        }
+        
+        if (priceFilter.equals("0-10")) {
+            return findByPriceRange(0, 10000);
+        } else if (priceFilter.equals("10-20")) {
+            return findByPriceRange(10000, 20000);
+        } else if (priceFilter.equals("20-30")) {
+            return findByPriceRange(20000, 30000);
+        } else if (priceFilter.equals("30-40")) {
+            return findByPriceRange(30000, 40000);
+        } else if (priceFilter.equals("40-50")) {
+            return findByPriceRange(40000, 50000);
+        } else if (priceFilter.contains("50-") || 
+                  priceFilter.contains("60-") || priceFilter.contains("70-") ||
+                  priceFilter.contains("80-") || priceFilter.contains("90-") ||
+                  priceFilter.contains("100plus")) {
+            return findByPriceGreaterThan(50000);
+        } else {
+            return get();
+        }
+    }
 }

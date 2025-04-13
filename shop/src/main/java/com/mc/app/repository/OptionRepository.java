@@ -13,5 +13,8 @@ public interface OptionRepository {
     Option findById(int optionKey) throws Exception;
     void insert(Option option) throws Exception;
     void delete(int optionKey) throws Exception;
-    // 필요한 경우 update 메소드 추가하기기
+    List<String> findAllSizes() throws Exception;
+    List<Integer> findItemKeysBySize(String size) throws Exception;
+    List<String> findAllColors() throws Exception;
+    List<Integer> findItemKeysByColor(String color) throws Exception;
 }

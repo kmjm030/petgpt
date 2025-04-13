@@ -50,8 +50,8 @@ public class CartController {
     }
 
     @RequestMapping("/add")
-    public String add(Model model, Cart cart, HttpSession session) throws Exception { // HttpSession 파라미터 추가
-        Customer loggedInCustomer = (Customer) session.getAttribute("cust"); // 세션에서 로그인 정보 가져오기
+    public String add(Model model, Cart cart, HttpSession session) throws Exception { 
+        Customer loggedInCustomer = (Customer) session.getAttribute("cust"); 
 
         if (loggedInCustomer == null) {
             return "redirect:/gologin";
@@ -64,9 +64,9 @@ public class CartController {
     }
 
     // Ajax 요청을 위한 별도의 add 메소드
-    @RequestMapping(value = "/add/ajax", method = RequestMethod.POST) // URL 변경 및 POST 명시
+    @RequestMapping(value = "/add/ajax", method = RequestMethod.POST) 
     @ResponseBody 
-    public Map<String, Object> addCartItemAjax(@RequestBody Cart cart, HttpSession session) { // 메소드 이름도 변경 (선택 사항)
+    public Map<String, Object> addCartItemAjax(@RequestBody Cart cart, HttpSession session) { 
         Map<String, Object> response = new HashMap<>();
         Customer loggedInCustomer = (Customer) session.getAttribute("cust");
 
@@ -116,16 +116,12 @@ public class CartController {
         cart.setCustId(custId);
 
         try {
-            // 1. 수량 업데이트
             cartService.mod(cart);
 
-            // 2. 변경된 장바구니 정보 조회
             List<Map<String, Object>> cartItems = cartService.getCartWithItems(custId);
 
-            // 3. 총액 계산
             long totalCartPrice = calculateTotal(cartItems);
 
-            // 4. 응답 데이터 구성
             response.put("success", true);
             response.put("cartItems", cartItems);
             response.put("totalCartPrice", totalCartPrice);
