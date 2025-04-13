@@ -34,12 +34,26 @@ public class ItemService implements MCService<Item, Integer> {
     public void del(Integer itemKey) throws Exception {
         Item item = itemRepository.selectOne(itemKey);
 
-        FileUploadUtil.deleteFile(item.getItemImg1(), uploadDir);
-        FileUploadUtil.deleteFile(item.getItemImg2(), uploadDir);
-        FileUploadUtil.deleteFile(item.getItemImg3(), uploadDir);
+        try {
+            FileUploadUtil.deleteFile(item.getItemImg1(), uploadDir);
+        } catch (Exception e) {
+            // 로그만 찍고 계속 진행
+            System.out.println("이미지1 삭제 실패: " + e.getMessage());
+        }
+        try {
+            FileUploadUtil.deleteFile(item.getItemImg2(), uploadDir);
+        } catch (Exception e) {
+            System.out.println("이미지2 삭제 실패: " + e.getMessage());
+        }
+        try {
+            FileUploadUtil.deleteFile(item.getItemImg3(), uploadDir);
+        } catch (Exception e) {
+            System.out.println("이미지3 삭제 실패: " + e.getMessage());
+        }
 
         itemRepository.delete(itemKey);
     }
+
 
     @Override
     public Item get(Integer itemKey) throws Exception {
@@ -50,6 +64,7 @@ public class ItemService implements MCService<Item, Integer> {
     public List<Item> get() throws Exception {
         return itemRepository.select();
     }
+
 }
 
 
