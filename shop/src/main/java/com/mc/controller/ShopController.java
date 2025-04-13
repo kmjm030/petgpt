@@ -48,22 +48,6 @@ public class ShopController {
             model.addAttribute("categories", categories);
             model.addAttribute("sizes", sizes);
             model.addAttribute("colors", colors);
-        
-            if (size != null && !size.isEmpty()) {
-                model.addAttribute("selectedSize", size);
-            }
-            
-            if (color != null && !color.isEmpty()) {
-                model.addAttribute("selectedColor", color);
-            }
-            
-            if (price != null && !price.isEmpty()) {
-                model.addAttribute("selectedPrice", price);
-            }
-            
-            if (categoryKey != null) {
-                model.addAttribute("selectedCategoryKey", categoryKey);
-            }
             
             ItemFilterCriteria filterCriteria = ItemFilterCriteria.builder()
                     .categoryKey(categoryKey)
@@ -72,6 +56,7 @@ public class ShopController {
                     .price(price)
                     .build();
             
+            filterCriteria.addAttributesToModel(model);
             itemList = itemService.findItemsByFilter(filterCriteria);
             
         } catch (Exception e) {
