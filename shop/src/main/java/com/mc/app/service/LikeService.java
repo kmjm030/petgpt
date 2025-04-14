@@ -42,6 +42,11 @@ public class LikeService implements MCService<Like, Integer> {
     public List<Like> get() throws Exception {
         return likeRepository.select();
     }
+
+    public void deleteForMypage(String custId, Integer itemKey) throws Exception {
+        likeRepository.deleteForMypage(custId, itemKey);
+    }
+
     
     public Map<String, Object> toggleLike(String custId, int itemKey) {
         Map<String, Object> resultMap = new HashMap<>();

@@ -1,7 +1,11 @@
 package com.mc.controller;
 
 import com.mc.app.dto.Customer;
+import com.mc.app.dto.Item;
+import com.mc.app.dto.Like;
 import com.mc.app.service.CustomerService;
+import com.mc.app.service.ItemService;
+import com.mc.app.service.LikeService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +14,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @Slf4j
@@ -20,6 +27,8 @@ public class CustomerController {
     String dir = "mypage/";
 
     final CustomerService custService;
+    final LikeService likeService;
+    final ItemService itemService;
 
     @GetMapping("")
     public String mypage(Model model, @RequestParam("id") String id, HttpSession session) throws Exception{
@@ -63,6 +72,30 @@ public class CustomerController {
 
         custService.mod(cust);
         return "redirect:/mypage?id=" + dbCust.getCustId();
+    }
+
+    @RequestMapping("/like")
+    public String like(Model model, @RequestParam("id") String id) throws Exception {
+
+        List<Like> likes = likeService.getLikesByCustomer(id);
+        List<Item> items = new ArrayList<>();
+        for (Like like : likes) {
+            Item item = itemService.get(like.getItemKey());
+            items.add(item);
+        }
+
+        model.addAttribute("items", items);
+        model.addAttribute("currentPage", "pages");
+        model.addAttribute("pageTitle", "Like Page");
+        model.addAttribute("centerPage", "pages/mypage/like.jsp");
+        return "index";
+    }
+
+    @RequestMapping("/likedelimpl")
+    public String likedelimpl(Model model, @RequestParam("itemKey") int itemKey,
+                                            @RequestParam("id") String custId) throws Exception {
+        likeService.deleteForMypage(custId, itemKey);
+        return "redirect:/mypage/like?id=" + custId;
     }
 
 

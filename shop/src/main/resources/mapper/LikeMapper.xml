@@ -49,4 +49,9 @@
         WHERE cust_id = #{custId} AND item_key = #{itemKey}
     </delete>
 
+    <delete id="deleteForMypage" parameterType="map">
+        DELETE FROM `like`
+        WHERE cust_id = #{custId} AND item_key = #{itemKey}
+    </delete>
+
 </mapper>
