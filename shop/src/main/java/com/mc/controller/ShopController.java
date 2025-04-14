@@ -1,19 +1,22 @@
 package com.mc.controller;
 
+import com.mc.app.dto.Customer;
 import com.mc.app.dto.ItemFilterCriteria;
 import com.mc.app.dto.SortType;
+import com.mc.app.service.LikeService;
 import com.mc.app.service.ShopService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @Slf4j
@@ -21,6 +24,7 @@ import java.util.List;
 @RequestMapping("/shop")
 public class ShopController {
     private final ShopService shopService;
+    private final LikeService likeService;
 
     @GetMapping("")
     public String shop(
@@ -35,6 +39,14 @@ public class ShopController {
         model.addAttribute("currentPage", "shop");
 
         try {
+            Customer customer = (Customer) session.getAttribute("cust");
+            if (customer != null) {
+                model.addAttribute("isLoggedIn", true);
+                model.addAttribute("custId", customer.getCustId());
+            } else {
+                model.addAttribute("isLoggedIn", false);
+            }
+            
             shopService.addFilterOptionsToModel(model);
             
             addSortOptionsToModel(model, sort);
@@ -76,8 +88,23 @@ public class ShopController {
     }
 
     @GetMapping("/details")
-    public String shopDetails(@RequestParam("itemKey") int itemKey, Model model) {
+    public String shopDetails(@RequestParam("itemKey") int itemKey, Model model, HttpSession session) {
         try {
+
+            Customer customer = (Customer) session.getAttribute("cust");
+
+            if (customer != null) {
+                model.addAttribute("isLoggedIn", true);
+                model.addAttribute("custId", customer.getCustId());
+                
+                boolean isLiked = likeService.isLiked(customer.getCustId(), itemKey);
+                model.addAttribute("isLiked", isLiked);
+                
+            } else {
+                model.addAttribute("isLoggedIn", false);
+                model.addAttribute("isLiked", false);
+            }
+            
             if (!shopService.addItemDetailsToModel(itemKey, model)) {
                 log.warn("존재하지 않는 상품입니다. itemKey: {}", itemKey);
                 return "redirect:/shop";
@@ -89,5 +116,51 @@ public class ShopController {
             return "redirect:/shop";
         }
         return "index";
+    }
+    
+    @PostMapping("/like/toggle")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> toggleLike(
+            @RequestParam("itemKey") int itemKey, 
+            HttpSession session) {
+        
+        Map<String, Object> response = new HashMap<>();
+        
+        Customer customer = (Customer) session.getAttribute("cust");
+        if (customer == null) {
+            response.put("success", false);
+            response.put("redirectUrl", "/customer/login");
+            response.put("message", "로그인이 필요한 서비스입니다.");
+            return ResponseEntity.ok(response);
+        }
+        
+        Map<String, Object> result = likeService.toggleLike(customer.getCustId(), itemKey);
+        
+        return ResponseEntity.ok(result);
+    }
+    
+    @GetMapping("/like/check")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> checkLiked(
+            @RequestParam("itemKey") int itemKey, 
+            HttpSession session) {
+        
+        Map<String, Object> response = new HashMap<>();
+        
+        Customer customer = (Customer) session.getAttribute("cust");
+        if (customer == null) {
+            response.put("success", false);
+            response.put("isLoggedIn", false);
+            response.put("message", "로그인이 필요한 서비스입니다.");
+            return ResponseEntity.ok(response);
+        }
+        
+        boolean isLiked = likeService.isLiked(customer.getCustId(), itemKey);
+        
+        response.put("success", true);
+        response.put("isLoggedIn", true);
+        response.put("isLiked", isLiked);
+        
+        return ResponseEntity.ok(response);
     }
 }

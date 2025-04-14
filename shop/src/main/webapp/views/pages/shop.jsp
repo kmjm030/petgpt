@@ -122,12 +122,70 @@
     width: 100%;
     margin-top: 15px;
   }
+  
+  .product__hover .like-button {
+    display: inline-block;
+    transition: all 0.3s ease;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .product__hover .like-button:hover {
+    transform: scale(1.2);
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .product__hover .like-button.liked {
+    background-color: #ff6b6b;
+  }
+  
+  .product__hover .like-button.liked .icon {
+    color: white;
+  }
+  
+  .product__hover .detail-button {
+    display: inline-block;
+    transition: all 0.3s ease;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .product__hover .detail-button:hover {
+    transform: scale(1.2);
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .product__hover .icon {
+    font-size: 18px;
+    color: #333;
+  }
+  
+  .like-overlay {
+    display: none;
+  }
+  
+  .product__item.liked .product__hover .like-button {
+    background-color: #ff6b6b;
+  }
 </style>
 
 <script>
   const shop = {
     init: () => {
       shop.filterDuplicateColors();
+      shop.initializeLikeButtons();
     },
     filterDuplicateColors: () => {
       const processedColors = {};
@@ -220,8 +278,130 @@
               alert('장바구니 추가 중 서버 통신 오류가 발생했습니다.');
           }
       });
+    },
+
+    initializeLikeButtons: () => {
+      document.querySelectorAll('.product__hover .like-button').forEach(button => {
+        const itemKey = button.getAttribute('data-item-key');
+        const productItem = button.closest('.product__item');
+        
+        if (shop.isLoggedIn) {
+          shop.checkLiked(itemKey, (isLiked) => {
+            if (isLiked) {
+              button.classList.add('liked');
+              productItem.classList.add('liked');
+            }
+          });
+        }
+        
+        button.addEventListener('click', function(e) {
+          e.preventDefault();
+          shop.toggleLike(itemKey, this);
+        });
+      });
+    },
+
+    toggleLike: (itemKey, button) => {
+      if (!shop.isLoggedIn) {
+        if (confirm('로그인이 필요한 서비스입니다. 로그인 페이지로 이동하시겠습니까?')) {
+          window.location.href = contextPath + '/login';
+        }
+        return;
+      }
+      
+      $.ajax({
+        url: contextPath + '/shop/like/toggle',
+        type: 'POST',
+        data: { itemKey: itemKey },
+        success: function(response) {
+          if (response.success) {
+            const productItem = button.closest('.product__item');
+            
+            if (response.action === 'added') {
+              button.classList.add('liked');
+              productItem.classList.add('liked');
+              shop.showToast('상품이 찜 목록에 추가되었습니다.');
+            } else {
+              button.classList.remove('liked');
+              productItem.classList.remove('liked');
+              shop.showToast('상품이 찜 목록에서 제거되었습니다.');
+            }
+          } else {
+            alert(response.message || '찜하기 처리 중 오류가 발생했습니다.');
+            if (response.redirectUrl) {
+              window.location.href = contextPath + response.redirectUrl;
+            }
+          }
+        },
+        error: function() {
+          alert('서버 통신 오류가 발생했습니다.');
+        }
+      });
+    },
+
+    checkLiked: (itemKey, callback) => {
+      $.ajax({
+        url: contextPath + '/shop/like/check',
+        type: 'GET',
+        data: { itemKey: itemKey },
+        success: function(response) {
+          if (response.success && response.isLiked) {
+            callback(true);
+          } else {
+            callback(false);
+          }
+        },
+        error: function() {
+          callback(false);
+        }
+      });
+    },
+
+    showToast: (message) => {
+      if (!document.getElementById('toast-container')) {
+        const toastContainer = document.createElement('div');
+        toastContainer.id = 'toast-container';
+        toastContainer.style.cssText = `
+          position: fixed;
+          bottom: 20px;
+          right: 20px;
+          z-index: 9999;
+        `;
+        document.body.appendChild(toastContainer);
+      }
+      
+      const toast = document.createElement('div');
+      toast.className = 'toast-message';
+      toast.innerHTML = message;
+      toast.style.cssText = `
+        background-color: rgba(0, 0, 0, 0.7);
+        color: white;
+        padding: 15px 25px;
+        margin-top: 10px;
+        border-radius: 4px;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      `;
+      
+      document.getElementById('toast-container').appendChild(toast);
+      
+      setTimeout(() => {
+        toast.style.opacity = '1';
+      }, 10);
+      
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => {
+          toast.remove();
+        }, 300);
+      }, 3000);
     }
-  }
+  };
+  
+  const contextPath = '${pageContext.request.contextPath}';
+  shop.isLoggedIn = ${isLoggedIn != null && isLoggedIn ? 'true' : 'false'};
+  shop.customerId = '${custId}';
+  
   $(function() {
     shop.init();
   });
@@ -473,8 +653,12 @@
             <div class="product__item">
                 <div class="product__item__pic set-bg" data-setbg="<c:url value='/img/product/${item.itemImg1}'/>">
                   <ul class="product__hover">
-                    <li><a href="#"><img src="<c:url value='/img/icon/heart.png'/>" alt=""></a></li>
-                    <li><a href="<c:url value='/shop/details?itemKey=${item.itemKey}'/>"><img src="<c:url value='/img/icon/search.png'/>" alt=""></a></li>
+                    <li><a href="#" class="like-button" data-item-key="${item.itemKey}">
+                      <i class="fa fa-heart icon"></i>
+                    </a></li>
+                    <li><a href="<c:url value='/shop/details?itemKey=${item.itemKey}'/>" class="detail-button">
+                      <i class="fa fa-search icon"></i>
+                    </a></li>
                   </ul>
                 </div>
                 <div class="product__item__text">
