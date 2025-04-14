@@ -2,73 +2,110 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+<style>
+  .quantity-controls .btn:hover {
+    background-color: #000 !important; 
+    border-color: #000 !important;
+    color: #fff !important;
+  }
+  .quantity-controls > * { 
+    vertical-align: middle;
+  }
+</style>
+
 <script>
   $(function() {
-    // 수량 조절 스크립트 (기존 main.js에 있을 수 있으므로 확인 필요)
-    let proQty = $('.pro-qty');
-    proQty.prepend('<span class="fa fa-angle-up dec qtybtn"></span>');
-    proQty.append('<span class="fa fa-angle-down inc qtybtn"></span>');
-    proQty.on('click', '.qtybtn', function () {
-        let button = $(this);
-        let oldValue = button.parent().find('input').val();
-        let newVal;
-        if (button.hasClass('inc')) {
-            newVal = parseFloat(oldValue) + 1;
-        } else {
-            if (oldValue > 1) {
-                newVal = parseFloat(oldValue) - 1;
-            } else {
-                newVal = 1;
-            }
-        }
-        button.parent().find('input').val(newVal);
+
+    const qtyInput = $('#detail-qty-input');
+    const decreaseBtn = $('#detail-qty-decrease');
+    const increaseBtn = $('#detail-qty-increase');
+
+    increaseBtn.on('click', function(e) {
+      e.preventDefault();
+      let currentVal = parseInt(qtyInput.val());
+      if (!isNaN(currentVal)) {
+        qtyInput.val(currentVal + 1);
+      } else {
+        qtyInput.val(1);
+      }
     });
 
-    // 옵션 선택 시 active 클래스 토글
+    decreaseBtn.on('click', function(e) {
+      e.preventDefault();
+      let currentVal = parseInt(qtyInput.val());
+      if (!isNaN(currentVal) && currentVal > 1) {
+        qtyInput.val(currentVal - 1);
+      } else {
+        qtyInput.val(1);
+      }
+    });
+
     $('.option-group label').on('click', function() {
-        $(this).closest('.option-group').find('label').removeClass('active'); 
+        $(this).closest('.option-group').find('label').removeClass('active');
         $(this).addClass('active');
     });
 
-    // 'Add to Cart' 버튼 클릭 이벤트
     $('#add-to-cart-btn').on('click', function(e) {
         e.preventDefault();
 
         const itemKey = $('#product-details-data').data('item-key');
-        const cartCnt = parseInt($('.pro-qty input').val());
-        const selectedOptionKey = $('input[name="selectedOptionKey"]:checked').val(); 
+        const cartCnt = parseInt($('#detail-qty-input').val()); 
+        const selectedOptionKey = $('input[name="selectedOptionKey"]:checked').val();
         const hasOptions = $('input[name="selectedOptionKey"]').length > 0;
 
-        // 필수 값 체크 (itemKey, cartCnt)
         if (!itemKey || isNaN(cartCnt) || cartCnt < 1) {
             alert('상품 정보 또는 수량이 올바르지 않습니다.');
             return;
         }
 
-        // 옵션이 있는 상품인데 옵션이 선택되지 않은 경우 체크
         if (hasOptions && !selectedOptionKey) {
             alert('옵션을 선택해주세요.');
             return;
         }
 
-        // 장바구니 추가 URL 생성 (optionKey 포함)
         let addToCartUrl = "<c:url value='/cart/add' />" +
                            "?itemKey=" + itemKey +
                            "&cartCnt=" + cartCnt;
 
-        // 선택된 옵션 키가 있을 경우에만 추가
-        if (selectedOptionKey) {
-            addToCartUrl += "&optionKey=" + selectedOptionKey;
-        }
+        const cartData = {
+            itemKey: itemKey,
+            cartCnt: cartCnt,
+            optionKey: selectedOptionKey ? parseInt(selectedOptionKey) : null
+        };
 
-        console.log("Add to cart URL:", addToCartUrl);
+        console.log("Adding to cart via AJAX POST:", cartData);
 
-        location.href = addToCartUrl;
+        $.ajax({
+            url: '<c:url value="/cart/add/ajax"/>', 
+            type: 'POST',                         
+            contentType: 'application/json',      
+            data: JSON.stringify(cartData),    
+
+            success: function(response) {
+
+                if (response.success) {
+                    console.log("Successfully added to cart.");
+                    location.href = '<c:url value="/cart"/>'; 
+
+                } else {
+                    console.error("Failed to add to cart:", response.message);
+
+                    if (response.redirectUrl) {
+                         location.href = '<c:url value="' + response.redirectUrl + '"/>';
+
+                    } else {
+                         alert(response.message || '장바구니 추가에 실패했습니다.');
+                    }
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("AJAX Error adding to cart:", status, error);
+                alert('장바구니 추가 중 오류가 발생했습니다. 다시 시도해주세요.');
+            }
+        });
     });
 
-
-    // 썸네일 이미지 배경 설정
-    $('.product__thumb__pic.set-bg, .product__item__pic.set-bg').each(function () { 
+    $('.product__thumb__pic.set-bg, .product__item__pic.set-bg').each(function () {
         let bg = $(this).data('setbg');
         if (bg) { 
             $(this).css('background-image', 'url(' + bg + ')');
@@ -169,8 +206,10 @@
 
                         <div class="product__details__cart__option">
                             <div class="quantity">
-                                <div class="pro-qty">
-                                    <input type="text" value="1">
+                                <div class="quantity-controls">
+                                    <button class="btn btn-outline-dark" type="button" id="detail-qty-decrease" style="border-radius: 0;">-</button>
+                                    <input type="text" class="form-control text-center mx-1" id="detail-qty-input" value="1" style="width: 50px; display: inline-block; border-radius: 0;">
+                                    <button class="btn btn-outline-dark" type="button" id="detail-qty-increase" style="border-radius: 0;">+</button>
                                 </div>
                             </div>
                             <a href="#" class="primary-btn" id="add-to-cart-btn">add to cart</a>
