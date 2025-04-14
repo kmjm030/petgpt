@@ -56,4 +56,18 @@
         WHERE color = #{color}
     </select>
 
+    <select id="findDistinctAvailableSizesByItem" parameterType="int" resultType="string">
+        SELECT DISTINCT size
+        FROM `option`
+        WHERE item_key = #{itemKey} AND stock > 0 AND size IS NOT NULL AND size != ''
+        ORDER BY FIELD(size, 'XS', 'S', 'M', 'L', 'FREE')
+    </select>
+
+    <select id="findDistinctAvailableColorsByItem" parameterType="int" resultType="string">
+        SELECT DISTINCT color
+        FROM `option`
+        WHERE item_key = #{itemKey} AND stock > 0 AND color IS NOT NULL AND color != ''
+        ORDER BY color
+    </select>
+
 </mapper>

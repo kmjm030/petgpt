@@ -44,4 +44,12 @@ public class OptionService {
     public List<Integer> getItemKeysByColor(String color) throws Exception {
         return optionRepository.findItemKeysByColor(color);
     }
+
+    public List<String> getAvailableSizesByItem(int itemKey) throws Exception {
+        return optionRepository.findDistinctAvailableSizesByItem(itemKey);
+    }
+
+    public List<String> getAvailableColorsByItem(int itemKey) throws Exception {
+        return optionRepository.findDistinctAvailableColorsByItem(itemKey);
+    }
 }

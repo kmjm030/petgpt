@@ -1,9 +1,12 @@
 package com.mc.controller;
 
 import com.mc.app.dto.Customer;
-import com.mc.app.dto.ItemFilterCriteria;
-import com.mc.app.dto.SortType;
+import com.mc.app.dto.*;
 import com.mc.app.service.LikeService;
+import com.fasterxml.jackson.databind.ObjectMapper; 
+import com.mc.app.dto.*;
+import com.mc.app.service.LikeService;
+import com.mc.app.service.OptionService;
 import com.mc.app.service.ShopService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +28,7 @@ import java.util.Map;
 public class ShopController {
     private final ShopService shopService;
     private final LikeService likeService;
+    private final OptionService optionService; 
 
     @GetMapping("")
     public String shop(
@@ -108,6 +112,28 @@ public class ShopController {
             if (!shopService.addItemDetailsToModel(itemKey, model)) {
                 log.warn("존재하지 않는 상품입니다. itemKey: {}", itemKey);
                 return "redirect:/shop";
+            }
+
+            List<String> availableSizes = optionService.getAvailableSizesByItem(itemKey);
+            List<String> availableColors = optionService.getAvailableColorsByItem(itemKey);
+            model.addAttribute("availableSizes", availableSizes);
+            model.addAttribute("availableColors", availableColors);
+
+            @SuppressWarnings("unchecked")
+            List<Option> options = (List<Option>) model.getAttribute("options");
+
+            if (options != null) {
+                ObjectMapper objectMapper = new ObjectMapper();
+                String optionsJson = objectMapper.writeValueAsString(options);
+
+                 optionsJson = optionsJson.replace("\\", "\\\\")
+                                          .replace("'", "\\'")
+                                          .replace("<", "\\u003C")
+                                          .replace(">", "\\u003E");
+                                          
+                model.addAttribute("optionsJson", optionsJson);
+            } else {
+                 model.addAttribute("optionsJson", "[]"); 
             }
             
             model.addAttribute("centerPage", "pages/shop_details.jsp");

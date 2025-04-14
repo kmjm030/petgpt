@@ -31,14 +31,12 @@
             updateCartQuantity(input);
         });
 
-        // 서버로 장바구니 수량 업데이트 요청 함수 (Ajax)
         function updateCartQuantity(inputElement) {
             const custId = inputElement.data('cust-id');
             const itemKey = inputElement.data('item-key');
             const optionKey = inputElement.data('option-key'); 
             const cartCnt = parseInt(inputElement.val());
 
-            // 원래 값 저장 (오류 시 복구용)
             const originalValue = inputElement.data('original-value') || inputElement.val();
             inputElement.data('original-value', inputElement.val()); 
 
@@ -79,7 +77,6 @@
             });
         }
 
-        // 장바구니 화면 업데이트 함수
         function updateCartView(updatedItemKey, cartItems, totalCartPrice) {
             console.log("Updating view for item:", updatedItemKey, "Total Price:", totalCartPrice); 
 
@@ -116,7 +113,6 @@
             console.log("Cart view updated."); 
         }
 
-        // 삭제 버튼 클릭 이벤트
         window.shopping_cart = { 
             del: (custId, itemKey, optionKey) => {
                 if (!custId || !itemKey) {
@@ -134,7 +130,6 @@
             }
         };
 
-        // 기존 'Update cart' 버튼 기능 제거 또는 수정할 것
         $('#update-cart-btn').off('click').on('click', function(e) {
             e.preventDefault();
             alert('수량 변경은 각 항목에서 바로 적용됩니다.');
@@ -186,6 +181,14 @@
                                         </div>
                                         <div class="product__cart__item__text">
                                             <h6>${item.item_name}</h6>
+                                            <c:if test="${not empty item.option_key}">
+                                                <p style="font-size: 0.9em; color: #666;">
+                                                    옵션: ${item.size} / ${item.color}
+                                                    <c:if test="${not empty item.additional_price and item.additional_price > 0}">
+                                                        (+<fmt:formatNumber value="${item.additional_price}" type="number" />원)
+                                                    </c:if>
+                                                </p>
+                                            </c:if>
                                             <h5><fmt:formatNumber value="${item.item_price}" type="number" />원</h5>
                                         </div>
                                     </td>

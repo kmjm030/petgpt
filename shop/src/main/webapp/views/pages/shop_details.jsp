@@ -11,9 +11,103 @@
   .quantity-controls > * { 
     vertical-align: middle;
   }
+
+  .option-group {
+    margin-bottom: 20px; 
+  }
+  .option-group span {
+      display: block; 
+      margin-bottom: 10px;
+      font-weight: bold;
+  }
+  .option-group label {
+    display: inline-block;
+    padding: 8px 15px;
+    border: 1px solid #e1e1e1;
+    border-radius: 4px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    background-color: #fff;
+    color: #666;
+    white-space: nowrap; 
+    display: inline-flex; 
+    align-items: center; 
+    vertical-align: top; 
+  }
+  .option-group label:not(.disabled):hover {
+    border-color: #111;
+    color: #111;
+  }
+  .option-group label.active {
+    border-color: #ca1515;
+    background-color: #ca1515;
+    color: #fff;
+    font-weight: bold;
+  }
+  .option-group label.disabled {
+    background-color: #f5f5f5;
+    color: #aaa;
+    cursor: not-allowed;
+    border-color: #e1e1e1;
+    text-decoration: line-through; 
+  }
+  .option-group label.disabled:hover {
+      border-color: #e1e1e1; 
+  }
+ 
+  .option-group input[type="radio"] {
+    display: none;
+  }
+
+  .product__details__option select {
+      width: calc(50% - 10px); 
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #e1e1e1;
+      border-radius: 4px;
+      font-size: 14px;
+      color: #666;
+      background-color: #fff;
+      margin-right: 15px;
+      display: inline-block; 
+      vertical-align: top;
+  }
+   .product__details__option select:last-child {
+       margin-right: 0; 
+   }
+
+  .option-info {
+      margin-top: 10px;
+      padding: 10px;
+      background-color: #f9f9f9;
+      border: 1px solid #eee;
+      border-radius: 4px;
+      font-size: 14px;
+      min-height: 40px; 
+  }
+  .option-info .price-change {
+      font-weight: bold;
+      color: #ca1515;
+      margin-right: 15px;
+  }
+   .option-info .stock-status {
+       font-weight: bold;
+   }
+   .option-info .stock-status.out-of-stock {
+       color: #dc3545;
+   }
+   .option-info .stock-status.in-stock {
+       color: #28a745;
+   }
+
 </style>
 
 <script>
+  const allOptionsData = JSON.parse('${optionsJson}');
+
   $(function() {
 
     const qtyInput = $('#detail-qty-input');
@@ -40,40 +134,87 @@
       }
     });
 
-    $('.option-group label').on('click', function() {
-        $(this).closest('.option-group').find('label').removeClass('active');
-        $(this).addClass('active');
-    });
+    const sizeSelect = $('#size-select');
+    const colorSelect = $('#color-select');
+    const optionInfoDiv = $('#option-info');
+    const addToCartBtn = $('#add-to-cart-btn');
+    let currentSelectedOptionKey = null; 
 
-    $('#add-to-cart-btn').on('click', function(e) {
+    function updateOptionInfo() {
+        const selectedSize = sizeSelect.val();
+        const selectedColor = colorSelect.val();
+        currentSelectedOptionKey = null; 
+        optionInfoDiv.empty(); 
+        addToCartBtn.addClass('disabled').prop('disabled', true); 
+
+        if (selectedSize && selectedColor) {
+            
+            const selectedOption = allOptionsData.find(opt => opt.size === selectedSize && opt.color === selectedColor);
+
+            if (selectedOption) {
+                currentSelectedOptionKey = selectedOption.optionKey; 
+                let infoHtml = '';
+
+                if (selectedOption.additionalPrice && selectedOption.additionalPrice > 0) {
+                    infoHtml += `<span class="price-change">(+${selectedOption.additionalPrice.toLocaleString()}원)</span>`;
+                }
+
+                if (selectedOption.stock > 0) {
+                    infoHtml += `<span class="stock-status in-stock">구매 가능</span>`;
+                    addToCartBtn.removeClass('disabled').prop('disabled', false); 
+                } else {
+                    infoHtml += `<span class="stock-status out-of-stock">품절</span>`;
+                }
+                optionInfoDiv.html(infoHtml);
+
+            } else {
+                optionInfoDiv.html('<span class="stock-status out-of-stock">선택 불가능한 조합</span>');
+            }
+        } else {
+             optionInfoDiv.html('<span>사이즈와 색상을 모두 선택해주세요.</span>');
+        }
+    }
+
+    sizeSelect.on('change', updateOptionInfo);
+    colorSelect.on('change', updateOptionInfo);
+
+    updateOptionInfo();
+    
+    addToCartBtn.on('click', function(e) {
         e.preventDefault();
 
+        if ($(this).hasClass('disabled')) {
+            alert('옵션을 선택하거나 품절된 옵션입니다.');
+            return;
+        }
+
         const itemKey = $('#product-details-data').data('item-key');
-        const cartCnt = parseInt($('#detail-qty-input').val()); 
-        const selectedOptionKey = $('input[name="selectedOptionKey"]:checked').val();
-        const hasOptions = $('input[name="selectedOptionKey"]').length > 0;
+        const cartCnt = parseInt(qtyInput.val());
+        const selectedSize = sizeSelect.val();
+        const selectedColor = colorSelect.val();
 
         if (!itemKey || isNaN(cartCnt) || cartCnt < 1) {
             alert('상품 정보 또는 수량이 올바르지 않습니다.');
             return;
         }
 
-        if (hasOptions && !selectedOptionKey) {
-            alert('옵션을 선택해주세요.');
+        if (!selectedSize || !selectedColor) {
+            alert('사이즈와 색상을 모두 선택해주세요.');
             return;
         }
 
-        let addToCartUrl = "<c:url value='/cart/add' />" +
-                           "?itemKey=" + itemKey +
-                           "&cartCnt=" + cartCnt;
+        if (currentSelectedOptionKey === null) {
+             alert('선택하신 옵션을 찾을 수 없습니다. 다시 선택해주세요.');
+             return;
+        }
 
         const cartData = {
             itemKey: itemKey,
             cartCnt: cartCnt,
-            optionKey: selectedOptionKey ? parseInt(selectedOptionKey) : null
+            optionKey: currentSelectedOptionKey 
         };
 
-        console.log("Adding to cart via AJAX POST:", cartData);
+        console.log("Adding to cart via AJAX POST", cartData);
 
         $.ajax({
             url: '<c:url value="/cart/add/ajax"/>', 
@@ -188,23 +329,31 @@
                         <p><c:out value="${item.itemContent}"/></p> <%-- itemDetail -> itemContent 로 수정 --%>
 
                         <%-- 옵션 선택 영역 --%>
-                        <c:if test="${not empty options}">
-                            <div class="product__details__option option-group">
-                                <span>옵션 선택:</span>
-                                <c:forEach var="option" items="${options}" varStatus="status">
-                                    <label for="option_${option.optionKey}" class="${option.stock <= 0 ? 'disabled' : ''}">
-                                        <c:out value="${option.size}"/> / <c:out value="${option.color}"/>
-                                        <c:if test="${option.additionalPrice > 0}">
-                                            (+<fmt:formatNumber value="${option.additionalPrice}" type="currency" currencySymbol="₩"/>)
-                                        </c:if>
-                                        <c:if test="${option.stock <= 0}"> (품절)</c:if>
-                                        <input type="radio" id="option_${option.optionKey}" name="selectedOptionKey" value="${option.optionKey}" ${option.stock <= 0 ? 'disabled' : ''} ${status.first ? 'checked' : ''}>
-                                    </label>
-                                </c:forEach>
+                        <c:if test="${not empty availableSizes or not empty availableColors}">
+                            <div class="product__details__option">
+                                <div style="margin-bottom: 10px; font-weight: bold;">옵션 선택:</div>
+                                <select id="size-select" name="selectedSize">
+                                    <option value="">사이즈 선택</option>
+                                    <c:forEach var="size" items="${availableSizes}">
+                                        <option value="${size}"><c:out value="${size}"/></option>
+                                    </c:forEach>
+                                </select>
+                                <select id="color-select" name="selectedColor">
+                                    <option value="">색상 선택</option>
+                                    <c:forEach var="color" items="${availableColors}">
+                                        <option value="${color}"><c:out value="${color}"/></option>
+                                    </c:forEach>
+                                </select>
+                                <div id="option-info" class="option-info">
+                                    <span>사이즈와 색상을 모두 선택해주세요.</span>
+                                </div>
                             </div>
                         </c:if>
+                        <script>
+                          const optionsJson = '${optionsJson}';
+                        </script>
 
-                        <div class="product__details__cart__option">
+                        <div class="product__details__cart__option" style="margin-top: 30px;"> <%-- 옵션 영역과 간격 조정 --%>
                             <div class="quantity">
                                 <div class="quantity-controls">
                                     <button class="btn btn-outline-dark" type="button" id="detail-qty-decrease" style="border-radius: 0;">-</button>
@@ -212,7 +361,8 @@
                                     <button class="btn btn-outline-dark" type="button" id="detail-qty-increase" style="border-radius: 0;">+</button>
                                 </div>
                             </div>
-                            <a href="#" class="primary-btn" id="add-to-cart-btn">add to cart</a>
+                            <%-- 초기에는 비활성화 상태 --%>
+                            <a href="#" class="primary-btn disabled" id="add-to-cart-btn" disabled>add to cart</a>
                  </div>
          </div>
      </div>
