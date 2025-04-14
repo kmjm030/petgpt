@@ -68,7 +68,7 @@
                                                 <li><a href="<c:url value='#'/>">주문내역</a></li>
                                                 <li><a href="<c:url value='/address?id=${cust.custId}'/>"><strong id="category">배송지 목록</strong></a></li>
                                                 <li><a href="<c:url value='/mypage/like?id=${cust.custId}'/>">찜 목록</a></li>
-                                                <li><a href="<c:url value='#'/>">보유 쿠폰</a></li>
+                                                <li><a href="<c:url value='/coupon?id=${cust.custId}'/>">보유 쿠폰</a></li>
                                                 <li><a href="<c:url value='#'/>">1:1문의</a></li>
                                                 <li><a href="<c:url value='#'/>">내가 작성한 리뷰</a></li>
                                             </ul>
@@ -84,7 +84,12 @@
             </div>
             <%--    회원 정보 --%>
             <div class="col-lg-9">
-                <h6 class="checkout__title">배송지 목록</h6>
+                <h6 class="checkout__title">📦 어디로 보내드릴까요? 이곳에서 배송지를 한번에 관리하세요!</h6>
+                <c:forEach var="c" items="${address}">
+                    <c:if test="${c.addrDef eq 'Y'}">
+                        <h6>- 현재 기본배송지는 <strong id="addr_def">${c.addrName}</strong>🏠입니다.</h6><br/><br/>
+                    </c:if>
+                </c:forEach>
                 <table class="table table-striped">
                     <thead>
                     <tr>

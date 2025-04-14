@@ -76,8 +76,8 @@
                         <li><a href="<c:url value='/mypage?id=${cust.custId}'/>">회원정보</a></li>
                         <li><a href="<c:url value='#'/>">주문내역</a></li>
                         <li><a href="<c:url value='/address?id=${cust.custId}'/>">배송지 목록</a></li>
-                        <li><a href="<c:url value='/mypage/like?id=${cust.custId}'/>"><strong id="category">찜 목록</strong></a></li>
-                        <li><a href="<c:url value='/coupon?id=${cust.custId}'/>">보유 쿠폰</a></li>
+                        <li><a href="<c:url value='/mypage/like?id=${cust.custId}'/>">찜 목록</a></li>
+                        <li><a href="<c:url value='/coupon?id=${cust.custId}'/>"><strong id="category">보유 쿠폰</strong></a></li>
                         <li><a href="<c:url value='#'/>">1:1문의</a></li>
                         <li><a href="<c:url value='#'/>">내가 작성한 리뷰</a></li>
                       </ul>
@@ -93,27 +93,21 @@
       </div>
       <%--    회원 정보 --%>
       <div class="col-lg-9 container mt-3">
-          <h6 class="checkout__title">💟 내가 찜한 상품</h6>
+          <h6 class="checkout__title">💟 보유 쿠폰 조회</h6>
           <table class="table">
             <thead>
             <tr>
-              <th>이미지</th>
-              <th>상품이름</th>
-              <th>가격</th>
-              <th></th>
+              <th>쿠폰이름</th>
+              <th>발급날짜</th>
+              <th>사용기한</th>
             </tr>
             </thead>
             <tbody>
-            <c:forEach var="c" items="${items}">
+            <c:forEach var="c" items="${coupons}">
               <tr>
-                <td><img id="like_img" src="<c:url value='/img/product/'/>${c.itemImg1}"/></td>
-                <td>${c.itemName}</td>
-                <td>${c.itemPrice}원</td>
-                <td class="cart__close">
-                  <a href="#" onclick="like.del(${c.itemKey}, '${sessionScope.cust.custId}')">
-                    <i id="like_del_icon" class="fa fa-close"></i>
-                  </a>
-                </td>
+                <td>${c.couponName}</td>
+                <td>${c.couponIssue}</td>
+                <td>${c.couponExpire}</td>
               </tr>
             </c:forEach>
             </tbody>

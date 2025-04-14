@@ -118,7 +118,7 @@
                         <li><a href="<c:url value='#'/>">주문내역</a></li>
                         <li><a href="<c:url value='/address?id=${cust.custId}'/>">배송지 목록</a></li>
                         <li><a href="<c:url value='/mypage/like?id=${cust.custId}'/>">찜 목록</a></li>
-                        <li><a href="<c:url value='#'/>">보유 쿠폰</a></li>
+                        <li><a href="<c:url value='/coupon?id=${cust.custId}'/>">보유 쿠폰</a></li>
                         <li><a href="<c:url value='#'/>">1:1문의</a></li>
                         <li><a href="<c:url value='#'/>">내가 작성한 리뷰</a></li>
                       </ul>
@@ -134,7 +134,7 @@
       </div>
 <%--    회원 정보 --%>
       <div class="col-lg-9">
-        <h6 class="checkout__title">회원 정보</h6>
+        <h6 class="checkout__title">📌 회원 정보 조회</h6>
         <form id="cust_update_form">
           <div class="row">
             <div class="form-group col-md-6">

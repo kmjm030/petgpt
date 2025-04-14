@@ -12,7 +12,8 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class Coupon {
     private int couponId;
-    private int custKey;
+    private String custId;
+    private String couponName;
     private Integer couponPrice;
     private Integer couponRate;
     private Integer couponMaxPrice;
