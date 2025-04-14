@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<!-- JSTL -->
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <style>
     /* 로고 사이즈 조절 */
     .sidebar-brand .custom-logo {
@@ -76,6 +76,118 @@
 </head>
 
 <body id="page-top">
+<!-- Matrix 로딩화면 -->
+<div id="matrix-loader">
+    <canvas id="matrix-canvas"></canvas>
+    <div class="matrix-overlay">
+        <img src="<c:url value='/img/logo.png'/>" alt="로고" class="matrix-logo">
+        <div class="matrix-text">시스템 가동 준비 완료</div>
+    </div>
+</div>
+
+
+<style>
+    #matrix-loader {
+        display: none; /* 기본적으로 숨김 */
+        position: fixed;
+        top: 0; left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: black;
+        z-index: 9999;
+        overflow: hidden;
+    }
+
+    #matrix-canvas {
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+
+    .matrix-overlay {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .matrix-logo {
+        width: 120px;
+        filter: drop-shadow(0 0 6px #00ff00);
+        margin-bottom: 20px;
+    }
+
+    .matrix-text {
+        font-size: 1.5rem;
+        color: #00ff00;
+        font-family: monospace;
+        text-shadow: 0 0 5px #00FF00;
+    }
+</style>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const isFirstVisit = sessionStorage.getItem("visited");
+        const loader = document.getElementById("matrix-loader");
+
+        if (!isFirstVisit) {
+            sessionStorage.setItem("visited", "true");
+
+            if (loader) loader.style.display = "block";
+
+            const canvas = document.getElementById("matrix-canvas");
+            const ctx = canvas.getContext("2d");
+            const textEl = document.querySelector(".matrix-text");
+
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const letters = "アァイィウヴエェオカキクケコサシスセソABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            const fontSize = 16;
+            const columns = Math.floor(canvas.width / fontSize);
+            const drops = Array(columns).fill(1);
+
+            function draw() {
+                ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                ctx.fillStyle = "#0F0";
+                ctx.font = fontSize + "px monospace";
+
+                for (let i = 0; i < drops.length; i++) {
+                    const text = letters.charAt(Math.floor(Math.random() * letters.length));
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                        drops[i] = 0;
+                    }
+                    drops[i]++;
+                }
+            }
+
+            const interval = setInterval(draw, 33);
+
+            setTimeout(() => {
+                textEl.textContent = "PetGPT에 오신 걸 환영합니다";
+            }, 2000);
+
+            setTimeout(() => {
+                clearInterval(interval);
+                loader.style.transition = "opacity 1s";
+                loader.style.opacity = 0;
+                setTimeout(() => loader.remove(), 1000);
+            }, 7000);
+        } else {
+            if (loader) loader.remove();
+        }
+    });
+</script>
+
 
 <!-- Page Wrapper -->
 <div id="wrapper">
@@ -108,7 +220,7 @@
                     <span>Web Socket</span></a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="<c:url value="/chat" />">
+                <a class="nav-link" href="<c:url value="/ws" />">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>chat</span></a>
             </li>
@@ -500,6 +612,7 @@
 <script src="<c:url value="/vendor/datatables/dataTables.bootstrap4.min.js"/>"></script>
 <!-- Page level custom scripts -->
 <script src="<c:url value="/js/demo/datatables-demo.js"/>"></script>
+
 </body>
 
 </html>
