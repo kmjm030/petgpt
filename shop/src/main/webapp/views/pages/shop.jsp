@@ -226,6 +226,19 @@
     shop.init();
   });
 
+  function changeSortOrder(sortValue) {
+    let currentUrl = new URL(window.location.href);
+    let params = new URLSearchParams(currentUrl.search);
+    
+    if (sortValue && sortValue !== 'default') {
+      params.set('sort', sortValue);
+    } else {
+      params.delete('sort');
+    }
+    
+    currentUrl.search = params.toString();
+    window.location.href = currentUrl.toString();
+  }
 </script>
 
 <!-- Breadcrumb Section Begin -->
@@ -442,11 +455,13 @@
               </div>
               <div class="col-lg-6 col-md-6 col-sm-6">
                 <div class="shop__product__option__right">
-                  <%-- 정렬 기능 구현 필요 --%>
                   <p>상품 정렬:</p>
-                  <select>
-                    <option value="">인기순</option>
-                    <option value="">최신 등록순</option>
+                  <select id="sortSelector" onchange="changeSortOrder(this.value)">
+                    <option value="default" ${selectedSort eq 'default' ? 'selected' : ''}>상품번호순</option>
+                    <option value="newest" ${selectedSort eq 'newest' ? 'selected' : ''}>최신순</option>
+                    <option value="oldest" ${selectedSort eq 'oldest' ? 'selected' : ''}>오래된순</option>
+                    <option value="price_high" ${selectedSort eq 'price_high' ? 'selected' : ''}>가격 높은순</option>
+                    <option value="price_low" ${selectedSort eq 'price_low' ? 'selected' : ''}>가격 낮은순</option>
                   </select>
                 </div>
               </div>

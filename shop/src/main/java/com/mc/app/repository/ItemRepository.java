@@ -13,4 +13,11 @@ public interface ItemRepository extends MCRepository<Item, Integer> {
     List<Item> findByItemKeys(@Param("itemKeys") List<Integer> itemKeys) throws Exception;
     List<Item> findByPriceRange(@Param("minPrice") int minPrice, @Param("maxPrice") int maxPrice) throws Exception;
     List<Item> findByPriceGreaterThan(@Param("minPrice") int minPrice) throws Exception;
+    
+    // 정렬 관련 메서드
+    List<Item> selectWithOrder(@Param("orderBy") String orderBy) throws Exception;
+    List<Item> findByCategoryWithOrder(@Param("categoryKey") int categoryKey, @Param("orderBy") String orderBy) throws Exception;
+    List<Item> findByItemKeysWithOrder(@Param("itemKeys") List<Integer> itemKeys, @Param("orderBy") String orderBy) throws Exception;
+    List<Item> findByPriceRangeWithOrder(@Param("minPrice") int minPrice, @Param("maxPrice") int maxPrice, @Param("orderBy") String orderBy) throws Exception;
+    List<Item> findByPriceGreaterThanWithOrder(@Param("minPrice") int minPrice, @Param("orderBy") String orderBy) throws Exception;
 }

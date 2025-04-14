@@ -1,12 +1,7 @@
 package com.mc.controller;
 
-import com.mc.app.dto.Category;
-import com.mc.app.dto.Item;
 import com.mc.app.dto.ItemFilterCriteria;
-import com.mc.app.dto.Option;
-import com.mc.app.service.CategoryService;
-import com.mc.app.service.ItemService;
-import com.mc.app.service.OptionService;
+import com.mc.app.dto.SortType;
 import com.mc.app.service.ShopService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -16,8 +11,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Controller
 @Slf4j
@@ -32,6 +28,7 @@ public class ShopController {
             @RequestParam(name = "size", required = false) String size,
             @RequestParam(name = "color", required = false) String color,
             @RequestParam(name = "price", required = false) String price,
+            @RequestParam(name = "sort", required = false) String sort,
             Model model, 
             HttpSession session) {
         
@@ -40,11 +37,14 @@ public class ShopController {
         try {
             shopService.addFilterOptionsToModel(model);
             
+            addSortOptionsToModel(model, sort);
+            
             ItemFilterCriteria filterCriteria = ItemFilterCriteria.builder()
                     .categoryKey(categoryKey)
                     .size(size)
                     .color(color)
                     .price(price)
+                    .sort(sort)
                     .build();
             
             shopService.getFilteredItemList(filterCriteria, model);
@@ -57,6 +57,22 @@ public class ShopController {
         model.addAttribute("pageTitle", "Shop");
         model.addAttribute("centerPage", "pages/shop.jsp");
         return "index";
+    }
+
+    private void addSortOptionsToModel(Model model, String selectedSort) {
+        List<SortType> sortOptions = Arrays.asList(
+            SortType.DEFAULT,
+            SortType.NEWEST,
+            SortType.OLDEST,
+            SortType.PRICE_HIGH,
+            SortType.PRICE_LOW
+        );
+        
+        model.addAttribute("sortOptions", sortOptions);
+        
+        if (selectedSort != null && !selectedSort.isEmpty()) {
+            model.addAttribute("selectedSort", selectedSort);
+        }
     }
 
     @GetMapping("/details")
