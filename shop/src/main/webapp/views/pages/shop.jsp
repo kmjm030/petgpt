@@ -476,7 +476,7 @@
               </div>
               <div class="card">
                 <div class="card-heading">
-                  <a data-toggle="collapse" data-target="#collapseThree">Filter Price</a>
+                  <a data-toggle="collapse" data-target="#collapseThree">Price</a>
                 </div>
                 <div id="collapseThree" class="collapse show" data-parent="#accordionExample">
                   <div class="card-body">
