@@ -690,7 +690,7 @@
                           <i class="fa fa-star-o"></i>
                         </div>
                         <h5>${item.itemPrice}원</h5>
-                        <div class="product__color__select">
+                        <!-- <div class="product__color__select">
                           <label for="pc-4">
                             <input type="radio" id="pc-4" name="color-product-2" value="color1">
                           </label>
@@ -700,7 +700,7 @@
                           <label class="grey" for="pc-6">
                             <input type="radio" id="pc-6" name="color-product-2" value="grey">
                           </label>
-                        </div>
+                        </div> -->
                       </div>
                     </div>
                   </div>
