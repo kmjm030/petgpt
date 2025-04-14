@@ -76,21 +76,23 @@
 </head>
 
 <body id="page-top">
+<!-- Matrix 로딩화면 -->
 <div id="matrix-loader">
     <canvas id="matrix-canvas"></canvas>
-
     <div class="matrix-overlay">
         <img src="<c:url value='/img/logo.png'/>" alt="로고" class="matrix-logo">
-        <div class="matrix-text">Ready to operate the system</div>
+        <div class="matrix-text">시스템 가동 준비 완료</div>
     </div>
-
 </div>
+
 
 <style>
     #matrix-loader {
+        display: none; /* 기본적으로 숨김 */
         position: fixed;
         top: 0; left: 0;
-        width: 100vw; height: 100vh;
+        width: 100vw;
+        height: 100vh;
         background-color: black;
         z-index: 9999;
         overflow: hidden;
@@ -127,56 +129,64 @@
     }
 </style>
 
+
 <script>
     document.addEventListener("DOMContentLoaded", () => {
-        const canvas = document.getElementById("matrix-canvas");
-        const ctx = canvas.getContext("2d");
+        const isFirstVisit = sessionStorage.getItem("visited");
+        const loader = document.getElementById("matrix-loader");
 
-        const textEl = document.querySelector(".matrix-text");
+        if (!isFirstVisit) {
+            sessionStorage.setItem("visited", "true");
 
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+            if (loader) loader.style.display = "block";
 
-        const letters = "アァイィウヴエェオカキクケコサシスセソABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        const fontSize = 16;
-        const columns = Math.floor(canvas.width / fontSize);
-        const drops = Array(columns).fill(1);
+            const canvas = document.getElementById("matrix-canvas");
+            const ctx = canvas.getContext("2d");
+            const textEl = document.querySelector(".matrix-text");
 
-        function draw() {
-            ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
 
-            ctx.fillStyle = "#0F0";
-            ctx.font = fontSize + "px monospace";
+            const letters = "アァイィウヴエェオカキクケコサシスセソABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            const fontSize = 16;
+            const columns = Math.floor(canvas.width / fontSize);
+            const drops = Array(columns).fill(1);
 
-            for (let i = 0; i < drops.length; i++) {
-                const text = letters.charAt(Math.floor(Math.random() * letters.length));
-                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+            function draw() {
+                ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                    drops[i] = 0;
+                ctx.fillStyle = "#0F0";
+                ctx.font = fontSize + "px monospace";
+
+                for (let i = 0; i < drops.length; i++) {
+                    const text = letters.charAt(Math.floor(Math.random() * letters.length));
+                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                        drops[i] = 0;
+                    }
+                    drops[i]++;
                 }
-                drops[i]++;
             }
+
+            const interval = setInterval(draw, 33);
+
+            setTimeout(() => {
+                textEl.textContent = "PetGPT에 오신 걸 환영합니다";
+            }, 2000);
+
+            setTimeout(() => {
+                clearInterval(interval);
+                loader.style.transition = "opacity 1s";
+                loader.style.opacity = 0;
+                setTimeout(() => loader.remove(), 1000);
+            }, 7000);
+        } else {
+            if (loader) loader.remove();
         }
-
-        const interval = setInterval(draw, 33);
-
-        setTimeout(() => {
-            textEl.textContent = "PetGPT에 오신 걸 환영합니다";
-        }, 2000);
-
-        setTimeout(() => {
-            clearInterval(interval);
-            const loader = document.getElementById("matrix-loader");
-            loader.style.transition = "opacity 1s";
-            loader.style.opacity = 0;
-            setTimeout(() => loader.remove(), 1000);
-        }, 7000);
     });
 </script>
-
-
 
 
 <!-- Page Wrapper -->
@@ -210,7 +220,7 @@
                     <span>Web Socket</span></a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="<c:url value="/chat" />">
+                <a class="nav-link" href="<c:url value="/ws" />">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>chat</span></a>
             </li>
