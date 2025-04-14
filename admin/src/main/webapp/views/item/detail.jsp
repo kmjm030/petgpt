@@ -68,8 +68,11 @@
                 </div>
 
                 <div class="form-group col-md-4">
-                    <label>카테고리 번호</label>
-                    <input type="number" class="form-control" name="categoryKey" value="${item.categoryKey}">
+                    <label>카테고리</label>
+                    <select class="form-control" name="categoryKey">
+                        <option value="1" ${item.categoryKey == 1 ? 'selected' : ''}>고양이</option>
+                        <option value="2" ${item.categoryKey == 2 ? 'selected' : ''}>강아지</option>
+                    </select>
                 </div>
 
                 <div class="form-group col-md-4">
