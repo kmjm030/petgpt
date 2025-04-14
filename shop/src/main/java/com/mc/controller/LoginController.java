@@ -1,8 +1,10 @@
 package com.mc.controller;
 
 import com.mc.app.dto.Address;
+import com.mc.app.dto.Coupon;
 import com.mc.app.dto.Customer;
 import com.mc.app.service.AddressService;
+import com.mc.app.service.CouponService;
 import com.mc.app.service.CustomerService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,7 @@ public class LoginController {
 
     final CustomerService custService;
     final AddressService addrService;
+    final CouponService couponService;
 
     @RequestMapping("/goregister")
     public String goregister(Model model, Customer cust, Address address) throws Exception {
@@ -31,6 +34,11 @@ public class LoginController {
         address.setAddrTel(cust.getCustPhone());
         address.setAddrReq(null);
         addrService.add(address);
+        Coupon coupon = Coupon.builder().custId(cust.getCustId()).couponName("회원가입 축하 쿠폰")
+                .couponPrice(1000).couponMaxPrice(1000).couponType("정액")
+                .couponUse("미사용").build();
+        couponService.add(coupon);
+
         model.addAttribute("centerPage", "pages/login.jsp");
         return "index";
     }

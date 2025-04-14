@@ -4,28 +4,31 @@
 
 <mapper namespace="com.mc.app.repository.CouponRepository">
 
-    <select id="findAll" resultType="com.mc.app.dto.Coupon">
+    <select id="select" resultType="com.mc.app.dto.Coupon">
         SELECT * FROM coupon
     </select>
 
-    <select id="findById" parameterType="int" resultType="com.mc.app.dto.Coupon">
+    <select id="selectOne" parameterType="int" resultType="com.mc.app.dto.Coupon">
         SELECT * FROM coupon WHERE coupon_id = #{couponId}
+    </select>
+
+    <select id="findByCustId" parameterType="String" resultType="com.mc.app.dto.Coupon">
+        SELECT * FROM coupon WHERE cust_id = #{custId}
     </select>
 
     <insert id="insert" parameterType="com.mc.app.dto.Coupon">
         INSERT INTO coupon (
-            coupon_id, cust_key, coupon_price, coupon_rate, coupon_maxprice,
+            cust_id, coupon_name, coupon_price, coupon_rate, coupon_maxprice,
             coupon_type, coupon_issue, coupon_expire, coupon_use
         ) VALUES (
-                     #{couponId}, #{custKey}, #{couponPrice}, #{couponRate}, #{couponMaxPrice},
-                     #{couponType}, #{couponIssue}, #{couponExpire}, #{couponUse}
+                     #{custId}, #{couponName}, #{couponPrice}, #{couponRate}, #{couponMaxPrice},
+                     #{couponType}, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 30 DAY), "미사용"
                  )
     </insert>
 
     <update id="update" parameterType="com.mc.app.dto.Coupon">
         UPDATE coupon
-        SET cust_key = #{custKey},
-            coupon_price = #{couponPrice},
+        SET coupon_price = #{couponPrice},
             coupon_rate = #{couponRate},
             coupon_maxprice = #{couponMaxPrice},
             coupon_type = #{couponType},

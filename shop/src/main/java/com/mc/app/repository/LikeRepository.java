@@ -14,4 +14,5 @@ public interface LikeRepository extends MCRepository<Like, Integer> {
     void deleteByCustAndItem(Like like) throws Exception;
     Like findByCustIdAndItemKey(@Param("custId") String custId, @Param("itemKey") int itemKey) throws Exception;
     int countByCustId(String custId) throws Exception;
+    void deleteForMypage(String custId, int itemKey) throws Exception;
 } 

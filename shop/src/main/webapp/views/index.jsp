@@ -107,7 +107,7 @@
         <div class="row">
             <div class="col-lg-3 col-md-3">
                 <div class="header__logo">
-                    <a href="/"><img id="main-logo" src="img/logo.png" alt=""></a>
+                    <a href="/"><img id="main-logo" src="/img/logo.png" alt=""></a>
                 </div>
             </div>
             <div class="col-lg-6 col-md-6">
@@ -139,8 +139,8 @@
             <div class="col-lg-3 col-md-3">
                 <div class="header__nav__option">
                     <a href="#" class="search-switch"><img src="img/icon/search.png" alt=""></a>
-                    <a href="#"><img src="img/icon/heart.png" alt=""></a>
-                    <a href="<c:url value="/cart"/>"><img src="img/icon/cart.png" alt=""> <span>0</span></a> <!-- 아이콘 링크도 수정 -->
+                    <a href="<c:url value='/mypage/like?id=${sessionScope.cust.custId}'/>"><img src="/img/icon/heart.png" alt=""></a>
+                    <a href="<c:url value="/cart"/>"><img src="/img/icon/cart.png" alt=""> <span>0</span></a> <!-- 아이콘 링크도 수정 -->
                     <div class="price"><a href="<c:url value="/cart"/>">장바구니</a></div> <!-- 텍스트 링크 수정 -->
                 </div>
             </div>
