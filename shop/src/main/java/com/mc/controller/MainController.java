@@ -16,7 +16,6 @@ import java.util.List;
 public class MainController {
 
     private final ItemService itemService;
-    private final CustomerService custService;
 
     private List<Item> getItemList() {
         List<Item> itemList = new ArrayList<>();

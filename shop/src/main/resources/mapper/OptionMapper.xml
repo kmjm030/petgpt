@@ -30,4 +30,30 @@
         DELETE FROM `option` WHERE option_key = #{optionKey}
     </delete>
 
+    <select id="findAllSizes" resultType="string">
+        SELECT DISTINCT size 
+        FROM `option` 
+        WHERE size IS NOT NULL AND size != ''
+        ORDER BY FIELD(size, 'XS', 'S', 'M', 'L', 'FREE')
+    </select>
+    
+    <select id="findItemKeysBySize" parameterType="string" resultType="int">
+        SELECT DISTINCT item_key
+        FROM `option`
+        WHERE size = #{size}
+    </select>
+
+    <select id="findAllColors" resultType="string">
+        SELECT DISTINCT color 
+        FROM `option` 
+        WHERE color IS NOT NULL AND color != ''
+        ORDER BY color
+    </select>
+    
+    <select id="findItemKeysByColor" parameterType="string" resultType="int">
+        SELECT DISTINCT item_key
+        FROM `option`
+        WHERE color = #{color}
+    </select>
+
 </mapper>

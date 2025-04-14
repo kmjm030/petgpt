@@ -29,5 +29,19 @@ public class OptionService {
         optionRepository.delete(optionKey);
     }
 
-    // 필요한 경우 옵션 수정, 재고 관리 등의 메소드 추가하기기
+    public List<String> getAllSizes() throws Exception {
+        return optionRepository.findAllSizes();
+    }
+    
+    public List<Integer> getItemKeysBySize(String size) throws Exception {
+        return optionRepository.findItemKeysBySize(size);
+    }
+
+    public List<String> getAllColors() throws Exception {
+        return optionRepository.findAllColors();
+    }
+    
+    public List<Integer> getItemKeysByColor(String color) throws Exception {
+        return optionRepository.findItemKeysByColor(color);
+    }
 }
