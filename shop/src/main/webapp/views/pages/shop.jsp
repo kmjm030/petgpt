@@ -122,12 +122,70 @@
     width: 100%;
     margin-top: 15px;
   }
+  
+  .product__hover .like-button {
+    display: inline-block;
+    transition: all 0.3s ease;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .product__hover .like-button:hover {
+    transform: scale(1.2);
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .product__hover .like-button.liked {
+    background-color: #ff6b6b;
+  }
+  
+  .product__hover .like-button.liked .icon {
+    color: white;
+  }
+  
+  .product__hover .detail-button {
+    display: inline-block;
+    transition: all 0.3s ease;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .product__hover .detail-button:hover {
+    transform: scale(1.2);
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .product__hover .icon {
+    font-size: 18px;
+    color: #333;
+  }
+  
+  .like-overlay {
+    display: none;
+  }
+  
+  .product__item.liked .product__hover .like-button {
+    background-color: #ff6b6b;
+  }
 </style>
 
 <script>
   const shop = {
     init: () => {
       shop.filterDuplicateColors();
+      shop.initializeLikeButtons();
     },
     filterDuplicateColors: () => {
       const processedColors = {};
@@ -220,12 +278,147 @@
               alert('장바구니 추가 중 서버 통신 오류가 발생했습니다.');
           }
       });
+    },
+
+    initializeLikeButtons: () => {
+      document.querySelectorAll('.product__hover .like-button').forEach(button => {
+        const itemKey = button.getAttribute('data-item-key');
+        const productItem = button.closest('.product__item');
+        
+        if (shop.isLoggedIn) {
+          shop.checkLiked(itemKey, (isLiked) => {
+            if (isLiked) {
+              button.classList.add('liked');
+              productItem.classList.add('liked');
+            }
+          });
+        }
+        
+        button.addEventListener('click', function(e) {
+          e.preventDefault();
+          shop.toggleLike(itemKey, this);
+        });
+      });
+    },
+
+    toggleLike: (itemKey, button) => {
+      if (!shop.isLoggedIn) {
+        if (confirm('로그인이 필요한 서비스입니다. 로그인 페이지로 이동하시겠습니까?')) {
+          window.location.href = contextPath + '/login';
+        }
+        return;
+      }
+      
+      $.ajax({
+        url: contextPath + '/shop/like/toggle',
+        type: 'POST',
+        data: { itemKey: itemKey },
+        success: function(response) {
+          if (response.success) {
+            const productItem = button.closest('.product__item');
+            
+            if (response.action === 'added') {
+              button.classList.add('liked');
+              productItem.classList.add('liked');
+              shop.showToast('상품이 찜 목록에 추가되었습니다.');
+            } else {
+              button.classList.remove('liked');
+              productItem.classList.remove('liked');
+              shop.showToast('상품이 찜 목록에서 제거되었습니다.');
+            }
+          } else {
+            alert(response.message || '찜하기 처리 중 오류가 발생했습니다.');
+            if (response.redirectUrl) {
+              window.location.href = contextPath + response.redirectUrl;
+            }
+          }
+        },
+        error: function() {
+          alert('서버 통신 오류가 발생했습니다.');
+        }
+      });
+    },
+
+    checkLiked: (itemKey, callback) => {
+      $.ajax({
+        url: contextPath + '/shop/like/check',
+        type: 'GET',
+        data: { itemKey: itemKey },
+        success: function(response) {
+          if (response.success && response.isLiked) {
+            callback(true);
+          } else {
+            callback(false);
+          }
+        },
+        error: function() {
+          callback(false);
+        }
+      });
+    },
+
+    showToast: (message) => {
+      if (!document.getElementById('toast-container')) {
+        const toastContainer = document.createElement('div');
+        toastContainer.id = 'toast-container';
+        toastContainer.style.cssText = `
+          position: fixed;
+          bottom: 20px;
+          right: 20px;
+          z-index: 9999;
+        `;
+        document.body.appendChild(toastContainer);
+      }
+      
+      const toast = document.createElement('div');
+      toast.className = 'toast-message';
+      toast.innerHTML = message;
+      toast.style.cssText = `
+        background-color: rgba(0, 0, 0, 0.7);
+        color: white;
+        padding: 15px 25px;
+        margin-top: 10px;
+        border-radius: 4px;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      `;
+      
+      document.getElementById('toast-container').appendChild(toast);
+      
+      setTimeout(() => {
+        toast.style.opacity = '1';
+      }, 10);
+      
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => {
+          toast.remove();
+        }, 300);
+      }, 3000);
     }
-  }
+  };
+  
+  const contextPath = '${pageContext.request.contextPath}';
+  shop.isLoggedIn = ${isLoggedIn != null && isLoggedIn ? 'true' : 'false'};
+  shop.customerId = '${custId}';
+  
   $(function() {
     shop.init();
   });
 
+  function changeSortOrder(sortValue) {
+    const currentUrl = new URL(window.location.href);
+    const params = new URLSearchParams(currentUrl.search);
+    
+    params.set('sort', sortValue);
+    
+    if (currentUrl.pathname.includes('/shop/search') && !params.has('keyword') && "${keyword}" !== "") {
+      params.set('keyword', "${keyword}");
+    }
+    
+    currentUrl.search = params.toString();
+    window.location.href = currentUrl.toString();
+  }
 </script>
 
 <!-- Breadcrumb Section Begin -->
@@ -253,8 +446,8 @@
       <div class="col-lg-3">
         <div class="shop__sidebar">
           <div class="shop__sidebar__search">
-            <form action="#"> <%-- 실제 검색 처리 URL 필요 --%>
-              <input type="text" placeholder="Search...">
+            <form action="<c:url value='/shop/search'/>" method="GET">
+              <input type="text" name="keyword" placeholder="상품명 검색..." value="${keyword}">
               <button type="submit"><span class="icon_search"></span></button>
             </form>
           </div>
@@ -283,7 +476,7 @@
               </div>
               <div class="card">
                 <div class="card-heading">
-                  <a data-toggle="collapse" data-target="#collapseThree">Filter Price</a>
+                  <a data-toggle="collapse" data-target="#collapseThree">Price</a>
                 </div>
                 <div id="collapseThree" class="collapse show" data-parent="#accordionExample">
                   <div class="card-body">
@@ -437,57 +630,83 @@
             <div class="row">
               <div class="col-lg-6 col-md-6 col-sm-6">
                 <div class="shop__product__option__left">
-                  <p>Showing 1–12 of 126 results</p>
+                  <c:choose>
+                    <c:when test="${not empty keyword}">
+                      <p>"${keyword}" 검색 결과 ${resultCount}개의 상품</p>
+                    </c:when>
+                    <c:otherwise>
+                      <p>Showing 1–12 of 126 results</p>
+                    </c:otherwise>
+                  </c:choose>
                 </div>
               </div>
               <div class="col-lg-6 col-md-6 col-sm-6">
                 <div class="shop__product__option__right">
-                  <%-- 정렬 기능 구현 필요 --%>
                   <p>상품 정렬:</p>
-                  <select>
-                    <option value="">인기순</option>
-                    <option value="">최신 등록순</option>
+                  <select id="sortSelector" onchange="changeSortOrder(this.value)">
+                    <option value="default" ${selectedSort eq 'default' ? 'selected' : ''}>상품번호순</option>
+                    <option value="newest" ${selectedSort eq 'newest' ? 'selected' : ''}>최신순</option>
+                    <option value="oldest" ${selectedSort eq 'oldest' ? 'selected' : ''}>오래된순</option>
+                    <option value="price_high" ${selectedSort eq 'price_high' ? 'selected' : ''}>가격 높은순</option>
+                    <option value="price_low" ${selectedSort eq 'price_low' ? 'selected' : ''}>가격 낮은순</option>
                   </select>
                 </div>
               </div>
             </div>
           </div>
           <div class="row">
-              <c:forEach items="${itemList}" var="item">
-            <div class="col-lg-4 col-md-6 col-sm-6">
-            <div class="product__item">
-                <div class="product__item__pic set-bg" data-setbg="<c:url value='/img/product/${item.itemImg1}'/>">
-                  <ul class="product__hover">
-                    <li><a href="#"><img src="<c:url value='/img/icon/heart.png'/>" alt=""></a></li>
-                    <li><a href="<c:url value='/shop/details?itemKey=${item.itemKey}'/>"><img src="<c:url value='/img/icon/search.png'/>" alt=""></a></li>
-                  </ul>
+            <c:choose>
+              <c:when test="${empty itemList}">
+                <div class="col-lg-12 text-center my-5">
+                  <h4>검색 결과가 없습니다.</h4>
+                  <c:if test="${not empty keyword}">
+                    <p>"${keyword}"에 대한 상품을 찾을 수 없습니다.</p>
+                  </c:if>
+                  <a href="<c:url value='/shop'/>" class="primary-btn mt-3">모든 상품 보기</a>
                 </div>
-                <div class="product__item__text">
-                  <h6>${item.itemName}</h6>
-                  <a href="#" class="add-cart" onclick="shop.addToCart(${item.itemKey}); return false;">+ Add To Cart</a>
-                  <div class="rating">
-                    <i class="fa fa-star-o"></i>
-                    <i class="fa fa-star-o"></i>
-                    <i class="fa fa-star-o"></i>
-                    <i class="fa fa-star-o"></i>
-                    <i class="fa fa-star-o"></i>
+              </c:when>
+              <c:otherwise>
+                <c:forEach items="${itemList}" var="item">
+                  <div class="col-lg-4 col-md-6 col-sm-6">
+                    <div class="product__item">
+                      <div class="product__item__pic set-bg" data-setbg="<c:url value='/img/product/${item.itemImg1}'/>">
+                        <ul class="product__hover">
+                          <li><a href="#" class="like-button" data-item-key="${item.itemKey}">
+                            <i class="fa fa-heart icon"></i>
+                          </a></li>
+                          <li><a href="<c:url value='/shop/details?itemKey=${item.itemKey}'/>" class="detail-button">
+                            <i class="fa fa-search icon"></i>
+                          </a></li>
+                        </ul>
+                      </div>
+                      <div class="product__item__text">
+                        <h6>${item.itemName}</h6>
+                        <a href="#" class="add-cart" onclick="shop.addToCart(${item.itemKey}); return false;">+ Add To Cart</a>
+                        <div class="rating">
+                          <i class="fa fa-star-o"></i>
+                          <i class="fa fa-star-o"></i>
+                          <i class="fa fa-star-o"></i>
+                          <i class="fa fa-star-o"></i>
+                          <i class="fa fa-star-o"></i>
+                        </div>
+                        <h5>${item.itemPrice}원</h5>
+                        <!-- <div class="product__color__select">
+                          <label for="pc-4">
+                            <input type="radio" id="pc-4" name="color-product-2" value="color1">
+                          </label>
+                          <label class="active black" for="pc-5">
+                            <input type="radio" id="pc-5" name="color-product-2" value="black" checked>
+                          </label>
+                          <label class="grey" for="pc-6">
+                            <input type="radio" id="pc-6" name="color-product-2" value="grey">
+                          </label>
+                        </div> -->
+                      </div>
+                    </div>
                   </div>
-                  <h5>${item.itemPrice}원</h5>
-                  <div class="product__color__select">
-                    <label for="pc-4">
-                      <input type="radio" id="pc-4" name="color-product-2" value="color1">
-                    </label>
-                    <label class="active black" for="pc-5">
-                      <input type="radio" id="pc-5" name="color-product-2" value="black" checked>
-                    </label>
-                    <label class="grey" for="pc-6">
-                      <input type="radio" id="pc-6" name="color-product-2" value="grey">
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </div>
-              </c:forEach>
+                </c:forEach>
+              </c:otherwise>
+            </c:choose>
           </div>
           <div class="row">
             <div class="col-lg-12">

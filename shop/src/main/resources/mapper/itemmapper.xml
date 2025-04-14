@@ -27,6 +27,62 @@
         SELECT * FROM item 
         WHERE item_price >= #{minPrice}
     </select>
+    
+    <select id="selectWithOrder" resultType="item">
+        SELECT * FROM item
+        <if test="orderBy != null">
+            ORDER BY ${orderBy}
+        </if>
+    </select>
+    
+    <select id="findByCategoryWithOrder" resultType="item">
+        SELECT * FROM item 
+        WHERE category_key=#{categoryKey}
+        <if test="orderBy != null">
+            ORDER BY ${orderBy}
+        </if>
+    </select>
+    
+    <select id="findByItemKeysWithOrder" resultType="item">
+        SELECT * FROM item 
+        WHERE item_key IN 
+        <foreach item="itemKey" collection="itemKeys" open="(" separator="," close=")">
+            #{itemKey}
+        </foreach>
+        <if test="orderBy != null">
+            ORDER BY ${orderBy}
+        </if>
+    </select>
+    
+    <select id="findByPriceRangeWithOrder" resultType="item">
+        SELECT * FROM item 
+        WHERE item_price BETWEEN #{minPrice} AND #{maxPrice}
+        <if test="orderBy != null">
+            ORDER BY ${orderBy}
+        </if>
+    </select>
+    
+    <select id="findByPriceGreaterThanWithOrder" resultType="item">
+        SELECT * FROM item 
+        WHERE item_price >= #{minPrice}
+        <if test="orderBy != null">
+            ORDER BY ${orderBy}
+        </if>
+    </select>
+    
+    <select id="findByNameContaining" resultType="item">
+        SELECT * FROM item 
+        WHERE item_name LIKE CONCAT('%', #{keyword}, '%')
+    </select>
+    
+    <select id="findByNameContainingWithOrder" resultType="item">
+        SELECT * FROM item 
+        WHERE item_name LIKE CONCAT('%', #{keyword}, '%')
+        <if test="orderBy != null">
+            ORDER BY ${orderBy}
+        </if>
+    </select>
+    
     <insert id="insert" parameterType="item">
         INSERT INTO item VALUES (null, #{categoryKey}, #{itemName}, #{itemContent},
                                  #{itemPrice}, #{itemSprice}, #{itemCount}, now(),

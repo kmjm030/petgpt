@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Like {
     private int likeKey;
-    private int custKey;
+    private String custId;
     private int itemKey;
 }

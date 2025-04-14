@@ -15,12 +15,18 @@ public class ItemFilterCriteria {
     private String size;
     private String color;
     private String price;
+    private String sort;
+    
+    public SortType getSortType() {
+        return SortType.fromKey(sort);
+    }
     
     public boolean hasAnyFilter() {
         return categoryKey != null || 
                (size != null && !size.isEmpty()) || 
                (color != null && !color.isEmpty()) || 
-               (price != null && !price.isEmpty());
+               (price != null && !price.isEmpty()) ||
+               (sort != null && !sort.isEmpty());
     }
     
     public boolean hasSizeFilter() {
@@ -39,6 +45,10 @@ public class ItemFilterCriteria {
         return categoryKey != null;
     }
     
+    public boolean hasSortFilter() {
+        return sort != null && !sort.isEmpty();
+    }
+    
     public void addAttributesToModel(Model model) {
         if (hasSizeFilter()) {
             model.addAttribute("selectedSize", size);
@@ -51,6 +61,9 @@ public class ItemFilterCriteria {
         }
         if (hasCategoryFilter()) {
             model.addAttribute("selectedCategoryKey", categoryKey);
+        }
+        if (hasSortFilter()) {
+            model.addAttribute("selectedSort", sort);
         }
     }
 } 

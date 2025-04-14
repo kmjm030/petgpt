@@ -11,15 +11,15 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Customer {
-    private String custId;
-    private String custPwd;
-    private String custName;
-    private String custEmail;
-    private String custPhone;
-    private LocalDateTime custRdate;
-    private int custAuth;
-    private int custPoint;
-    private String custNick;
-    private int pointCharge;
-    private String pointReason;
+    private String custId;     
+    private String custPwd;   
+    private String custName;   
+    private String custEmail;  
+    private String custPhone;  
+    private LocalDateTime custRdate;  
+    private int custAuth;     
+    private int custPoint;     
+    private String custNick;   
+    private int pointCharge;   
+    private String pointReason;  
 }
