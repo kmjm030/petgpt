@@ -711,11 +711,46 @@
           <div class="row">
             <div class="col-lg-12">
               <div class="product__pagination">
-                <a class="active" href="#">1</a>
-                <a href="#">2</a>
-                <a href="#">3</a>
-                <span>...</span>
-                <a href="#">21</a>
+                <c:if test="${totalPages > 0}">
+                  <c:if test="${currentPage > 1}">
+                    <a href="<c:url value='/shop'>
+                      <c:param name='page' value='${currentPage - 1}'/>
+                      <c:if test='${not empty selectedCategoryKey}'><c:param name='categoryKey' value='${selectedCategoryKey}'/></c:if>
+                      <c:if test='${not empty selectedSize}'><c:param name='size' value='${selectedSize}'/></c:if>
+                      <c:if test='${not empty selectedColor}'><c:param name='color' value='${selectedColor}'/></c:if>
+                      <c:if test='${not empty param.price}'><c:param name='price' value='${param.price}'/></c:if>
+                      <c:if test='${not empty param.sort}'><c:param name='sort' value='${param.sort}'/></c:if>
+                    </c:url>">&laquo;</a>
+                  </c:if>
+                  
+                  <c:forEach begin="1" end="${totalPages}" var="pageNum">
+                    <c:if test="${pageNum == 1 || pageNum == totalPages || (pageNum >= currentPage - 2 && pageNum <= currentPage + 2)}">
+                      <a href="<c:url value='/shop'>
+                        <c:param name='page' value='${pageNum}'/>
+                        <c:if test='${not empty selectedCategoryKey}'><c:param name='categoryKey' value='${selectedCategoryKey}'/></c:if>
+                        <c:if test='${not empty selectedSize}'><c:param name='size' value='${selectedSize}'/></c:if>
+                        <c:if test='${not empty selectedColor}'><c:param name='color' value='${selectedColor}'/></c:if>
+                        <c:if test='${not empty param.price}'><c:param name='price' value='${param.price}'/></c:if>
+                        <c:if test='${not empty param.sort}'><c:param name='sort' value='${param.sort}'/></c:if>
+                      </c:url>" 
+                      class="${pageNum == currentPage ? 'active' : ''}">${pageNum}</a>
+                    </c:if>
+                    <c:if test="${pageNum == currentPage - 3 || pageNum == currentPage + 3}">
+                      <span>...</span>
+                    </c:if>
+                  </c:forEach>
+                  
+                  <c:if test="${currentPage < totalPages}">
+                    <a href="<c:url value='/shop'>
+                      <c:param name='page' value='${currentPage + 1}'/>
+                      <c:if test='${not empty selectedCategoryKey}'><c:param name='categoryKey' value='${selectedCategoryKey}'/></c:if>
+                      <c:if test='${not empty selectedSize}'><c:param name='size' value='${selectedSize}'/></c:if>
+                      <c:if test='${not empty selectedColor}'><c:param name='color' value='${selectedColor}'/></c:if>
+                      <c:if test='${not empty param.price}'><c:param name='price' value='${param.price}'/></c:if>
+                      <c:if test='${not empty param.sort}'><c:param name='sort' value='${param.sort}'/></c:if>
+                    </c:url>">&raquo;</a>
+                  </c:if>
+                </c:if>
               </div>
             </div>
           </div>

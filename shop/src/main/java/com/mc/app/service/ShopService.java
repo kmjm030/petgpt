@@ -51,6 +51,14 @@ public class ShopService {
         model.addAttribute("itemList", itemList);
     }
     
+    public int getTotalItemsCount(ItemFilterCriteria filterCriteria) throws Exception {
+        return itemService.getTotalItemsCount(filterCriteria);
+    }
+    
+    public List<Item> findItemsByFilterWithPagination(ItemFilterCriteria filterCriteria, int page, int itemsPerPage) throws Exception {
+        return itemService.findItemsByFilterWithPagination(filterCriteria, page, itemsPerPage);
+    }
+    
     public void searchItems(String keyword, String sortName, Model model) throws Exception {
         List<Item> searchResults;
         SortType sortType = null;
