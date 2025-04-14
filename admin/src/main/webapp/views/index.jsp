@@ -108,7 +108,7 @@
                     <span>Web Socket</span></a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="<c:url value="/chat" />">
+                <a class="nav-link" href="<c:url value="/ws" />">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>chat</span></a>
             </li>
