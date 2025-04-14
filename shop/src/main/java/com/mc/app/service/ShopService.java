@@ -4,6 +4,7 @@ import com.mc.app.dto.Category;
 import com.mc.app.dto.Item;
 import com.mc.app.dto.ItemFilterCriteria;
 import com.mc.app.dto.Option;
+import com.mc.app.dto.SortType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -48,5 +49,29 @@ public class ShopService {
         
         List<Item> itemList = itemService.findItemsByFilter(filterCriteria);
         model.addAttribute("itemList", itemList);
+    }
+    
+    public void searchItems(String keyword, String sortName, Model model) throws Exception {
+        List<Item> searchResults;
+        SortType sortType = null;
+        
+        if (sortName != null && !sortName.isEmpty()) {
+            try {
+                sortType = SortType.valueOf(sortName);
+                model.addAttribute("selectedSort", sortName);
+            } catch (IllegalArgumentException e) {
+                // 유효하지 않은 정렬 타입이라면 기본값 사용
+            }
+        }
+        
+        if (sortType != null && sortType != SortType.DEFAULT) {
+            searchResults = itemService.findByNameContainingWithSort(keyword, sortType);
+        } else {
+            searchResults = itemService.findByNameContaining(keyword);
+        }
+        
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("itemList", searchResults);
+        model.addAttribute("resultCount", searchResults.size());
     }
 } 

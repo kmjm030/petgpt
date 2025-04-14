@@ -163,4 +163,37 @@ public class ShopController {
         
         return ResponseEntity.ok(response);
     }
+    
+    @GetMapping("/search")
+    public String search(
+            @RequestParam(name = "keyword", required = false) String keyword,
+            @RequestParam(name = "sort", required = false) String sort,
+            Model model, 
+            HttpSession session) {
+        
+        model.addAttribute("currentPage", "shop");
+        model.addAttribute("pageTitle", "검색 결과: " + (keyword != null ? keyword : ""));
+
+        try {
+            Customer customer = (Customer) session.getAttribute("cust");
+            if (customer != null) {
+                model.addAttribute("isLoggedIn", true);
+                model.addAttribute("custId", customer.getCustId());
+            } else {
+                model.addAttribute("isLoggedIn", false);
+            }
+            
+            shopService.addFilterOptionsToModel(model);
+            addSortOptionsToModel(model, sort);
+            shopService.searchItems(keyword, sort, model);
+            
+        } catch (Exception e) {
+            log.error("검색 중 오류 발생: {}", e.getMessage());
+            model.addAttribute("itemList", new ArrayList<>());
+            model.addAttribute("error", "검색 중 오류가 발생했습니다.");
+        }
+
+        model.addAttribute("centerPage", "pages/shop.jsp");
+        return "index";
+    }
 }

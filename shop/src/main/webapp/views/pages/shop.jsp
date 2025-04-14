@@ -407,13 +407,13 @@
   });
 
   function changeSortOrder(sortValue) {
-    let currentUrl = new URL(window.location.href);
-    let params = new URLSearchParams(currentUrl.search);
+    const currentUrl = new URL(window.location.href);
+    const params = new URLSearchParams(currentUrl.search);
     
-    if (sortValue && sortValue !== 'default') {
-      params.set('sort', sortValue);
-    } else {
-      params.delete('sort');
+    params.set('sort', sortValue);
+    
+    if (currentUrl.pathname.includes('/shop/search') && !params.has('keyword') && "${keyword}" !== "") {
+      params.set('keyword', "${keyword}");
     }
     
     currentUrl.search = params.toString();
@@ -446,8 +446,8 @@
       <div class="col-lg-3">
         <div class="shop__sidebar">
           <div class="shop__sidebar__search">
-            <form action="#"> <%-- 실제 검색 처리 URL 필요 --%>
-              <input type="text" placeholder="Search...">
+            <form action="<c:url value='/shop/search'/>" method="GET">
+              <input type="text" name="keyword" placeholder="상품명 검색..." value="${keyword}">
               <button type="submit"><span class="icon_search"></span></button>
             </form>
           </div>
@@ -630,7 +630,14 @@
             <div class="row">
               <div class="col-lg-6 col-md-6 col-sm-6">
                 <div class="shop__product__option__left">
-                  <p>Showing 1–12 of 126 results</p>
+                  <c:choose>
+                    <c:when test="${not empty keyword}">
+                      <p>"${keyword}" 검색 결과 ${resultCount}개의 상품</p>
+                    </c:when>
+                    <c:otherwise>
+                      <p>Showing 1–12 of 126 results</p>
+                    </c:otherwise>
+                  </c:choose>
                 </div>
               </div>
               <div class="col-lg-6 col-md-6 col-sm-6">
@@ -648,45 +655,58 @@
             </div>
           </div>
           <div class="row">
-              <c:forEach items="${itemList}" var="item">
-            <div class="col-lg-4 col-md-6 col-sm-6">
-            <div class="product__item">
-                <div class="product__item__pic set-bg" data-setbg="<c:url value='/img/product/${item.itemImg1}'/>">
-                  <ul class="product__hover">
-                    <li><a href="#" class="like-button" data-item-key="${item.itemKey}">
-                      <i class="fa fa-heart icon"></i>
-                    </a></li>
-                    <li><a href="<c:url value='/shop/details?itemKey=${item.itemKey}'/>" class="detail-button">
-                      <i class="fa fa-search icon"></i>
-                    </a></li>
-                  </ul>
+            <c:choose>
+              <c:when test="${empty itemList}">
+                <div class="col-lg-12 text-center my-5">
+                  <h4>검색 결과가 없습니다.</h4>
+                  <c:if test="${not empty keyword}">
+                    <p>"${keyword}"에 대한 상품을 찾을 수 없습니다.</p>
+                  </c:if>
+                  <a href="<c:url value='/shop'/>" class="primary-btn mt-3">모든 상품 보기</a>
                 </div>
-                <div class="product__item__text">
-                  <h6>${item.itemName}</h6>
-                  <a href="#" class="add-cart" onclick="shop.addToCart(${item.itemKey}); return false;">+ Add To Cart</a>
-                  <div class="rating">
-                    <i class="fa fa-star-o"></i>
-                    <i class="fa fa-star-o"></i>
-                    <i class="fa fa-star-o"></i>
-                    <i class="fa fa-star-o"></i>
-                    <i class="fa fa-star-o"></i>
+              </c:when>
+              <c:otherwise>
+                <c:forEach items="${itemList}" var="item">
+                  <div class="col-lg-4 col-md-6 col-sm-6">
+                    <div class="product__item">
+                      <div class="product__item__pic set-bg" data-setbg="<c:url value='/img/product/${item.itemImg1}'/>">
+                        <ul class="product__hover">
+                          <li><a href="#" class="like-button" data-item-key="${item.itemKey}">
+                            <i class="fa fa-heart icon"></i>
+                          </a></li>
+                          <li><a href="<c:url value='/shop/details?itemKey=${item.itemKey}'/>" class="detail-button">
+                            <i class="fa fa-search icon"></i>
+                          </a></li>
+                        </ul>
+                      </div>
+                      <div class="product__item__text">
+                        <h6>${item.itemName}</h6>
+                        <a href="#" class="add-cart" onclick="shop.addToCart(${item.itemKey}); return false;">+ Add To Cart</a>
+                        <div class="rating">
+                          <i class="fa fa-star-o"></i>
+                          <i class="fa fa-star-o"></i>
+                          <i class="fa fa-star-o"></i>
+                          <i class="fa fa-star-o"></i>
+                          <i class="fa fa-star-o"></i>
+                        </div>
+                        <h5>${item.itemPrice}원</h5>
+                        <div class="product__color__select">
+                          <label for="pc-4">
+                            <input type="radio" id="pc-4" name="color-product-2" value="color1">
+                          </label>
+                          <label class="active black" for="pc-5">
+                            <input type="radio" id="pc-5" name="color-product-2" value="black" checked>
+                          </label>
+                          <label class="grey" for="pc-6">
+                            <input type="radio" id="pc-6" name="color-product-2" value="grey">
+                          </label>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <h5>${item.itemPrice}원</h5>
-                  <div class="product__color__select">
-                    <label for="pc-4">
-                      <input type="radio" id="pc-4" name="color-product-2" value="color1">
-                    </label>
-                    <label class="active black" for="pc-5">
-                      <input type="radio" id="pc-5" name="color-product-2" value="black" checked>
-                    </label>
-                    <label class="grey" for="pc-6">
-                      <input type="radio" id="pc-6" name="color-product-2" value="grey">
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </div>
-              </c:forEach>
+                </c:forEach>
+              </c:otherwise>
+            </c:choose>
           </div>
           <div class="row">
             <div class="col-lg-12">

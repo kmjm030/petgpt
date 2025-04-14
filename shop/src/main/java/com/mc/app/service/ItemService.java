@@ -242,4 +242,23 @@ public class ItemService implements MCService<Item, Integer> {
 
         return null;
     }
+
+    public List<Item> findByNameContaining(String keyword) throws Exception {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return get();
+        }
+        return itemRepository.findByNameContaining(keyword);
+    }
+    
+    public List<Item> findByNameContainingWithSort(String keyword, SortType sortType) throws Exception {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return getWithSort(sortType);
+        }
+        
+        if (sortType == null || sortType == SortType.DEFAULT) {
+            return findByNameContaining(keyword);
+        }
+        
+        return itemRepository.findByNameContainingWithOrder(keyword, sortType.getSqlOrderBy());
+    }
 }

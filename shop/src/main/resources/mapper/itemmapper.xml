@@ -70,6 +70,19 @@
         </if>
     </select>
     
+    <select id="findByNameContaining" resultType="item">
+        SELECT * FROM item 
+        WHERE item_name LIKE CONCAT('%', #{keyword}, '%')
+    </select>
+    
+    <select id="findByNameContainingWithOrder" resultType="item">
+        SELECT * FROM item 
+        WHERE item_name LIKE CONCAT('%', #{keyword}, '%')
+        <if test="orderBy != null">
+            ORDER BY ${orderBy}
+        </if>
+    </select>
+    
     <insert id="insert" parameterType="item">
         INSERT INTO item VALUES (null, #{categoryKey}, #{itemName}, #{itemContent},
                                  #{itemPrice}, #{itemSprice}, #{itemCount}, now(),
