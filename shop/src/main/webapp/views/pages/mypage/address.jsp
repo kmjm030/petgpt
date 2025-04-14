@@ -10,6 +10,24 @@
     }
 </style>
 
+<script>
+    const address = {
+        init:function(){
+
+        },
+        del:function(addrKey){
+            console.log("Deleting address with addrKey: " + addrKey);
+            let c = confirm('배송지를 삭제 하시겠습니까 ?');
+            if(c == true){
+                location.href='<c:url value="/address/delimpl?addrKey='+addrKey+'"/>';
+            }
+        }
+    }
+    $(function(){
+        address.init();
+    });
+</script>
+
 <!-- Breadcrumb Section Begin -->
 <section class="breadcrumb-option">
     <div class="container">
@@ -48,7 +66,7 @@
                                             <ul class="nice-scroll">
                                                 <li><a href="<c:url value='/mypage?id=${cust.custId}'/>">회원정보</a></li>
                                                 <li><a href="<c:url value='#'/>">주문내역</a></li>
-                                                <li><a href="<c:url value='/mypage/address?id=${cust.custId}'/>"><strong id="category">배송지 목록</strong></a></li>
+                                                <li><a href="<c:url value='/address?id=${cust.custId}'/>"><strong id="category">배송지 목록</strong></a></li>
                                                 <li><a href="<c:url value='#'/>">찜 목록</a></li>
                                                 <li><a href="<c:url value='#'/>">보유 쿠폰</a></li>
                                                 <li><a href="<c:url value='#'/>">1:1문의</a></li>
@@ -85,18 +103,24 @@
                             <td>${c.addrAddress}</td>
                             <td>${c.addrDetail}</td>
                             <td>
-                                <button id="addr_mod_btn" onclick="cart.mod(${c.addrKey})">수정</button>
+                                <button id="addr_mod_btn" onclick="location.href='<c:url value='/address/mod?addrKey='/>${c.addrKey}'">수정</button>
                             </td>
-                            <td class="cart__close">
-                                <i class="fa fa-close"></i>
+                            <td>
+                                <button id="addr_del_btn" onclick="address.del(${c.addrKey})">삭제</button>
                             </td>
+<%--                            <td class="cart__close">--%>
+<%--                                <i class="fa fa-close"></i>--%>
+<%--                            </td>--%>
                         </tr>
                     </c:forEach>
                     </tbody>
                 </table>
                 <br/><br/>
                 <div class="checkout__order">
-                    <button class="site-btn" id="addr_add_btn">주소 추가하기</button>
+                    <button class="site-btn" id="addr_add_btn"
+                            onclick="location.href='<c:url value='/address/add'/>'">
+                        주소 추가하기
+                    </button>
                 </div>
             </div>
         </div>

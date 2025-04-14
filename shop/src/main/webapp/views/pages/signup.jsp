@@ -75,13 +75,14 @@
         $('#email').focus();
         return;
       }
-      if(address == '' || email == null){
+      if(address == '' || address == null){
         $('#msg').text('기본 배송지를 입력하세요');
         $('#sample6_detailAddress').focus();
         return;
       }
       let c = confirm('회원가입 하시겠습니까?');
       if (c == true) {
+
         this.send();
       }
     },

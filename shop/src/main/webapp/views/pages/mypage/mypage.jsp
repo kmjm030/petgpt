@@ -197,7 +197,7 @@
           <div class="row">
             <div class="form-group col-md-6">
               <div class="checkout__input">
-                <label for="email">포인트</label>
+                <label for="point">포인트</label>
                 <input type="number" value="${cust.custPoint}" id="point" name="custPoint" readonly>
               </div>
             </div>
