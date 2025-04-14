@@ -82,13 +82,17 @@
   .option-info {
       margin-top: 10px;
       padding: 10px;
-      background-color: #f9f9f9;
-      border: 1px solid #eee;
-      border-radius: 4px;
-      font-size: 14px;
-      min-height: 40px; 
-  }
-  .option-info .price-change {
+       background-color: #f9f9f9;
+       border: 1px solid #eee;
+       border-radius: 4px;
+       font-size: 14px;
+       min-height: 50px; 
+       padding: 15px; 
+       display: flex; 
+       align-items: center; 
+       justify-content: center; 
+   }
+   .option-info .price-change {
       font-weight: bold;
       color: #ca1515;
       margin-right: 15px;
@@ -149,23 +153,29 @@
 
         if (selectedSize && selectedColor) {
             
-            const selectedOption = allOptionsData.find(opt => opt.size === selectedSize && opt.color === selectedColor);
-
-            if (selectedOption) {
+             const selectedOption = allOptionsData.find(opt => opt.size === selectedSize && opt.color === selectedColor);
+             console.log("Selected Option Data:", selectedOption); 
+ 
+             if (selectedOption) {
                 currentSelectedOptionKey = selectedOption.optionKey; 
                 let infoHtml = '';
 
                 if (selectedOption.additionalPrice && selectedOption.additionalPrice > 0) {
                     infoHtml += `<span class="price-change">(+${selectedOption.additionalPrice.toLocaleString()}원)</span>`;
-                }
+                 }
+                  if (selectedOption.stock > 0) {
+                      
+                      const stockMessage = '<span class="stock-status in-stock">구매 가능 (재고: ' + selectedOption.stock + '개)</span>';
+                      infoHtml += stockMessage;
+                      console.log("Constructed infoHtml with stock:", infoHtml);
+                      addToCartBtn.removeClass('disabled').prop('disabled', false);
+ 
+                   } else {
+                      infoHtml += `<span class="stock-status out-of-stock">품절</span>`;
+                      console.log("Constructed infoHtml (out of stock):", infoHtml);
+                  }
 
-                if (selectedOption.stock > 0) {
-                    infoHtml += `<span class="stock-status in-stock">구매 가능</span>`;
-                    addToCartBtn.removeClass('disabled').prop('disabled', false); 
-                } else {
-                    infoHtml += `<span class="stock-status out-of-stock">품절</span>`;
-                }
-                optionInfoDiv.html(infoHtml);
+                  optionInfoDiv.html(infoHtml); 
 
             } else {
                 optionInfoDiv.html('<span class="stock-status out-of-stock">선택 불가능한 조합</span>');
