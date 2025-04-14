@@ -97,7 +97,7 @@
                                                 <li><a href="<c:url value='/mypage?id=${cust.custId}'/>">회원정보</a></li>
                                                 <li><a href="<c:url value='#'/>">주문내역</a></li>
                                                 <li><a href="<c:url value='/address?id=${cust.custId}'/>"><strong id="category">배송지 목록</strong></a></li>
-                                                <li><a href="<c:url value='#'/>">찜 목록</a></li>
+                                                <li><a href="<c:url value='/mypage/like?id=${cust.custId}'/>">찜 목록</a></li>
                                                 <li><a href="<c:url value='#'/>">보유 쿠폰</a></li>
                                                 <li><a href="<c:url value='#'/>">1:1문의</a></li>
                                                 <li><a href="<c:url value='#'/>">내가 작성한 리뷰</a></li>
