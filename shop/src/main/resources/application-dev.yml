@@ -8,7 +8,13 @@ server:
 
 # 2. Spring Config
 spring:
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 15MB
   mvc:
+    static-path-pattern: /uploads/**  
     view:
       prefix: /views/
       suffix: .jsp
@@ -16,6 +22,9 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/petgpt?characterEncoding=utf8
     username: root
     password: 1234
+  web:
+    resources:
+      static-locations: file:///C:/petshop/uploads/
 
 # 3. Mybatis
 mybatis:
@@ -34,4 +43,10 @@ app:
   key:
     algo: PBEWithMD5AndDES  # Twoway
     skey: mykey             # Twoway
-  dir:
+
+# 이미지 업로드 디렉토리 및 URL prefix 설정
+file:
+  upload:
+    directory: C:/petshop/uploads/images
+    url:
+      prefix: /uploads/images

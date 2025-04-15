@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mc.app.repository.CommunityBoardRepository">
+
+    <resultMap id="communityBoardResultMap" type="com.mc.app.dto.CommunityBoard">
+        <id property="boardKey" column="board_key" />
+        <result property="customerId" column="cust_id" />
+        <result property="itemKey" column="item_key" />
+        <result property="category" column="category" />
+        <result property="boardTitle" column="board_title" />
+        <result property="boardContent" column="board_content" />
+        <result property="boardImg" column="board_img" />
+        <result property="regDate" column="reg_date" />
+        <result property="updateDate" column="update_date" />
+        <result property="viewCount" column="view_count" />
+        <result property="likeCount" column="like_count" />
+        <result property="commentCount" column="comment_count" />
+    </resultMap>
+
+    <insert id="insertBoard" parameterType="com.mc.app.dto.CommunityBoard" useGeneratedKeys="true" keyProperty="boardKey">
+        INSERT INTO communityboard (
+            cust_id, 
+            item_key, 
+            category, 
+            board_title, 
+            board_content, 
+            board_img, 
+            reg_date, 
+            update_date, 
+            view_count, 
+            like_count, 
+            comment_count
+        ) VALUES (
+            #{customerId}, 
+            #{itemKey}, 
+            #{category}, 
+            #{boardTitle}, 
+            #{boardContent}, 
+            #{boardImg}, 
+            #{regDate}, 
+            #{updateDate}, 
+            #{viewCount}, 
+            #{likeCount}, 
+            #{commentCount}
+        )
+    </insert>
+    
+    <update id="updateBoard" parameterType="com.mc.app.dto.CommunityBoard">
+        UPDATE communityboard
+        SET 
+            board_title = #{boardTitle}, 
+            board_content = #{boardContent}, 
+            category = #{category}, 
+            board_img = #{boardImg}, 
+            update_date = #{updateDate}
+        WHERE board_key = #{boardKey}
+    </update>
+    
+    <delete id="deleteBoard" parameterType="int">
+        DELETE FROM communityboard
+        WHERE board_key = #{boardKey}
+    </delete>
+    
+    <select id="selectBoardByKey" parameterType="int" resultMap="communityBoardResultMap">
+        SELECT *
+        FROM communityboard
+        WHERE board_key = #{boardKey}
+    </select>
+    
+    <select id="selectBoardList" resultMap="communityBoardResultMap">
+        SELECT *
+        FROM communityboard
+        <where>
+            <if test="category != null and category != ''">
+                category = #{category}
+            </if>
+        </where>
+        <choose>
+            <when test="sort == 'views'">
+                ORDER BY view_count DESC
+            </when>
+            <when test="sort == 'likes'">
+                ORDER BY like_count DESC
+            </when>
+            <when test="sort == 'comments'">
+                ORDER BY comment_count DESC
+            </when>
+            <when test="sort == 'oldest'">
+                ORDER BY reg_date ASC
+            </when>
+            <otherwise>
+                ORDER BY reg_date DESC
+            </otherwise>
+        </choose>
+        LIMIT #{offset}, #{limit}
+    </select>
+    
+    <select id="searchBoards" resultMap="communityBoardResultMap">
+        SELECT *
+        FROM communityboard
+        WHERE 
+            board_title LIKE CONCAT('%', #{keyword}, '%')
+            OR board_content LIKE CONCAT('%', #{keyword}, '%')
+        <choose>
+            <when test="sort == 'views'">
+                ORDER BY view_count DESC
+            </when>
+            <when test="sort == 'likes'">
+                ORDER BY like_count DESC
+            </when>
+            <when test="sort == 'comments'">
+                ORDER BY comment_count DESC
+            </when>
+            <when test="sort == 'oldest'">
+                ORDER BY reg_date ASC
+            </when>
+            <otherwise>
+                ORDER BY reg_date DESC
+            </otherwise>
+        </choose>
+        LIMIT #{offset}, #{limit}
+    </select>
+    
+    <select id="countBoardsByCategory" resultType="int">
+        SELECT COUNT(*)
+        FROM communityboard
+        <where>
+            <if test="category != null and category != ''">
+                category = #{category}
+            </if>
+        </where>
+    </select>
+    
+    <select id="countBoardsByKeyword" resultType="int">
+        SELECT COUNT(*)
+        FROM communityboard
+        WHERE 
+            board_title LIKE CONCAT('%', #{keyword}, '%')
+            OR board_content LIKE CONCAT('%', #{keyword}, '%')
+    </select>
+    
+    <update id="increaseViewCount" parameterType="int">
+        UPDATE communityboard
+        SET view_count = view_count + 1
+        WHERE board_key = #{boardKey}
+    </update>
+    
+    <update id="increaseLikeCount" parameterType="int">
+        UPDATE communityboard
+        SET like_count = like_count + 1
+        WHERE board_key = #{boardKey}
+    </update>
+    
+    <update id="decreaseLikeCount" parameterType="int">
+        UPDATE communityboard
+        SET like_count = GREATEST(0, like_count - 1)
+        WHERE board_key = #{boardKey}
+    </update>
+    
+    <update id="increaseCommentCount" parameterType="int">
+        UPDATE communityboard
+        SET comment_count = comment_count + 1
+        WHERE board_key = #{boardKey}
+    </update>
+    
+    <update id="decreaseCommentCount" parameterType="int">
+        UPDATE communityboard
+        SET comment_count = GREATEST(0, comment_count - 1)
+        WHERE board_key = #{boardKey}
+    </update>
+</mapper> 

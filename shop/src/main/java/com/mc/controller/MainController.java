@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
@@ -127,7 +128,7 @@ public class MainController {
         return "index";
     }
     
-    @GetMapping("/community/search")
+    @GetMapping("/community/view/search")
     public String communitySearch(
             @RequestParam(name = "keyword", required = false) String keyword,
             @RequestParam(name = "page", defaultValue = "1") int page,
@@ -150,6 +151,23 @@ public class MainController {
         
         model.addAttribute("centerPage", "pages/community.jsp");
         return "index";
+    }
+    
+    @GetMapping("/community/write")
+    public String communityWrite(Model model) {
+        model.addAttribute("currentPage", "community");
+        model.addAttribute("pageTitle", "게시글 작성");
+        model.addAttribute("centerPage", "pages/community_write.jsp");
+        return "index";
+    }
+    
+    @PostMapping("/community/write/submit")
+    public String communityWriteSubmit(
+            @RequestParam("title") String title,
+            @RequestParam("content") String content) {
+        // TODO: 게시글 저장 로직 구현
+        
+        return "redirect:/community";
     }
 
 //    @GetMapping("/contact")
