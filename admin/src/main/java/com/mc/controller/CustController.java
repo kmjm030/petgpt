@@ -30,9 +30,8 @@ public class CustController {
         List<Customer> list = null;
         try {
             list = custService.get();
-//            list.forEach(cust -> cust.setCustName(standardPBEStringEncryptor.decrypt(cust.getCustName())));
-            model.addAttribute("custs",list);
-            model.addAttribute("center",dir+"get");
+            model.addAttribute("custs", list);
+            model.addAttribute("center", dir + "get");
         } catch (Exception e) {
             throw new Exception("ER0001");
         }
@@ -40,57 +39,62 @@ public class CustController {
     }
 
     @RequestMapping("/add")
-    public String add(Model model){
-        model.addAttribute("center",dir+"add");
+    public String add(Model model) {
+        model.addAttribute("center", dir + "add");
         return "index";
     }
 
     @RequestMapping("/detail")
-    public String detail(Model model,@RequestParam("id") String id){
+    public String detail(Model model, @RequestParam("id") String id) {
         Customer cust = null;
         try {
             cust = custService.get(id);
-//          cust.setCustName(standardPBEStringEncryptor.decrypt(cust.getCustName()));
             model.addAttribute("cust", cust);
-            model.addAttribute("center",dir+"detail");
-            model.addAttribute("result","수정완료");
+            model.addAttribute("center", dir + "detail");
+            model.addAttribute("result", "수정완료");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
         return "index";
     }
+
     @RequestMapping("/update")
-    public String update(Model model,Customer cust){
+    public String update(Model model, Customer cust) {
         try {
-//            cust.setCustName(standardPBEStringEncryptor.encrypt(cust.getCustName()));
             custService.mod(cust);
-            model.addAttribute("cust",cust);
-            return "redirect:/cust/detail?id="+cust.getCustId();
+            model.addAttribute("cust", cust);
+            return "redirect:/cust/detail?id=" + cust.getCustId();
         } catch (Exception e) {
-            log.info("ERROR=============================={}",e.getMessage());
+            log.info("ERROR=============================={}", e.getMessage());
             throw new RuntimeException(e);
         }
     }
-    @RequestMapping("/addimpl")
-    public String addimpl(Model model,Customer cust) throws Exception {
-//        cust.setCustPwd(bCryptPasswordEncoder.encode(cust.getCustPwd()));
-//        cust.setCustName(standardPBEStringEncryptor.encrypt(cust.getCustName()));
-        custService.add(cust);
-        return "redirect:/cust/detail?id="+cust.getCustId();
 
+    @RequestMapping("/addimpl")
+    public String addimpl(Model model, Customer cust) throws Exception {
+        custService.add(cust);
+        return "redirect:/cust/detail?id=" + cust.getCustId();
     }
+
     @RequestMapping("/delete")
-    public String delete(Model model,@RequestParam("id") String id){
-//        log.info("ID=============================={}", id);
+    public String delete(Model model, @RequestParam("id") String id) {
         try {
             custService.del(id);
-//            log.info("OK==============================");
             return "redirect:/cust/get";
         } catch (Exception e) {
-//            log.info("ERROR=============================={}",e.getMessage());
             throw new RuntimeException(e);
         }
     }
 
-
+    @RequestMapping("/")
+    public String main(Model model) {
+        try {
+            int custCount = custService.getCount();
+            model.addAttribute("custCount", custCount);  // 회원 수 전달
+        } catch (Exception e) {
+            model.addAttribute("custCount", 0);
+        }
+        model.addAttribute("center", "center");
+        return "index";
+    }
 }
