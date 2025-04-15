@@ -117,7 +117,7 @@
                         <li><a href="<c:url value="/petboard"/>">펫자랑</a></li>
                         <li><a href="<c:url value="/qboard"/>">고객지원</a>
                             <ul class="dropdown">
-                                <li><a href="#">1:1 문의하기</a></li>
+                                <li><a href="<c:url value="/qnaboard/add?id=${sessionScope.cust.custId}"/>">1:1 문의하기</a></li>
                                 <li><a href="<c:url value="/about"/>">about us</a></li>
                             </ul>
                         </li>
