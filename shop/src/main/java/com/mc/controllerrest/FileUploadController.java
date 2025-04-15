@@ -48,8 +48,15 @@ public class FileUploadController {
                 directory.mkdirs();
             }
 
-            // 확장자 추출
-            String originalFilename = StringUtils.cleanPath(file.getOriginalFilename());
+            // 원본 파일명 가져오기 및 null 체크
+            String rawOriginalFilename = file.getOriginalFilename();
+            if (rawOriginalFilename == null) {
+                response.put("error", "파일 이름이 유효하지 않습니다.");
+                return ResponseEntity.badRequest().body(response);
+            }
+
+            // 경로 정리 및 확장자 추출
+            String originalFilename = StringUtils.cleanPath(rawOriginalFilename);
             String extension = "";
             if (originalFilename.contains(".")) {
                 extension = originalFilename.substring(originalFilename.lastIndexOf("."));
@@ -83,4 +90,4 @@ public class FileUploadController {
             return ResponseEntity.internalServerError().body(response);
         }
     }
-} 
+}

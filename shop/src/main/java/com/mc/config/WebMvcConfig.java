@@ -2,6 +2,7 @@ package com.mc.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.lang.NonNull; 
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -17,7 +18,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     private String uploadUrlPrefix;
 
     @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+    public void addResourceHandlers(@NonNull ResourceHandlerRegistry registry) { 
         // 업로드 디렉토리 경로의 마지막에 슬래시 추가 확인
         String uploadDir = uploadDirectory;
         if (!uploadDir.endsWith(File.separator)) {
@@ -69,4 +70,4 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/community/vendor/**")
                 .addResourceLocations("classpath:/static/vendor/");
     }
-} 
+}

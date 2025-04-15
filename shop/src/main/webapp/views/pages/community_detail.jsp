@@ -107,7 +107,7 @@
                         
                         <c:if test="${not empty sessionScope.cust && sessionScope.cust.custId eq board.custId}">
                             <a href="<c:url value='/community/edit?id=${board.boardKey}'/>" class="site-btn">수정</a>
-                            <a href="#" onclick="deletePost(${board.boardKey}); return false;" class="site-btn">삭제</a>
+                            <a href="#" data-board-key="${board.boardKey}" onclick="deletePost(this); return false;" class="site-btn">삭제</a>
                         </c:if>
                     </div>
                 </c:when>
@@ -124,7 +124,8 @@
 <!-- Community Detail Section End -->
 
 <script>
-function deletePost(boardKey) {
+function deletePost(element) {
+    const boardKey = element.dataset.boardKey;
     if (confirm('정말로 이 게시글을 삭제하시겠습니까?')) {
         // TODO: 삭제 처리를 위한 AJAX 요청 또는 폼 제출 로직 구현 필요
         alert('삭제 기능은 아직 구현되지 않았습니다. ID: ' + boardKey);

@@ -25,9 +25,9 @@ public class CommunityBoard {
     private LocalDateTime regDate;
     private LocalDateTime updateDate;
     
-    private Integer viewCount = 0;
-    private Integer likeCount = 0;
-    private Integer commentCount = 0;
+    private Integer viewCount;
+    private Integer likeCount;
+    private Integer commentCount;
 
     // JSON 직렬화를 위한 추가 getter 메서드
     @JsonProperty("postId")

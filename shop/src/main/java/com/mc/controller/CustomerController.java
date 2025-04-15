@@ -1,10 +1,8 @@
 package com.mc.controller;
 
-import com.mc.app.dto.Coupon;
 import com.mc.app.dto.Customer;
 import com.mc.app.dto.Item;
 import com.mc.app.dto.Like;
-import com.mc.app.service.CouponService;
 import com.mc.app.service.CustomerService;
 import com.mc.app.service.ItemService;
 import com.mc.app.service.LikeService;
@@ -62,10 +60,14 @@ public class CustomerController {
 
         // 현재 비밀번호 확인
         Customer dbCust = custService.get(cust.getCustId());
-        if (dbCust == null || !dbCust.getCustPwd().equals(cust.getCustPwd())) {
+        if (dbCust == null) {
+            model.addAttribute("msg", "사용자 정보를 찾을 수 없습니다.");
+            model.addAttribute("cust", cust);
+            return "redirect:/mypage?id=" + cust.getCustId(); // 사용자 정보 없음
+        } else if (!dbCust.getCustPwd().equals(cust.getCustPwd())) {
             model.addAttribute("msg", "현재 비밀번호가 일치하지 않습니다.");
-            model.addAttribute("cust", cust);;
-            return "redirect:/mypage?id=" + dbCust.getCustId(); // 비밀번호 불일치 시 에러 메시지 출력
+            model.addAttribute("cust", cust);
+            return "redirect:/mypage?id=" + cust.getCustId(); // 비밀번호 불일치 시 에러 메시지 출력
         }
 
         if (newPwd != null && !newPwd.trim().isEmpty()) {

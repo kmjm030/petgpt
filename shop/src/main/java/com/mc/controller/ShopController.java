@@ -4,8 +4,6 @@ import com.mc.app.dto.Customer;
 import com.mc.app.dto.*;
 import com.mc.app.service.LikeService;
 import com.fasterxml.jackson.databind.ObjectMapper; 
-import com.mc.app.dto.*;
-import com.mc.app.service.LikeService;
 import com.mc.app.service.OptionService;
 import com.mc.app.service.ShopService;
 import jakarta.servlet.http.HttpSession;
