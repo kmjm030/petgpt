@@ -79,28 +79,28 @@
     <div class="col-lg-3 col-md-6 mb-4">
       <div class="dashboard-card h-100">
         <div class="card-title">총 사용자 수</div>
-        <div class="card-value">${custCount}명</div>
+        <div class="card-value">${custCount} 명</div>
       </div>
     </div>
 
     <div class="col-lg-3 col-md-6 mb-4">
       <div class="dashboard-card h-100">
         <div class="card-title">총 상품 수</div>
-        <div class="card-value">${itemCount}개</div>
+        <div class="card-value">${itemCount} 개</div>
       </div>
     </div>
 
     <div class="col-lg-3 col-md-6 mb-4">
       <div class="dashboard-card h-100">
         <div class="card-title">오늘 가입자 수</div>
-        <div class="card-value">${todayJoinCount}명</div>
+        <div class="card-value">${todayJoinCount} 명</div>
       </div>
     </div>
 
     <div class="col-lg-3 col-md-6 mb-4">
       <div class="dashboard-card h-100">
         <div class="card-title">총 주문 건수</div>
-        <div class="card-value">${orderCount}건</div>
+        <div class="card-value">${orderCount} 건</div>
       </div>
     </div>
   </div>

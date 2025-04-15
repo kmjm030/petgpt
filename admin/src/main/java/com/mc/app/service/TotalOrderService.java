@@ -40,15 +40,5 @@ public class TotalOrderService {
     public void del(int orderKey) throws Exception {
         totalOrderRepository.delete(orderKey);
     }
-
-    public List<TotalOrder> getRecentOrders() throws Exception {
-        return totalOrderRepository.selectRecentOrders();
-    }
-
-    // ✅ 최근 활동 로그 (등록/수정/삭제)
-    public List<TotalOrder> getActivityLog() throws Exception {
-        return totalOrderRepository.selectActivityLog();
-    }
 }
-
 
