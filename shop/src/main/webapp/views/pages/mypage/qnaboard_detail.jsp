@@ -151,10 +151,16 @@
                 </div>
               </div>
             </div>
+            <div class="row">
+                <div class="form-group col-md-6">
+                  <label>▪ 이미지 변경</label>
+                  <input type="file" class="form-control" name="img1">
+                </div>
+              </div>
             <br/>
           </form>
           <h6 id="msg"></h6>
-          <br/><br/>
+          <br/>
           <div class="checkout__order">
             <button class="site-btn" id="qna_update_btn">수정하기</button>
           </div>

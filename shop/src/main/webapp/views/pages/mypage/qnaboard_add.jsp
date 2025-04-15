@@ -219,7 +219,7 @@
             </div>
             <div class="row">
               <div class="form-group col-md-6">
-                <label>▪ 대표 이미지</label>
+                <label>▪ 이미지 첨부</label>
                 <input type="file" class="form-control" name="img1">
               </div>
             </div>

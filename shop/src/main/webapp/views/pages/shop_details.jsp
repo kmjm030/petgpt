@@ -110,11 +110,7 @@
        padding: 50px;
    }
    #boardRe {
-       color: black;
-       background-color: beige;
-       text-align: center;
-       border-radius: 10px;
-       padding: 10px;
+       color: rosybrown;
    }
 
 </style>
