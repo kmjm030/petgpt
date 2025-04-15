@@ -14,19 +14,19 @@ public class MsgController {
     @Autowired
     SimpMessagingTemplate template;
 
-    @MessageMapping("/receiveall") // 모두에게 전송
+    @MessageMapping("/receiveall")
     public void receiveall(Msg msg, SimpMessageHeaderAccessor headerAccessor) {
         System.out.println(msg);
         template.convertAndSend("/send",msg);
     }
-    @MessageMapping("/receiveme") // 나에게만 전송 ex)Chatbot
+    @MessageMapping("/receiveme")
     public void receiveme(Msg msg, SimpMessageHeaderAccessor headerAccessor) {
         System.out.println(msg);
 
         String id = msg.getSendid();
         template.convertAndSend("/send/"+id,msg);
     }
-    @MessageMapping("/receiveto") // 특정 Id에게 전송
+    @MessageMapping("/receiveto")
     public void receiveto(Msg msg, SimpMessageHeaderAccessor headerAccessor) {
         String id = msg.getSendid();
         String target = msg.getReceiveid();

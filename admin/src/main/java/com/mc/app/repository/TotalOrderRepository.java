@@ -14,7 +14,6 @@ public interface TotalOrderRepository extends MCRepository<TotalOrder, Integer> 
     int selectOrderCount() throws Exception;
     int selectTodayRevenue() throws Exception;
 
-    // ✅ 배송현황 (상태별 주문 수)
     List<Map<String, Object>> selectOrderStatusCount() throws Exception;
 }
 

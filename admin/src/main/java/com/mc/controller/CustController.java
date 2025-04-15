@@ -90,7 +90,7 @@ public class CustController {
     public String main(Model model) {
         try {
             int custCount = custService.getCount();
-            model.addAttribute("custCount", custCount);  // 회원 수 전달
+            model.addAttribute("custCount", custCount);
         } catch (Exception e) {
             model.addAttribute("custCount", 0);
         }

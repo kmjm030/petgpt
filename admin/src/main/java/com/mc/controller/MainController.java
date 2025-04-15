@@ -55,7 +55,7 @@ public class MainController {
         }
 
         try {
-            int todayRevenue = totalOrderService.getTodayRevenue(); // ✅ 오늘 매출
+            int todayRevenue = totalOrderService.getTodayRevenue();
             model.addAttribute("todayRevenue", todayRevenue);
         } catch (Exception e) {
             log.error("[MainController] Error loading today revenue: {}", e.getMessage());
@@ -63,7 +63,7 @@ public class MainController {
         }
 
         try {
-            Map<String, Integer> orderStatusMap = totalOrderService.getOrderStatusCountMap(); // ✅ 배송현황
+            Map<String, Integer> orderStatusMap = totalOrderService.getOrderStatusCountMap();
             model.addAttribute("orderStatusMap", orderStatusMap);
         } catch (Exception e) {
             log.error("[MainController] Error loading order status count: {}", e.getMessage());

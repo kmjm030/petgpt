@@ -41,7 +41,6 @@ public class AdminService implements MCService<Admin, String> {
         return adminRepository.selectAll();
     }
 
-    // 로그인 전용 메서드
     public Admin login(String id, String pwd) throws Exception {
         Admin admin = adminRepository.select(id);
         if (admin != null && admin.getAdminPwd().equals(pwd)) {
@@ -50,7 +49,6 @@ public class AdminService implements MCService<Admin, String> {
         return null;
     }
 
-    // 배송현황 조회
     public Map<String, Integer> getOrderStatusCountMap() throws Exception {
         List<Map<String, Object>> rawList = adminRepository.selectOrderStatusCount();
         Map<String, Integer> result = new HashMap<>();

@@ -20,7 +20,6 @@ public class    LoginController {
                             @RequestParam("pwd") String pwd,
                             HttpSession session) throws Exception {
 
-        // DB에서 조회된 관리자 정보
         Admin admin = adminService.login(id, pwd);
 
         if (admin != null) {
