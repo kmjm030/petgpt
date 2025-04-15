@@ -16,7 +16,7 @@ import lombok.Setter;
 public class CommunityBoard {
 
     private Integer boardKey;
-    private String customerId;
+    private String custId;
     private Integer itemKey;
     private String category;
     private String boardTitle;
@@ -52,7 +52,7 @@ public class CommunityBoard {
 
     @JsonProperty("authorName")
     public String getAuthorName() {
-        return customerId;
+        return custId;
     }
 
     @JsonProperty("createdAt")

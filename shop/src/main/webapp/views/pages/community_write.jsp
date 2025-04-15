@@ -104,56 +104,35 @@
     setupFormSubmit: function() {
       $('#postForm').submit(function(e) {
         e.preventDefault();
+
+        const formData = new FormData();
+        formData.append('title', $('input[name="title"]').val());
+        formData.append('category', $('#category').val());
+        formData.append('content', $('#summernote').summernote('code'));
         
-        // 폼 데이터를 JSON 객체로 변환
-        const boardData = {
-          boardTitle: $('input[name="title"]').val(),
-          category: $('#category').val(),
-          boardContent: $('#summernote').summernote('code'),
-          customerId: '${sessionScope.cust.custId}' // 세션에서 사용자 ID 가져오기
-        };
+        const thumbnailFile = document.getElementById('imageUpload').files[0];
+        if (thumbnailFile) {
+            formData.append('thumbnailImage', thumbnailFile);
+        }
         
-        // 게시글 데이터 API 전송
         $.ajax({
-          url: '<c:url value="/community/post"/>',
-          type: 'POST',
-          data: JSON.stringify(boardData),
-          contentType: 'application/json',
-          dataType: 'json',
-          success: function(response) {
-            // 썸네일 이미지 처리
-            const thumbnailImage = document.getElementById('imageUpload').files[0];
-            if (thumbnailImage) {
-              const imageFormData = new FormData();
-              imageFormData.append('file', thumbnailImage);
-              
-              $.ajax({
-                url: '<c:url value="/community/upload/image"/>',
-                type: 'POST',
-                data: imageFormData,
-                processData: false,
-                contentType: false,
-                success: function(imageResponse) {
-                  // 이미지 업로드 성공 후 처리
-                  console.log('이미지 업로드 성공:', imageResponse);
-                  alert('게시글이 등록되었습니다.');
-                  window.location.href = '<c:url value="/community"/>';
-                },
-                error: function(xhr) {
-                  console.error('이미지 업로드 실패:', xhr);
-                  alert('게시글은 등록되었으나 이미지 업로드에 실패했습니다.');
-                  window.location.href = '<c:url value="/community"/>';
+            url: '<c:url value="/community/write/submit"/>', 
+            type: 'POST',
+            data: formData, 
+            processData: false, 
+            contentType: false, 
+            success: function(response) {
+                alert('게시글이 등록되었습니다.');
+                window.location.href = '<c:url value="/community"/>'; 
+            },
+            error: function(xhr, status, error) {
+                console.error('게시글 등록 실패:', status, error, xhr);
+                let errorMessage = '게시글 등록 중 오류가 발생했습니다.';
+                if (xhr.responseText) {
+ 
                 }
-              });
-            } else {
-              alert('게시글이 등록되었습니다.');
-              window.location.href = '<c:url value="/community"/>';
+                alert(errorMessage);
             }
-          },
-          error: function(xhr) {
-            console.error('게시글 등록 실패:', xhr);
-            alert('게시글 등록 중 오류가 발생했습니다.');
-          }
         });
       });
     },
@@ -367,4 +346,4 @@
       </form>
     </div>
   </div>
-</section> 
+</section>

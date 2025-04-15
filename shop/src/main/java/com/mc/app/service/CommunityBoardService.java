@@ -17,6 +17,7 @@ public class CommunityBoardService {
     private final CommunityBoardRepository communityBoardRepository;
     private static final int PAGE_SIZE = 10; // 페이지당 게시글 수
 
+    // 게시글 생성/수정/삭제 
     @Transactional
     public int createBoard(CommunityBoard board) {
         board.onCreate();
@@ -34,6 +35,7 @@ public class CommunityBoardService {
         return communityBoardRepository.deleteBoard(boardKey);
     }
 
+    // 게시글 상세 조회 
     @Transactional
     public CommunityBoard getBoardDetail(int boardKey) {
         communityBoardRepository.increaseViewCount(boardKey);
@@ -44,8 +46,8 @@ public class CommunityBoardService {
         return communityBoardRepository.selectBoardByKey(boardKey);
     }
 
+    // 게시글 목록/검색 
     public Map<String, Object> getBoardList(String category, int page, String sort) {
-        // 페이지 번호는 1부터 시작하므로 offset 계산 시 -1
         int offset = (page - 1) * PAGE_SIZE;
         
         List<CommunityBoard> posts = communityBoardRepository.selectBoardList(
@@ -81,6 +83,7 @@ public class CommunityBoardService {
         return result;
     }
 
+    // 좋아요/댓글 관리 
     @Transactional
     public void addLike(int boardKey) {
         communityBoardRepository.increaseLikeCount(boardKey);

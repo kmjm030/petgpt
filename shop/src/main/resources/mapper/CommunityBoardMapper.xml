@@ -3,21 +3,6 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mc.app.repository.CommunityBoardRepository">
 
-    <resultMap id="communityBoardResultMap" type="com.mc.app.dto.CommunityBoard">
-        <id property="boardKey" column="board_key" />
-        <result property="customerId" column="cust_id" />
-        <result property="itemKey" column="item_key" />
-        <result property="category" column="category" />
-        <result property="boardTitle" column="board_title" />
-        <result property="boardContent" column="board_content" />
-        <result property="boardImg" column="board_img" />
-        <result property="regDate" column="reg_date" />
-        <result property="updateDate" column="update_date" />
-        <result property="viewCount" column="view_count" />
-        <result property="likeCount" column="like_count" />
-        <result property="commentCount" column="comment_count" />
-    </resultMap>
-
     <insert id="insertBoard" parameterType="com.mc.app.dto.CommunityBoard" useGeneratedKeys="true" keyProperty="boardKey">
         INSERT INTO communityboard (
             cust_id, 
@@ -32,7 +17,7 @@
             like_count, 
             comment_count
         ) VALUES (
-            #{customerId}, 
+            #{custId}, 
             #{itemKey}, 
             #{category}, 
             #{boardTitle}, 
@@ -62,13 +47,13 @@
         WHERE board_key = #{boardKey}
     </delete>
     
-    <select id="selectBoardByKey" parameterType="int" resultMap="communityBoardResultMap">
+    <select id="selectBoardByKey" parameterType="int" resultType="com.mc.app.dto.CommunityBoard">
         SELECT *
         FROM communityboard
         WHERE board_key = #{boardKey}
     </select>
     
-    <select id="selectBoardList" resultMap="communityBoardResultMap">
+    <select id="selectBoardList" resultType="com.mc.app.dto.CommunityBoard">
         SELECT *
         FROM communityboard
         <where>
@@ -96,7 +81,7 @@
         LIMIT #{offset}, #{limit}
     </select>
     
-    <select id="searchBoards" resultMap="communityBoardResultMap">
+    <select id="searchBoards" resultType="com.mc.app.dto.CommunityBoard">
         SELECT *
         FROM communityboard
         WHERE 
@@ -169,4 +154,4 @@
         SET comment_count = GREATEST(0, comment_count - 1)
         WHERE board_key = #{boardKey}
     </update>
-</mapper> 
+</mapper>
