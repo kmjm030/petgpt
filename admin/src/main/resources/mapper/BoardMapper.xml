@@ -4,31 +4,34 @@
 
 <mapper namespace="com.mc.app.repository.BoardRepository">
 
-    <select id="findAllByItem" parameterType="int" resultType="com.mc.app.dto.Board">
-        SELECT * FROM board WHERE item_key = #{itemKey}
+    <select id="select" resultType="Board">
+        SELECT * FROM board
     </select>
 
-    <select id="findById" parameterType="int" resultType="com.mc.app.dto.Board">
+    <select id="selectOne" parameterType="int" resultType="Board">
         SELECT * FROM board WHERE board_key = #{boardKey}
     </select>
 
-    <insert id="insert" parameterType="com.mc.app.dto.Board">
+    <!--    <select id="findById" parameterType="int" resultType="com.mc.app.dto.Board">-->
+    <!--        SELECT * FROM board WHERE board_key = #{boardKey}-->
+    <!--    </select>-->
+
+    <insert id="insert" parameterType="Board">
         INSERT INTO board (
-            board_key, item_key, cust_key, board_title, board_rdate,
-            board_content, board_img, board_option, board_update
+            item_key, cust_id, board_title,
+            board_content, board_img, board_option
         ) VALUES (
-                     #{boardKey}, #{itemKey}, #{custKey}, #{boardTitle}, #{boardRdate},
-                     #{boardContent}, #{boardImg}, #{boardOption}, #{boardUpdate}
+                     #{itemKey}, #{custId}, #{boardTitle},
+                     #{boardContent},null, 'N'
                  )
     </insert>
 
-    <update id="update" parameterType="com.mc.app.dto.Board">
+    <update id="update" parameterType="Board">
         UPDATE board SET
                          board_title = #{boardTitle},
                          board_content = #{boardContent},
-                         board_img = #{boardImg},
-                         board_option = #{boardOption},
-                         board_update = #{boardUpdate}
+                         board_img = null,
+                         board_option = 'N'
         WHERE board_key = #{boardKey}
     </update>
 
