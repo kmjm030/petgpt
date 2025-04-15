@@ -84,7 +84,7 @@
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
 <script>
-    const websocket = {
+    const ws = {
         id: '',
         stompClient: null,
         connect: function () {
@@ -147,10 +147,10 @@
     };
 
     $(function () {
-        websocket.connect();
-        $('#sendall').click(() => websocket.sendAll());
-        $('#sendme').click(() => websocket.sendMe());
-        $('#sendto').click(() => websocket.sendTo());
+        ws.connect();
+        $('#sendall').click(() => ws.sendAll());
+        $('#sendme').click(() => ws.sendMe());
+        $('#sendto').click(() => ws.sendTo());
 
         $('#alltext').keypress(function(e) {
             if (e.which === 13) { $('#sendall').click(); return false; }
