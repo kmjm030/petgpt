@@ -57,11 +57,16 @@
       // niceSelect는 select2 제외하고 적용
       $('select').not('.select2').niceSelect();
 
+      // 초기상태가 '상품문의'이면 select2보이도록
+      if ($('#optionSelect').val() === '상품문의') {
+        $('#itemSelectWrapper').show();
+      }
+
       // 문의 종류 변경 이벤트
       $('#optionSelect').on('change', function () {
         const selectedOption = $(this).val();
 
-        if (selectedOption === '상품') {
+        if (selectedOption === '상품문의') {
           $('#itemSelectWrapper').show();
         } else {
           $('#itemSelectWrapper').hide();
@@ -184,7 +189,7 @@
                 </select>
               </div>
             </div><br/>
-              <div class="row" id="itemSelectWrapper">
+              <div class="row" id="itemSelectWrapper" style="display:none;">
                 <div class="form-group col-md-12">
                   <h6> 상품 선택 </h6><br/>
                   <select class="select2" id="itemSelect" name="itemKey">
