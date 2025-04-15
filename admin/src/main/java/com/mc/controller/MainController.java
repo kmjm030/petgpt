@@ -10,6 +10,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Controller
 @RequiredArgsConstructor
 @Slf4j
@@ -52,11 +55,19 @@ public class MainController {
         }
 
         try {
-            int todayRevenue = totalOrderService.getTodayRevenue(); // ✅ 오늘 매출 추가
+            int todayRevenue = totalOrderService.getTodayRevenue(); // ✅ 오늘 매출
             model.addAttribute("todayRevenue", todayRevenue);
         } catch (Exception e) {
             log.error("[MainController] Error loading today revenue: {}", e.getMessage());
             model.addAttribute("todayRevenue", 0);
+        }
+
+        try {
+            Map<String, Integer> orderStatusMap = totalOrderService.getOrderStatusCountMap(); // ✅ 배송현황
+            model.addAttribute("orderStatusMap", orderStatusMap);
+        } catch (Exception e) {
+            log.error("[MainController] Error loading order status count: {}", e.getMessage());
+            model.addAttribute("orderStatusMap", new HashMap<String, Integer>());
         }
 
         model.addAttribute("serverurl", websocketServerUrl);
@@ -71,6 +82,7 @@ public class MainController {
         return "index";
     }
 }
+
 
 
 

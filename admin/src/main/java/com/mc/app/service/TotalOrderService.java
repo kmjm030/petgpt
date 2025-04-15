@@ -5,7 +5,9 @@ import com.mc.app.repository.TotalOrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -40,5 +42,20 @@ public class TotalOrderService {
     public void del(int orderKey) throws Exception {
         totalOrderRepository.delete(orderKey);
     }
+
+    // ✅ 배송현황 (상태별 주문 수) 추가
+    public Map<String, Integer> getOrderStatusCountMap() throws Exception {
+        List<Map<String, Object>> rawList = totalOrderRepository.selectOrderStatusCount();
+        Map<String, Integer> result = new HashMap<>();
+
+        for (Map<String, Object> row : rawList) {
+            String status = (String) row.get("order_status");
+            Integer count = ((Number) row.get("count")).intValue();
+            result.put(status, count);
+        }
+
+        return result;
+    }
 }
+
 

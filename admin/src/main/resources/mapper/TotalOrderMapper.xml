@@ -51,4 +51,14 @@
         FROM total_order
         WHERE DATE(order_date) = CURDATE()
     </select>
+
+    <!-- ✅ 배송현황 (상태별 개수) 추가 -->
+    <select id="selectOrderStatusCount" resultType="map">
+        SELECT order_status, COUNT(*) AS count
+        FROM total_order
+        WHERE DATE(order_date) = CURDATE()
+        GROUP BY order_status
+    </select>
+
 </mapper>
+
