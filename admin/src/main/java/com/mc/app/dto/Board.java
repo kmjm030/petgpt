@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Date;
+
 @Builder
 @Data
 @NoArgsConstructor
@@ -13,11 +15,11 @@ import java.time.LocalDateTime;
 public class Board {
     private int boardKey;
     private int itemKey;
-    private int custKey;
+    private String custId;
     private String boardTitle;
-    private LocalDateTime boardRdate;
     private String boardContent;
     private String boardImg;
     private String boardOption;
-    private LocalDateTime boardUpdate;
+    private Date boardRdate;
+    private Date boardUpdate;
 }
