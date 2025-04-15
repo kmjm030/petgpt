@@ -27,7 +27,6 @@
 <!-- Js Plugins -->
 <script src="<c:url value='/js/jquery-3.3.1.min.js'/>"></script>
 
-
 <body>
 <!-- Page Preloder -->
 <div id="preloder">

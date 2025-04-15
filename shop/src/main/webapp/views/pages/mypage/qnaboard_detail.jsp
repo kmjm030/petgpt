@@ -15,27 +15,26 @@
   #like_del_icon{
     color: black;
   }
+  #boardContent{
+    height: 300px;
+    width: 100%;
+    border: 1px solid #e1e1e1;
+    font-size: 14px;
+    color: gray;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  textarea::placeholder, input::placeholder {
+    color: #b7b7b7;
+  }
+  .nice-select.select2 {
+    display: none !important;
+  }
+  #msg{
+    color: darkred;
+  }
 
 </style>
-<script>
-  const like = {
-    init:function(){
-
-    },
-    del:function(itemKey, custId){
-      console.log("Deleting Like with itemKey: " + itemKey + ", custId: " + custId);
-      let c = confirm('상품을 찜목록에서 삭제하시겠습니까?');
-      if(c == true){
-        // c:url을 사용하여 URL을 서버에서 미리 생성
-        const deleteUrl = '<c:url value="/mypage/likedelimpl?itemKey=' + itemKey + '&id=' + custId + '"/>';
-        location.href = deleteUrl;
-      }
-    }
-  }
-  $(function(){
-    like.init();
-  });
-</script>
 
 <!-- Breadcrumb Section Begin -->
 <section class="breadcrumb-option">
@@ -46,8 +45,9 @@
           <h4>Mypage</h4>
           <div class="breadcrumb__links">
             <a href="<c:url value='/'/>">Home</a>
-            <a href="<c:url value='#'/>">마이페이지</a>
-            <span>찜 목록</span>
+            <a href="<c:url value='/mypage'/>">마이페이지</a>
+            <a href="<c:url value='/qnaboard'/>">1:1문의</a>
+            <span>문의 등록</span>
           </div>
         </div>
       </div>
@@ -77,8 +77,8 @@
                         <li><a href="<c:url value='#'/>">주문내역</a></li>
                         <li><a href="<c:url value='/address?id=${cust.custId}'/>">배송지 목록</a></li>
                         <li><a href="<c:url value='/mypage/like?id=${cust.custId}'/>">찜 목록</a></li>
-                        <li><a href="<c:url value='/coupon?id=${cust.custId}'/>"><strong id="category">보유 쿠폰</strong></a></li>
-                        <li><a href="<c:url value='/qnaboard?id=${cust.custId}'/>">1:1문의</a></li>
+                        <li><a href="<c:url value='/coupon?id=${cust.custId}'/>">보유 쿠폰</a></li>
+                        <li><a href="<c:url value='/qnaboard?id=${cust.custId}'/>"><strong id="category">1:1문의</strong></a></li>
                         <li><a href="<c:url value='#'/>">내가 작성한 리뷰</a></li>
                       </ul>
                       <br/><br/>
@@ -92,27 +92,34 @@
         </div>
       </div>
       <%--    회원 정보 --%>
-      <div class="col-lg-9 container mt-3">
-          <h6 class="checkout__title">💟 보유 쿠폰 조회</h6>
-          <table class="table">
-            <thead>
-            <tr>
-              <th>쿠폰이름</th>
-              <th>발급날짜</th>
-              <th>사용기한</th>
-            </tr>
-            </thead>
-            <tbody>
-            <c:forEach var="c" items="${coupons}">
-              <tr>
-                <td>${c.couponName}</td>
-                <td>${c.couponIssue}</td>
-                <td>${c.couponExpire}</td>
-              </tr>
-            </c:forEach>
-            </tbody>
-          </table>
+        <div class="col-lg-9">
+          <h6 class="checkout__title">1:1 문의 등록하기</h6>
+          <form id="qna_add_form">
+            <%-- 문의종류 --%>
+            <div class="row">
+              <div class="form-group col-md-12">
+                <div class="checkout__input">
+                  <label for="boardTitle">제목</label>
+                  <input type="text" placeholder="제목을 입력하세요." id="boardTitle" name="boardTitle">
+                  <input type="hidden" value="${sessionScope.cust.custId}" id="sessionId" name="custId">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-md-12">
+                <div class="checkout__input">
+                  <label for="boardContent">내용</label><br/>
+                  <textarea placeholder="문의내용을 작성하세요." id="boardContent" name="boardContent"></textarea>
+                </div>
+              </div>
+            </div>
+            <br/>
+          </form>
+          <h6 id="msg"></h6>
           <br/><br/>
+          <div class="checkout__order">
+            <button class="site-btn" id="qna_add_btn">등록하기</button>
+          </div>
         </div>
     </div>
   </div>

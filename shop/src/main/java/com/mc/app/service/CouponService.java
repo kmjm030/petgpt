@@ -1,9 +1,7 @@
 package com.mc.app.service;
 
-import com.mc.app.dto.Board;
 import com.mc.app.dto.Coupon;
 import com.mc.app.frame.MCService;
-import com.mc.app.repository.BoardRepository;
 import com.mc.app.repository.CouponRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

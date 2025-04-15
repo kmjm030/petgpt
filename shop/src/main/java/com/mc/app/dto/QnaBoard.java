@@ -6,18 +6,22 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Date;
+
 @Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Board {
+public class QnaBoard {
     private int boardKey;
     private int itemKey;
+    private int orderKey;
     private String custId;
     private String boardTitle;
-    private LocalDateTime boardRdate;
+    private Date boardRdate;
     private String boardContent;
     private String boardImg;
     private String boardOption;
-    private LocalDateTime boardUpdate;
+    private Date boardUpdate;
+    private String boardRe;
 }
