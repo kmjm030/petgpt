@@ -80,4 +80,10 @@ public class QnaBoardController {
         return "redirect:/qnaboard?id=" + custId;
     }
 
+    @RequestMapping("/updateimpl")
+    public String updateimpl(Model model, @RequestParam("custId") String custId, QnaBoard board) throws Exception {
+        qnaService.mod(board);
+        return "redirect:/qnaboard?id=" + custId;
+    }
+
 }

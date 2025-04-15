@@ -12,7 +12,7 @@
         SELECT * FROM qnaboard WHERE cust_id = #{custId}
     </select>
 
-    <select id="findById" parameterType="int" resultType="com.mc.app.dto.QnaBoard">
+    <select id="selectOne" parameterType="int" resultType="com.mc.app.dto.QnaBoard">
         SELECT * FROM qnaboard WHERE board_key = #{boardKey}
     </select>
 
