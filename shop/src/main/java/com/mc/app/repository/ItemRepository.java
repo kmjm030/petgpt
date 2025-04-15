@@ -4,6 +4,7 @@ import com.mc.app.dto.Item;
 import com.mc.app.frame.MCRepository;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -22,4 +23,7 @@ public interface ItemRepository extends MCRepository<Item, Integer> {
     
     List<Item> findByNameContaining(@Param("keyword") String keyword) throws Exception;
     List<Item> findByNameContainingWithOrder(@Param("keyword") String keyword, @Param("orderBy") String orderBy) throws Exception;
+
+    @Select("SELECT COUNT(*) FROM item")
+    int getTotalCount();
 }

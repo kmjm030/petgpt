@@ -37,10 +37,12 @@ public class ShopController {
             @RequestParam(name = "color", required = false) String color,
             @RequestParam(name = "price", required = false) String price,
             @RequestParam(name = "sort", required = false) String sort,
+            @RequestParam(name = "page", defaultValue = "1") int page,
             Model model, 
             HttpSession session) {
         
         model.addAttribute("currentPage", "shop");
+        int itemsPerPage = 12; // 한 페이지당 상품 수
 
         try {
             Customer customer = (Customer) session.getAttribute("cust");
@@ -63,11 +65,27 @@ public class ShopController {
                     .sort(sort)
                     .build();
             
-            shopService.getFilteredItemList(filterCriteria, model);
+            int totalItems = shopService.getTotalItemsCount(filterCriteria);
+            int totalPages = (int) Math.ceil((double) totalItems / itemsPerPage);
+            
+            // 페이지 범위 검증
+            page = Math.max(1, Math.min(page, totalPages));
+            
+            List<Item> items = shopService.findItemsByFilterWithPagination(filterCriteria, page, itemsPerPage);
+            
+            model.addAttribute("itemList", items);
+            model.addAttribute("currentPage", page);
+            model.addAttribute("totalPages", totalPages);
+            model.addAttribute("totalItems", totalItems);
+            model.addAttribute("itemsPerPage", itemsPerPage);
         
         } catch (Exception e) {
             log.error("아이템 목록 또는 필터링 조회 중 오류 발생: {}", e.getMessage());
             model.addAttribute("itemList", new ArrayList<>());
+            model.addAttribute("currentPage", 1);
+            model.addAttribute("totalPages", 1);
+            model.addAttribute("totalItems", 0);
+            model.addAttribute("itemsPerPage", itemsPerPage);
         }
 
         model.addAttribute("pageTitle", "Shop");

@@ -261,4 +261,55 @@ public class ItemService implements MCService<Item, Integer> {
         
         return itemRepository.findByNameContainingWithOrder(keyword, sortType.getSqlOrderBy());
     }
+
+    public int getTotalItemsCount(ItemFilterCriteria criteria) throws Exception {
+        if (criteria == null || !criteria.hasAnyFilter()) {
+            return itemRepository.getTotalCount();
+        }
+        
+        List<Integer> sizeFilteredItems = null;
+        List<Integer> colorFilteredItems = null;
+        List<Item> priceFilteredItems = null;
+        
+        if (criteria.hasSizeFilter()) {
+            sizeFilteredItems = optionService.getItemKeysBySize(criteria.getSize());
+        }
+        
+        if (criteria.hasColorFilter()) {
+            colorFilteredItems = optionService.getItemKeysByColor(criteria.getColor());
+        }
+        
+        if (criteria.hasPriceFilter()) {
+            priceFilteredItems = findByPriceFilter(criteria.getPrice(), SortType.DEFAULT);
+        }
+        
+        List<Integer> optionFilteredItemKeys = combineOptionFilters(sizeFilteredItems, colorFilteredItems);
+        
+        if (optionFilteredItemKeys != null && !optionFilteredItemKeys.isEmpty()) {
+            if (priceFilteredItems != null && !priceFilteredItems.isEmpty()) {
+                return (int) priceFilteredItems.stream()
+                    .filter(item -> optionFilteredItemKeys.contains(item.getItemKey()))
+                    .count();
+            }
+            return optionFilteredItemKeys.size();
+        }
+        
+        if (priceFilteredItems != null && !priceFilteredItems.isEmpty()) {
+            return priceFilteredItems.size();
+        }
+        
+        return itemRepository.getTotalCount();
+    }
+    
+    public List<Item> findItemsByFilterWithPagination(ItemFilterCriteria criteria, int page, int itemsPerPage) throws Exception {
+        List<Item> allItems = findItemsByFilter(criteria);
+        int startIndex = (page - 1) * itemsPerPage;
+        int endIndex = Math.min(startIndex + itemsPerPage, allItems.size());
+        
+        if (startIndex >= allItems.size()) {
+            return new ArrayList<>();
+        }
+        
+        return allItems.subList(startIndex, endIndex);
+    }
 }
