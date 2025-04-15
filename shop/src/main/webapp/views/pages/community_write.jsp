@@ -1,6 +1,8 @@
 <%@ page pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<!-- Popper.js CDN 추가 -->
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <!-- Summernote 에디터 관련 파일 -->
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
@@ -103,23 +105,54 @@
       $('#postForm').submit(function(e) {
         e.preventDefault();
         
-        const formData = new FormData(this);
-        // 에디터 내용 추가
-        formData.append('content', $('#summernote').summernote('code'));
+        // 폼 데이터를 JSON 객체로 변환
+        const boardData = {
+          boardTitle: $('input[name="title"]').val(),
+          category: $('#category').val(),
+          boardContent: $('#summernote').summernote('code'),
+          customerId: '${sessionScope.cust.custId}' // 세션에서 사용자 ID 가져오기
+        };
         
+        // 게시글 데이터 API 전송
         $.ajax({
-          url: '<c:url value="/community/write/submit"/>',
+          url: '<c:url value="/community/post"/>',
           type: 'POST',
-          data: formData,
-          processData: false,
-          contentType: false,
+          data: JSON.stringify(boardData),
+          contentType: 'application/json',
+          dataType: 'json',
           success: function(response) {
-            alert('게시글이 등록되었습니다.');
-            window.location.href = '<c:url value="/community"/>';
+            // 썸네일 이미지 처리
+            const thumbnailImage = document.getElementById('imageUpload').files[0];
+            if (thumbnailImage) {
+              const imageFormData = new FormData();
+              imageFormData.append('file', thumbnailImage);
+              
+              $.ajax({
+                url: '<c:url value="/community/upload/image"/>',
+                type: 'POST',
+                data: imageFormData,
+                processData: false,
+                contentType: false,
+                success: function(imageResponse) {
+                  // 이미지 업로드 성공 후 처리
+                  console.log('이미지 업로드 성공:', imageResponse);
+                  alert('게시글이 등록되었습니다.');
+                  window.location.href = '<c:url value="/community"/>';
+                },
+                error: function(xhr) {
+                  console.error('이미지 업로드 실패:', xhr);
+                  alert('게시글은 등록되었으나 이미지 업로드에 실패했습니다.');
+                  window.location.href = '<c:url value="/community"/>';
+                }
+              });
+            } else {
+              alert('게시글이 등록되었습니다.');
+              window.location.href = '<c:url value="/community"/>';
+            }
           },
           error: function(xhr) {
+            console.error('게시글 등록 실패:', xhr);
             alert('게시글 등록 중 오류가 발생했습니다.');
-            console.error(xhr);
           }
         });
       });
@@ -144,8 +177,13 @@
     padding: 30px 20px;
   }
   
+  /* 전체 섹션 패딩 조정 */
+  .community-write.spad {
+    padding-top: 50px;  /* 기본 패딩보다 작은 값으로 설정 */
+  }
+  
   .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 15px;
   }
   
   .form-title {
@@ -204,7 +242,7 @@
   
   .form-select {
     width: 100%;
-    padding: 12px 15px;
+    padding: 8px 15px;
     border: 1px solid #e1e1e1;
     border-radius: 4px;
     font-size: 16px;
@@ -212,6 +250,12 @@
     background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24'%3E%3Cpath fill='%23333' d='M7 10l5 5 5-5H7z'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 15px center;
+    position: relative;
+    z-index: 150;
+    line-height: 1.5;
+    display: flex;
+    align-items: center;
+    height: 42px;
   }
   
   .image-preview-container {
@@ -252,6 +296,19 @@
     align-items: center;
     justify-content: center;
   }
+  
+  .note-editor {
+    margin-top: 20px !important;
+  }
+  
+  .note-editor.note-frame {
+    position: relative;
+    z-index: 10;
+  }
+  
+  .category-group {
+    margin-bottom: 30px !important;
+  }
 </style>
 
 <section class="breadcrumb-option">
@@ -279,8 +336,8 @@
           <input type="text" class="form-title" name="title" placeholder="제목을 입력해 주세요." required>
         </div>
         
-        <div class="form-group">
-          <label for="category">카테고리</label>
+        <div class="form-group category-group">
+          <!-- <label for="category">카테고리</label> -->
           <select class="form-select" name="category" id="category" required>
             <option value="" disabled selected>카테고리를 선택해주세요</option>
             <option value="notice">공지사항</option>
@@ -288,6 +345,9 @@
             <option value="show">펫자랑게시판</option>
           </select>
         </div>
+        
+        <!-- 카테고리와 에디터 사이 공간 분리 -->
+        <div style="height: 15px; clear: both;"></div>
         
         <div class="form-group">
           <textarea class="form-content" name="content" id="summernote" placeholder="내용을 입력하세요."></textarea>

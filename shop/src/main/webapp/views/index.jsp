@@ -244,6 +244,7 @@
     </div>
 </div>
 <!-- Search End -->
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="<c:url value='/js/bootstrap.min.js'/>"></script>
 <script src="<c:url value='/js/jquery.nice-select.min.js'/>"></script>
 <script src="<c:url value='/js/jquery.nicescroll.min.js'/>"></script>
