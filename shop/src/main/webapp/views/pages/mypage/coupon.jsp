@@ -47,7 +47,7 @@
           <div class="breadcrumb__links">
             <a href="<c:url value='/'/>">Home</a>
             <a href="<c:url value='#'/>">마이페이지</a>
-            <span>찜 목록</span>
+            <span>보유 쿠폰</span>
           </div>
         </div>
       </div>
@@ -93,7 +93,7 @@
       </div>
       <%--    회원 정보 --%>
       <div class="col-lg-9 container mt-3">
-          <h6 class="checkout__title">💟 보유 쿠폰 조회</h6>
+          <h6 class="checkout__title">💌 보유 쿠폰 조회</h6>
           <table class="table">
             <thead>
             <tr>

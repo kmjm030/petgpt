@@ -119,7 +119,7 @@
                         <div class="row">
                             <div class="form-group col-md-6">
                                 <div class="checkout__input">
-                                    <label for="addrName">배송지 이름</label>
+                                    <label for="addrName">▪ 배송지 이름</label>
                                     <input type="text" value="${address.addrName}" id="addrName" name="addrName">
                                     <input type="hidden" value="${sessionScope.cust.custId}" id="sessionId" name="custId">
                                     <input type="hidden" name="addrKey" value="${address.addrKey}">
@@ -127,14 +127,14 @@
                             </div>
                             <div class="form-group col-md-6">
                                 <div class="checkout__input">
-                                    <label for="addrTel">수령인 전화번호</label>
+                                    <label for="addrTel">▪ 수령인 전화번호</label>
                                     <input type="tel" value="${address.addrTel}" id="addrTel" name="addrTel">
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="checkout__input">
-                                <label for="sample6_address">주소 입력</label><br/>
+                                <label for="sample6_address">▪ 주소 입력</label><br/>
                                 <div class="checkout__input">
                                     <input type="text" id="sample6_postcode" value="${address.addrHomecode}" name="addrHomecode">
                                     <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>

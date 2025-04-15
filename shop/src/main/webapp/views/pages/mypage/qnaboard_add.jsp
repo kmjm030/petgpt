@@ -175,12 +175,12 @@
       </div>
       <%--    회원 정보 --%>
         <div class="col-lg-9">
-          <h6 class="checkout__title">1:1 문의 등록하기</h6>
+          <h6 class="checkout__title">❓ 1:1 문의 등록하기</h6>
           <form id="qna_add_form">
             <%-- 문의종류 --%>
             <div class="row">
               <div class="form-group col-md-12">
-                <h6> 문의 종류 </h6><br/>
+                <h6>▪ 문의 종류 </h6><br/>
                 <select class="form-select" id="optionSelect" name="boardOption">
                   <option value="상품문의">상품문의</option>
                   <option value="배송문의">배송문의</option>
@@ -188,10 +188,10 @@
                   <option value="기타문의">기타문의</option>
                 </select>
               </div>
-            </div><br/>
+            </div><br>
               <div class="row" id="itemSelectWrapper" style="display:none;">
                 <div class="form-group col-md-12">
-                  <h6> 상품 선택 </h6><br/>
+                  <h6>▪ 상품 선택 </h6><br/>
                   <select class="select2" id="itemSelect" name="itemKey">
                     <option disabled selected hidden>상품을 선택하세요</option>
                     <c:forEach var="c" items="${items}">
@@ -199,11 +199,11 @@
                     </c:forEach>
                   </select>
                 </div>
-              </div><br/>
+              </div><br>
             <div class="row">
               <div class="form-group col-md-12">
                 <div class="checkout__input">
-                  <label for="boardTitle">제목</label>
+                  <label for="boardTitle">▪ 제목</label>
                   <input type="text" placeholder="제목을 입력하세요." id="boardTitle" name="boardTitle">
                   <input type="hidden" value="${sessionScope.cust.custId}" id="sessionId" name="custId">
                 </div>
@@ -212,9 +212,15 @@
             <div class="row">
               <div class="form-group col-md-12">
                 <div class="checkout__input">
-                  <label for="boardContent">내용</label><br/>
+                  <label for="boardContent">▪ 내용</label><br/>
                   <textarea placeholder="문의내용을 작성하세요." id="boardContent" name="boardContent"></textarea>
                 </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-md-6">
+                <label>▪ 이미지 첨부</label>
+                <input type="file" class="form-control" name="img1">
               </div>
             </div>
             <br/>

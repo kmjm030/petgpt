@@ -43,6 +43,10 @@ public class QnaBoardService implements MCService<QnaBoard, Integer> {
         return qnaRepository.findAllByCust(custId);
     }
 
+    public List<QnaBoard> findAllByItem(Integer itemKey) throws Exception {
+        return qnaRepository.findAllByItem(itemKey);
+    }
+
 
 
 

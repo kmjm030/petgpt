@@ -139,13 +139,13 @@
           <div class="row">
             <div class="form-group col-md-6">
               <div class="checkout__input">
-                <label for="id">ID</label>
+                <label for="id">▪ ID</label>
                 <input type="text" value="${cust.custId}" id="id" name="custId" readonly>
               </div>
             </div>
             <div class="form-group col-md-6">
               <div class="checkout__input">
-                <label for="name">이름</label>
+                <label for="name">▪ 이름</label>
                 <input type="text" value="${cust.custName}" id="name" name="custName" readonly>
               </div>
             </div>
@@ -153,7 +153,7 @@
           <div class="row">
             <div class="form-group col-md-6">
               <div class="checkout__input">
-                <label for="nick">닉네임</label>
+                <label for="nick">▪ 닉네임</label>
                 <input type="text" value="${cust.custNick}" id="nick" name="custNick">
               </div>
             </div>
@@ -161,7 +161,7 @@
           <div class="row">
             <div class="form-group col-md-6">
               <div class="checkout__input">
-                <label for="pwd">현재 비밀번호</label>
+                <label for="pwd">▪ 현재 비밀번호</label>
                 <input type="password" placeholder="비밀번호를 입력하세요." id="pwd" name="custPwd">
               </div>
             </div>
@@ -169,13 +169,13 @@
           <div class="row">
             <div class="form-group col-md-6">
               <div class="checkout__input">
-                <label for="pwd">새 비밀번호</label>
+                <label for="pwd">▪ 새 비밀번호</label>
                 <input type="password" placeholder="새 비밀번호를 입력하세요." id="new_pwd" name="newPwd">
               </div>
             </div>
             <div class="form-group col-md-6">
               <div class="checkout__input">
-                <label for="pwd">새 비밀번호 확인</label>
+                <label for="pwd">▪ 새 비밀번호 확인</label>
                 <input type="password" placeholder="새 비밀번호를 확인하세요." id="new_pwd2" name="newPwd2">
               </div>
             </div>
@@ -183,13 +183,13 @@
           <div class="row">
             <div class="form-group col-md-6">
               <div class="checkout__input">
-                <label for="phone">전화번호</label>
+                <label for="phone">▪ 전화번호</label>
                 <input type="tel" value="${cust.custPhone}" id="phone" name="custPhone">
               </div>
             </div>
             <div class="form-group col-md-6">
               <div class="checkout__input">
-                <label for="email">이메일</label>
+                <label for="email">▪ 이메일</label>
                 <input type="email" value="${cust.custEmail}" id="email" name="custEmail">
               </div>
             </div>
@@ -197,7 +197,7 @@
           <div class="row">
             <div class="form-group col-md-6">
               <div class="checkout__input">
-                <label for="point">포인트</label>
+                <label for="point">▪ 포인트</label>
                 <input type="number" value="${cust.custPoint}" id="point" name="custPoint" readonly>
               </div>
             </div>
