@@ -260,7 +260,26 @@
                 </div>
             </li>
         </c:if>
+<%--        ksk start --%>
+        <c:if test="${sessionScope.admin != null}">
+            <!-- Nav Board - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOne_1"
+                   aria-expanded="true" aria-controls="collapseOne_1">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>상품문의글</span>
+                </a>
+                <div id="collapseOne_1" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Board Management:</h6>
+                        <a class="collapse-item" href="<c:url value="/qnaboard/add"/>">Add</a>
+                        <a class="collapse-item" href="<c:url value="/qnaboard/get"/>">Get</a>
 
+                    </div>
+                </div>
+            </li>
+        </c:if>
+<%--        ksk end --%>
 
 
         <!-- Nav Item - Pages Collapse Menu -->

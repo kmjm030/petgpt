@@ -1,20 +1,22 @@
 package com.mc.app.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Date;
+
 @Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class AdminComments {
-    private int adCommentsKey;
+    private int adcommentsKey;
     private int boardKey;
-    private int adminKey;
-    private String adCommentsContent;
-    private LocalDateTime adCommentsRdate;
-    private LocalDateTime adCommentsUpdate;
+    private String adminId;
+    private String adcommentsContent;
+    private Date adcommentsRdate;
+    private Date adcommentsUpdate;
 }

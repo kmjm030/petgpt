@@ -9,13 +9,13 @@
         update:function(id){
             let c = confirm('수정하시겠습니까?');
             if(c == true){
-                location.href = '<c:url value="/board/detail"/>?id='+id;
+                location.href = '<c:url value="/qnaboard/detail"/>?id='+id;
             }
         },
         delete:function(id){
             let c = confirm('삭제하시겠습니까?');
             if(c == true){
-                location.href = '<c:url value="/board/delete"/>?id='+id;
+                location.href = '<c:url value="/qnaboard/delete"/>?id='+id;
             }
         }
     };
@@ -38,19 +38,21 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <h2> Board 문의게시판</h2>
+                <h2> QNABoard 문의게시판  브렌치 ksk</h2>
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                     <tr>
                         <th>board.boardKey</th>
                         <th>board.itemKey</th>
                         <th>board.custId</th>
+                        <th>board.orderKey</th>
                         <th>board.boardTitle</th>
                         <th>board.boardRdate</th>
                         <th>board.Content</th>
                         <th>board.boardImg</th>
                         <th>board.boardOption</th>
                         <th>board.boardUpdate</th>
+                        <th>board.boardRe</th>
                         <th>수정</th>
                         <th>삭제</th>
                     </tr>
@@ -60,12 +62,14 @@
                         <th>board.boardKey</th>
                         <th>board.itemKey</th>
                         <th>board.custId</th>
+                        <th>board.orderKey</th>
                         <th>board.boardTitle</th>
                         <th>board.boardRdate</th>
                         <th>board.Content</th>
                         <th>board.boardImg</th>
                         <th>board.boardOption</th>
                         <th>board.boardUpdate</th>
+                        <th>board.boardRe</th>
                         <th>수정</th>
                         <th>삭제</th>
                     </tr>
@@ -76,12 +80,14 @@
                             <td><a href="<c:url value="/board/detail"/>?id=${board.boardKey}">${board.boardKey}</a></td>
                             <td>${board.itemKey}</td>
                             <td>${board.custId}</td>
+                            <td>${board.orderKey}</td>
                             <td>${board.boardTitle}</td>
                             <td>${board.boardRdate}</td>
                             <td>${board.boardContent}</td>
                             <td>${board.boardImg}</td>
                             <td>${board.boardOption}</td>
                             <td>${board.boardUpdate}</td>
+                            <td>${board.boardRe}</td>
                             <td>
                                 <button onclick="board_get.update('${board.boardKey}')" type="button" class="btn btn-secondary">수정</button>
                             </td>

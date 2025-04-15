@@ -3,7 +3,9 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.mc.app.repository.QnaBoardRepository">
-
+    <select id="select" resultType="QnaBoard">
+        SELECT * FROM qnaboard
+    </select>
 
     <select id="findAllByItem" parameterType="int" resultType="com.mc.app.dto.QnaBoard">
         SELECT * FROM qnaboard WHERE item_key = #{itemKey}
