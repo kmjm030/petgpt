@@ -83,8 +83,8 @@
           <div class="breadcrumb__links">
             <a href="<c:url value='/'/>">Home</a>
             <a href="<c:url value='/mypage'/>">마이페이지</a>
-            <a href="<c:url value='/qnaboard'/>">1:1문의</a>
-            <span>문의 등록</span>
+            <a href="<c:url value='/qnaboard?id=${cust.custId}'/>">1:1문의</a>
+            <span>문의 상세정보</span>
           </div>
         </div>
       </div>
@@ -130,13 +130,13 @@
       </div>
       <%--    회원 정보 --%>
         <div class="col-lg-9">
-          <h6 class="checkout__title">1:1 문의 상세정보</h6>
+          <h6 class="checkout__title">❓ 1:1 문의 상세정보</h6>
           <form id="qna_update_form">
             <%-- 문의종류 --%>
             <div class="row">
               <div class="form-group col-md-12">
                 <div class="checkout__input">
-                  <label for="boardTitle">제목</label>
+                  <label for="boardTitle">▪ 제목</label>
                   <input type="text" placeholder="제목을 입력하세요." value="${board.boardTitle}" id="boardTitle" name="boardTitle">
                   <input type="hidden" value="${sessionScope.cust.custId}" id="sessionId" name="custId">
                   <input type="hidden" name="boardKey" value="${board.boardKey}" />
@@ -146,7 +146,7 @@
             <div class="row">
               <div class="form-group col-md-12">
                 <div class="checkout__input">
-                  <label for="boardContent">내용</label><br/>
+                  <label for="boardContent">▪ 내용</label><br/>
                   <textarea placeholder="문의내용을 작성하세요." id="boardContent" name="boardContent">${board.boardContent}</textarea>
                 </div>
               </div>

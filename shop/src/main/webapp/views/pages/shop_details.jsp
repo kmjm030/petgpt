@@ -106,6 +106,16 @@
    .option-info .stock-status.in-stock {
        color: #28a745;
    }
+   .shop-detail-board {
+       padding: 50px;
+   }
+   #boardRe {
+       color: black;
+       background-color: beige;
+       text-align: center;
+       border-radius: 10px;
+       padding: 10px;
+   }
 
 </style>
 
@@ -425,6 +435,11 @@
               <a class="nav-link" data-toggle="tab" href="#tabs-6" role="tab">Customer
                 Previews(5)</a> <%-- 리뷰 개수 동적 표시 --%>
             </li>
+              <li class="nav-item">
+                  <a class="nav-link" data-toggle="tab" href="#tabs-7" role="tab">
+                      Q & A
+                  </a> <%-- 리뷰 개수 동적 표시 --%>
+              </li>
           </ul>
           <div class="tab-content">
             <div class="tab-pane active" id="tabs-5" role="tabpanel">
@@ -450,6 +465,32 @@
                 <%-- 고객 리뷰 동적 표시 필요 --%>
                 <p>Customer reviews will be displayed here.</p>
               </div>
+            </div>
+            <div class="tab-pane shop-detail-board" id="tabs-7" role="tabpanel">
+                <form action="<c:url value='/qnaboard/add?id=${sessionScope.cust.custId}'/>" method="post">
+                    <button type="submit" class="site-btn" style="width: 300px;">문의 작성하기</button>
+                </form>
+                <br/>
+                  <div class="product__details__tab__content">
+                      <table class="table">
+                          <thead>
+                          <tr>
+                              <th>제목</th>
+                              <th>등록날짜</th>
+                              <th></th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                          <c:forEach var="c" items="${qnaBoards}">
+                              <tr>
+                                  <td>${c.boardTitle}</td>
+                                  <td><fmt:formatDate  value="${c.boardRdate}" pattern="yyyy-MM-dd" /></td>
+                                  <td><p id="boardRe">${c.boardRe}</p></td>
+                              </tr>
+                          </c:forEach>
+                          </tbody>
+                      </table>
+                  </div>
             </div>
           </div>
         </div>

@@ -2,12 +2,10 @@ package com.mc.controller;
 
 import com.mc.app.dto.Customer;
 import com.mc.app.dto.*;
-import com.mc.app.service.LikeService;
+import com.mc.app.service.*;
 import com.fasterxml.jackson.databind.ObjectMapper; 
 import com.mc.app.dto.*;
 import com.mc.app.service.LikeService;
-import com.mc.app.service.OptionService;
-import com.mc.app.service.ShopService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +26,8 @@ import java.util.Map;
 public class ShopController {
     private final ShopService shopService;
     private final LikeService likeService;
-    private final OptionService optionService; 
+    private final OptionService optionService;
+    private final QnaBoardService qnaService;
 
     @GetMapping("")
     public String shop(
@@ -110,7 +109,7 @@ public class ShopController {
     }
 
     @GetMapping("/details")
-    public String shopDetails(@RequestParam("itemKey") int itemKey, Model model, HttpSession session) {
+    public String shopDetails(@RequestParam("itemKey") int itemKey, Model model, HttpSession session) throws Exception {
         try {
 
             Customer customer = (Customer) session.getAttribute("cust");
@@ -159,6 +158,8 @@ public class ShopController {
             log.error("상품 상세 정보 조회 중 오류 발생 (itemKey: {})", itemKey, e);
             return "redirect:/shop";
         }
+        List<QnaBoard> qnaBoards = qnaService.findAllByItem(itemKey);
+        model.addAttribute("qnaBoards", qnaBoards);
         return "index";
     }
     

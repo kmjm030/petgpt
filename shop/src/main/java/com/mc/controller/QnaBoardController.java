@@ -51,8 +51,21 @@ public class QnaBoardController {
     }
 
     @RequestMapping("/add")
-    public String add(Model model, HttpSession session) throws Exception{
+    public String add(Model model, @RequestParam("id") String id, HttpSession session) throws Exception{
         List<Item> items = itemService.get();
+
+        // 세션에서 로그인된 사용자 확인
+        Customer loggedInCustomer = (Customer)session.getAttribute("cust");
+
+        // 로그인하지 않았다면 로그인 페이지로 리다이렉트
+        if (loggedInCustomer == null) {
+            return "redirect:/login";  // 로그인 페이지로 리다이렉트
+        }
+
+        // 로그인된 사용자만 자신의 QnA목록를 볼 수 있도록 처리
+        if (!loggedInCustomer.getCustId().equals(id)) {
+            return "redirect:/qnaboard?id=" + loggedInCustomer.getCustId();  // 자신의 마이페이지만 보여줌
+        }
 
         model.addAttribute("items", items);
         model.addAttribute("currentPage", "pages");
@@ -85,5 +98,13 @@ public class QnaBoardController {
         qnaService.mod(board);
         return "redirect:/qnaboard?id=" + custId;
     }
+
+    @RequestMapping("/delimpl")
+    public String delimpl(Model model, @RequestParam("boardKey") int boardKey, HttpSession session) throws Exception {
+        qnaService.del(boardKey);
+        String custId = session.getId();
+        return "redirect:/qnaboard?id=" + custId;
+    }
+
 
 }

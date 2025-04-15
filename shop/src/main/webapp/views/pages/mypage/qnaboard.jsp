@@ -16,8 +16,34 @@
   #like_del_icon{
     color: black;
   }
+  #boardRe {
+    color: rosybrown;
+    text-align: center;
+    border-radius: 10px;
+    padding: 10px;
+  }
+  #boardTitle {
+    color: black;
+  }
 
 </style>
+
+<script>
+  const like = {
+    init:function(){
+
+    },
+    del:function(boardKey){
+      let c = confirm('문의글을 삭제하시겠습니까?');
+      if(c == true){
+        location.href = '<c:url value="/qnaboard/delimpl?boardKey="/>' + boardKey;
+      }
+    }
+  }
+  $(function(){
+    like.init();
+  });
+</script>
 
 
 <!-- Breadcrumb Section Begin -->
@@ -76,7 +102,7 @@
       </div>
       <%--    회원 정보 --%>
       <div class="col-lg-9 container mt-3">
-          <h6 class="checkout__title">내가 작성한 1:1 문의 조회</h6>
+          <h6 class="checkout__title">❓ 작성한 문의글 조회</h6>
           <table class="table">
             <thead>
             <tr>
@@ -84,15 +110,21 @@
               <th>제목</th>
               <th>등록날짜</th>
               <th></th>
+              <th></th>
             </tr>
             </thead>
             <tbody>
             <c:forEach var="c" items="${qnaBoards}">
               <tr>
                 <td>${c.boardOption}</td>
-                <td><a href="<c:url value="/qnaboard/detail?boardKey=${c.boardKey}"/>">${c.boardTitle}</a></td>
+                <td><a id=boardTitle href="<c:url value="/qnaboard/detail?boardKey=${c.boardKey}"/>">${c.boardTitle}</a></td>
                 <td><fmt:formatDate  value="${c.boardRdate}" pattern="yyyy-MM-dd" /></td>
-                <td>${c.boardRe}</td>
+                <td><p id="boardRe">${c.boardRe}</p></td>
+                <td class="cart__close">
+                  <a href="#" onclick="like.del(${c.boardKey})">
+                    <i id="like_del_icon" class="fa fa-close"></i>
+                  </a>
+                </td>
               </tr>
             </c:forEach>
             </tbody>
@@ -100,7 +132,7 @@
           <br/><br/>
         <div class="checkout__order">
           <button class="site-btn" id="qna_add_btn"
-                  onclick="location.href='<c:url value='/qnaboard/add'/>'">
+                  onclick="location.href='<c:url value='/qnaboard/add?id=${sessionScope.cust.custId}'/>'">
             1:1 문의하기
           </button>
         </div>
