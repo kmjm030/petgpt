@@ -220,6 +220,7 @@
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Dashboard</span></a>
         </li>
+    </li>
         <c:if test="${sessionScope.admin != null}">
             <!-- Web Socket -->
             <li class="nav-item active">

@@ -2,6 +2,7 @@ package com.mc.controller;
 
 import com.mc.app.service.CustomerService;
 import com.mc.app.service.ItemService;
+import com.mc.app.service.TotalOrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,6 +17,7 @@ public class MainController {
 
     final CustomerService custService;
     final ItemService itemService;
+    final TotalOrderService totalOrderService;
 
     @Value("${app.url.websocket-server-url}")
     String websocketServerUrl;
@@ -41,6 +43,22 @@ public class MainController {
             model.addAttribute("itemCount", 0);
         }
 
+        try {
+            int orderCount = totalOrderService.getOrderCount();
+            model.addAttribute("orderCount", orderCount);
+        } catch (Exception e) {
+            log.error("[MainController] Error loading order count: {}", e.getMessage());
+            model.addAttribute("orderCount", 0);
+        }
+
+        try {
+            int todayRevenue = totalOrderService.getTodayRevenue(); // ✅ 오늘 매출 추가
+            model.addAttribute("todayRevenue", todayRevenue);
+        } catch (Exception e) {
+            log.error("[MainController] Error loading today revenue: {}", e.getMessage());
+            model.addAttribute("todayRevenue", 0);
+        }
+
         model.addAttribute("serverurl", websocketServerUrl);
         model.addAttribute("center", "center");
         return "index";
@@ -53,4 +71,6 @@ public class MainController {
         return "index";
     }
 }
+
+
 
