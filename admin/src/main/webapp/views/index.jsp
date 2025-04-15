@@ -2,7 +2,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <style>
-    /* 로고 사이즈 조절 */
     .sidebar-brand .custom-logo {
         max-width: 120px;
         margin-right: 20px;
@@ -11,6 +10,7 @@
         max-width: 120px;
         margin-right: 20px;
     }
+
 </style>
 <!DOCTYPE html>
 <html lang="ko">
@@ -87,6 +87,14 @@
 
 
 <style>
+    .matrix-text {
+        transition: opacity 1s;
+        opacity: 1;
+    }
+    .matrix-text.fade-out {
+        opacity: 0;
+    }
+
     #matrix-loader {
         display: none; /* 기본적으로 숨김 */
         position: fixed;

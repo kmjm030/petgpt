@@ -7,9 +7,30 @@
 <script>
     let item_add = {
         init:function(){
-            $('#btn_add').click(()=>{
-                if(confirm('등록하시겠습니까?')){
-                    $('#item_add_form').attr({
+            $('#btn_add').click(() => {
+                const form = $('#item_add_form');
+                $('#errorMsg').hide();
+
+                const requiredFields = [
+                    'select[name="categoryKey"]',
+                    'input[name="itemName"]',
+                    'input[name="itemPrice"]',
+                    'select[name="size"]',
+                    'input[name="color"]',
+                    'input[name="additionalPrice"]',
+                    'input[name="stock"]'
+                ];
+
+                for (let selector of requiredFields) {
+                    const value = $(selector).val();
+                    if (!value || value.trim() === '') {
+                        $('#errorMsg').show(); // 메시지 표시
+                        return;
+                    }
+                }
+
+                if (confirm('등록하시겠습니까?')) {
+                    form.attr({
                         method: 'post',
                         enctype: 'multipart/form-data',
                         action: '<c:url value="/item/addimpl"/>'
@@ -21,6 +42,7 @@
                 $('#item_add_form')[0].reset();
                 const today = new Date().toISOString().slice(0, 10);
                 $('#regDate').val(today);
+                $('#errorMsg').hide();
             });
         }
     };
@@ -147,6 +169,10 @@
             <div class="btn-group-fixed">
                 <button id="btn_add" type="button" class="btn btn-primary">등록하기</button>
                 <button id="btn_reset" type="button" class="btn btn-secondary">초기화</button>
+            </div>
+
+            <div id="errorMsg" class="text-danger mt-2" style="display: none;">
+                빈칸이 있습니다.
             </div>
 
         </form>
