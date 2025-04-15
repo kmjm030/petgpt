@@ -27,7 +27,6 @@
 <!-- Js Plugins -->
 <script src="<c:url value='/js/jquery-3.3.1.min.js'/>"></script>
 
-
 <body>
 <!-- Page Preloder -->
 <div id="preloder">
@@ -118,7 +117,7 @@
                         <li><a href="<c:url value="/community"/>">커뮤니티</a></li>
                         <li><a href="<c:url value="/qboard"/>">고객지원</a>
                             <ul class="dropdown">
-                                <li><a href="#">1:1 문의하기</a></li>
+                                <li><a href="<c:url value="/qnaboard/add?id=${sessionScope.cust.custId}"/>">1:1 문의하기</a></li>
                                 <li><a href="<c:url value="/about"/>">about us</a></li>
                             </ul>
                         </li>

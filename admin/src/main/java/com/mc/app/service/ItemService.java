@@ -37,7 +37,6 @@ public class ItemService implements MCService<Item, Integer> {
         try {
             FileUploadUtil.deleteFile(item.getItemImg1(), uploadDir);
         } catch (Exception e) {
-            // 로그만 찍고 계속 진행
             System.out.println("이미지1 삭제 실패: " + e.getMessage());
         }
         try {
@@ -54,7 +53,6 @@ public class ItemService implements MCService<Item, Integer> {
         itemRepository.delete(itemKey);
     }
 
-
     @Override
     public Item get(Integer itemKey) throws Exception {
         return itemRepository.selectOne(itemKey);
@@ -65,6 +63,10 @@ public class ItemService implements MCService<Item, Integer> {
         return itemRepository.select();
     }
 
+    public int getCount() throws Exception {
+        return itemRepository.count();
+    }
 }
+
 
 

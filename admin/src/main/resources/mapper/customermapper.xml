@@ -16,9 +16,9 @@
         INSERT INTO customer VALUES (#{custId}, #{custPwd}, #{custName}, #{custEmail}, #{custPhone},now(), 0, 0, #{custNick}, 0, null)
     </insert>
 
-    <update id="update" parameterType="Customer" >
+    <update id="update" parameterType="Customer">
         UPDATE customer SET
-                            cust_name=#{custName},
+                            cust_name = #{custName},
                             cust_pwd = #{custPwd},
                             cust_email = #{custEmail},
                             cust_phone = #{custPhone},
@@ -33,4 +33,15 @@
         DELETE FROM customer WHERE cust_id = #{custId}
     </delete>
 
+    <select id="selectCount" resultType="int">
+        SELECT COUNT(*) FROM customer
+    </select>
+
+    <select id="selectTodayJoinCount" resultType="int">
+        SELECT COUNT(*)
+        FROM customer
+        WHERE DATE_FORMAT(join_date, '%Y-%m-%d') = CURDATE()
+    </select>
+
 </mapper>
+
