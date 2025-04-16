@@ -120,17 +120,32 @@
             type: 'POST',
             data: formData, 
             processData: false, 
-            contentType: false, 
+            contentType: false,
+            dataType: 'json', 
             success: function(response) {
-                alert('게시글이 등록되었습니다.');
-                window.location.href = '<c:url value="/community"/>'; 
+                if (response && response.redirectUrl) {
+                    console.log('Success response with redirectUrl:', response.redirectUrl);
+                    window.location.href = response.redirectUrl;
+                } else {
+                    console.log('게시글 등록 성공 (redirectUrl 없음):', response);
+                    alert('게시글이 등록되었습니다.'); 
+                    window.location.href = '<c:url value="/community"/>';
+                }
             },
             error: function(xhr, status, error) {
-                console.error('게시글 등록 실패:', status, error, xhr);
+                console.error('게시글 등록 요청 실패:', status, error, xhr);
                 let errorMessage = '게시글 등록 중 오류가 발생했습니다.';
-                if (xhr.responseText) {
- 
+                
+                if (xhr.status === 401 && xhr.responseJSON && xhr.responseJSON.redirectUrl) {
+                    console.log('Unauthorized (401) detected, redirecting to:', xhr.responseJSON.redirectUrl);
+                    window.location.href = xhr.responseJSON.redirectUrl;
+                    return; 
+                } else if (xhr.responseJSON && xhr.responseJSON.message) {
+                    errorMessage = xhr.responseJSON.message;
+                } else if (xhr.status) {
+                    errorMessage += ` (Status: ${xhr.status})`;
                 }
+                
                 alert(errorMessage);
             }
         });
