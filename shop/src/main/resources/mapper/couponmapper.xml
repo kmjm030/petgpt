@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mc.app.repository.CouponRepository">
+
+    <select id="select" resultType="com.mc.app.dto.Coupon">
+        SELECT * FROM coupon
+    </select>
+
+    <select id="selectOne" parameterType="int" resultType="com.mc.app.dto.Coupon">
+        SELECT * FROM coupon WHERE coupon_id = #{couponId}
+    </select>
+
+    <select id="findByCustId" parameterType="String" resultType="com.mc.app.dto.Coupon">
+        SELECT * FROM coupon WHERE cust_id = #{custId}
+    </select>
+
+    <insert id="insert" parameterType="com.mc.app.dto.Coupon">
+        INSERT INTO coupon (
+            cust_id, coupon_name, coupon_price, coupon_rate, coupon_maxprice,
+            coupon_type, coupon_issue, coupon_expire, coupon_use
+        ) VALUES (
+                     #{custId}, #{couponName}, #{couponPrice}, #{couponRate}, #{couponMaxPrice},
+                     #{couponType}, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 30 DAY), "미사용"
+                 )
+    </insert>
+
+    <update id="update" parameterType="com.mc.app.dto.Coupon">
+        UPDATE coupon
+        SET coupon_price = #{couponPrice},
+            coupon_rate = #{couponRate},
+            coupon_maxprice = #{couponMaxPrice},
+            coupon_type = #{couponType},
+            coupon_issue = #{couponIssue},
+            coupon_expire = #{couponExpire},
+            coupon_use = #{couponUse}
+        WHERE coupon_id = #{couponId}
+    </update>
+
+    <delete id="delete" parameterType="int">
+        DELETE FROM coupon WHERE coupon_id = #{couponId}
+    </delete>
+
+</mapper>

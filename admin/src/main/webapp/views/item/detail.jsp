@@ -6,69 +6,155 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
-    let item_detail = {
-        init:function(){
-            $('#btn_delete').click(()=>{
-                const key = $('#itemKey').val();
-                if(confirm('삭제하시겠습니까?')){
-                    location.href = '<c:url value="/item/del"/>?item_key=' + key;
-                }
-            });
+    $(function () {
+        $('#btn_delete').click(() => {
+            const key = $('#itemKey').val();
+            if (confirm('정말로 이 상품을 삭제하시겠습니까?')) {
+                location.href = '<c:url value="/item/del"/>' + '?item_key=' + key;
+            }
+        });
 
-            $('#btn_update').click(()=>{
-                if(confirm('수정하시겠습니까?')){
-                    $('#item_update_form').attr({
-                        method: 'post',
-                        enctype: 'multipart/form-data',
-                        action: '<c:url value="/item/update"/>'
-                    }).submit();
-                }
-            });
-        }
-    };
-    $(function(){
-        item_detail.init();
+        $('#btn_update').click(() => {
+            if (confirm('이 상품 정보를 수정하시겠습니까?')) {
+                $('#item_update_form').attr({
+                    method: 'post',
+                    enctype: 'multipart/form-data',
+                    action: '<c:url value="/item/update"/>'
+                }).submit();
+            }
+        });
     });
 </script>
 
 <style>
+    body {
+        background-color: #ffffff;
+        color: #1d1d1f;
+        font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    h1, label, th, td {
+        color: #1d1d1f;
+    }
+
     .section-title {
         font-size: 1.2rem;
         font-weight: 600;
-        margin-top: 2rem;
-        margin-bottom: 1rem;
-        border-bottom: 2px solid #ddd;
+        margin: 2rem 0 1rem;
+        border-bottom: 1px solid #e0e0e0;
         padding-bottom: 0.5rem;
+        color: #1d1d1f;
     }
+
     .img-thumb {
         width: 100px;
-        height: auto;
         border: 1px solid #ccc;
+        border-radius: 8px;
         margin-bottom: 10px;
+        filter: grayscale(10%);
+        transition: transform 0.2s ease;
     }
+
+    .img-thumb:hover {
+        transform: scale(1.04);
+        filter: grayscale(0%);
+        border-color: #1d1d1f;
+    }
+
     .btn-group-fixed {
         display: flex;
-        gap: 10px;
-        margin-top: 20px;
+        gap: 12px;
+        margin-top: 30px;
     }
+
+    .form-control, .form-control:focus, select.form-control {
+        background-color: #ffffff;
+        color: #1d1d1f;
+        border: 1px solid #cccccc;
+        border-radius: 10px;
+        font-size: 0.95rem;
+        padding: 10px;
+    }
+
+    .badge-secondary {
+        background-color: #f2f2f2;
+        color: #888;
+        border: 1px solid #d0d0d0;
+        font-size: 13px;
+        padding: 5px 10px;
+        border-radius: 20px;
+    }
+
+    .table-bordered {
+        border-color: #e0e0e0;
+    }
+
+    .table-bordered th, .table-bordered td {
+        border-color: #e0e0e0;
+        background-color: #fff;
+        color: #1d1d1f;
+    }
+
+    .card {
+        background-color: #ffffff;
+        border: none;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+        border-radius: 20px;
+    }
+
+    .btn-dark {
+        background-color: #1d1d1f;
+        color: white;
+        border: none;
+        padding: 10px 24px;
+        border-radius: 12px;
+        font-weight: 600;
+        min-width: 120px;
+    }
+
+    .btn-outline-danger {
+        background-color: transparent;
+        color: #1d1d1f;
+        border: 1px solid #999;
+        padding: 10px 24px;
+        border-radius: 12px;
+        font-weight: 600;
+        min-width: 120px;
+    }
+
+    .btn-outline-danger:hover {
+        background-color: #1d1d1f;
+        color: #fff;
+        border-color: #1d1d1f;
+    }
+    select.form-control {
+        height: calc(1.5em + 0.75rem + 2px);
+        padding-top: 0.375rem;
+        padding-bottom: 0.375rem;
+        line-height: 1.5;
+        font-size: 1rem;
+        vertical-align: middle;
+    }
+
 </style>
 
-<div class="container-fluid">
-    <h1 class="h3 mb-4 text-gray-800">상품 상세 보기</h1>
 
-    <div class="card shadow mb-4 p-4">
+<div class="container-fluid">
+    <h1 class="h3 mb-4 text-dark font-weight-bold">상품 상세 정보</h1>
+
+    <div class="card shadow-sm p-4 mb-4">
         <form id="item_update_form">
 
             <div class="section-title">기본 정보</div>
 
             <div class="form-row">
                 <div class="form-group col-md-4">
-                    <label>상품 번호</label>
+                    <label>상품 ID</label>
                     <input type="text" readonly class="form-control" id="itemKey" name="itemKey" value="${item.itemKey}">
                 </div>
 
-                <div class="form-group col-md-4">
-                    <label>카테고리</label>
+                <div class="form-group col-md-4 text-nowrap">
+                    <label style="white-space: nowrap;">카테고리</label>
                     <select class="form-control" name="categoryKey">
                         <option value="1" ${item.categoryKey == 1 ? 'selected' : ''}>고양이</option>
                         <option value="2" ${item.categoryKey == 2 ? 'selected' : ''}>강아지</option>
@@ -101,7 +187,7 @@
                 </div>
             </div>
 
-            <div class="section-title">기존 이미지</div>
+            <div class="section-title">등록된 이미지</div>
 
             <div class="form-row">
                 <c:forEach var="i" begin="1" end="3">
@@ -126,30 +212,34 @@
             <div class="form-row">
                 <div class="form-group col-md-4">
                     <label>새 이미지 1</label>
-                    <input type="file" class="form-control" name="img1">
+                    <input type="file" class="form-control" name="img1"
+                           style="padding-top: 0.5rem; padding-bottom: 0.5rem; vertical-align: middle;">
                 </div>
                 <div class="form-group col-md-4">
                     <label>새 이미지 2</label>
-                    <input type="file" class="form-control" name="img2">
+                    <input type="file" class="form-control" name="img2"
+                           style="padding-top: 0.5rem; padding-bottom: 0.5rem; vertical-align: middle;">
                 </div>
                 <div class="form-group col-md-4">
                     <label>새 이미지 3</label>
-                    <input type="file" class="form-control" name="img3">
+                    <input type="file" class="form-control" name="img3"
+                           style="padding-top: 0.5rem; padding-bottom: 0.5rem; vertical-align: middle;">
                 </div>
             </div>
+
 
             <div class="section-title">옵션 정보</div>
 
             <table class="table table-bordered">
                 <tr><th>사이즈</th><td>${option.size}</td></tr>
                 <tr><th>색상</th><td>${option.color}</td></tr>
-                <tr><th>재고</th><td>${option.stock}</td></tr>
-                <tr><th>추가 금액</th><td><fmt:formatNumber value="${option.additionalPrice}" pattern="#,###"/>원</td></tr>
+                <tr><th>옵션 재고</th><td>${option.stock}</td></tr>
+                <tr><th>추가금액</th><td><fmt:formatNumber value="${option.additionalPrice}" pattern="#,#00"/></td></tr>
             </table>
 
             <div class="btn-group-fixed">
-                <button id="btn_update" type="button" class="btn btn-primary">수정</button>
-                <button id="btn_delete" type="button" class="btn btn-danger">삭제</button>
+                <button id="btn_update" type="button" class="btn btn-dark">수정하기</button>
+                <button id="btn_delete" type="button" class="btn btn-outline-danger">삭제하기</button>
             </div>
 
         </form>
@@ -157,9 +247,3 @@
 
     </div>
 </div>
-
-
-
-
-
-

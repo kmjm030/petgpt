@@ -11,4 +11,5 @@ import java.util.List;
 @Mapper
 public interface QnaBoardRepository extends MCRepository<QnaBoard, Integer> {
     List<QnaBoard> findAllByCust(String custId) throws Exception;
+    List<QnaBoard> findAllByItem(Integer itemKey) throws Exception;
 }

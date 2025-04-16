@@ -16,6 +16,7 @@ import java.util.List;
 public class MainController {
 
     private final ItemService itemService;
+    private final CustomerService custService;
 
     private List<Item> getItemList() {
         List<Item> itemList = new ArrayList<>();
@@ -67,7 +68,6 @@ public class MainController {
         return "index";
     }
 
-
     @GetMapping("/shopdetails")
     public String shopDetails(Model model) {
         model.addAttribute("currentPage", "pages");
@@ -84,37 +84,6 @@ public class MainController {
         return "index";
     }
 
-    @GetMapping("/checkout")
-    public String checkOut(Model model) {
-        model.addAttribute("currentPage", "pages");
-        model.addAttribute("pageTitle", "Check Out");
-        model.addAttribute("centerPage", "pages/checkout.jsp");
-        return "index";
-    }
-
-    @GetMapping("/petboarddetails")
-    public String petBoardDetails(Model model) {
-        model.addAttribute("currentPage", "petboard");
-        model.addAttribute("pageTitle", "Pet Board Details");
-        model.addAttribute("centerPage", "pages/blog_details.jsp");
-        return "index";
-    }
-
-    @GetMapping("/petboard")
-    public String petBoard(Model model) {
-        model.addAttribute("currentPage", "petboard");
-        model.addAttribute("pageTitle", "Pet Board");
-        model.addAttribute("centerPage", "pages/blog.jsp");
-        return "index";
-    }
-
-//    @GetMapping("/contact")
-//    public String contact(Model model) {
-//        model.addAttribute("currentPage", "contacts");
-//        model.addAttribute("pageTitle", "Contacts");
-//        model.addAttribute("centerPage", "pages/contact.jsp");
-//        return "index";
-//    }
 
     @GetMapping("/faq")
     public String faq(Model model) {
@@ -125,5 +94,4 @@ public class MainController {
     public String signin(Model model) {
         return "redirect:/";
     }
-
 }

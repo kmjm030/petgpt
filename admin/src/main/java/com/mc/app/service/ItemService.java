@@ -21,7 +21,6 @@ public class ItemService implements MCService<Item, Integer> {
 
     @Override
     public void add(Item item) throws Exception {
-        // 파일 저장은 Controller에서 처리하고, 여기선 DB insert만
         itemRepository.insert(item);
     }
 

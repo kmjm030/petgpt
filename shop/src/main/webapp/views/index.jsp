@@ -51,9 +51,9 @@
         </div>
     </div>
     <div class="offcanvas__nav__option">
-        <a href="#" class="search-switch"><img src="img/icon/search.png" alt=""></a>
-        <a href="#"><img src="img/icon/heart.png" alt=""></a>
-        <a href="#"><img src="img/icon/cart.png" alt=""> <span>0</span></a>
+        <a href="#" class="search-switch"><img src="<c:url value='/img/icon/search.png'/>" alt=""></a>
+        <a href="#"><img src="<c:url value='/img/icon/heart.png'/>" alt=""></a>
+        <a href="#"><img src="<c:url value='/img/icon/cart.png'/>" alt=""> <span>0</span></a>
         <div class="price">$0.00</div>
     </div>
     <div id="mobile-menu-wrap"></div>
@@ -106,7 +106,7 @@
         <div class="row">
             <div class="col-lg-3 col-md-3">
                 <div class="header__logo">
-                    <a href="/"><img id="main-logo" src="/img/logo.png" alt=""></a>
+                    <a href="/"><img id="main-logo" src=<c:url value="/img/logo.png"/> alt=""></a>
                 </div>
             </div>
             <div class="col-lg-6 col-md-6">
@@ -114,10 +114,10 @@
                     <ul>
                         <li class="active"><a href="/">홈</a></li>
                         <li><a href="<c:url value="/shop"/>">카테고리</a></li>
-                        <li><a href="<c:url value="/petboard"/>">펫자랑</a></li>
+                        <li><a href="<c:url value="/community"/>">커뮤니티</a></li>
                         <li><a href="<c:url value="/qboard"/>">고객지원</a>
                             <ul class="dropdown">
-                                <li><a href="#">1:1 문의하기</a></li>
+                                <li><a href="<c:url value="/qnaboard/add?id=${sessionScope.cust.custId}"/>">1:1 문의하기</a></li>
                                 <li><a href="<c:url value="/about"/>">about us</a></li>
                             </ul>
                         </li>
@@ -137,10 +137,10 @@
             </div>
             <div class="col-lg-3 col-md-3">
                 <div class="header__nav__option">
-                    <a href="#" class="search-switch"><img src="img/icon/search.png" alt=""></a>
-                    <a href="<c:url value='/mypage/like?id=${sessionScope.cust.custId}'/>"><img src="/img/icon/heart.png" alt=""></a>
-                    <a href="<c:url value="/cart"/>"><img src="/img/icon/cart.png" alt=""> <span>0</span></a> <!-- 아이콘 링크도 수정 -->
-                    <div class="price"><a href="<c:url value="/cart"/>">장바구니</a></div> <!-- 텍스트 링크 수정 -->
+                    <a href="#" class="search-switch"><img src="<c:url value='/img/icon/search.png'/>" alt=""></a>
+                    <a href="<c:url value='/mypage/like?id=${sessionScope.cust.custId}'/>"><img src="<c:url value='/img/icon/heart.png'/>" alt=""></a>
+                    <a href="<c:url value="/cart"/>"><img src="<c:url value='/img/icon/cart.png'/>" alt=""> <span>0</span></a>
+                    <div class="price"><a href="<c:url value="/cart"/>">장바구니</a></div>
                 </div>
             </div>
         </div>
@@ -173,10 +173,10 @@
             <div class="col-lg-3 col-md-6 col-sm-6">
                 <div class="footer__about">
                     <div class="footer__logo">
-                        <a href="#"><img src="img/footer-logo.png" alt=""></a>
+                        <a href="#"><img src="<c:url value='/img/footer-logo.png'/>" alt=""></a>
                     </div>
                     <p>The customer is at the heart of our unique business model, which includes design.</p>
-                    <a href="#"><img src="img/payment.png" alt=""></a>
+                    <a href="#"><img src="<c:url value='/img/payment.png'/>" alt=""></a>
                 </div>
             </div>
             <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
@@ -243,6 +243,7 @@
     </div>
 </div>
 <!-- Search End -->
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="<c:url value='/js/bootstrap.min.js'/>"></script>
 <script src="<c:url value='/js/jquery.nice-select.min.js'/>"></script>
 <script src="<c:url value='/js/jquery.nicescroll.min.js'/>"></script>

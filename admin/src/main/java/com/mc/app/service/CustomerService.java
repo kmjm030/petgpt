@@ -46,8 +46,8 @@ public class CustomerService implements MCService<Customer, String> {
     public int getTodayJoinCount() throws Exception {
         return custRepository.selectTodayJoinCount();
     }
-
 }
+
 
 //    public Page<Customer> getPage(int pageNo) throws Exception {
 //        PageHelper.startPage(pageNo, 3); // pageSize: 한화면에 출력되는 개수

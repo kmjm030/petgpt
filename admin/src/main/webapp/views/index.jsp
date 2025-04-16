@@ -1,645 +1,114 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<style>
-    .sidebar-brand .custom-logo {
-        max-width: 120px;
-        margin-right: 20px;
-    }
-    .custom-logo1{
-        max-width: 120px;
-        margin-right: 20px;
-    }
-
-</style>
 <!DOCTYPE html>
 <html lang="ko">
-
 <head>
-
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <title>PetGPT 관리자 페이지</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>SB Admin 2 - Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600&display=swap" rel="stylesheet">
+    <link href="<c:url value='/vendor/fontawesome-free/css/all.min.css'/>" rel="stylesheet">
+    <link href="<c:url value='/css/sb-admin-2.min.css'/>" rel="stylesheet">
 
-    <!-- Custom fonts for this template-->
-    <link href="<c:url value="/vendor/fontawesome-free/css/all.min.css"/>" rel="stylesheet" type="text/css">
-    <link
-            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-            rel="stylesheet">
+    <style>
+        body {
+            background-color: #f5f5f7;
+            color: #1d1d1f;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
 
-    <!-- Custom styles for this template-->
-    <link href="<c:url value="/css/sb-admin-2.min.css"/>" rel="stylesheet">
+        .hover-sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 220px;
+            height: 100%;
+            background-color: #ffffff;
+            border-right: 1px solid #d2d2d7;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+            z-index: 9998;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+        }
 
-    <!-- Custom styles for this page -->
-    <link href="<c:url value="/vendor/datatables/dataTables.bootstrap4.min.css"/>" rel="stylesheet">
+        .hover-sidebar .sidebar-content {
+            padding: 2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
 
-    <!-- Bootstrap core JavaScript-->
-    <script src="<c:url value="/vendor/jquery/jquery.min.js"/>"></script>
-    <script src="<c:url value="/vendor/bootstrap/js/bootstrap.bundle.min.js"/>"></script>
+        .hover-sidebar a {
+            color: #1d1d1f;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
 
+        .hover-sidebar a:hover {
+            color: #0071e3;
+        }
 
-    <!-- Core plugin JavaScript-->
-    <script src="<c:url value="/vendor/jquery-easing/jquery.easing.min.js"/>"></script>
+        .hover-sidebar .logo {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
 
-    <!-- Custom scripts for all pages-->
-    <script src="<c:url value="/js/sb-admin-2.min.js"/>"></script>
-    <!-- HighCharts  -->
-    <script src="https://code.highcharts.com/highcharts.js"></script>
-    <script src="https://code.highcharts.com/modules/data.js"></script>
-    <script src="https://code.highcharts.com/modules/exporting.js"></script>
-    <script src="https://code.highcharts.com/modules/export-data.js"></script>
-    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+        .hover-sidebar .logo img {
+            width: 80px;
+        }
 
-    <script>
-        let index = {
-            init:function(){
-                $('#login_form > button').click(()=>{
-                    // let id = $('#id').val();
-                    // let pwd = $('#id').val();
-                    $('#login_form').attr({
-                        'action':'<c:url value="/loginimpl"/>',
-                        'method':'POST'
-                    });
-                    $('#login_form').submit();
-                });
-            }
-        };
-        $(function(){
-            index.init();
-        });
-    </script>
-
+        .custom-logo {
+            max-width: 120px;
+            margin-right: 20px;
+        }
+    </style>
 </head>
 
 <body id="page-top">
-<!-- Matrix 로딩화면 -->
-<div id="matrix-loader">
-    <canvas id="matrix-canvas"></canvas>
-    <div class="matrix-overlay">
-        <img src="<c:url value='/img/logo.png'/>" alt="로고" class="matrix-logo">
-        <div class="matrix-text">시스템 가동 준비 완료</div>
+
+<div id="hover-sidebar" class="hover-sidebar">
+    <div class="sidebar-content">
+        <div class="logo">
+            <img src="<c:url value='/img/logo.png'/>" class="custom-logo" alt="로고">
+        </div>
+        <a href="<c:url value='/'/>"><i class="fas fa-tachometer-alt"></i> 대시보드</a>
+        <a href="<c:url value='/cust/get'/>"><i class="fas fa-users"></i> 사용자 관리</a>
+        <a href="<c:url value='/item/get'/>"><i class="fas fa-box"></i> 상품 관리</a>
+        <a href="<c:url value='/orders.jsp'/>"><i class="fas fa-shopping-cart"></i> 주문 관리</a>
+        <a href="<c:url value='/inquiries.jsp'/>"><i class="fas fa-question-circle"></i> 문의글 관리</a>
+        <a href="<c:url value='/qnaboard/get'/>"><i class="fas fa-comment-dots"></i> 상품 문의글</a>
     </div>
 </div>
 
-
-<style>
-    .matrix-text {
-        transition: opacity 1s;
-        opacity: 1;
-    }
-    .matrix-text.fade-out {
-        opacity: 0;
-    }
-
-    #matrix-loader {
-        display: none; /* 기본적으로 숨김 */
-        position: fixed;
-        top: 0; left: 0;
-        width: 100vw;
-        height: 100vh;
-        background-color: black;
-        z-index: 9999;
-        overflow: hidden;
-    }
-
-    #matrix-canvas {
-        display: block;
-        width: 100%;
-        height: 100%;
-    }
-
-    .matrix-overlay {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 2;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .matrix-logo {
-        width: 120px;
-        filter: drop-shadow(0 0 6px #00ff00);
-        margin-bottom: 20px;
-    }
-
-    .matrix-text {
-        font-size: 1.5rem;
-        color: #00ff00;
-        font-family: monospace;
-        text-shadow: 0 0 5px #00FF00;
-    }
-</style>
-
+<c:choose>
+    <c:when test="${center == null}">
+        <jsp:include page="center.jsp"/>
+    </c:when>
+    <c:otherwise>
+        <jsp:include page="${center}.jsp"/>
+    </c:otherwise>
+</c:choose>
 
 <script>
     document.addEventListener("DOMContentLoaded", () => {
-        const isFirstVisit = sessionStorage.getItem("visited");
-        const loader = document.getElementById("matrix-loader");
+        const sidebar = document.getElementById("hover-sidebar");
 
-        if (!isFirstVisit) {
-            sessionStorage.setItem("visited", "true");
-
-            if (loader) loader.style.display = "block";
-
-            const canvas = document.getElementById("matrix-canvas");
-            const ctx = canvas.getContext("2d");
-            const textEl = document.querySelector(".matrix-text");
-
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-
-            const letters = "アァイィウヴエェオカキクケコサシスセソABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            const fontSize = 16;
-            const columns = Math.floor(canvas.width / fontSize);
-            const drops = Array(columns).fill(1);
-
-            function draw() {
-                ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-                ctx.fillStyle = "#0F0";
-                ctx.font = fontSize + "px monospace";
-
-                for (let i = 0; i < drops.length; i++) {
-                    const text = letters.charAt(Math.floor(Math.random() * letters.length));
-                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-                    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                        drops[i] = 0;
-                    }
-                    drops[i]++;
-                }
+        document.addEventListener("mousemove", (e) => {
+            if (e.clientX < 20) {
+                sidebar.style.transform = "translateX(0)";
+            } else if (!sidebar.matches(":hover")) {
+                sidebar.style.transform = "translateX(-100%)";
             }
+        });
 
-            const interval = setInterval(draw, 33);
-
-            setTimeout(() => {
-                textEl.textContent = "PetGPT에 오신 걸 환영합니다";
-            }, 2000);
-
-            setTimeout(() => {
-                clearInterval(interval);
-                loader.style.transition = "opacity 1s";
-                loader.style.opacity = 0;
-                setTimeout(() => loader.remove(), 1000);
-            }, 7000);
-        } else {
-            if (loader) loader.remove();
-        }
+        sidebar.addEventListener("mouseleave", () => {
+            sidebar.style.transform = "translateX(-100%)";
+        });
     });
 </script>
 
-
-<!-- Page Wrapper -->
-<div id="wrapper">
-
-    <!-- Sidebar -->
-    <ul class="navbar-nav bg-gradient-dark sidebar sidebar-dark accordion" id="accordionSidebar">
-
-        <!-- Sidebar - Brand -->
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<c:url value='/'/>">
-            <div class="sidebar-brand-icon">
-                <img src="<c:url value='/img/logo.png'/>" class="custom-logo"/>
-            </div>
-
-        </a>
-
-        <!-- Divider -->
-        <hr class="sidebar-divider my-0">
-
-        <!-- Nav Item - Dashboard -->
-        <li class="nav-item active">
-            <a class="nav-link" href="<c:url value="/" />">
-                <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>Dashboard</span></a>
-        </li>
-        <c:if test="${sessionScope.admin != null}">
-            <!-- Web Socket -->
-            <li class="nav-item active">
-                <a class="nav-link" href="<c:url value="/websocket" />">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Web Socket</span></a>
-            </li>
-            <li class="nav-item active">
-                <a class="nav-link" href="<c:url value="/ws" />">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>chat</span></a>
-            </li>
-        </c:if>
-
-        <!-- Divider -->
-        <hr class="sidebar-divider">
-
-        <!-- Heading -->
-        <div class="sidebar-heading">
-            Interface
-        </div>
-        <%--            <c:if test="${sessionScope.admin.role.roleId == 1 || sessionScope.admin.role.roleId == 2}">--%>
-        <c:if test="${sessionScope.admin != null}">
-            <!-- Nav Board - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOne"
-                   aria-expanded="true" aria-controls="collapseOne">
-                    <i class="fas fa-fw fa-cog"></i>
-                    <span>Board</span>
-                </a>
-                <div id="collapseOne" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Board Management:</h6>
-                        <a class="collapse-item" href="<c:url value="/board/add"/>">Add</a>
-                        <a class="collapse-item" href="<c:url value="/board/get"/>">Get</a>
-
-                    </div>
-                </div>
-            </li>
-        </c:if>
-<%--        ksk start --%>
-        <c:if test="${sessionScope.admin != null}">
-            <!-- Nav Board - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseOne_1"
-                   aria-expanded="true" aria-controls="collapseOne_1">
-                    <i class="fas fa-fw fa-cog"></i>
-                    <span>상품문의글</span>
-                </a>
-                <div id="collapseOne_1" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Board Management:</h6>
-                        <a class="collapse-item" href="<c:url value="/qnaboard/add"/>">Add</a>
-                        <a class="collapse-item" href="<c:url value="/qnaboard/get"/>">Get</a>
-
-                    </div>
-                </div>
-            </li>
-        </c:if>
-<%--        ksk end --%>
-
-
-        <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-               aria-expanded="true" aria-controls="collapseTwo">
-                <i class="fas fa-fw fa-cog"></i>
-                <span>Cust</span>
-            </a>
-            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">Customer Management:</h6>
-                    <a class="collapse-item" href="<c:url value="/cust/add"/>">Add</a>
-                    <a class="collapse-item" href="<c:url value="/cust/get"/>">Get</a>
-                    <a class="collapse-item" href="<c:url value="/cust/logininfo"/>">Login Info</a>
-
-                </div>
-            </div>
-        </li>
-
-        <!-- Nav Item - Utilities Collapse Menu -->
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-               aria-expanded="true" aria-controls="collapseUtilities">
-                <i class="fas fa-fw fa-wrench"></i>
-                <span>Item</span>
-            </a>
-            <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
-                 data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">Item Management:</h6>
-                    <a class="collapse-item" href="<c:url value="/item/add"/>">Add</a>
-                    <a class="collapse-item" href="<c:url value="/item/get"/>">Get</a>
-                </div>
-            </div>
-        </li>
-        <%--            </c:if>--%>
-
-
-        <!-- Divider -->
-        <hr class="sidebar-divider">
-
-
-
-        <!-- Sidebar Toggler (Sidebar) -->
-        <div class="text-center d-none d-md-inline">
-            <button class="rounded-circle border-0" id="sidebarToggle"></button>
-        </div>
-
-
-
-    </ul>
-    <!-- End of Sidebar -->
-
-    <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
-
-        <!-- Main Content -->
-        <div id="content">
-
-            <!-- Topbar -->
-            <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
-                <!-- Sidebar Toggle (Topbar) -->
-                <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                    <i class="fa fa-bars"></i>
-                </button>
-
-                <!-- Topbar Search -->
-                <form
-                        class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                    <div class="input-group">
-                        <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                               aria-label="Search" aria-describedby="basic-addon2">
-                        <div class="input-group-append">
-                            <button class="btn btn-dark" type="button">
-                                <i class="fas fa-search fa-sm"></i>
-                            </button>
-                        </div>
-                    </div>
-                </form>
-
-                <!-- Topbar Navbar -->
-                <ul class="navbar-nav ml-auto">
-
-                    <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-                    <li class="nav-item dropdown no-arrow d-sm-none">
-                        <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-search fa-fw"></i>
-                        </a>
-                        <!-- Dropdown - Messages -->
-                        <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
-                             aria-labelledby="searchDropdown">
-                            <form class="form-inline mr-auto w-100 navbar-search">
-                                <div class="input-group">
-                                    <input type="text" class="form-control bg-light border-0 small"
-                                           placeholder="Search for..." aria-label="Search"
-                                           aria-describedby="basic-addon2">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-primary" type="button">
-                                            <i class="fas fa-search fa-sm"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </li>
-
-                    <!-- Nav Item - Alerts -->
-                    <li class="nav-item dropdown no-arrow mx-1">
-                        <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-bell fa-fw"></i>
-                            <!-- Counter - Alerts -->
-                            <span class="badge badge-danger badge-counter">3+</span>
-                        </a>
-                        <!-- Dropdown - Alerts -->
-                        <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                             aria-labelledby="alertsDropdown">
-                            <h6 class="dropdown-header">
-                                Alerts Center
-                            </h6>
-                            <a class="dropdown-item d-flex align-items-center" href="#">
-                                <div class="mr-3">
-                                    <div class="icon-circle bg-primary">
-                                        <i class="fas fa-file-alt text-white"></i>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="small text-gray-500">December 12, 2019</div>
-                                    <span class="font-weight-bold">A new monthly report is ready to download!</span>
-                                </div>
-                            </a>
-                            <a class="dropdown-item d-flex align-items-center" href="#">
-                                <div class="mr-3">
-                                    <div class="icon-circle bg-success">
-                                        <i class="fas fa-donate text-white"></i>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="small text-gray-500">December 7, 2019</div>
-                                    $290.29 has been deposited into your account!
-                                </div>
-                            </a>
-                            <a class="dropdown-item d-flex align-items-center" href="#">
-                                <div class="mr-3">
-                                    <div class="icon-circle bg-warning">
-                                        <i class="fas fa-exclamation-triangle text-white"></i>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="small text-gray-500">December 2, 2019</div>
-                                    Spending Alert: We've noticed unusually high spending for your account.
-                                </div>
-                            </a>
-                            <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
-                        </div>
-                    </li>
-
-                    <!-- Nav Item - Messages -->
-                    <li class="nav-item dropdown no-arrow mx-1">
-                        <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-envelope fa-fw"></i>
-                            <!-- Counter - Messages -->
-                            <span class="badge badge-danger badge-counter">7</span>
-                        </a>
-                        <!-- Dropdown - Messages -->
-                        <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                             aria-labelledby="messagesDropdown">
-                            <h6 class="dropdown-header">
-                                Message Center
-                            </h6>
-                            <a class="dropdown-item d-flex align-items-center" href="#">
-                                <div class="dropdown-list-image mr-3">
-                                    <img class="rounded-circle" src="<c:url value="/img/undraw_profile_1.svg"/>"                                            alt="...">
-                                    <div class="status-indicator bg-success"></div>
-                                </div>
-                                <div class="font-weight-bold">
-                                    <div class="text-truncate">Hi there! I am wondering if you can help me with a
-                                        problem I've been having.</div>
-                                    <div class="small text-gray-500">Emily Fowler · 58m</div>
-                                </div>
-                            </a>
-                            <a class="dropdown-item d-flex align-items-center" href="#">
-                                <div class="dropdown-list-image mr-3">
-                                    <img class="rounded-circle" src="<c:url value="/img/undraw_profile_2.svg"/>"                                            alt="...">
-                                    <div class="status-indicator"></div>
-                                </div>
-                                <div>
-                                    <div class="text-truncate">I have the photos that you ordered last month, how
-                                        would you like them sent to you?</div>
-                                    <div class="small text-gray-500">Jae Chun · 1d</div>
-                                </div>
-                            </a>
-                            <a class="dropdown-item d-flex align-items-center" href="#">
-                                <div class="dropdown-list-image mr-3">
-                                    <img class="rounded-circle" src="<c:url value="/img/undraw_profile_3.svg"/>"                                            alt="...">
-                                    <div class="status-indicator bg-warning"></div>
-                                </div>
-                                <div>
-                                    <div class="text-truncate">Last month's report looks great, I am very happy with
-                                        the progress so far, keep up the good work!</div>
-                                    <div class="small text-gray-500">Morgan Alvarez · 2d</div>
-                                </div>
-                            </a>
-                            <a class="dropdown-item d-flex align-items-center" href="#">
-                                <div class="dropdown-list-image mr-3">
-                                    <img class="rounded-circle" src="https://source.unsplash.com/Mv9hjnEUHR4/60x60"
-                                         alt="...">
-                                    <div class="status-indicator bg-success"></div>
-                                </div>
-                                <div>
-                                    <div class="text-truncate">Am I a good boy? The reason I ask is because someone
-                                        told me that people say this to all dogs, even if they aren't good...</div>
-                                    <div class="small text-gray-500">Chicken the Dog · 2w</div>
-                                </div>
-                            </a>
-                            <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
-                        </div>
-                    </li>
-
-                    <div class="topbar-divider d-none d-sm-block"></div>
-
-                    <c:choose>
-                        <c:when test="${sessionScope.admin == null}">
-                            <a href="#" data-toggle="modal" data-target="#loginModal">login</a>
-                        </c:when>
-                        <c:otherwise>
-                            <li class="nav-item dropdown no-arrow">
-                                <a class="nav-link dropdown-toggle" href="#" role="button"
-                                   aria-haspopup="true" aria-expanded="false">
-                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">${sessionScope.admin.adminName}님    </span>
-                                    <img class="img-profile rounded-circle"
-                                         src="<c:url value="/img/undraw_profile.svg"/>">
-
-
-                                </a>
-                                <!-- Dropdown - User Information -->
-                            </li>
-                            <li class="nav-item dropdown no-arrow">
-                            </li>
-                            <li class="nav-item dropdown no-arrow">
-                                <a href="<c:url value="/logoutimpl"/>" role="button"
-                                   aria-haspopup="true" aria-expanded="false">LOGOUT</a>
-                            </li>
-                        </c:otherwise>
-                    </c:choose>
-                    <!-- Nav Item - User Information -->
-
-
-                </ul>
-
-            </nav>
-            <!-- End of Topbar -->
-
-            <!-- Begin Page Content -->
-            <c:choose>
-                <c:when test="${center == null}">
-                    <jsp:include page="center.jsp"></jsp:include>
-                </c:when>
-                <c:otherwise>
-                    <jsp:include page="${center}.jsp"></jsp:include>
-                </c:otherwise>
-            </c:choose>
-            <!-- /.container-fluid -->
-
-        </div>
-        <!-- End of Main Content -->
-
-        <!-- Footer -->
-        <footer class="sticky-footer bg-white">
-            <div class="container my-auto">
-                <div class="copyright text-center my-auto">
-                    <span><img src="<c:url value='/img/logo.png'/>" class="custom-logo1"/>Copyright &copy; 펫GPT Admin 2025</span>
-                </div>
-            </div>
-        </footer>
-        <!-- End of Footer -->
-
-    </div>
-    <!-- End of Content Wrapper -->
-
-</div>
-<!-- End of Page Wrapper -->
-
-<!-- Scroll to Top Button-->
-<a class="scroll-to-top rounded" href="#page-top">
-    <i class="fas fa-angle-up"></i>
-</a>
-
-<!-- Login Modal-->
-<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="loginModalLabel">Ready to Leave?</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="login_form">
-                    <div class="form-group">
-                        <label for="id">ID:</label>
-                        <input type="text" class="form-control" id="id" placeholder="Enter id" name="id" value="admin1">
-
-                    </div>
-                    <div class="form-group">
-                        <label for="pwd">Password:</label>
-                        <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="pwd" value="adminpass1">
-
-                    </div>
-
-                    <button type="button" class="btn btn-primary">LOGIN</button>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Logout Modal-->
-<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <a class="btn btn-primary" href="login.html">Lgout</a>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Page level plugins -->
-<script src="<c:url value="/vendor/chart.js/Chart.min.js"/>"></script>
-
-<!-- Page level custom scripts -->
-<script src="<c:url value="/js/demo/chart-area-demo.js"/>"></script>
-<script src="<c:url value="/js/demo/chart-pie-demo.js"/>"></script>
-
-
-<!-- Page level plugins -->
-<script src="<c:url value="/vendor/datatables/jquery.dataTables.min.js"/>"></script>
-<script src="<c:url value="/vendor/datatables/dataTables.bootstrap4.min.js"/>"></script>
-<!-- Page level custom scripts -->
-<script src="<c:url value="/js/demo/datatables-demo.js"/>"></script>
-
 </body>
-
 </html>

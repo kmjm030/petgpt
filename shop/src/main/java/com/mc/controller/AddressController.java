@@ -1,10 +1,8 @@
 package com.mc.controller;
 
 import com.mc.app.dto.Address;
-import com.mc.app.dto.Cart;
 import com.mc.app.dto.Customer;
 import com.mc.app.service.AddressService;
-import com.mc.app.service.CustomerService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +20,6 @@ import java.util.List;
 @RequestMapping("/address")
 public class AddressController {
 
-    private final CustomerService custService;
     private final AddressService addrService;
 
     @RequestMapping("")
