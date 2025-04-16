@@ -31,13 +31,11 @@ public class QnaBoardController {
         List<QnaBoard> list = null;
         try {
             list = qnaService.get();
-//            list.forEach(cust -> cust.setCustName(standardPBEStringEncryptor.decrypt(cust.getCustName())));
             model.addAttribute("boards",list);
             model.addAttribute("center",dir+"get");
             log.info("OK==============================:{}",list);
         } catch (Exception e) {
             log.info("OK==============================:{}",e.getMessage());
-            throw new Exception("ER0001");
         }
         return "index";
     }
@@ -62,8 +60,6 @@ public class QnaBoardController {
             model.addAttribute("item",item);
             model.addAttribute("adminComments", adminComments);
             model.addAttribute("center",dir+"detail");
-            model.addAttribute("result","수정완료");
-
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

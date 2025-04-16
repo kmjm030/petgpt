@@ -8,9 +8,8 @@
     <table class="table table-bordered"  width="100%" cellspacing="0">
       <thead>
       <tr>
-        <th>게시판글번호</th>
+        <th>boardkey</th>
         <th>adcommentsKey</th>
-        <th>boardKey</th>
         <th>ItemKey</th>
         <th>adminId</th>
         <th>adcommentsContent</th>
@@ -25,7 +24,6 @@
       <tr>
         <td><a href="<c:url value="/board/detail"/>?id=${a.boardKey}">${board.boardKey}</a></td>
         <td>${adminComments.adcommentsKey}</td>
-        <td>${adminComments.boardKey}</td>
         <td>${adminComments.itemKey}</td>
         <td>${adminComments.adminId}</td>
         <td>${adminComments.adcommentsContent}</td>

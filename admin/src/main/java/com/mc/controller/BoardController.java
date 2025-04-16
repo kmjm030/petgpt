@@ -33,16 +33,14 @@ public class BoardController {
 
     @RequestMapping("/get")
     public String get(Model model) throws Exception {
-        // Database에서 데이터를 가지고 온다.
         List<Board> list = null;
         try {
             list = boardService.get();
-//            list.forEach(cust -> cust.setCustName(standardPBEStringEncryptor.decrypt(cust.getCustName())));
             model.addAttribute("boards",list);
             model.addAttribute("center",dir+"get");
             log.info("OK==============================:{}",list);
         } catch (Exception e) {
-            throw new Exception("ER0001");
+            log.info("ERROR==============================:{}",e.getMessage());
         }
         return "index";
     }
@@ -56,7 +54,6 @@ public class BoardController {
 
     @RequestMapping("/detail")
     public String detail(Model model,@RequestParam("id") Integer id){
-        // Database에서 데이터를 가지고 온다.
         Board board = null;
         AdminComments adminComments = null;
         Item item = null;
@@ -64,10 +61,7 @@ public class BoardController {
             board = boardService.get(id);
             adminComments = adminCommentsService.get(id);
             item = itemService.get(board.getItemKey());
-//            cust.setCustName(standardPBEStringEncryptor.decrypt(cust.getCustName()));
-//            if(adminComments == null){
-//                model.addAttribute("reply",board);
-//            }
+
             log.info("OK==============================:{}",id);
             log.info("OK==============================:{}",board);
             log.info("OK==============================:{}",adminComments);
@@ -75,7 +69,6 @@ public class BoardController {
             model.addAttribute("item",item);
             model.addAttribute("adminComments", adminComments);
             model.addAttribute("center",dir+"detail");
-            model.addAttribute("result","수정완료");
 
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -86,7 +79,6 @@ public class BoardController {
     public String update(Model model,Board board){
 
         try {
-//            board.setCustName(standardPBEStringEncryptor.encrypt(cust.getCustName()));
 
             boardService.mod(board);
             return "redirect:/board/detail?id="+board.getBoardKey();

@@ -31,6 +31,7 @@ public class ItemController {
     private final AdminCommentsService adminCommentsService;
     @RequestMapping("/get")
     public String get(Model model) throws Exception {
+
         List<Item> list = itemService.get();
 
         model.addAttribute("itemlist", list);
@@ -89,39 +90,7 @@ public class ItemController {
         return "redirect:/item/detail?item_key=" + item.getItemKey();
     }
 
-//    @RequestMapping("/detail")
-//    public String detail(Model model, @RequestParam("item_key") int itemKey) throws Exception {
-//        Item item = itemService.get(itemKey);
-//        Option option = optionService.getOptionsByItem(itemKey).get(0);
-//        List<AdminComments> adminCommentsList = adminCommentsService.selectAllbyItem(itemKey);
-////        int boardKey = adminCommentsList.get(0).getBoardKey();
-//        log.info("OK==================adminsize===================== {}  " , adminCommentsList.size());
-////        model.addAttribute("adminCommentsList", adminCommentsList);
-//
-//        List<QnaBoard> qnaBoardList = qnaBoardService.findAllByItem(itemKey);
-//        log.info("OK==================qnasize===================== {}  " , qnaBoardList.size());
-//
-//
-//        HashMap<Integer, AdminComments> map = new HashMap<>();
-////        map.put(qnaBoardList.get(0), adminCommentsList.get(0));
-//        for (QnaBoard qnaBoard : qnaBoardList) {
-//            for(int i=0; i<adminCommentsList.size(); i++) {
-//                if(qnaBoard.getBoardKey() == adminCommentsList.get(i).getBoardKey()) {
-//                    map.put(qnaBoard.getBoardKey(), adminCommentsList.get(i));
-//                    break;
-//                }
-//            }
-//            log.info("=========================////////==========================================");
-//        }
-//        log.info("OK====== map ================================= {}  " , map);
-//        model.addAttribute("map", map);
-//        model.addAttribute("qnaBoardList", qnaBoardList);
-//        model.addAttribute("adminCommentsList", adminCommentsList);
-//        model.addAttribute("item", item);
-//        model.addAttribute("option", option);
-//        model.addAttribute("center", dir + "detail");
-//        return "index";
-//    }
+
 
     @RequestMapping("/del")
     public String del(Model model, @RequestParam("item_key") int itemKey) throws Exception {
@@ -132,8 +101,6 @@ public class ItemController {
         itemService.del(itemKey);
         return "redirect:/item/get";
     }
-
-
 
     @RequestMapping("/update")
     public String update(Model model, Item item,
@@ -171,20 +138,15 @@ public class ItemController {
     public String detail(Model model, @RequestParam("item_key") int itemKey) throws Exception {
         Item item = itemService.get(itemKey);
         Option option = optionService.getOptionsByItem(itemKey).get(0);
-//        List<AdminComments> adminCommentsList = adminCommentsService.selectAllbyItem(itemKey);
         List<QnaWithComment> qnaList = qnaBoardService.selectQnaWithCommentsByItemKey(itemKey);
         log.info("=qnaList============================={}",qnaList);
         model.addAttribute("qnaList", qnaList);
-//        model.addAttribute("adminCommentsList", adminCommentsList);
         model.addAttribute("item", item);
         model.addAttribute("option", option);
         model.addAttribute("center", dir + "detail");
+
         return "index";
-
-        // 다른 상품 상세 정보도 추가 가능
-//        return "item/detail";
     }
-
 }
 
 

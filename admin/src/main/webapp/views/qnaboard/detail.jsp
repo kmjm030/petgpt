@@ -10,7 +10,7 @@
                 this.send();
             });
             $('#detail_form > #btn_delete').click(()=>{
-                let c = confirm('삭제하기겠습니까?');
+                let c = confirm('삭제하시겠습니까?');
                 if(c == true){
                     let id = $('#id').val();
                     location.href = '<c:url value="/board/delete"/>?=id'+id;
@@ -29,8 +29,6 @@
         board_detail.init();
     });
 </script>
-
-
 
 <div class="container-fluid">
 
@@ -86,106 +84,16 @@
         <%--        관리자 댓글 존재 여부 확인--%>
         <c:choose>
             <c:when test="${adminComments == null}">
-                <h1><a href="#" data-toggle="modal" data-target="#loginModal">관리자 댓글 쓰기</a></h1>
+                <h3><a href="#" data-toggle="modal" data-target="#loginModal">관리자 댓글 쓰기</a></h3>
             </c:when>
             <%--         관리자 댓글 --%>
             <c:otherwise>
                 <jsp:include page="adminComments.jsp"></jsp:include>
-
-                관련아이템 :  <h1>${item.itemName}</h1>
             </c:otherwise>
         </c:choose>
     </div>
 
 </div>
 
-
-<div class="container-fluid">
-    <h1 class="h3 mb-2 text-gray-800">관련상품 상세 보기</h1>
-
-    <div class="card shadow mb-4">
-        <div class="card-body">
-            <div class="table-responsive">
-                <form id="item_update_form">
-
-                    <div class="form-group">
-                        <label>상품 번호</label>
-                        <input type="text" readonly class="form-control" id="itemKey" name="itemKey" value="${item.itemKey}">
-                    </div>
-
-                    <div class="form-group">
-                        <label>카테고리 번호</label>
-                        <input type="number" class="form-control" name="categoryKey" value="${item.categoryKey}">
-                    </div>
-
-                    <div class="form-group">
-                        <label>상품명</label>
-                        <input type="text" class="form-control" name="itemName" value="${item.itemName}">
-                    </div>
-
-                    <div class="form-group">
-                        <label>상품 설명</label>
-                        <textarea class="form-control" name="itemContent" rows="4">${item.itemContent}</textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label>정가</label>
-                        <input type="number" class="form-control" name="itemPrice" value="${item.itemPrice}">
-                    </div>
-
-                    <div class="form-group">
-                        <label>할인가</label>
-                        <input type="number" class="form-control" name="itemSprice" value="${item.itemSprice}">
-                    </div>
-
-                    <div class="form-group">
-                        <label>재고 수량</label>
-                        <input type="number" class="form-control" name="itemCount" value="${item.itemCount}">
-                    </div>
-
-                    <div class="form-group">
-                        <label>이미지 1</label><br>
-                        <c:choose>
-                            <c:when test="${not empty item.itemImg1}">
-                                <img src="<c:url value='/img/item/${item.itemImg1}'/>" width="100"><br>
-                            </c:when>
-                            <c:otherwise>
-                                <span class="text-muted">이미지 없음</span><br>
-                            </c:otherwise>
-                        </c:choose>
-                        <input type="hidden" name="itemImg1" value="${item.itemImg1}">
-                    </div>
-
-                    <div class="form-group">
-                        <label>이미지</label><br>
-                        <c:choose>
-                            <c:when test="${not empty item.itemImg2}">
-                                <img src="<c:url value='/img/item/${item.itemImg2}'/>" width="100"><br>
-                            </c:when>
-                            <c:otherwise>
-                                <span class="text-muted">이미지 없음</span><br>
-                            </c:otherwise>
-                        </c:choose>
-                        <input type="hidden" name="itemImg2" value="${item.itemImg2}">
-                    </div>
-
-                    <div class="form-group">
-                        <label>이미지</label><br>
-                        <c:choose>
-                            <c:when test="${not empty item.itemImg3}">
-                                <img src="<c:url value='/img/item/${item.itemImg3}'/>" width="100"><br>
-                            </c:when>
-                            <c:otherwise>
-                                <span class="text-muted">이미지 없음</span><br>
-                            </c:otherwise>
-                        </c:choose>
-                        <input type="hidden" name="itemImg3" value="${item.itemImg3}">
-                    </div>
-
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
 
 
