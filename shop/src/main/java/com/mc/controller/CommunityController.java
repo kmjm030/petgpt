@@ -5,16 +5,20 @@ import com.mc.app.dto.CommunityBoard;
 import com.mc.app.service.CommunityBoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody; // For AJAX response
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.Map; // Import Map
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -28,6 +32,7 @@ import java.util.UUID;
 @Controller
 @RequiredArgsConstructor
 public class CommunityController {
+
     
     private final CommunityBoardService communityBoardService;
 
@@ -119,31 +124,31 @@ public class CommunityController {
         model.addAttribute("centerPage", "pages/community_write.jsp");
         return "index";
     }
-    
+
     @PostMapping("/community/write/submit")
-    public String communityWriteSubmit(
+    @ResponseBody // Return ResponseEntity directly for AJAX
+    public ResponseEntity<?> communityWriteSubmit( // Return type changed to ResponseEntity<?>
             @RequestParam("title") String title,
             @RequestParam("category") String category,
             @RequestParam("content") String content,
             @RequestParam(value = "thumbnailImage", required = false) MultipartFile thumbnailImage,
             @SessionAttribute(name = "cust", required = false) Customer customer,
             HttpServletRequest request) {
-        
-        log.info("Entered /community/write/submit POST method"); // 메소드 진입 로그 추가
 
-        // 로그인 확인 1: 세션에 customer 객체가 있는지 확인
+        log.info("Entered /community/write/submit POST method");
+
+        // 로그인 확인: 401 Unauthorized 반환
         if (customer == null) {
-            log.info("세션에 customer 객체가 없습니다. 로그인 페이지로 리다이렉트합니다.");
-            return "redirect:/login";
+            log.info("세션에 customer 객체가 없습니다. 401 Unauthorized 반환.");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("redirectUrl", "/gologin"));
         }
 
-        // 로그인 확인 2: customer 객체는 있지만 ID가 유효하지 않은 경우 확인 (null 또는 빈 문자열)
-        String custId = customer.getCustId(); // custId를 변수로 추출
+        String custId = customer.getCustId();
         if (custId == null || custId.trim().isEmpty()) {
-             log.info("세션 customer 객체의 custId가 null이거나 비어있습니다. 로그인 페이지로 리다이렉트합니다. custId: {}", custId);
-             return "redirect:/login?error=invalid_user"; // 로그인 페이지로 리다이렉트 (에러 파라미터 추가)
+             log.info("세션 customer 객체의 custId가 null이거나 비어있습니다. 401 Unauthorized 반환. custId: {}", custId);
+             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("redirectUrl", "/gologin?error=invalid_user"));
         }
-        
+
         try {
             CommunityBoard board = new CommunityBoard();
             board.setBoardTitle(title);
@@ -184,14 +189,18 @@ public class CommunityController {
             // 서비스 호출 직전 로그 추가: 전달되는 custId 값 확인
             log.info("CommunityBoardService.createBoard 호출 직전 - custId: '{}', title: '{}'", board.getCustId(), board.getBoardTitle());
             communityBoardService.createBoard(board);
-            
-            return "redirect:/community";
+
+            // 성공 시: 200 OK 와 함께 리다이렉트 URL 반환
+            log.info("게시글 등록 성공. redirectUrl: /community 반환");
+            return ResponseEntity.ok(Map.of("redirectUrl", "/community"));
+
         } catch (Exception e) {
-            // 예외 로그 개선
+            // 예외 발생 시: 500 Internal Server Error 반환
             log.error("게시글 저장 중 오류 발생: custId='{}', title='{}'", customer.getCustId(), title, e);
-            return "redirect:/community/write?error=true";
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("message", "게시글 저장 중 오류가 발생했습니다."));
         }
     }
+
     
     private String extractExtension(String fileName) {
         if (fileName == null || fileName.lastIndexOf(".") == -1) {
