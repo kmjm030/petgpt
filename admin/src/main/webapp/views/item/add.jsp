@@ -6,7 +6,7 @@
 
 <script>
     let item_add = {
-        init:function(){
+        init: function () {
             $('#btn_add').click(() => {
                 const form = $('#item_add_form');
                 $('#errorMsg').hide();
@@ -38,23 +38,33 @@
                 }
             });
 
-            $('#btn_reset').click(function(){
+            $('#btn_reset').click(function () {
                 $('#item_add_form')[0].reset();
-                const today = new Date().toISOString().slice(0, 10);
-                $('#regDate').val(today);
+                $('#regDate').val(new Date().toISOString().slice(0, 10));
                 $('#errorMsg').hide();
             });
         }
     };
 
-    $(function(){
+    $(function () {
         item_add.init();
-        const today = new Date().toISOString().slice(0, 10);
-        $('#regDate').val(today);
+        $('#regDate').val(new Date().toISOString().slice(0, 10));
     });
 </script>
 
 <style>
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        background-color: #ffffff;
+        color: #1d1d1f;
+    }
+
+    h1 {
+        font-weight: 700;
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
     .section-title {
         font-size: 1.2rem;
         font-weight: 600;
@@ -63,24 +73,34 @@
         border-bottom: 2px solid #ddd;
         padding-bottom: 0.5rem;
     }
+
     .form-group label {
         font-weight: 500;
     }
+
     .btn-group-fixed {
         display: flex;
-        gap: 10px;
-        margin-top: 20px;
+        gap: 12px;
+        margin-top: 30px;
+    }
+
+    .form-control {
+        font-size: 0.95rem;
+    }
+
+    #errorMsg {
+        display: none;
+        font-size: 0.9rem;
     }
 </style>
 
 <div class="container-fluid">
-    <h1 class="h3 mb-4 text-gray-800">상품 등록</h1>
+    <h1 class="text-dark">상품 등록</h1>
 
-    <div class="card shadow mb-4 p-4">
+    <div class="card shadow-sm p-4 mb-5">
         <form id="item_add_form">
 
             <div class="section-title">기본 상품 정보</div>
-
             <div class="form-row">
                 <div class="form-group col-md-4">
                     <label>등록일</label>
@@ -119,7 +139,6 @@
             </div>
 
             <div class="section-title">상품 이미지</div>
-
             <div class="form-row">
                 <div class="form-group col-md-4">
                     <label>대표 이미지</label>
@@ -136,7 +155,6 @@
             </div>
 
             <div class="section-title">옵션 정보</div>
-
             <div class="form-row">
                 <div class="form-group col-md-4">
                     <label>사이즈</label>
@@ -171,9 +189,7 @@
                 <button id="btn_reset" type="button" class="btn btn-secondary">초기화</button>
             </div>
 
-            <div id="errorMsg" class="text-danger mt-2" style="display: none;">
-                빈칸이 있습니다.
-            </div>
+            <div id="errorMsg" class="text-danger mt-3">빈칸이 있습니다.</div>
 
         </form>
     </div>

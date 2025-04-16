@@ -21,13 +21,13 @@
     background-color: white;
     border: 1px solid #e0e0e0;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     padding: 1.5rem;
     transition: box-shadow 0.3s ease-in-out;
   }
 
   .dashboard-card:hover, .chart-card:hover {
-    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
   }
 
   .card-title {
@@ -86,40 +86,36 @@
 <div class="container-fluid">
   <div class="dashboard-header">대시보드</div>
 
-  <div class="container-fluid">
-    <div class="row mb-4">
-      <div class="col-lg-3 col-md-6 mb-4">
-        <a href="<c:url value='/cust/get'/>" style="text-decoration: none; color: inherit;">
-          <div class="dashboard-card h-100" style="cursor: pointer;">
-            <div class="card-title">전체 사용자</div>
-            <div class="card-value">${custCount}</div>
-          </div>
-        </a>
-      </div>
-
-      <div class="col-lg-3 col-md-6 mb-4">
-        <a href="<c:url value='/item/get'/>" style="text-decoration: none; color: inherit;">
-          <div class="dashboard-card h-100" style="cursor: pointer;">
-            <div class="card-title">전체 상품</div>
-            <div class="card-value">${itemCount}</div>
-          </div>
-        </a>
-      </div>
-
-      <div class="col-lg-3 col-md-6 mb-4">
+  <div class="row mb-4">
+    <div class="col-lg-3 col-md-6 mb-4">
+      <a href="<c:url value='/cust/get'/>" style="text-decoration: none; color: inherit;">
         <div class="dashboard-card h-100">
-          <div class="card-title">오늘 가입자 수</div>
-          <div class="card-value">${todayJoinCount}</div>
+          <div class="card-title">전체 사용자</div>
+          <div class="card-value">${custCount}</div>
         </div>
+      </a>
+    </div>
+    <div class="col-lg-3 col-md-6 mb-4">
+      <a href="<c:url value='/item/get'/>" style="text-decoration: none; color: inherit;">
+        <div class="dashboard-card h-100">
+          <div class="card-title">전체 상품</div>
+          <div class="card-value">${itemCount}</div>
+        </div>
+      </a>
+    </div>
+    <div class="col-lg-3 col-md-6 mb-4">
+      <div class="dashboard-card h-100">
+        <div class="card-title">오늘 가입자 수</div>
+        <div class="card-value">${todayJoinCount}</div>
       </div>
-
-      <div class="col-lg-3 col-md-6 mb-4">
-        <a href="<c:url value='/orderdetail'/>" style="text-decoration: none; color: inherit;">
-          <div class="dashboard-card h-100" style="cursor: pointer;">
+    </div>
+    <div class="col-lg-3 col-md-6 mb-4">
+      <a href="<c:url value='/orderdetail'/>" style="text-decoration: none; color: inherit;">
+        <div class="dashboard-card h-100">
           <div class="card-title">총 주문 수</div>
           <div class="card-value">${orderCount}</div>
         </div>
-      </div>
+      </a>
     </div>
   </div>
 

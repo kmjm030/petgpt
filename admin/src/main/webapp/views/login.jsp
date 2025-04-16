@@ -6,7 +6,9 @@
 <head>
   <meta charset="UTF-8">
   <title>PetGPT 관리자 로그인</title>
+
   <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600&display=swap" rel="stylesheet">
+
   <style>
     body {
       margin: 0;
@@ -111,6 +113,7 @@
     }
   </style>
 </head>
+
 <body>
 
 <div class="login-box">

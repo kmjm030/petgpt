@@ -15,7 +15,7 @@
         padding: 2rem;
     }
 
-    h1.page-title {
+    .page-title {
         font-weight: 700;
         font-size: 2rem;
         margin-bottom: 1.5rem;
@@ -31,29 +31,21 @@
     }
 
     #dataTable {
+        width: 100%;
         border-collapse: separate;
         border-spacing: 0;
-        width: 100%;
     }
 
     #dataTable thead {
         background-color: #f8f8f8;
     }
 
-    #dataTable th {
-        font-weight: 600;
-        font-size: 0.95rem;
+    #dataTable th, #dataTable td {
         text-align: center;
         padding: 1rem;
+        font-size: 0.95rem;
         border-bottom: 1px solid #e0e0e0;
-    }
-
-    #dataTable td {
-        font-size: 0.95rem;
-        padding: 1rem;
         vertical-align: middle;
-        text-align: center;
-        border-bottom: 1px solid #f0f0f0;
     }
 
     #dataTable tr:hover {
@@ -63,7 +55,6 @@
 
     #dataTable img {
         width: 80px;
-        height: auto;
         border-radius: 12px;
         border: 1px solid #ccc;
         filter: grayscale(10%);
@@ -79,21 +70,21 @@
     .no-image-badge {
         display: inline-block;
         padding: 6px 12px;
-        font-size: 13px;
         background-color: #f2f2f2;
         border-radius: 20px;
         color: #999;
+        font-size: 13px;
         font-weight: 500;
-    }
-
-    .price-cell {
-        font-weight: 600;
-        color: #1d1d1f;
     }
 
     .font-weight-bold {
         font-weight: 600;
         font-size: 1rem;
+    }
+
+    .price-cell {
+        font-weight: 600;
+        color: #1d1d1f;
     }
 
     .dataTables_wrapper .pagination .page-item .page-link {
@@ -103,31 +94,27 @@
         font-weight: 500;
     }
 
-    .dataTables_wrapper .pagination .page-item.active .page-link {
-        background-color: #1d1d1f;
-        color: #fff;
-        border-radius: 6px;
-    }
-
+    .dataTables_wrapper .pagination .page-item.active .page-link,
     .dataTables_wrapper .pagination .page-item .page-link:hover {
         background-color: #1d1d1f;
         color: #fff;
+        border-radius: 6px;
     }
 
     .dataTables_wrapper .dataTables_length,
     .dataTables_wrapper .dataTables_info,
     .dataTables_wrapper .dataTables_filter,
     .dataTables_wrapper .dataTables_paginate {
-        color: #666;
         font-size: 0.9rem;
+        color: #666;
     }
 
     .dataTables_wrapper .dataTables_filter input {
         background-color: #fff;
         border: 1px solid #ccc;
-        color: #1d1d1f;
         border-radius: 8px;
         padding: 6px 10px;
+        color: #1d1d1f;
     }
 
     table.dataTable.no-footer {
@@ -145,8 +132,8 @@
     <div class="card shadow mb-4">
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-hover table-bordered" id="dataTable" width="100%" cellspacing="0">
-                    <thead class="text-center">
+                <table class="table table-hover table-bordered" id="dataTable">
+                    <thead>
                     <tr>
                         <th>이미지</th>
                         <th>상품 번호</th>
@@ -156,12 +143,12 @@
                     </thead>
                     <tbody>
                     <c:forEach var="item" items="${itemlist}">
-                        <tr class="text-center align-middle">
+                        <tr>
                             <td>
                                 <c:choose>
                                     <c:when test="${not empty item.itemImg1}">
                                         <a href="<c:url value='/item/detail'/>?item_key=${item.itemKey}">
-                                            <img src="<c:url value='/img/item/${item.itemImg1}'/>">
+                                            <img src="<c:url value='/img/item/${item.itemImg1}'/>" alt="상품 이미지">
                                         </a>
                                     </c:when>
                                     <c:otherwise>

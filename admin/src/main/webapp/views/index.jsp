@@ -30,7 +30,7 @@
             transform: translateX(-100%);
             transition: transform 0.3s ease-in-out;
             z-index: 9998;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
         }
 
         .hover-sidebar .sidebar-content {
