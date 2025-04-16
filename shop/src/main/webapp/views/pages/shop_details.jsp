@@ -4,19 +4,19 @@
 
 <style>
   .quantity-controls .btn:hover {
-    background-color: #000 !important; 
+    background-color: #000 !important;
     border-color: #000 !important;
     color: #fff !important;
   }
-  .quantity-controls > * { 
+  .quantity-controls > * {
     vertical-align: middle;
   }
 
   .option-group {
-    margin-bottom: 20px; 
+    margin-bottom: 20px;
   }
   .option-group span {
-      display: block; 
+      display: block;
       margin-bottom: 10px;
       font-weight: bold;
   }
@@ -32,10 +32,10 @@
     font-size: 14px;
     background-color: #fff;
     color: #666;
-    white-space: nowrap; 
-    display: inline-flex; 
-    align-items: center; 
-    vertical-align: top; 
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    vertical-align: top;
   }
   .option-group label:not(.disabled):hover {
     border-color: #111;
@@ -52,18 +52,18 @@
     color: #aaa;
     cursor: not-allowed;
     border-color: #e1e1e1;
-    text-decoration: line-through; 
+    text-decoration: line-through;
   }
   .option-group label.disabled:hover {
-      border-color: #e1e1e1; 
+      border-color: #e1e1e1;
   }
- 
+
   .option-group input[type="radio"] {
     display: none;
   }
 
   .product__details__option select {
-      width: calc(50% - 10px); 
+      width: calc(50% - 10px);
       padding: 10px;
       margin-bottom: 15px;
       border: 1px solid #e1e1e1;
@@ -72,11 +72,11 @@
       color: #666;
       background-color: #fff;
       margin-right: 15px;
-      display: inline-block; 
+      display: inline-block;
       vertical-align: top;
   }
    .product__details__option select:last-child {
-       margin-right: 0; 
+       margin-right: 0;
    }
 
   .option-info {
@@ -86,11 +86,11 @@
        border: 1px solid #eee;
        border-radius: 4px;
        font-size: 14px;
-       min-height: 50px; 
-       padding: 15px; 
-       display: flex; 
-       align-items: center; 
-       justify-content: center; 
+       min-height: 50px;
+       padding: 15px;
+       display: flex;
+       align-items: center;
+       justify-content: center;
    }
    .option-info .price-change {
       font-weight: bold;
@@ -117,18 +117,18 @@
   .sticky-footer-buttons {
     position: fixed;
     bottom: 0;
-    left: 50%; /* 중앙 정렬을 위해 left 50% */
-    transform: translateX(-50%); /* 정확한 중앙 정렬 */
-    width: 60%; /* 너비 50% */
+    left: 50%; 
+    transform: translateX(-50%); 
+    width: 60%; 
     display: flex;
     padding: 15px;
     background-color: #fff;
     box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
     z-index: 1000;
-    gap: 10px; /* 버튼 사이 간격 */
+    gap: 10px; 
   }
   .sticky-footer-buttons button {
-    flex-grow: 1; /* 버튼이 공간을 채우도록 */
+    flex-grow: 1; 
     padding: 15px;
     font-size: 16px;
     border-radius: 5px;
@@ -138,11 +138,11 @@
     background-color: #eee;
     border: 1px solid #ddd;
     color: #333;
-    flex-grow: 0; /* 찜하기 버튼은 고정 너비 */
+    flex-grow: 0; 
     padding: 15px 20px;
   }
   #open-main-modal-btn {
-    background-color: #000; /* 검은색으로 변경 */
+    background-color: #000; 
     border: none;
     color: #fff;
     font-weight: bold;
@@ -157,7 +157,7 @@
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 1010;
-    display: none; /* Initially hidden */
+    display: none; 
     opacity: 0;
     transition: opacity 0.3s ease-in-out;
   }
@@ -172,7 +172,7 @@
     bottom: 0;
     left: 0;
     width: 100%;
-    max-height: 70vh; /* 최대 높이 제한 */
+    max-height: 70vh; 
     background-color: #fff;
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
@@ -183,25 +183,25 @@
     display: flex;
     flex-direction: column;
     padding: 20px;
-    padding-bottom: 90px; /* 하단 버튼 영역 확보 + 내부 패딩 고려 */
-    box-sizing: border-box; /* 패딩이 높이에 포함되도록 */
+    padding-bottom: 90px; 
+    box-sizing: border-box;
   }
   #options-bottom-sheet.active {
     transform: translateY(0);
   }
-  .modal-handle { /* Optional handle bar */
+  .modal-handle { 
       width: 50px;
       height: 5px;
       background-color: #ccc;
       border-radius: 3px;
-      margin: -10px auto 15px; /* Position above content */
+      margin: -10px auto 15px; 
       cursor: grab;
   }
   #selected-options-container {
-    overflow-y: auto; /* 내용 많아지면 스크롤 */
+    overflow-y: auto; 
     margin-bottom: 15px;
-    flex-grow: 1; /* 남은 공간 채우기 */
-    min-height: 50px; /* 최소 높이 확보 */
+    flex-grow: 1; 
+    min-height: 50px; 
   }
   .option-trigger-buttons button {
     display: block;
@@ -232,7 +232,7 @@
   .total-summary {
     border-top: 1px solid #eee;
     padding-top: 15px;
-    margin-top: auto; /* 아래쪽에 붙도록 */
+    margin-top: auto; 
     text-align: right;
     font-size: 16px;
     font-weight: bold;
@@ -241,11 +241,11 @@
     color: #ca1515;
   }
   #final-add-all-to-cart-btn {
-      display: block; /* Make it block level */
-      width: 100%; /* Full width */
+      display: block; 
+      width: 100%; 
       padding: 15px;
-      margin-top: 15px; /* Space above */
-      background-color: #000; /* 검은색으로 변경 */
+      margin-top: 15px; 
+      background-color: #000; 
       color: #fff;
       border: none;
       border-radius: 5px;
@@ -270,8 +270,7 @@
     box-shadow: 0 5px 20px rgba(0,0,0,0.2);
     z-index: 1030;
     padding: 25px;
-    width: 50%; /* 화면 너비의 50%로 변경 */
-    /* max-width 제거 */
+    width: 50%; 
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s 0.3s;
@@ -292,8 +291,8 @@
   }
   .center-modal .close-modal-btn {
       position: absolute;
-      top: -10px; /* Adjust as needed */
-      right: -5px; /* Adjust as needed */
+      top: -10px; 
+      right: -5px; 
       background: none;
       border: none;
       font-size: 24px;
@@ -350,7 +349,7 @@
     font-size: 15px;
     margin-bottom: 10px;
     display: block;
-    padding-right: 25px; /* Space for remove button */
+    padding-right: 25px; 
   }
   .selected-option-item .option-controls {
     display: flex;
@@ -370,7 +369,7 @@
     font-size: 16px;
     cursor: pointer;
     border-radius: 3px;
-    line-height: 28px; /* Center text vertically */
+    line-height: 28px; 
     padding: 0;
   }
   .selected-option-item .quantity-control input {
@@ -381,7 +380,6 @@
     margin: 0 5px;
     font-size: 14px;
     border-radius: 3px;
-    /* Hide spinner buttons */
     -moz-appearance: textfield;
   }
   .selected-option-item .quantity-control input::-webkit-outer-spin-button,
@@ -417,6 +415,7 @@
 </style>
 
 <script>
+/*
   const allOptionsData = JSON.parse('${optionsJson}');
 
   $(function() {
@@ -449,40 +448,40 @@
     const colorSelect = $('#color-select');
     const optionInfoDiv = $('#option-info');
     const addToCartBtn = $('#add-to-cart-btn');
-    let currentSelectedOptionKey = null; 
+    let currentSelectedOptionKey = null;
 
     function updateOptionInfo() {
         const selectedSize = sizeSelect.val();
         const selectedColor = colorSelect.val();
-        currentSelectedOptionKey = null; 
-        optionInfoDiv.empty(); 
-        addToCartBtn.addClass('disabled').prop('disabled', true); 
+        currentSelectedOptionKey = null;
+        optionInfoDiv.empty();
+        addToCartBtn.addClass('disabled').prop('disabled', true);
 
         if (selectedSize && selectedColor) {
-            
+
              const selectedOption = allOptionsData.find(opt => opt.size === selectedSize && opt.color === selectedColor);
-             console.log("Selected Option Data:", selectedOption); 
- 
+             console.log("Selected Option Data:", selectedOption);
+
              if (selectedOption) {
-                currentSelectedOptionKey = selectedOption.optionKey; 
+                currentSelectedOptionKey = selectedOption.optionKey;
                 let infoHtml = '';
 
                 if (selectedOption.additionalPrice && selectedOption.additionalPrice > 0) {
                     infoHtml += `<span class="price-change">(+${selectedOption.additionalPrice.toLocaleString()}원)</span>`;
                  }
                   if (selectedOption.stock > 0) {
-                      
+
                       const stockMessage = '<span class="stock-status in-stock">구매 가능 (재고: ' + selectedOption.stock + '개)</span>';
                       infoHtml += stockMessage;
                       console.log("Constructed infoHtml with stock:", infoHtml);
                       addToCartBtn.removeClass('disabled').prop('disabled', false);
- 
+
                    } else {
                       infoHtml += `<span class="stock-status out-of-stock">품절</span>`;
                       console.log("Constructed infoHtml (out of stock):", infoHtml);
                   }
 
-                  optionInfoDiv.html(infoHtml); 
+                  optionInfoDiv.html(infoHtml);
 
             } else {
                 optionInfoDiv.html('<span class="stock-status out-of-stock">선택 불가능한 조합</span>');
@@ -496,7 +495,7 @@
     colorSelect.on('change', updateOptionInfo);
 
     updateOptionInfo();
-    
+
     addToCartBtn.on('click', function(e) {
         e.preventDefault();
 
@@ -528,22 +527,22 @@
         const cartData = {
             itemKey: itemKey,
             cartCnt: cartCnt,
-            optionKey: currentSelectedOptionKey 
+            optionKey: currentSelectedOptionKey
         };
 
         console.log("Adding to cart via AJAX POST", cartData);
 
         $.ajax({
-            url: '<c:url value="/cart/add/ajax"/>', 
-            type: 'POST',                         
-            contentType: 'application/json',      
-            data: JSON.stringify(cartData),    
+            url: '<c:url value="/cart/add/ajax"/>',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(cartData),
 
             success: function(response) {
 
                 if (response.success) {
                     console.log("Successfully added to cart.");
-                    location.href = '<c:url value="/cart"/>'; 
+                    location.href = '<c:url value="/cart"/>';
 
                 } else {
                     console.error("Failed to add to cart:", response.message);
@@ -565,36 +564,68 @@
 
     $('.product__thumb__pic.set-bg, .product__item__pic.set-bg').each(function () {
         let bg = $(this).data('setbg');
-        if (bg) { 
+        if (bg) {
             $(this).css('background-image', 'url(' + bg + ')');
         }
     });
   });
+*/
 </script>
 
 <script>
 $(function() {
-    // --- New JS Logic ---
-    const itemKey = $('#product-details-data').data('item-key'); // Keep itemKey reference
+    const itemKey = $('#product-details-data').data('item-key');
+    const baseItemPrice = parseFloat('${item.itemPrice}') || 0;
     const modalOverlay = $('.modal-overlay');
     const mainBottomSheet = $('#options-bottom-sheet');
     const colorSelectModal = $('#color-select-modal');
     const sizeSelectModal = $('#size-select-modal');
-    // Add references to other elements later as needed
+    const selectedOptionsContainer = $('#selected-options-container');
+    const triggerColorBtn = $('#trigger-color-modal');
+    const triggerSizeBtn = $('#trigger-size-modal');
+    const finalAddToCartBtn = $('#final-add-all-to-cart-btn');
+    const totalQuantitySpan = $('#total-quantity');
+    const totalPriceSpan = $('#total-price');
 
-    // --- Modal Control Functions ---
-    function showModal(modal) {
-        modalOverlay.addClass('active');
-        modal.addClass('active');
-        $('body').css('overflow', 'hidden'); // Prevent body scroll
+    const sizeOptionsList = $('#size-options-list');
+    const sizeModalSelectedColorSpan = $('#size-modal-selected-color');
+
+    let selectedColor = null;
+    let availableColors = [];
+    let allOptionsData = [];
+
+    try {
+        const optionsJsonString = ('${optionsJson}' || '[]').replace(/\\'/g, "'").replace(/\\"/g, '"');
+        allOptionsData = JSON.parse(optionsJsonString);
+        if (!Array.isArray(allOptionsData)) {
+             console.error("Parsed optionsJson is not an array:", allOptionsData);
+             allOptionsData = [];
+        }
+    } catch (e) {
+        console.error("Error parsing optionsJson:", e);
+        allOptionsData = []; 
+    }
+
+    if (allOptionsData.length > 0) {
+         availableColors = [...new Set(allOptionsData.map(opt => opt.color))].sort();
+    } else {
+        console.error("allOptionsData is empty or invalid.");
+         triggerColorBtn.prop('disabled', true);
+     }
+
+
+     function showModal(modal) {
+         modalOverlay.addClass('active');
+         modal.addClass('active');
+        $('body').css('overflow', 'hidden'); 
     }
 
     function hideModal(modal) {
         modal.removeClass('active');
-        // Hide overlay only if no other modals are active
+
         if ($('.center-modal.active, #options-bottom-sheet.active').length === 0) {
             modalOverlay.removeClass('active');
-            $('body').css('overflow', ''); // Restore body scroll
+            $('body').css('overflow', '');
         }
     }
 
@@ -604,64 +635,298 @@ $(function() {
         colorSelectModal.removeClass('active');
         sizeSelectModal.removeClass('active');
         $('body').css('overflow', '');
-        // Reset selections later
     }
 
-    // --- Event Listeners ---
-    // Open main modal
+    function resetOptionSelectionTriggers() {
+        selectedColor = null;
+        triggerColorBtn.html('색상 옵션을 선택해주세요 <span class="arrow">▼</span>');
+
+        triggerSizeBtn.prop('disabled', true).html('사이즈 옵션을 선택해주세요 <span class="arrow">▼</span>');
+        sizeOptionsList.empty();
+        sizeModalSelectedColorSpan.text('');
+    }
+
+    function populateSizeOptions() {
+        if (!selectedColor || allOptionsData.length === 0) {
+            console.error("Cannot populate sizes: Color not selected or no options data.");
+            return;
+        }
+
+        sizeOptionsList.empty(); 
+        sizeModalSelectedColorSpan.text(`선택된 색상: ${selectedColor}`);
+
+        const sizesForColor = allOptionsData
+            .filter(opt => opt.color === selectedColor)
+            .sort((a, b) => (a.size || '').localeCompare(b.size || ''));
+
+        if (sizesForColor.length === 0) {
+            sizeOptionsList.append('<p>해당 색상의 사이즈 옵션이 없습니다.</p>');
+            return;
+        }
+
+        const addedOptionKeys = selectedOptionsContainer.find('.selected-option-item')
+                                    .map(function() { return $(this).data('option-key'); })
+                                    .get();
+
+        sizesForColor.forEach(option => {
+            const btn = $('<button type="button"></button>');
+            let buttonText = option.size || '단일 사이즈';
+            const priceDifference = option.additionalPrice || 0;
+            const isOutOfStock = option.stock <= 0;
+            const isAlreadyAdded = addedOptionKeys.includes(option.optionKey);
+
+             if (priceDifference > 0) {
+                 buttonText += ` (+${priceDifference.toLocaleString('ko-KR')}원)`;
+             } else if (priceDifference < 0) {
+                  buttonText += ` (${priceDifference.toLocaleString('ko-KR')}원)`;
+             }
+
+             if (isOutOfStock) {
+                 buttonText += ` (품절)`;
+            }
+
+            btn.text(buttonText);
+            btn.prop('disabled', isOutOfStock || isAlreadyAdded); 
+
+            if (!isOutOfStock && !isAlreadyAdded) {
+                btn.on('click', function() {
+                    addSelectedOption(option);
+                    hideModal(sizeSelectModal);
+                    resetOptionSelectionTriggers();
+                });
+            }
+            sizeOptionsList.append(btn);
+        });
+    }
+
+    function addSelectedOption(optionData) {
+        const optionKey = optionData.optionKey;
+        
+        if (selectedOptionsContainer.find(`.selected-option-item[data-option-key="${optionKey}"]`).length > 0) {
+            alert("이미 추가된 옵션입니다.");
+            return;
+        }
+
+        const itemPriceWithOption = baseItemPrice + (optionData.additionalPrice || 0);
+        const optionName = `${optionData.color} / ${optionData.size || '단일 사이즈'}`;
+
+        const newItemHtml = `
+            <div class="selected-option-item" data-option-key="${optionKey}" data-stock="${optionData.stock}" data-price="${itemPriceWithOption}">
+                <button type="button" class="remove-item-btn">×</button>
+                <span class="option-name">${optionName}</span>
+                <div class="option-controls">
+                    <div class="quantity-control">
+                        <button type="button" class="quantity-decrease">-</button>
+                        <input type="number" value="1" min="1" max="${optionData.stock}" aria-label="수량">
+                        <button type="button" class="quantity-increase">+</button>
+                         <span class="stock-info">(재고: ${optionData.stock})</span>
+                     </div>
+                     <span class="item-price">${itemPriceWithOption.toLocaleString('ko-KR')}원</span>
+                 </div>
+             </div>
+        `;
+
+        const newItemElement = $(newItemHtml);
+        selectedOptionsContainer.append(newItemElement);
+        attachOptionItemListeners(newItemElement);
+        updateTotals(); 
+    }
+
+    function attachOptionItemListeners(itemElement) {
+        const quantityInput = itemElement.find('.quantity-control input');
+        const decreaseBtn = itemElement.find('.quantity-decrease');
+        const increaseBtn = itemElement.find('.quantity-increase');
+        const removeBtn = itemElement.find('.remove-item-btn');
+        const maxStock = parseInt(itemElement.data('stock'), 10);
+
+        decreaseBtn.on('click', function() {
+            let currentVal = parseInt(quantityInput.val(), 10);
+            if (currentVal > 1) {
+                quantityInput.val(currentVal - 1).trigger('change'); 
+            }
+        });
+
+        increaseBtn.on('click', function() {
+            let currentVal = parseInt(quantityInput.val(), 10);
+            if (currentVal < maxStock) {
+                quantityInput.val(currentVal + 1).trigger('change');
+            } else {
+                alert(`최대 ${maxStock}개까지만 구매 가능합니다.`);
+            }
+        });
+
+        quantityInput.on('change blur', function() {
+            let currentVal = parseInt($(this).val(), 10);
+            if (isNaN(currentVal) || currentVal < 1) {
+                $(this).val(1);
+                 alert("수량은 1개 이상이어야 합니다.");
+            } else if (currentVal > maxStock) {
+                $(this).val(maxStock);
+                alert(`최대 ${maxStock}개까지만 구매 가능합니다.`);
+            }
+
+            updateTotals();
+        });
+
+        removeBtn.on('click', function() {
+            itemElement.remove(); 
+            updateTotals(); 
+        });
+    }
+
+    function updateTotals() {
+        let totalQuantity = 0;
+        let totalPrice = 0;
+
+        selectedOptionsContainer.find('.selected-option-item').each(function() {
+            const item = $(this);
+            const quantity = parseInt(item.find('.quantity-control input').val(), 10) || 0;
+            const price = parseFloat(item.data('price')) || 0;
+
+            if (!isNaN(quantity) && !isNaN(price)) {
+                totalQuantity += quantity;
+                 totalPrice += price * quantity;
+                 item.find('.item-price').text((price * quantity).toLocaleString('ko-KR') + '원');
+             } else {
+                  console.warn("Invalid quantity or price found for item:", item.data('option-key'));
+                  item.find('.item-price').text('가격 오류');
+            }
+         });
+
+         totalQuantitySpan.text(totalQuantity);
+         totalPriceSpan.text(totalPrice.toLocaleString('ko-KR'));
+
+         finalAddToCartBtn.prop('disabled', totalQuantity <= 0);
+     }
+
+    
+
+    // 이벤트 리스너 
     $('#open-main-modal-btn').on('click', function() {
+        resetOptionSelectionTriggers();
+        updateTotals();
         showModal(mainBottomSheet);
     });
 
-    // Close by clicking overlay
-    modalOverlay.on('click', function() {
-        hideAllModals();
+    modalOverlay.on('click', function(e) {
+        if ($(e.target).is(modalOverlay)) {
+             hideAllModals();
+
+        }
     });
 
-    // Close center modals via X button
     $('.close-modal-btn').on('click', function() {
         const targetModalId = $(this).data('target');
         hideModal($('#' + targetModalId));
     });
 
-    // Close main modal via handle (simplified click)
     $('.modal-handle').on('click', function() {
-        hideAllModals(); // Close everything if handle is clicked
+        hideModal(mainBottomSheet);
     });
 
-    // Open color select modal
-    $('#trigger-color-modal').on('click', function() {
-        // Populate options later
+    triggerColorBtn.on('click', function() {
+        if ($(this).prop('disabled')) return;
+        populateColorOptions();
         showModal(colorSelectModal);
     });
 
-    // Open size select modal (initially disabled)
-    $('#trigger-size-modal').on('click', function() {
-        if ($(this).prop('disabled')) return; // Prevent opening if disabled
-        // Populate options later
+    triggerSizeBtn.on('click', function() {
+        if ($(this).prop('disabled')) return;
+        if (!selectedColor) {
+             alert('색상을 먼저 선택해주세요.'); 
+             return;
+         }
+        populateSizeOptions(); 
         showModal(sizeSelectModal);
     });
 
-    // --- Placeholder for future logic ---
-    // function populateColorOptions() {}
-    // function populateSizeOptions(color) {}
-    // function addSelectedOption(optionData) {}
-    // function attachOptionItemListeners(itemElement) {}
-    // function updateTotals() {}
-    // function resetOptionSelectionTriggers() {}
-    // function resetOptionSelection() {}
-    // $('#final-add-all-to-cart-btn').on('click', function() {});
+    function populateColorOptions() {
+        const list = $('#color-options-list');
+        list.empty(); 
+        if (availableColors.length === 0) {
+             list.append('<p>사용 가능한 색상이 없습니다.</p>');
+             return;
+        }
+        availableColors.forEach(color => {
+            const btn = $('<button type="button"></button>').text(color);
+            btn.on('click', function() {
+                selectedColor = color;
+                triggerSizeBtn.prop('disabled', false); 
+                triggerColorBtn.html(`${color} 선택됨 <span class="arrow">▼</span>`); 
+                hideModal(colorSelectModal); 
+            });
+            list.append(btn);
+        });
+    }
 
-    // --- Keep original image setup ---
+    finalAddToCartBtn.on('click', function() {
+        if ($(this).prop('disabled')) {
+            return; 
+        }
+
+        const itemsToCart = [];
+        selectedOptionsContainer.find('.selected-option-item').each(function() {
+            const item = $(this);
+            const optionKey = item.data('option-key');
+            const quantity = parseInt(item.find('.quantity-control input').val(), 10);
+
+            if (optionKey && quantity > 0) {
+                itemsToCart.push({
+                    itemKey: itemKey, 
+                    optionKey: optionKey, 
+                    cartCnt: quantity
+                });
+            }
+        });
+
+        if (itemsToCart.length === 0) {
+            alert("장바구니에 담을 상품이 없습니다. 옵션을 선택하고 수량을 확인해주세요.");
+            return;
+        }
+
+        console.log("Adding batch to cart via AJAX POST:", itemsToCart);
+
+        $.ajax({
+            url: '<c:url value="/cart/add/ajax"/>', 
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(itemsToCart),
+            beforeSend: function() {
+                finalAddToCartBtn.prop('disabled', true).text('처리중...');
+            },
+            success: function(response) {
+                if (response.success) {
+                    console.log("Successfully added batch to cart.");
+                    selectedOptionsContainer.empty();
+                    updateTotals();
+                    hideAllModals();
+
+                    if (confirm("상품을 장바구니에 담았습니다. 장바구니로 이동하시겠습니까?")) {
+                        location.href = '<c:url value="/cart"/>';
+                    }
+                } else {
+                    console.error("Failed to add batch to cart:", response.message);
+                    alert(response.message || '장바구니 추가에 실패했습니다. 잠시 후 다시 시도해주세요.');
+                    finalAddToCartBtn.prop('disabled', false).text('장바구니 담기');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("AJAX Error adding batch to cart:", status, error);
+                alert('장바구니 추가 중 오류가 발생했습니다. 서버 상태를 확인하거나 관리자에게 문의하세요.');
+                 finalAddToCartBtn.prop('disabled', false).text('장바구니 담기');
+            }
+        });
+    });
+
+     // --- Initial Setup ---
+     updateTotals();
+
     $('.product__thumb__pic.set-bg, .product__item__pic.set-bg').each(function () {
         let bg = $(this).data('setbg');
         if (bg) {
             $(this).css('background-image', 'url(' + bg + ')');
         }
     });
-     // Initial call to set totals (will be 0)
-     // updateTotals(); // Call later when function is implemented
-
 });
 </script>
 
@@ -683,7 +948,7 @@ $(function() {
             <div class="row">
                 <div class="col-lg-3 col-md-3">
                     <ul class="nav nav-tabs" role="tablist">
-                    
+
                         <c:if test="${not empty item.itemImg1}">
                             <li class="nav-item">
                                 <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab">
@@ -698,12 +963,12 @@ $(function() {
                                 </a>
                             </li>
                         </c:if>
-                        
+
                     </ul>
                 </div>
                 <div class="col-lg-6 col-md-9">
                     <div class="tab-content">
-                        
+
                         <c:if test="${not empty item.itemImg1}">
                             <div class="tab-pane active" id="tabs-1" role="tabpanel">
                                 <div class="product__details__pic__item">
@@ -718,7 +983,7 @@ $(function() {
                                 </div>
                             </div>
                         </c:if>
-                        
+
                     </div>
                 </div>
             </div>
@@ -740,7 +1005,8 @@ $(function() {
 
                         <%-- 기존 옵션 선택 영역 및 장바구니 버튼 제거됨 --%>
                         <script>
-                          const optionsJson = '${optionsJson}'; // 옵션 데이터는 유지
+                          const optionsJson = '${optionsJson}'; 
+                          const baseItemPrice = parseFloat('${item.itemPrice}') || 0; 
                         </script>
 
                     </div> <%-- End of product__details__text --%>
@@ -854,8 +1120,8 @@ $(function() {
 
 <!-- Sticky Footer Buttons -->
 <div class="sticky-footer-buttons">
-    <button type="button" id="add-to-wishlist-btn">찜</button> <!-- 찜하기 버튼 -->
-    <button type="button" id="open-main-modal-btn">장바구니 담기</button> <!-- 텍스트 수정 -->
+    <button type="button" id="add-to-wishlist-btn">찜</button>
+    <button type="button" id="open-main-modal-btn">장바구니 담기</button>
 </div>
 
 <!-- Modal Overlay -->
@@ -863,7 +1129,7 @@ $(function() {
 
 <!-- Main Bottom Sheet Modal -->
 <div id="options-bottom-sheet">
-    <div class="modal-handle"></div> <!-- Optional handle -->
+    <div class="modal-handle"></div>
     <div id="selected-options-container">
         <!-- Selected options will be added here by JS -->
     </div>
@@ -893,85 +1159,3 @@ $(function() {
         <!-- Size options will be added here by JS -->
     </div>
 </div>
-
-          <!-- </div>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-lg-12">
-        <div class="product__details__tab">
-          <ul class="nav nav-tabs" role="tablist">
-            <li class="nav-item">
-              <a class="nav-link active" data-toggle="tab" href="#tabs-5"
-                 role="tab">Description</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" data-toggle="tab" href="#tabs-6" role="tab">Customer
-                Previews(5)</a> <%-- 리뷰 개수 동적 표시 --%>
-            </li>
-              <li class="nav-item">
-                  <a class="nav-link" data-toggle="tab" href="#tabs-7" role="tab">
-                      Q & A
-                  </a> <%-- 리뷰 개수 동적 표시 --%>
-              </li>
-          </ul>
-          <div class="tab-content">
-            <div class="tab-pane active" id="tabs-5" role="tabpanel">
-              <div class="product__details__tab__content">
-                <%-- 상품 설명 동적 표시 필요 --%>
-                <p class="note">Nam tempus turpis at metus scelerisque placerat nulla deumantos
-                  solicitud felis. Pellentesque diam dolor, elementum etos lobortis des mollis
-                  ut risus. Sedcus faucibus an sullamcorper mattis drostique des commodo
-                  pharetras loremos.</p>
-                <div class="product__details__tab__content__item">
-                  <h5>Products Infomation</h5>
-                  <p>A Pocket PC is a handheld computer...</p>
-                  <p>As is the case with any new technology product...</p>
-                </div>
-                <div class="product__details__tab__content__item">
-                  <h5>Material used</h5>
-                  <p>Polyester is deemed lower quality...</p>
-                </div>
-              </div>
-            </div>
-            <div class="tab-pane" id="tabs-6" role="tabpanel">
-              <div class="product__details__tab__content">
-                <%-- 고객 리뷰 동적 표시 필요 --%>
-                <p>Customer reviews will be displayed here.</p>
-              </div>
-            </div>
-            <div class="tab-pane shop-detail-board" id="tabs-7" role="tabpanel">
-                <form action="<c:url value='/qnaboard/add?id=${sessionScope.cust.custId}'/>" method="post">
-                    <button type="submit" class="site-btn" style="width: 300px;">문의 작성하기</button>
-                </form>
-                <br/>
-                  <div class="product__details__tab__content">
-                      <table class="table">
-                          <thead>
-                          <tr>
-                              <th>제목</th>
-                              <th>등록날짜</th>
-                              <th></th>
-                          </tr>
-                          </thead>
-                          <tbody>
-                          <c:forEach var="c" items="${qnaBoards}">
-                              <tr>
-                                  <td>${c.boardTitle}</td>
-                                  <td><fmt:formatDate  value="${c.boardRdate}" pattern="yyyy-MM-dd" /></td>
-                                  <td><p id="boardRe">${c.boardRe}</p></td>
-                              </tr>
-                          </c:forEach>
-                          </tbody>
-                      </table>
-                  </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-</section>
-Shop Details Section End -->

@@ -91,8 +91,57 @@ public class CartController {
 
         return response; 
     }
+ 
+    @PostMapping("/add/batch/ajax") 
+    @ResponseBody                  
+    public Map<String, Object> addCartItemsBatchAjax(@RequestBody List<Cart> cartItems, HttpSession session) {
+        Map<String, Object> response = new HashMap<>();
+        Customer loggedInCustomer = (Customer) session.getAttribute("cust");
 
+        if (loggedInCustomer == null) {
+            response.put("success", false);
+            response.put("message", "로그인이 필요합니다.");
+            response.put("redirectUrl", "/gologin"); 
+            return response;
+        }
 
+        String custId = loggedInCustomer.getCustId();
+
+        if (cartItems == null || cartItems.isEmpty()) {
+            response.put("success", false);
+            response.put("message", "장바구니에 담을 상품 정보가 없습니다.");
+            return response;
+        }
+
+        try {
+            int addedCount = 0;
+            for (Cart cart : cartItems) {
+                if (cart.getCartCnt() > 0) { 
+                    cart.setCustId(custId); 
+                    cartService.add(cart); 
+                    addedCount++;
+                } else {
+                    log.warn("장바구니 추가 요청 건너뜀 (수량 0 이하): {}", cart);
+                }
+            }
+
+            if (addedCount > 0) {
+                response.put("success", true);
+                response.put("message", "선택하신 " + addedCount + "개 상품 옵션을 장바구니에 담았습니다.");
+            } else {
+                response.put("success", false); 
+                response.put("message", "장바구니에 담을 유효한 상품이 없습니다.");
+            }
+
+        } catch (Exception e) {
+            log.error("장바구니 일괄 추가 처리 중 오류 발생 - CustID: {}", custId, e);
+            response.put("success", false);
+            response.put("message", "장바구니 추가 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+        }
+
+        return response;
+    }
+ 
     @RequestMapping("/updateQuantity")
     @ResponseBody
     public Map<String, Object> updateQuantity(@RequestBody Cart cart, HttpSession session) { 
