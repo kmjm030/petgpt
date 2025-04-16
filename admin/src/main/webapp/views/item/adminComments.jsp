@@ -4,11 +4,9 @@
 
 
 
-
-
 <div class="card-body">
   <div class="table-responsive">
-    <c:forEach var="qna" items="${qnaBoardList}">
+    <c:forEach var="qna" items="${qnaList}">
 <%--      <H1>${qna.boardKey}</H1>--%>
 <%--      <H5>난는 ${map.get(qna.boardKey)}</H5>--%>
 <%--       게시판원글  --%>
@@ -22,9 +20,9 @@
           <th>boardTitle</th>
           <th>boardContent</th>
           <th>boardRdate</th>
-          <th>boardImg</th>
-          <th>boardOption</th>
-          <th>boardUpdate</th>
+<%--          <th>boardImg</th>--%>
+<%--          <th>boardOption</th>--%>
+<%--          <th>boardUpdate</th>--%>
 
         </tr>
         </thead>
@@ -38,9 +36,9 @@
           <td>${qna.boardTitle}</td>
           <td>${qna.boardContent}</td>
           <td>${qna.boardRdate}</td>
-          <td>${qna.boardImg}</td>
-          <td>${qna.boardOption}</td>
-          <td>${qna.boardUpdate}</td>
+<%--          <td>${qna.boardImg}</td>--%>
+<%--          <td>${qna.boardOption}</td>--%>
+<%--          <td>${qna.boardUpdate}</td>--%>
 
 
         </tr>
@@ -56,13 +54,13 @@
       <table class="table table-bordered"  width="100%" cellspacing="0">
         <thead class="thead-light">
         <tr class="table-warning">
-          <th>adcommentsKey</th>
-          <th>boardKey</th>
-          <th>ItemKey</th>
-          <th>adminId</th>
-          <th>adcommentsContent</th>
-          <th>adcommentsRdate</th>
-          <th>adcommentsUpdate</th>
+          <th>qna.adminComments.boardKey</th>
+          <th>qna.adminComments.adcommentsKey</th>
+          <th>qna.adminComments.ItemKey</th>
+          <th>qna.adminComments.adminId</th>
+          <th>qna.adminComments.adcommentsContent</th>
+          <th>qna.adminComments.adcommentsRdate</th>
+<%--          <th>adcommentsUpdate</th>--%>
 
         </tr>
         </thead>
@@ -70,14 +68,14 @@
         <%--                    <c:forEach var="a" items="${adminComments}">--%>
 
         <tr>
-  <%--        <td><a href="<c:url value="/board/detail"/>?id=${a.boardKey}">${board.boardKey}</a></td>--%>
-          <td>${map.get(qna.boardKey).adcommentsKey}</td>
-          <td>${map.get(qna.boardKey).boardKey}</td>
-          <td>${map.get(qna.boardKey).itemKey}</td>
-          <td>${map.get(qna.boardKey).adminId}</td>
-          <td>${map.get(qna.boardKey).adcommentsContent}</td>
-          <td>${map.get(qna.boardKey).adcommentsRdate}</td>
-          <td>${map.get(qna.boardKey).adcommentsUpdate}</td>
+          <td><a href="<c:url value="/board/detail"/>?id=${qna.boardKey}">${qna.boardKey}</a></td>
+          <td>${qna.adcommentsKey}</td>
+<%--          <td>${qna.boardKey}</td>--%>
+          <td>${qna.itemKey}</td>
+          <td>${qna.adminId}</td>
+          <td>${qna.adcommentsContent}</td>
+          <td>${qna.adcommentsRdate}</td>
+<%--          <td>${qna.adminComments.adcommentsUpdate}</td>--%>
 
 
         </tr>

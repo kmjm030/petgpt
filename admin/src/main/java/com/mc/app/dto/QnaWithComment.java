@@ -19,5 +19,10 @@ public class QnaWithComment {
     private String boardContent;
     private Date boardRdate;
 
-    private AdminComments adminComments; // 포함된 관리자 답글
+    private int adcommentsKey;
+    private String adcommentsContent;
+    private String adminId;
+    private Date adcommentsRdate;
+
+//    private AdminComments adminComments; // 포함된 관리자 답글
 }

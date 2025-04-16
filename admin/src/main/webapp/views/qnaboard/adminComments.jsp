@@ -5,7 +5,7 @@
 <div class="card-body">
   <div class="table-responsive">
     <h2> 관리자 댓글</h2>
-    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+    <table class="table table-bordered"  width="100%" cellspacing="0">
       <thead>
       <tr>
         <th>게시판글번호</th>

@@ -88,70 +88,11 @@
             <c:when test="${adminComments == null}">
                 <h1><a href="#" data-toggle="modal" data-target="#loginModal">관리자 댓글 쓰기</a></h1>
             </c:when>
-
-
-            <%--        관리자 댓글 존재 여부 확인끝--%>
-
             <%--         관리자 댓글 --%>
             <c:otherwise>
                 <jsp:include page="adminComments.jsp"></jsp:include>
-<%--                <div class="card-body">--%>
-<%--                    <div class="table-responsive">--%>
-<%--                        <h2> 관리자 댓글</h2>--%>
-<%--                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">--%>
-<%--                            <thead>--%>
-<%--                            <tr>--%>
-<%--                                <th>게시판글번호</th>--%>
-<%--                                <th>adcommentsKey</th>--%>
-<%--                                <th>boardKey</th>--%>
-<%--                                <th>adminId</th>--%>
-<%--                                <th>adcommentsContent</th>--%>
-<%--                                <th>adcommentsRdate</th>--%>
-<%--                                <th>adcommentsUpdate</th>--%>
-<%--                                <th>수정</th>--%>
-<%--                                <th>삭제</th>--%>
-<%--                            </tr>--%>
-<%--                            </thead>--%>
-<%--                                &lt;%&ndash;                    <tfoot>&ndash;%&gt;--%>
-<%--                                &lt;%&ndash;                    <tr>&ndash;%&gt;--%>
-<%--                                &lt;%&ndash;                        <th>게시판글번호</th>&ndash;%&gt;--%>
-<%--                                &lt;%&ndash;                        <th>adminComments.adcommentsKey</th>&ndash;%&gt;--%>
-<%--                                &lt;%&ndash;                        <th>adminComments.boardKey</th>&ndash;%&gt;--%>
-<%--                                &lt;%&ndash;                        <th>adminComments.adminId</th>&ndash;%&gt;--%>
-<%--                                &lt;%&ndash;                        <th>adminComments.adcommentsContent</th>&ndash;%&gt;--%>
-<%--                                &lt;%&ndash;                        <th>adminComments.adcommentsRdate</th>&ndash;%&gt;--%>
-<%--                                &lt;%&ndash;                        <th>adminComments.adcommentsUpdate</th>&ndash;%&gt;--%>
-<%--                                &lt;%&ndash;                        <th>${adminComments}</th>&ndash;%&gt;--%>
-<%--                                &lt;%&ndash;                        <th>삭제</th>&ndash;%&gt;--%>
-<%--                                &lt;%&ndash;                    </tr>&ndash;%&gt;--%>
-<%--                                &lt;%&ndash;                    </tfoot>&ndash;%&gt;--%>
-<%--                            <tbody>--%>
-<%--                                &lt;%&ndash;                    <c:forEach var="a" items="${adminComments}">&ndash;%&gt;--%>
-<%--                            <tr>--%>
-<%--                                <td><a href="<c:url value="/board/detail"/>?id=${a.boardKey}">${board.boardKey}</a></td>--%>
-<%--                                <td>${adminComments.adcommentsKey}</td>--%>
-<%--                                <td>${adminComments.boardKey}</td>--%>
-<%--                                <td>${adminComments.adminId}</td>--%>
-<%--                                <td>${adminComments.adcommentsContent}</td>--%>
-<%--                                <td>${adminComments.adcommentsRdate}</td>--%>
-<%--                                <td>${adminComments.adcommentsUpdate}</td>--%>
 
-<%--                                <td>--%>
-<%--                                    <button onclick="board_get.update('${board.boardKey}')" type="button" class="btn btn-secondary">수정</button>--%>
-<%--                                </td>--%>
-<%--                                <td>--%>
-<%--                                    <button onclick="board_get.delete('${board.boardKey}')" type="button" class="btn btn-secondary">삭제</button>--%>
-<%--                                </td>--%>
-<%--                            </tr>--%>
-<%--                                &lt;%&ndash;                    </c:forEach>&ndash;%&gt;--%>
-<%--                            </tbody>--%>
-<%--                            </tbody>--%>
-<%--                        </table>--%>
-<%--                    </div>--%>
-<%--                </div>--%>
-
-                <%--         관리자댓글 끝--%>
-                관련아이템 :  <h1>${item.itemName}</h1>h1>
+                관련아이템 :  <h1>${item.itemName}</h1>
             </c:otherwise>
         </c:choose>
     </div>
@@ -240,31 +181,6 @@
                         </c:choose>
                         <input type="hidden" name="itemImg3" value="${item.itemImg3}">
                     </div>
-
-                    <div class="form-group">
-                        <label>새 이미지</label>
-                        <input type="file" class="form-control" name="img1">
-                    </div>
-                    <div class="form-group">
-                        <label>새 이미지</label>
-                        <input type="file" class="form-control" name="img2">
-                    </div>
-                    <div class="form-group">
-                        <label>새 이미지</label>
-                        <input type="file" class="form-control" name="img3">
-                    </div>
-
-                    <hr>
-<%--                    <h5 class="mt-4">옵션 정보</h5>--%>
-<%--                    <table class="table table-bordered">--%>
-<%--                        <tr><th>사이즈</th><td>${option.size}</td></tr>--%>
-<%--                        <tr><th>색상</th><td>${option.color}</td></tr>--%>
-<%--                        <tr><th>재고</th><td>${option.stock}</td></tr>--%>
-<%--                        <tr><th>추가 금액</th><td><fmt:formatNumber value="${option.additionalPrice}" pattern="#,###"/>원</td></tr>--%>
-<%--                    </table>--%>
-
-                    <button id="btn_update2" type="button" class="btn btn-primary mt-3">수정</button>
-                    <button id="btn_delete2" type="button" class="btn btn-danger mt-3">삭제</button>
 
                 </form>
             </div>
