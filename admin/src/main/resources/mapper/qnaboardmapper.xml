@@ -42,4 +42,23 @@
         DELETE FROM qnaboard WHERE board_key = #{boardKey}
     </delete>
 
+    <!-- 상품에 대한 QnA + 관리자 댓글 함께 조회 -->
+    <select id="selectQnaWithCommentsByItemKey" parameterType="int" resultType="QnaWithCommentMap">
+        SELECT
+            q.board_key,
+            q.item_key,
+            q.cust_id,
+            q.board_title,
+            q.board_content,
+            q.board_rdate,
+            a.adcomments_key,
+            a.adcomments_content,
+            a.admin_id,
+            a.adcomments_rdate
+        FROM qnaboard q
+                 LEFT JOIN admin_comments a ON q.board_key = a.board_key
+        WHERE q.item_key = #{itemKey}
+        ORDER BY q.board_rdate DESC
+    </select>
+
 </mapper>

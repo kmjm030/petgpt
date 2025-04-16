@@ -153,6 +153,8 @@
             </div>
 
         </form>
+        <jsp:include page="adminComments.jsp"></jsp:include>
+
     </div>
 </div>
 

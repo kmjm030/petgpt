@@ -1,6 +1,8 @@
 package com.mc.app.service;
 
+import com.mc.app.dto.AdminComments;
 import com.mc.app.dto.QnaBoard;
+import com.mc.app.dto.QnaWithComment;
 import com.mc.app.frame.MCService;
 import com.mc.app.repository.QnaBoardRepository;
 import lombok.RequiredArgsConstructor;
@@ -41,6 +43,14 @@ public class QnaBoardService implements MCService<QnaBoard, Integer> {
 
     public List<QnaBoard> findAllByCust(String custId) throws Exception {
         return qnaRepository.findAllByCust(custId);
+    }
+
+    public List<QnaBoard> findAllByItem(Integer itemKey) throws Exception {
+        return qnaRepository.findAllByItem(itemKey);
+    }
+
+    public List<QnaWithComment> selectQnaWithCommentsByItemKey(Integer itemKey) throws Exception{
+        return qnaRepository.selectQnaWithCommentsByItemKey(itemKey);
     }
 
 

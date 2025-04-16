@@ -94,60 +94,61 @@
 
             <%--         관리자 댓글 --%>
             <c:otherwise>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <h2> 관리자 댓글</h2>
-                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                            <thead>
-                            <tr>
-                                <th>게시판글번호</th>
-                                <th>adcommentsKey</th>
-                                <th>boardKey</th>
-                                <th>adminId</th>
-                                <th>adcommentsContent</th>
-                                <th>adcommentsRdate</th>
-                                <th>adcommentsUpdate</th>
-                                <th>수정</th>
-                                <th>삭제</th>
-                            </tr>
-                            </thead>
-                                <%--                    <tfoot>--%>
-                                <%--                    <tr>--%>
-                                <%--                        <th>게시판글번호</th>--%>
-                                <%--                        <th>adminComments.adcommentsKey</th>--%>
-                                <%--                        <th>adminComments.boardKey</th>--%>
-                                <%--                        <th>adminComments.adminId</th>--%>
-                                <%--                        <th>adminComments.adcommentsContent</th>--%>
-                                <%--                        <th>adminComments.adcommentsRdate</th>--%>
-                                <%--                        <th>adminComments.adcommentsUpdate</th>--%>
-                                <%--                        <th>${adminComments}</th>--%>
-                                <%--                        <th>삭제</th>--%>
-                                <%--                    </tr>--%>
-                                <%--                    </tfoot>--%>
-                            <tbody>
-                                <%--                    <c:forEach var="a" items="${adminComments}">--%>
-                            <tr>
-                                <td><a href="<c:url value="/board/detail"/>?id=${a.boardKey}">${board.boardKey}</a></td>
-                                <td>${adminComments.adcommentsKey}</td>
-                                <td>${adminComments.boardKey}</td>
-                                <td>${adminComments.adminId}</td>
-                                <td>${adminComments.adcommentsContent}</td>
-                                <td>${adminComments.adcommentsRdate}</td>
-                                <td>${adminComments.adcommentsUpdate}</td>
+                <jsp:include page="adminComments.jsp"></jsp:include>
+<%--                <div class="card-body">--%>
+<%--                    <div class="table-responsive">--%>
+<%--                        <h2> 관리자 댓글</h2>--%>
+<%--                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">--%>
+<%--                            <thead>--%>
+<%--                            <tr>--%>
+<%--                                <th>게시판글번호</th>--%>
+<%--                                <th>adcommentsKey</th>--%>
+<%--                                <th>boardKey</th>--%>
+<%--                                <th>adminId</th>--%>
+<%--                                <th>adcommentsContent</th>--%>
+<%--                                <th>adcommentsRdate</th>--%>
+<%--                                <th>adcommentsUpdate</th>--%>
+<%--                                <th>수정</th>--%>
+<%--                                <th>삭제</th>--%>
+<%--                            </tr>--%>
+<%--                            </thead>--%>
+<%--                                &lt;%&ndash;                    <tfoot>&ndash;%&gt;--%>
+<%--                                &lt;%&ndash;                    <tr>&ndash;%&gt;--%>
+<%--                                &lt;%&ndash;                        <th>게시판글번호</th>&ndash;%&gt;--%>
+<%--                                &lt;%&ndash;                        <th>adminComments.adcommentsKey</th>&ndash;%&gt;--%>
+<%--                                &lt;%&ndash;                        <th>adminComments.boardKey</th>&ndash;%&gt;--%>
+<%--                                &lt;%&ndash;                        <th>adminComments.adminId</th>&ndash;%&gt;--%>
+<%--                                &lt;%&ndash;                        <th>adminComments.adcommentsContent</th>&ndash;%&gt;--%>
+<%--                                &lt;%&ndash;                        <th>adminComments.adcommentsRdate</th>&ndash;%&gt;--%>
+<%--                                &lt;%&ndash;                        <th>adminComments.adcommentsUpdate</th>&ndash;%&gt;--%>
+<%--                                &lt;%&ndash;                        <th>${adminComments}</th>&ndash;%&gt;--%>
+<%--                                &lt;%&ndash;                        <th>삭제</th>&ndash;%&gt;--%>
+<%--                                &lt;%&ndash;                    </tr>&ndash;%&gt;--%>
+<%--                                &lt;%&ndash;                    </tfoot>&ndash;%&gt;--%>
+<%--                            <tbody>--%>
+<%--                                &lt;%&ndash;                    <c:forEach var="a" items="${adminComments}">&ndash;%&gt;--%>
+<%--                            <tr>--%>
+<%--                                <td><a href="<c:url value="/board/detail"/>?id=${a.boardKey}">${board.boardKey}</a></td>--%>
+<%--                                <td>${adminComments.adcommentsKey}</td>--%>
+<%--                                <td>${adminComments.boardKey}</td>--%>
+<%--                                <td>${adminComments.adminId}</td>--%>
+<%--                                <td>${adminComments.adcommentsContent}</td>--%>
+<%--                                <td>${adminComments.adcommentsRdate}</td>--%>
+<%--                                <td>${adminComments.adcommentsUpdate}</td>--%>
 
-                                <td>
-                                    <button onclick="board_get.update('${board.boardKey}')" type="button" class="btn btn-secondary">수정</button>
-                                </td>
-                                <td>
-                                    <button onclick="board_get.delete('${board.boardKey}')" type="button" class="btn btn-secondary">삭제</button>
-                                </td>
-                            </tr>
-                                <%--                    </c:forEach>--%>
-                            </tbody>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+<%--                                <td>--%>
+<%--                                    <button onclick="board_get.update('${board.boardKey}')" type="button" class="btn btn-secondary">수정</button>--%>
+<%--                                </td>--%>
+<%--                                <td>--%>
+<%--                                    <button onclick="board_get.delete('${board.boardKey}')" type="button" class="btn btn-secondary">삭제</button>--%>
+<%--                                </td>--%>
+<%--                            </tr>--%>
+<%--                                &lt;%&ndash;                    </c:forEach>&ndash;%&gt;--%>
+<%--                            </tbody>--%>
+<%--                            </tbody>--%>
+<%--                        </table>--%>
+<%--                    </div>--%>
+<%--                </div>--%>
 
                 <%--         관리자댓글 끝--%>
                 관련아이템 :  <h1>${item.itemName}</h1>h1>

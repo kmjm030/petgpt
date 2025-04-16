@@ -82,7 +82,14 @@
                 </form>
             </div>
         </div>
-
+<%--        <c:choose>--%>
+<%--            <c:when test="${center == null}">--%>
+<%--                <jsp:include page="center.jsp"></jsp:include>--%>
+<%--            </c:when>--%>
+<%--            <c:otherwise>--%>
+<%--                <jsp:include page="${center}.jsp"></jsp:include>--%>
+<%--            </c:otherwise>--%>
+<%--        </c:choose>--%>
         <%--        관리자 댓글 존재 여부 확인--%>
         <c:choose>
             <c:when test="${adminComments == null}">

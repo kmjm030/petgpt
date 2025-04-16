@@ -77,7 +77,7 @@
                     <tbody>
                     <c:forEach var="board" items="${boards}">
                         <tr>
-                            <td><a href="<c:url value="/board/detail"/>?id=${board.boardKey}">${board.boardKey}</a></td>
+                            <td><a href="<c:url value="/qnaboard/detail"/>?id=${board.boardKey}">${board.boardKey}</a></td>
                             <td>${board.itemKey}</td>
                             <td>${board.custId}</td>
                             <td>${board.orderKey}</td>

@@ -44,7 +44,6 @@ public class QnaBoardController {
 
     @RequestMapping("/detail")  //ksk
     public String detail(Model model,@RequestParam("id") Integer id){
-        // Database에서 데이터를 가지고 온다.
         QnaBoard board = null;
         AdminComments adminComments = null;
         Item item = null;

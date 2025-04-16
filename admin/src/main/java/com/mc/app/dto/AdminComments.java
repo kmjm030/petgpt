@@ -15,6 +15,7 @@ import java.util.Date;
 public class AdminComments {
     private int adcommentsKey;
     private int boardKey;
+    private int itemKey;
     private String adminId;
     private String adcommentsContent;
     private Date adcommentsRdate;
