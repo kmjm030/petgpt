@@ -6,139 +6,91 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>PetGPT Admin</title>
+    <title>PetGPT 관리자 페이지</title>
 
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <!-- 폰트 및 스타일 -->
+    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600&display=swap" rel="stylesheet">
     <link href="<c:url value='/vendor/fontawesome-free/css/all.min.css'/>" rel="stylesheet">
     <link href="<c:url value='/css/sb-admin-2.min.css'/>" rel="stylesheet">
 
-    <!-- Matrix Background Style -->
     <style>
-        body, .sidebar, .topbar, .navbar, .card, .modal-content, .dropdown-menu,
-        .form-control, .collapse-inner, .modal-body, .modal-footer, .bg-white, .bg-light {
-            background-color: #000 !important;
-            color: #00ff41 !important;
-            font-family: 'Share Tech Mono', monospace !important;
-            border-color: #00ff41 !important;
+        body {
+            background-color: #f5f5f7;
+            color: #1d1d1f;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
-        .form-control::placeholder,
-        .nav-link,
-        .dropdown-item,
-        .modal-title,
-        .text-gray-500,
-        .text-gray-600,
-        .text-gray-800,
-        .text-dark,
-        .text-center,
-        .small {
-            color: #00ff41 !important;
-        }
-
-        .btn, .input-group-text {
-            background-color: #000 !important;
-            color: #00ff41 !important;
-            border: 1px solid #00ff41 !important;
-        }
-
-        .btn:hover {
-            background-color: #00ff41 !important;
-            color: #000 !important;
-        }
-
-        .scroll-to-top {
-            background-color: #00ff41 !important;
-            color: black !important;
-        }
-
-        .scroll-to-top:hover {
-            background-color: #00cc00 !important;
-        }
-
-        .badge-counter, .sidebar-divider {
-            background-color: #00ff41 !important;
-            color: black;
-            border-color: #00ff41 !important;
-        }
-
-        .custom-logo, .custom-logo1 {
-            max-width: 120px;
-            margin-right: 20px;
-            filter: drop-shadow(0 0 6px #00ff41);
-        }
-
-        #matrix-background {
+        /* 사이드바 스타일 */
+        .hover-sidebar {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: -1;
-            pointer-events: none;
-            background-color: transparent;
-            opacity: 1;
-        }
-
-        #matrix-loader {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background-color: black;
-            z-index: 9999;
-            overflow: hidden;
-        }
-
-        #matrix-canvas {
-            display: block;
-            width: 100%;
+            width: 220px;
             height: 100%;
+            background-color: #ffffff;
+            border-right: 1px solid #d2d2d7;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+            z-index: 9998;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.05);
         }
 
-        .matrix-overlay {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 2;
+        .hover-sidebar .sidebar-content {
+            padding: 2rem 1rem;
             display: flex;
             flex-direction: column;
-            align-items: center;
+            gap: 1.5rem;
         }
 
-        .matrix-logo {
-            width: 120px;
-            margin-bottom: 20px;
-            filter: drop-shadow(0 0 6px #00ff41);
+        .hover-sidebar a {
+            color: #1d1d1f;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: all 0.2s ease;
         }
 
-        .matrix-text {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #00ff41;
-            font-family: monospace;
-            text-shadow: 0 0 10px #00ff41, 0 0 20px #00ff41;
+        .hover-sidebar a:hover {
+            color: #0071e3;
+        }
+
+        .hover-sidebar .logo {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .hover-sidebar .logo img {
+            width: 80px;
+        }
+
+        .custom-logo {
+            max-width: 120px;
+            margin-right: 20px;
+        }
+
+        .btn {
+            border-radius: 12px !important;
+            font-weight: 600;
         }
     </style>
 </head>
 
 <body id="page-top">
-<!-- ✅ 매트릭스 배경 캔버스 -->
-<canvas id="matrix-background"></canvas>
 
-<!-- ✅ 매트릭스 로딩 화면 -->
-<div id="matrix-loader">
-    <canvas id="matrix-canvas"></canvas>
-    <div class="matrix-overlay">
-        <img src="<c:url value='/img/logo.png'/>" alt="로고" class="matrix-logo">
-        <div class="matrix-text">로딩중...</div>
+<!-- 호버 사이드바 메뉴 -->
+<div id="hover-sidebar" class="hover-sidebar">
+    <div class="sidebar-content">
+        <div class="logo">
+            <img src="<c:url value='/img/logo.png'/>" class="custom-logo" alt="로고">
+        </div>
+        <a href="<c:url value='/'/>"><i class="fas fa-tachometer-alt"></i> 대시보드</a>
+        <a href="<c:url value='/cust/get'/>"><i class="fas fa-users"></i> 사용자 관리</a>
+        <a href="<c:url value='/item/get'/>"><i class="fas fa-box"></i> 상품 관리</a>
+        <a href="orders.jsp"><i class="fas fa-shopping-cart"></i> 주문 관리</a>
+        <a href="inquiries.jsp"><i class="fas fa-question-circle"></i> 문의글 관리</a>
     </div>
 </div>
 
-<!-- ✅ 본문 콘텐츠 (center.jsp 등 삽입 영역) -->
+<!-- center.jsp 또는 특정 페이지 포함 -->
 <c:choose>
     <c:when test="${center == null}">
         <jsp:include page="center.jsp"/>
@@ -148,61 +100,24 @@
     </c:otherwise>
 </c:choose>
 
-<!-- ✅ 매트릭스 애니메이션 스크립트 -->
+<!-- 사이드바 마우스 이벤트 제어 스크립트 -->
 <script>
     document.addEventListener("DOMContentLoaded", () => {
-        const isFirstVisit = sessionStorage.getItem("visited_index");
-        const loader = document.getElementById("matrix-loader");
+        const sidebar = document.getElementById("hover-sidebar");
 
-        if (!isFirstVisit && loader) {
-            sessionStorage.setItem("visited_index", "true");
-
-            const canvas = document.getElementById("matrix-canvas");
-            const ctx = canvas.getContext("2d");
-            const textEl = document.querySelector(".matrix-text");
-
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-
-            const letters = "アァイィウヴエェオABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            const fontSize = 18;
-            const columns = Math.floor(canvas.width / fontSize);
-            const drops = Array(columns).fill(1);
-
-            loader.style.display = "block";
-
-            function draw() {
-                ctx.fillStyle = "rgba(0, 0, 0, 0.03)";
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = "#00ff41";
-                ctx.shadowColor = "transparent";
-                ctx.shadowBlur = 0;
-                ctx.font = fontSize + "px monospace";
-
-                for (let i = 0; i < drops.length; i++) {
-                    const text = letters.charAt(Math.floor(Math.random() * letters.length));
-                    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-                    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                        drops[i] = 0;
-                    }
-                    drops[i]++;
-                }
+        document.addEventListener("mousemove", (e) => {
+            if (e.clientX < 20) {
+                sidebar.style.transform = "translateX(0)";
+            } else if (!sidebar.matches(":hover")) {
+                sidebar.style.transform = "translateX(-100%)";
             }
+        });
 
-            const interval = setInterval(draw, 33);
-
-            setTimeout(() => {
-                textEl.textContent = "Welcome to PetGPT!";
-            }, 2000);
-
-            setTimeout(() => {
-                clearInterval(interval);
-                loader.style.transition = "opacity 1s";
-                loader.style.opacity = 0;
-                setTimeout(() => loader.remove(), 1000);
-            }, 7000);
-        }
+        sidebar.addEventListener("mouseleave", () => {
+            sidebar.style.transform = "translateX(-100%)";
+        });
     });
 </script>
+
 </body>
 </html>
