@@ -123,7 +123,6 @@
     </div>
   </div>
 
-
   <div class="row mb-4">
     <div class="col-lg-8 mb-4">
       <div class="dashboard-card h-100">
@@ -157,17 +156,4 @@
       </div>
     </div>
   </div>
-<%--
-
-  <div class="row mb-4">
-    <div class="col-lg-12 mb-4">
-      <div class="dashboard-card">
-        <div class="card-title">신규 문의글</div>
-        <c:forEach var="post" items="${recentPosts}">
-          <div>${post.title} - ${post.writer} (${post.regDate})</div>
-        </c:forEach>
-      </div>
-    </div>
-  </div>
 </div>
---%>

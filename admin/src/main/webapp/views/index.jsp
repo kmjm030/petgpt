@@ -8,7 +8,6 @@
     <title>PetGPT 관리자 페이지</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- 폰트 및 외부 스타일 -->
     <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600&display=swap" rel="stylesheet">
     <link href="<c:url value='/vendor/fontawesome-free/css/all.min.css'/>" rel="stylesheet">
     <link href="<c:url value='/css/sb-admin-2.min.css'/>" rel="stylesheet">
@@ -20,7 +19,6 @@
             font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
-        /* 사이드바 */
         .hover-sidebar {
             position: fixed;
             top: 0;
@@ -71,7 +69,6 @@
 
 <body id="page-top">
 
-<!-- 🧭 사이드바 -->
 <div id="hover-sidebar" class="hover-sidebar">
     <div class="sidebar-content">
         <div class="logo">
@@ -86,7 +83,6 @@
     </div>
 </div>
 
-<!-- 🔄 center.jsp 또는 동적 페이지 -->
 <c:choose>
     <c:when test="${center == null}">
         <jsp:include page="center.jsp"/>
@@ -96,7 +92,6 @@
     </c:otherwise>
 </c:choose>
 
-<!-- 🖱️ 사이드바 제어 스크립트 -->
 <script>
     document.addEventListener("DOMContentLoaded", () => {
         const sidebar = document.getElementById("hover-sidebar");
