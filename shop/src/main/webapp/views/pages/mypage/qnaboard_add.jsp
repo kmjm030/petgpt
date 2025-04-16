@@ -176,7 +176,7 @@
       <%--    회원 정보 --%>
         <div class="col-lg-9">
           <h6 class="checkout__title">❓ 1:1 문의 등록하기</h6>
-          <form id="qna_add_form">
+          <form id="qna_add_form" enctype="multipart/form-data">
             <%-- 문의종류 --%>
             <div class="row">
               <div class="form-group col-md-12">
@@ -220,7 +220,7 @@
             <div class="row">
               <div class="form-group col-md-6">
                 <label>▪ 이미지 첨부</label>
-                <input type="file" class="form-control" name="img1">
+                <input type="file" class="form-control" name="img">
               </div>
             </div>
             <br/>

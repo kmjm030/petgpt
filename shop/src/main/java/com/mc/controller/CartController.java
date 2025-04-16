@@ -166,7 +166,6 @@ public class CartController {
 
         try {
             cartService.mod(cart);
-
             List<Map<String, Object>> cartItems = cartService.getCartWithItems(custId);
 
             long totalCartPrice = calculateTotal(cartItems);

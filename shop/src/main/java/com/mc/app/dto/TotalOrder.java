@@ -12,8 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class TotalOrder {
     private int orderKey;
-    private int custKey;
-    private int addrKey;
+    private String custId;
     private int itemKey;
     private LocalDateTime orderDate;
     private String recipientName;
@@ -23,4 +22,7 @@ public class TotalOrder {
     private String orderCard;
     private int orderTotalPrice;
     private String orderShootNum;
+    private String orderAddr;
+    private String orderAddrdetail;
+    private String orderHomecode;
 }

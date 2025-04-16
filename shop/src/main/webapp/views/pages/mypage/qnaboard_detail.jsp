@@ -131,7 +131,7 @@
       <%--    회원 정보 --%>
         <div class="col-lg-9">
           <h6 class="checkout__title">❓ 1:1 문의 상세정보</h6>
-          <form id="qna_update_form">
+          <form id="qna_update_form" enctype="multipart/form-data">
             <%-- 문의종류 --%>
             <div class="row">
               <div class="form-group col-md-12">
@@ -151,10 +151,18 @@
                 </div>
               </div>
             </div>
+              <c:if test="${not empty board.boardImg}">
+                <div class="row">
+                  <div class="form-group col-md-6">
+                    <label>▪ 현재 이미지파일 </label>
+                    <img src="<c:url value='${board.boardImg}'/>" alt="현재 첨부파일">
+                  </div>
+                </div>
+              </c:if>
             <div class="row">
                 <div class="form-group col-md-6">
-                  <label>▪ 이미지 변경</label>
-                  <input type="file" class="form-control" name="img1">
+                  <label>▪ 이미지 첨부</label>
+                  <input type="file" class="form-control" name="img">
                 </div>
               </div>
             <br/>
