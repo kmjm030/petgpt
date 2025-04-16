@@ -128,7 +128,7 @@
         border-color: #1d1d1f;
     }
     select.form-control {
-        height: calc(1.5em + 0.75rem + 2px); /* input과 높이 통일 */
+        height: calc(1.5em + 0.75rem + 2px);
         padding-top: 0.375rem;
         padding-bottom: 0.375rem;
         line-height: 1.5;

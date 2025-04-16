@@ -85,8 +85,9 @@
         <a href="<c:url value='/'/>"><i class="fas fa-tachometer-alt"></i> 대시보드</a>
         <a href="<c:url value='/cust/get'/>"><i class="fas fa-users"></i> 사용자 관리</a>
         <a href="<c:url value='/item/get'/>"><i class="fas fa-box"></i> 상품 관리</a>
-        <a href="orders.jsp"><i class="fas fa-shopping-cart"></i> 주문 관리</a>
+        <a href="orders.jsp"><i class="fas fa-shopping-cart"></i> 주문 상세</a>
         <a href="inquiries.jsp"><i class="fas fa-question-circle"></i> 문의글 관리</a>
+        <a href="<c:url value='/qnaboard/get'/>"><i class="fas fa-comment-dots"></i> 상품 문의글</a>
     </div>
 </div>
 
