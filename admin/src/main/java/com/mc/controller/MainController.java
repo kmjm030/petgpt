@@ -2,12 +2,16 @@ package com.mc.controller;
 
 import com.mc.app.service.CustomerService;
 import com.mc.app.service.ItemService;
+import com.mc.app.service.TotalOrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -16,6 +20,7 @@ public class MainController {
 
     final CustomerService custService;
     final ItemService itemService;
+    final TotalOrderService totalOrderService;
 
     @Value("${app.url.websocket-server-url}")
     String websocketServerUrl;
@@ -41,6 +46,30 @@ public class MainController {
             model.addAttribute("itemCount", 0);
         }
 
+        try {
+            int orderCount = totalOrderService.getOrderCount();
+            model.addAttribute("orderCount", orderCount);
+        } catch (Exception e) {
+            log.error("[MainController] Error loading order count: {}", e.getMessage());
+            model.addAttribute("orderCount", 0);
+        }
+
+        try {
+            int todayRevenue = totalOrderService.getTodayRevenue();
+            model.addAttribute("todayRevenue", todayRevenue);
+        } catch (Exception e) {
+            log.error("[MainController] Error loading today revenue: {}", e.getMessage());
+            model.addAttribute("todayRevenue", 0);
+        }
+
+        try {
+            Map<String, Integer> orderStatusMap = totalOrderService.getOrderStatusCountMap();
+            model.addAttribute("orderStatusMap", orderStatusMap);
+        } catch (Exception e) {
+            log.error("[MainController] Error loading order status count: {}", e.getMessage());
+            model.addAttribute("orderStatusMap", new HashMap<String, Integer>());
+        }
+
         model.addAttribute("serverurl", websocketServerUrl);
         model.addAttribute("center", "center");
         return "index";
@@ -53,4 +82,7 @@ public class MainController {
         return "index";
     }
 }
+
+
+
 

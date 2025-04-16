@@ -30,4 +30,11 @@
         SELECT * FROM admin
     </select>
 
+    <select id="selectOrderStatusCount" resultType="map">
+        SELECT order_status, COUNT(*) AS count
+        FROM orders
+        WHERE DATE(regdate) = CURRENT_DATE
+        GROUP BY order_status
+    </select>
+
 </mapper>

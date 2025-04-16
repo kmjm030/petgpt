@@ -105,8 +105,6 @@ public class ItemController {
         return "redirect:/item/get";
     }
 
-
-
     @RequestMapping("/update")
     public String update(Model model, Item item,
                          @RequestParam("img1") MultipartFile img1,
