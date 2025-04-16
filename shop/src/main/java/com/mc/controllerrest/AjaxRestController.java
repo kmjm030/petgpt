@@ -1,6 +1,7 @@
 package com.mc.controllerrest;
 
 import com.mc.app.dto.Customer;
+import com.mc.app.service.CouponService;
 import com.mc.app.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +17,7 @@ import java.util.List;
 public class AjaxRestController {
 
     private final CustomerService customerService;
+    private final CouponService couponService;
 
     @RequestMapping("/checkid")
     public Object checkid(@RequestParam("cid") String id) throws Exception {
@@ -40,4 +42,9 @@ public class AjaxRestController {
         return result;
 
     }
+
+//    @RequestMapping("/checkcoupon")
+//    public Object checkcoupon(@RequestParam("couponId") int couponId) throws Exception {
+//
+//    }
 }

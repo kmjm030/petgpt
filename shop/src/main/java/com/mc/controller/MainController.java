@@ -1,6 +1,7 @@
 package com.mc.controller;
 
 import com.mc.app.dto.Item;
+import com.mc.app.service.CustomerService;
 import com.mc.app.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,7 @@ import java.util.List;
 public class MainController {
 
     private final ItemService itemService;
+    private final CustomerService custService;
 
     private List<Item> getItemList() {
         List<Item> itemList = new ArrayList<>();
@@ -82,13 +84,6 @@ public class MainController {
         return "index";
     }
 
-    @GetMapping("/checkout")
-    public String checkOut(Model model) {
-        model.addAttribute("currentPage", "pages");
-        model.addAttribute("pageTitle", "Check Out");
-        model.addAttribute("centerPage", "pages/checkout.jsp");
-        return "index";
-    }
 
     @GetMapping("/faq")
     public String faq(Model model) {
