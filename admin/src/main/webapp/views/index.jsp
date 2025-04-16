@@ -69,6 +69,18 @@
 
 <body id="page-top">
 
+<c:if test="${not empty sessionScope.admin}">
+    <div style="position: fixed; top: 20px; right: 30px; z-index: 9999; display: flex; align-items: center; gap: 12px; font-family: 'SF Pro Display', sans-serif;">
+    <span style="font-weight: 600; font-size: 0.95rem;">
+      <i class="fas fa-user-circle"></i> ${sessionScope.admin.adminName} 님
+    </span>
+        <a href="<c:url value='/logoutimpl'/>"
+           style="background-color: #1d1d1f; color: white; padding: 6px 14px; border-radius: 8px; font-size: 0.85rem; text-decoration: none; font-weight: 500;">
+            로그아웃
+        </a>
+    </div>
+</c:if>
+
 <div id="hover-sidebar" class="hover-sidebar">
     <div class="sidebar-content">
         <div class="logo">
