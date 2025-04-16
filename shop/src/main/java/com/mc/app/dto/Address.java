@@ -19,4 +19,5 @@ public class Address {
     private String addrReq;
     private String addrDef;
     private String addrHomecode;
+    private String addrRef;
 }

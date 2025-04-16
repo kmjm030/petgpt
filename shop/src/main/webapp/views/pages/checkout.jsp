@@ -12,7 +12,8 @@
       pay_method: "card", // 결제 방법
       merchant_uid: "order_" + new Date().getTime(), // 고유 주문 번호
       name: "주문명: 상품 이름",
-      amount: 10000, // 결제 금액 ( total )값 참조
+      // amount: parseInt($('#discounted_price').text().replace(/[^\d]/g, ''), 10),
+      amount: 1,
       buyer_email: "test@example.com", // 구매자 이메일
       buyer_name: "홍길동", // 구매자 이름
       buyer_tel: "010-1234-5678", // 구매자 전화번호
@@ -41,15 +42,12 @@
       const homecode = selectedOption.getAttribute("data-homecode");
       const address = selectedOption.getAttribute("data-address");
       const detail = selectedOption.getAttribute("data-detail");
-
-      console.log("Selected Option:", selectedOption);
-      console.log("homecode:", homecode);
-      console.log("address:", address);
-      console.log("detail:", detail);
+      const ref = selectedOption.getAttribute("data-ref");
 
       document.getElementById("sample6_postcode").value = homecode || '';
       document.getElementById("sample6_address").value = address || '';
       document.getElementById("sample6_detailAddress").value = detail || '';
+      document.getElementById("sample6_extraAddress").value = ref || '';
     });
 
     // 주문자 정보와 동일 체크하면 자동으로 입력되도록
@@ -59,12 +57,14 @@
     const addrHomecodeInput = document.querySelector("input[name='addrHomecode']");
     const addrAddressInput = document.querySelector("input[name='addrAddress']");
     const addrDetailInput = document.querySelector("input[name='addrDetail']");
+    const addrRefInput = document.querySelector("input[name='addrRef']");
 
     const custName = "${cust.custName}";
     const custPhone = "${cust.custPhone}";
     const addrHomecode = "${defAddress.addrHomecode}";
     const addrAddress = "${defAddress.addrAddress}";
     const addrDetail = "${defAddress.addrDetail}";
+    const addrRef = "${defAddress.addrRef}";
 
     if (isSameCheckbox) {
       isSameCheckbox.addEventListener("change", function () {
@@ -74,15 +74,47 @@
           addrHomecodeInput.value = addrHomecode;
           addrAddressInput.value = addrAddress;
           addrDetailInput.value = addrDetail;
+          addrRefInput.value = addrRef;
         } else {
           recipientNameInput.value = "";
           recipientPhoneInput.value = "";
           addrHomecodeInput.value = "";
           addrAddressInput.value = "";
           addrDetailInput.value = "";
+          addrRefInput.value = "";
         }
       });
     }
+
+      // 쿠폰 선택 시 할인 가격 계산
+      const totalCartPrice = parseInt("${totalCartPrice}", 10) || 0;
+
+      $("#couponSelect").on("change", function () {
+          const couponId = $(this).val();
+          if (couponId) {
+              $.ajax({
+                  url: "/checkcoupon",
+                  data: {
+                      couponId: couponId,
+                      price: totalCartPrice
+                  },
+                  success: function (discountedPrice) {
+                      const discount = totalCartPrice - discountedPrice;
+
+                      if (!isNaN(discount) && !isNaN(discountedPrice)) {
+                          $("#discount_price").text("-" + discount + "원");
+                          $("#discounted_price").text(discountedPrice + "원");
+                      } else {
+                          console.warn("❗ 계산된 금액이 NaN입니다");
+                      }
+                  },
+                  error: function () {
+                      alert("쿠폰 적용 중 오류 발생!");
+                  }
+              });
+          }
+      });
+
   });
 </script>
 <!-- Breadcrumb Section Begin -->
@@ -157,6 +189,7 @@
                         data-homecode="${c.addrHomecode}"
                         data-address="${c.addrAddress}"
                         data-detail="${c.addrDetail}"
+                        data-ref="${c.addrRef}"
                 >
                     ${c.addrName}
                 </option>
@@ -167,7 +200,7 @@
             <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
             <input type="text" id="sample6_address" placeholder="주소" name="addrAddress"><br>
             <input type="text" id="sample6_detailAddress" placeholder="상세주소" name="addrDetail">
-            <input type="text" id="sample6_extraAddress" placeholder="참고항목">
+            <input type="text" id="sample6_extraAddress" placeholder="참고항목" name="addrRef">
             <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
             <script>
               function sample6_execDaumPostcode() {
@@ -261,8 +294,8 @@
         <%-- 소계, 총계 동적 계산 필요 --%>
         <ul class="checkout__total__all">
           <li>상품 금액 <span>${totalCartPrice}원</span></li>
-          <li>할인 가격 <span>-${totalCartPrice}원</span></li>
-          <li>최종 결제금액 <span>${totalCartPrice}원</span></li>
+          <li>할인 가격 <span id="discount_price">-0원</span></li>
+          <li>최종 결제금액 <span id="discounted_price">${totalCartPrice}원</span></li>
         </ul>
         <%-- 결제 --%>
        <div>

@@ -23,10 +23,10 @@
     <insert id="insert" parameterType="com.mc.app.dto.Address">
         INSERT INTO address (
             cust_id, addr_name, addr_address, addr_detail,
-            addr_tel, addr_req, addr_def, addr_homecode
+            addr_tel, addr_req, addr_def, addr_homecode, addr_ref
         ) VALUES (
                      #{custId}, #{addrName}, #{addrAddress}, #{addrDetail},
-                     #{addrTel}, #{addrReq}, #{addrDef}, #{addrHomecode}
+                     #{addrTel}, #{addrReq}, #{addrDef}, #{addrHomecode}, #{addrRef}
                  )
     </insert>
 
