@@ -3,11 +3,13 @@ package com.mc.controller;
 import com.mc.app.service.CustomerService;
 import com.mc.app.service.ItemService;
 import com.mc.app.service.TotalOrderService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.HashMap;
@@ -25,8 +27,18 @@ public class MainController {
     @Value("${app.url.websocket-server-url}")
     String websocketServerUrl;
 
-    @RequestMapping("/")
-    public String main(Model model) {
+    @GetMapping("/")
+    public String root(HttpSession session) {
+        if (session.getAttribute("admin") == null) {
+            return "redirect:/views/login.jsp";
+        }
+        return "redirect:/main";
+    }
+
+    @RequestMapping("/main")
+    public String main(Model model, HttpSession session) {
+        if (session.getAttribute("admin") == null) return "redirect:/views/login.jsp";
+
         try {
             int custCount = custService.getCount();
             int todayJoinCount = custService.getTodayJoinCount();
@@ -67,7 +79,7 @@ public class MainController {
             model.addAttribute("orderStatusMap", orderStatusMap);
         } catch (Exception e) {
             log.error("[MainController] Error loading order status count: {}", e.getMessage());
-            model.addAttribute("orderStatusMap", new HashMap<String, Integer>());
+            model.addAttribute("orderStatusMap", new HashMap<>());
         }
 
         model.addAttribute("serverurl", websocketServerUrl);
@@ -76,13 +88,12 @@ public class MainController {
     }
 
     @RequestMapping("/ws")
-    public String ws(Model model) {
+    public String ws(Model model, HttpSession session) {
+        if (session.getAttribute("admin") == null) {
+            return "redirect:/views/login.jsp";
+        }
         model.addAttribute("serverurl", websocketServerUrl);
         model.addAttribute("center", "ws");
         return "index";
     }
 }
-
-
-
-

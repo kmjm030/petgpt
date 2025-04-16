@@ -21,21 +21,17 @@ public class LoginController {
                             @RequestParam("pwd") String pwd,
                             HttpSession session,
                             Model model) throws Exception {
-
-        System.out.println("▶ login attempt: " + id);
-
         Admin admin = adminService.login(id, pwd);
 
         if (admin != null) {
             session.setAttribute("admin", admin);
-            System.out.println("✅ login success: " + admin.getAdminName());
-            return "redirect:/index.jsp";
+            return "redirect:/main";
         } else {
-            System.out.println("❌ login failed");
             model.addAttribute("error", "아이디 또는 비밀번호가 올바르지 않습니다.");
-            return "/login.jsp";
+            return "redirect:/views/login.jsp";
         }
     }
+
 
 
     @GetMapping("/logoutimpl")
@@ -43,6 +39,6 @@ public class LoginController {
         if (session != null) {
             session.invalidate();
         }
-        return "redirect:/login.jsp";
+        return "redirect:/main";
     }
 }

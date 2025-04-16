@@ -5,10 +5,9 @@
 <html lang="ko">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>PetGPT 관리자 페이지</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- 폰트 및 스타일 -->
     <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600&display=swap" rel="stylesheet">
     <link href="<c:url value='/vendor/fontawesome-free/css/all.min.css'/>" rel="stylesheet">
     <link href="<c:url value='/css/sb-admin-2.min.css'/>" rel="stylesheet">
@@ -20,7 +19,6 @@
             font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
-        /* 사이드바 스타일 */
         .hover-sidebar {
             position: fixed;
             top: 0;
@@ -66,17 +64,11 @@
             max-width: 120px;
             margin-right: 20px;
         }
-
-        .btn {
-            border-radius: 12px !important;
-            font-weight: 600;
-        }
     </style>
 </head>
 
 <body id="page-top">
 
-<!-- 호버 사이드바 메뉴 -->
 <div id="hover-sidebar" class="hover-sidebar">
     <div class="sidebar-content">
         <div class="logo">
@@ -85,12 +77,12 @@
         <a href="<c:url value='/'/>"><i class="fas fa-tachometer-alt"></i> 대시보드</a>
         <a href="<c:url value='/cust/get'/>"><i class="fas fa-users"></i> 사용자 관리</a>
         <a href="<c:url value='/item/get'/>"><i class="fas fa-box"></i> 상품 관리</a>
-        <a href="orders.jsp"><i class="fas fa-shopping-cart"></i> 주문 관리</a>
-        <a href="inquiries.jsp"><i class="fas fa-question-circle"></i> 문의글 관리</a>
+        <a href="<c:url value='/orders.jsp'/>"><i class="fas fa-shopping-cart"></i> 주문 관리</a>
+        <a href="<c:url value='/inquiries.jsp'/>"><i class="fas fa-question-circle"></i> 문의글 관리</a>
+        <a href="<c:url value='/qnaboard/get'/>"><i class="fas fa-comment-dots"></i> 상품 문의글</a>
     </div>
 </div>
 
-<!-- center.jsp 또는 특정 페이지 포함 -->
 <c:choose>
     <c:when test="${center == null}">
         <jsp:include page="center.jsp"/>
@@ -100,7 +92,6 @@
     </c:otherwise>
 </c:choose>
 
-<!-- 사이드바 마우스 이벤트 제어 스크립트 -->
 <script>
     document.addEventListener("DOMContentLoaded", () => {
         const sidebar = document.getElementById("hover-sidebar");

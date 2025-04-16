@@ -24,7 +24,7 @@
                 for (let selector of requiredFields) {
                     const value = $(selector).val();
                     if (!value || value.trim() === '') {
-                        $('#errorMsg').show(); // 메시지 표시
+                        $('#errorMsg').show();
                         return;
                     }
                 }

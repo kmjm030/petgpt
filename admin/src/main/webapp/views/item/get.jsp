@@ -191,7 +191,7 @@
                 { orderable: false, targets: [0, 2, 3] }
             ],
             order: [[1, 'desc']],
-            dom: 't<"d-flex justify-content-between mt-3 px-1"lip>', // 👈 안내 제거 핵심 옵션
+            dom: 't<"d-flex justify-content-between mt-3 px-1"lip>',
             language: {
                 search: '검색:',
                 lengthMenu: '페이지당 _MENU_개씩 보기',

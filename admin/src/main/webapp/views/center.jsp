@@ -114,14 +114,14 @@
       </div>
 
       <div class="col-lg-3 col-md-6 mb-4">
-        <div class="dashboard-card h-100">
+        <a href="<c:url value='/orderdetail'/>" style="text-decoration: none; color: inherit;">
+          <div class="dashboard-card h-100" style="cursor: pointer;">
           <div class="card-title">총 주문 수</div>
           <div class="card-value">${orderCount}</div>
         </div>
       </div>
     </div>
   </div>
-
 
   <div class="row mb-4">
     <div class="col-lg-8 mb-4">
@@ -153,17 +153,6 @@
       <div class="chart-card">
         <h6 class="card-title">매출 추이</h6>
         <div id="highchartContainer" style="width:100%; height:300px;"></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4">
-    <div class="col-lg-12 mb-4">
-      <div class="dashboard-card">
-        <div class="card-title">신규 문의글</div>
-        <c:forEach var="post" items="${recentPosts}">
-          <div>${post.title} - ${post.writer} (${post.regDate})</div>
-        </c:forEach>
       </div>
     </div>
   </div>
