@@ -3,7 +3,9 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.mc.app.repository.QnaBoardRepository">
-
+    <select id="select" resultType="QnaBoard">
+        SELECT * FROM qnaboard
+    </select>
 
     <select id="findAllByItem" parameterType="int" resultType="com.mc.app.dto.QnaBoard">
         SELECT * FROM qnaboard WHERE item_key = #{itemKey}
@@ -39,5 +41,24 @@
     <delete id="delete" parameterType="int">
         DELETE FROM qnaboard WHERE board_key = #{boardKey}
     </delete>
+
+    <!-- 상품에 대한 QnA + 관리자 댓글 함께 조회 -->
+    <select id="selectQnaWithCommentsByItemKey" parameterType="int" resultType="QnaWithComment">
+        SELECT
+            q.board_key,
+            q.item_key,
+            q.cust_id,
+            q.board_title,
+            q.board_content,
+            q.board_rdate,
+            a.adcomments_key,
+            a.adcomments_content,
+            a.admin_id,
+            a.adcomments_rdate
+        FROM qnaboard q
+                 LEFT JOIN admin_comments a ON q.board_key = a.board_key
+        WHERE q.item_key = #{itemKey}
+        ORDER BY q.board_rdate DESC
+    </select>
 
 </mapper>

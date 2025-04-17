@@ -51,7 +51,6 @@ public class CustController {
             cust = custService.get(id);
             model.addAttribute("cust", cust);
             model.addAttribute("center", dir + "detail");
-            model.addAttribute("result", "수정완료");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

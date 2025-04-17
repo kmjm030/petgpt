@@ -4,28 +4,27 @@
 
 <mapper namespace="com.mc.app.repository.AdminCommentsRepository">
 
-    <select id="findAllByBoard" parameterType="int" resultType="com.mc.app.dto.AdminComments">
-        SELECT * FROM admin_comments WHERE board_key = #{boardKey}
+    <select id="select" resultType="com.mc.app.dto.AdminComments">
+        SELECT * FROM admin_comments
     </select>
 
-    <select id="findById" parameterType="int" resultType="com.mc.app.dto.AdminComments">
-        SELECT * FROM admin_comments WHERE adcomments_key = #{adcommentsKey}
+    <select id="selectOne" parameterType="int" resultType="com.mc.app.dto.AdminComments">
+        SELECT * FROM admin_comments WHERE board_key = #{boardKey}
     </select>
 
     <insert id="insert" parameterType="com.mc.app.dto.AdminComments">
         INSERT INTO admin_comments (
-            board_key, admin_key, adcomments_content,
+            board_key, admin_id, adcomments_content,
             adcomments_rdate, adcomments_update
         ) VALUES (
-                     #{boardKey}, #{adminKey}, #{adcommentsContent},
-                     #{adcommentsRdate}, #{adcommentsUpdate}
-                 )
+                     #{boardKey}, #{adminId}, #{adcommentsContent},
+                     now(), now()                 )
     </insert>
 
     <update id="update" parameterType="com.mc.app.dto.AdminComments">
         UPDATE admin_comments SET
                                   adcomments_content = #{adcommentsContent},
-                                  adcomments_update = #{adcommentsUpdate}
+                                  adcomments_update =now()
         WHERE adcomments_key = #{adcommentsKey}
     </update>
 

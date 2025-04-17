@@ -1,18 +1,20 @@
 package com.mc.controller;
 
-import com.mc.app.dto.Item;
-import com.mc.app.dto.Option;
-import com.mc.app.service.ItemService;
-import com.mc.app.service.OptionService;
+import com.mc.app.dto.*;
+import com.mc.app.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Controller
@@ -25,9 +27,13 @@ public class ItemController {
     private final OptionService optionService;
     private final String dir = "item/";
 
+    private final QnaBoardService qnaBoardService;
+    private final AdminCommentsService adminCommentsService;
     @RequestMapping("/get")
     public String get(Model model) throws Exception {
+
         List<Item> list = itemService.get();
+
         model.addAttribute("itemlist", list);
         model.addAttribute("center", dir + "get");
         return "index";
@@ -84,16 +90,7 @@ public class ItemController {
         return "redirect:/item/detail?item_key=" + item.getItemKey();
     }
 
-    @RequestMapping("/detail")
-    public String detail(Model model, @RequestParam("item_key") int itemKey) throws Exception {
-        Item item = itemService.get(itemKey);
-        Option option = optionService.getOptionsByItem(itemKey).get(0);
 
-        model.addAttribute("item", item);
-        model.addAttribute("option", option);
-        model.addAttribute("center", dir + "detail");
-        return "index";
-    }
 
     @RequestMapping("/del")
     public String del(Model model, @RequestParam("item_key") int itemKey) throws Exception {
@@ -136,6 +133,20 @@ public class ItemController {
         return "redirect:/item/detail?item_key=" + item.getItemKey();
     }
 
+
+    @RequestMapping("/detail")
+    public String detail(Model model, @RequestParam("item_key") int itemKey) throws Exception {
+        Item item = itemService.get(itemKey);
+        Option option = optionService.getOptionsByItem(itemKey).get(0);
+        List<QnaWithComment> qnaList = qnaBoardService.selectQnaWithCommentsByItemKey(itemKey);
+        log.info("=qnaList============================={}",qnaList);
+        model.addAttribute("qnaList", qnaList);
+        model.addAttribute("item", item);
+        model.addAttribute("option", option);
+        model.addAttribute("center", dir + "detail");
+
+        return "index";
+    }
 }
 
 

@@ -710,21 +710,24 @@ $(function() {
         const itemPriceWithOption = baseItemPrice + (optionData.additionalPrice || 0);
         const optionName = `${optionData.color} / ${optionData.size || '단일 사이즈'}`;
 
-        const newItemHtml = `
-            <div class="selected-option-item" data-option-key="${optionKey}" data-stock="${optionData.stock}" data-price="${itemPriceWithOption}">
-                <button type="button" class="remove-item-btn">×</button>
-                <span class="option-name">${optionName}</span>
-                <div class="option-controls">
-                    <div class="quantity-control">
-                        <button type="button" class="quantity-decrease">-</button>
-                        <input type="number" value="1" min="1" max="${optionData.stock}" aria-label="수량">
-                        <button type="button" class="quantity-increase">+</button>
-                         <span class="stock-info">(재고: ${optionData.stock})</span>
-                     </div>
-                     <span class="item-price">${itemPriceWithOption.toLocaleString('ko-KR')}원</span>
-                 </div>
-             </div>
-        `;
+    
+        const newItemHtml =
+        '<div class="selected-option-item" ' +
+            'data-option-key="' + optionKey + '" ' +
+            'data-stock="' + optionData.stock + '" ' +
+            'data-price="' + itemPriceWithOption + '">' +
+            '<button type="button" class="remove-item-btn">×</button>' +
+            '<span class="option-name">' + optionName + '</span>' +
+            '<div class="option-controls">' +
+            '<div class="quantity-control">' +
+                '<button type="button" class="quantity-decrease">-</button>' +
+                '<input type="number" value="1" min="1" max="' + optionData.stock + '" aria-label="수량">' +
+                '<button type="button" class="quantity-increase">+</button>' +
+                '<span class="stock-info">(재고: ' + optionData.stock + ')</span>' +
+            '</div>' +
+            '<span class="item-price">' + itemPriceWithOption.toLocaleString('ko-KR') + '원</span>' +
+            '</div>' +
+        '</div>';
 
         const newItemElement = $(newItemHtml);
         selectedOptionsContainer.append(newItemElement);
