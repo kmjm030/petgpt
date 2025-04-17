@@ -127,7 +127,12 @@
 </style>
 
 <div class="container-fluid">
-    <h1 class="page-title">상품 목록</h1>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="page-title mb-0">상품 목록</h1>
+        <a href="<c:url value='/item/add'/>" class="btn btn-dark shadow-sm px-4 py-2 rounded-pill">
+            ➕ 상품 추가
+        </a>
+    </div>
 
     <div class="card shadow mb-4">
         <div class="card-body">

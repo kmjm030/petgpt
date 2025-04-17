@@ -46,6 +46,10 @@ public class CustomerService implements MCService<Customer, String> {
     public int getTodayJoinCount() throws Exception {
         return custRepository.selectTodayJoinCount();
     }
+    public List<Customer> getTodayJoinedCustomers() throws Exception {
+        return custRepository.selectTodayJoinedCustomers();
+    }
+
 }
 
 

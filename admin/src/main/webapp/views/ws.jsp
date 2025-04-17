@@ -35,38 +35,71 @@
         display: flex;
         flex-direction: column-reverse;
     }
-
-    .chat-bubble {
-        display: inline-block;
-        max-width: 80%;
-        padding: 12px 16px;
-        margin: 6px 0;
-        border-radius: 18px;
+    #all h6 {
+        display: inline-block;       /* 말풍선 폭만큼만 넓어지도록 */
+        position: relative;          /* 꼬리 위치 기준 */
+        margin: 8px 0;               /* 위아래 여백 */
+        padding: 8px 14px;           /* 안쪽 여백 */
+        max-width: 70%;              /* 가로 폭 제한 */
+        background-color: #ffffff;   /* 말풍선 배경색 */
+        color: #333333;              /* 텍스트 색 */
+        border-radius: 0 12px 12px 12px; /* 왼쪽 꼬리 방향으로 덜 둥글게 */
+        word-break: break-word;      /* 길게 쭉 이어지는 단어 줄바꿈 */
         font-size: 14px;
+        line-height: 1.4;
+    }
+    #all h6::before {
+        content: "";
+        position: absolute;
+        top: 12px;                   /* 말풍선 세로 위치에 맞춰 */
+        left: -8px;                  /* 말풍선 바깥쪽으로 */
+        border: 8px solid transparent;
+        border-right-color: #ffffff; /* 왼쪽 꼬리 색은 말풍선 배경색과 동일 */
+    }
+    #me h6 {
+        display: inline-block;
+        position: relative;
+        margin: 8px 0;
+        padding: 8px 14px;
+        max-width: 70%;
+        background-color: #fde500;
+        color: #000000;
+        border-radius: 12px 0 12px 12px; /* 오른쪽 꼬리 방향으로 덜 둥글게 */
         word-break: break-word;
-        line-height: 1.5;
-        box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        font-size: 14px;
+        line-height: 1.4;
     }
 
-    .chat-bubble.me {
-        background-color: #1d1d1f;
-        color: white;
-        align-self: flex-end;
+    /* 오른쪽 꼬리 */
+    #me h6::after {
+        content: "";
+        position: absolute;
+        top: 12px;
+        right: -8px;
+        border: 8px solid transparent;
+        border-left-color: #fde500;  /* 꼬리 색은 말풍선 배경색과 동일 */
     }
-
-    .chat-bubble.other {
-        background-color: white;
-        color: #1d1d1f;
-        border: 1px solid #ccc;
-        align-self: flex-start;
+    #to h6 {
+        display: inline-block;
+        position: relative;
+        margin: 8px 0;
+        padding: 8px 14px;
+        max-width: 70%;
+        background-color: #fde500;
+        color: #000000;
+        border-radius: 12px 0 12px 12px; /* 오른쪽 꼬리 방향으로 덜 둥글게 */
+        word-break: break-word;
+        font-size: 14px;
+        line-height: 1.4;
     }
-
-    .chat-bubble.to {
-        background-color: #ededed;
-        color: #000;
-        align-self: center;
+    #me h6::after {
+        content: "";
+        position: absolute;
+        top: 12px;
+        right: -8px;
+        border: 8px solid transparent;
+        border-left-color: #fde500;  /* 꼬리 색은 말풍선 배경색과 동일 */
     }
-
     .chat-header {
         font-weight: 600;
         color: #1d1d1f;
@@ -131,7 +164,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
-
+<html><span id="adm_id"  >${admin.adminId}</span></html>
 <script>
     const ws = {
         id: '',
@@ -141,21 +174,25 @@
             const sid = this.id;
             const socket = new SockJS('/ws');
             this.stompClient = Stomp.over(socket);
-            const self = this;
-
             this.stompClient.connect({}, function (frame) {
                 console.log('Connected: ' + frame);
 
-                self.stompClient.subscribe('/send', function (msg) {
-                    $("#all").prepend(`<div class="chat-bubble other"><b>${JSON.parse(msg.body).sendid}</b>: ${JSON.parse(msg.body).content1}</div>`);
+                this.subscribe('/send', function(msg) {
+                    $("#all").prepend(
+                        "<h6>" + JSON.parse(msg.body).sendid +":"+
+                        JSON.parse(msg.body).content1
+                        + "</h6>");
                 });
-
-                self.stompClient.subscribe('/send/' + sid, function (msg) {
-                    $("#me").prepend(`<div class="chat-bubble me"><b>${JSON.parse(msg.body).sendid}</b>: ${JSON.parse(msg.body).content1}</div>`);
+                this.subscribe('/send/'+sid, function(msg) {
+                    $("#me").prepend(
+                        "<h6>" + JSON.parse(msg.body).sendid +":"+
+                        JSON.parse(msg.body).content1+ "</h6>");
                 });
-
-                self.stompClient.subscribe('/send/to/' + sid, function (msg) {
-                    $("#to").prepend(`<div class="chat-bubble to"><b>${JSON.parse(msg.body).sendid}</b>: ${JSON.parse(msg.body).content1}</div>`);
+                this.subscribe('/send/to/'+sid, function(msg) {
+                    $("#to").prepend(
+                        "<h6>" + JSON.parse(msg.body).sendid +":"+
+                        JSON.parse(msg.body).content1
+                        + "</h6>");
                 });
             });
         },
