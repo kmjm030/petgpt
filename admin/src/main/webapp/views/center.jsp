@@ -80,6 +80,15 @@
         data: [29.9, 71.5, 106.4, 129.2, 144.0, 176.0, 160.0, 148.0, 132.0, 165.0, 178.0, 190.0]
       }]
     });
+
+    // 메시지 대상 토글
+    const sendToSelect = document.getElementById('sendToSelect');
+    const targetInput = document.getElementById('targetInput');
+    if (sendToSelect) {
+      sendToSelect.addEventListener('change', function () {
+        targetInput.style.display = this.value === 'individual' ? 'block' : 'none';
+      });
+    }
   });
 </script>
 
@@ -163,6 +172,37 @@
       <div class="chart-card">
         <h6 class="card-title">매출 추이</h6>
         <div id="highchartContainer" style="width:100%; height:300px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ✅ 회원 메시지 전송 카드 -->
+  <div class="row mb-4">
+    <div class="col-lg-6 mb-4">
+      <div class="dashboard-card h-100">
+        <div class="card-title">회원 메시지 전송</div>
+        <form method="post" action="/admin/message/send">
+          <label for="sendToSelect">수신 대상</label>
+          <select id="sendToSelect" name="sendTo"
+                  style="width: 100%; padding: 0.6rem; margin-bottom: 1rem; border-radius: 8px; border: 1px solid #ccc;">
+            <option value="all">전체 회원</option>
+            <option value="individual">특정 회원</option>
+          </select>
+
+          <input type="text" name="targetMemberId" id="targetInput"
+                 placeholder="회원 ID 입력"
+                 style="width: 100%; padding: 0.6rem; margin-bottom: 1rem; border-radius: 8px; border: 1px solid #ccc; display: none;">
+
+          <label for="messageContent">메시지 내용</label>
+          <textarea name="messageContent" rows="4"
+                    style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid #ccc; margin-bottom: 1rem;"
+                    placeholder="보낼 메시지를 입력하세요"></textarea>
+
+          <button type="submit"
+                  style="background-color: #1d1d1f; color: white; padding: 0.5rem 1.5rem; border: none; border-radius: 8px; cursor: pointer;">
+            전송
+          </button>
+        </form>
       </div>
     </div>
   </div>

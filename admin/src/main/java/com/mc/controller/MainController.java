@@ -1,5 +1,6 @@
 package com.mc.controller;
 
+import com.mc.app.dto.Admin;
 import com.mc.app.dto.Customer;
 import com.mc.app.service.CustomerService;
 import com.mc.app.service.ItemService;
@@ -90,21 +91,12 @@ public class MainController {
         return "index";
     }
 
-    @RequestMapping("/ws")
-    public String ws(Model model, HttpSession session) {
-        if (session.getAttribute("admin") == null) {
-            return "redirect:/views/login.jsp";
-        }
-        model.addAttribute("serverurl", websocketServerUrl);
-        model.addAttribute("center", "ws");
-        return "index";
-    }
     @RequestMapping("/today")
     public String todayJoinList(Model model) {
         try {
             List<Customer> list = custService.getTodayJoinedCustomers();
             model.addAttribute("todayJoinedList", list);
-            model.addAttribute("center", "cust/todayList"); // JSP 경로
+            model.addAttribute("center", "cust/todayList");
         } catch (Exception e) {
             model.addAttribute("todayJoinedList", null);
             model.addAttribute("center", "cust/todayList");

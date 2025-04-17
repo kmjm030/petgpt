@@ -16,7 +16,3 @@ public interface ItemRepository extends MCRepository<Item, Integer> {
     int count();
     List<Item> selectTopSellingItems(@Param("limit") int limit);
 }
-
-
-
-
