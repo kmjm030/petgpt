@@ -39,7 +39,7 @@ public class QnaBoardController {
 
 
     @GetMapping("")
-    public String mypage(Model model, @RequestParam("id") String id, HttpSession session) throws Exception {
+    public String qnaboard(Model model, @RequestParam("id") String id, HttpSession session) throws Exception {
 
         // 세션에서 로그인된 사용자 확인
         Customer loggedInCustomer = (Customer) session.getAttribute("cust");
@@ -55,6 +55,13 @@ public class QnaBoardController {
         }
 
         List<QnaBoard> qnaBoards = qnaService.findAllByCust(id);
+//        for (QnaBoard board : qnaBoards) {
+//            if(board.getBoardRe().equals("Y")){
+//                board.setBoardRe("답변완료");
+//            }else{
+//                board.setBoardRe("답변대기");
+//            }
+//        }
         model.addAttribute("qnaBoards", qnaBoards);
         model.addAttribute("currentPage", "pages");
         model.addAttribute("pageTitle", "QnA Board");

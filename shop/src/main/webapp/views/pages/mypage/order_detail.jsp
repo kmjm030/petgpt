@@ -1,5 +1,6 @@
 <%@ page pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <style>
   .site-btn > a{
@@ -15,20 +16,37 @@
   #like_del_icon{
     color: black;
   }
+  #boardRe {
+    color: rosybrown;
+    text-align: center;
+    border-radius: 10px;
+    padding: 10px;
+  }
+  #boardTitle {
+    color: black;
+  }
+  .checkout__input{
+    margin-bottom:20px;
+  }
+  .order-site-btn {
+    width: 100%;
+    border-radius: 10px;
+    background-color: #fc6;
+    color: black;
+  }
+
 
 </style>
+
 <script>
   const like = {
     init:function(){
 
     },
-    del:function(itemKey, custId){
-      console.log("Deleting Like with itemKey: " + itemKey + ", custId: " + custId);
-      let c = confirm('상품을 찜목록에서 삭제하시겠습니까?');
+    del:function(boardKey){
+      let c = confirm('문의글을 삭제하시겠습니까?');
       if(c == true){
-        // c:url을 사용하여 URL을 서버에서 미리 생성
-        const deleteUrl = '<c:url value="/mypage/likedelimpl?itemKey=' + itemKey + '&id=' + custId + '"/>';
-        location.href = deleteUrl;
+        location.href = '<c:url value="/qnaboard/delimpl?boardKey="/>' + boardKey;
       }
     }
   }
@@ -36,6 +54,7 @@
     like.init();
   });
 </script>
+
 
 <!-- Breadcrumb Section Begin -->
 <section class="breadcrumb-option">
@@ -47,7 +66,8 @@
           <div class="breadcrumb__links">
             <a href="<c:url value='/'/>">Home</a>
             <a href="<c:url value='#'/>">마이페이지</a>
-            <span>찜 목록</span>
+            <a href="<c:url value='#'/>">주문내역</a>
+            <span>주문상세조회</span>
           </div>
         </div>
       </div>
@@ -74,9 +94,9 @@
                     <div class="shop__sidebar__categories">
                       <ul class="nice-scroll">
                         <li><a href="<c:url value='/mypage?id=${cust.custId}'/>">회원정보</a></li>
-                        <li><a href="<c:url value='/checkout/orderlist?id=${cust.custId}'/>">주문내역</a></li>
+                        <li><a href="<c:url value='/checkout/orderlist?id=${cust.custId}'/>"><strong id="category">주문내역</strong></a></li>
                         <li><a href="<c:url value='/address?id=${cust.custId}'/>">배송지 목록</a></li>
-                        <li><a href="<c:url value='/mypage/like?id=${cust.custId}'/>"><strong id="category">찜 목록</strong></a></li>
+                        <li><a href="<c:url value='/mypage/like?id=${cust.custId}'/>">찜 목록</a></li>
                         <li><a href="<c:url value='/coupon?id=${cust.custId}'/>">보유 쿠폰</a></li>
                         <li><a href="<c:url value='/qnaboard?id=${cust.custId}'/>">1:1문의</a></li>
                         <li><a href="<c:url value='#'/>">내가 작성한 리뷰</a></li>
@@ -93,32 +113,46 @@
       </div>
       <%--    회원 정보 --%>
       <div class="col-lg-9 container mt-3">
-          <h6 class="checkout__title">💟 내가 찜한 상품</h6>
+          <h6 class="checkout__title">🔎 주문내역 상세보기</h6>
+        <h6 class="checkout__input"><strong>▪ 주문번호 :</strong> ${order.orderKey}</h6>
+        <h6 class="checkout__input"><strong>▪ 수령인 :</strong> ${order.recipientName}</h6>
+        <h6 class="checkout__input"><strong>▪ 수령인 전화번호 :</strong> ${order.recipientPhone}</h6>
+        <h6 class="checkout__input"><strong>▪ 주문일자 :</strong> <fmt:formatDate value="${order.orderDate}" pattern="yyyy-MM-dd HH:mm" /></h6>
+        <h6 class="checkout__input"><strong>▪ 결제금액 :</strong> ${order.orderTotalPrice}원</h6>
+        <h6 class="checkout__input"><strong>▪ 배송지정보 :</strong> [${order.orderHomecode}] ${order.orderAddr} ${order.orderAddrRef} ${order.orderAddrDetail}</h6>
+        <h6 class="checkout__input"><strong>▪ 주문상품</strong></h6>
           <table class="table">
-            <thead>
+          <thead>
+          <tr>
+            <th></th>
+            <th>상품</th>
+            <th>가격</th>
+            <th>개수</th>
+          </tr>
+          </thead>
+          <tbody>
+          <c:forEach var="c" items="${orderDetails}">
             <tr>
-              <th>이미지</th>
-              <th>상품이름</th>
-              <th>가격</th>
-              <th></th>
+              <td>
+                <img src="<c:url value='/img/product/${itemMap[c.itemKey].itemImg1}'/>" width="200" />
+              </td>
+              <td>${itemMap[c.itemKey].itemName}</td>
+              <td>${c.orderDetailPrice}</td>
+              <td>${c.orderDetailCount}</td>
             </tr>
-            </thead>
-            <tbody>
-            <c:forEach var="c" items="${items}">
-              <tr>
-                <td><img id="like_img" src="<c:url value='/img/product/'/>${c.itemImg1}"/></td>
-                <td>${c.itemName}</td>
-                <td>${c.itemPrice}원</td>
-                <td class="cart__close">
-                  <a href="#" onclick="like.del(${c.itemKey}, '${sessionScope.cust.custId}')">
-                    <i id="like_del_icon" class="fa fa-close"></i>
-                  </a>
-                </td>
-              </tr>
-            </c:forEach>
-            </tbody>
-          </table>
+          </c:forEach>
+          </tbody>
+        </table>
           <br/><br/>
+        <div class="row">
+          <div class="col-lg-6">
+            <button class="site-btn order-site-btn">교환/환불 신청</button>
+          </div>
+          <div class="col-lg-6">
+            <button class="site-btn order-site-btn">주문 취소하기</button>
+          </div>
+        </div>
+        </div>
         </div>
     </div>
   </div>
