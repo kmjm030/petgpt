@@ -126,7 +126,7 @@
             <tr>
               <td></td>
               <td></td>
-              <td>${c.orderCnt}</td>
+              <td>${c.orderDetailCnt}</td>
               <td>${c.orderDetailPrice}</td>
               <td>
                 <button id="order_detail_btn" onclick="location.href='<c:url value='/checkout/detail?orderKey='/>${c.orderKey}'">상세보기</button>
