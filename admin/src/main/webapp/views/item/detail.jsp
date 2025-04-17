@@ -235,5 +235,7 @@
                 <button id="btn_delete" type="button" class="btn btn-outline-danger">삭제하기</button>
             </div>
         </form>
+        <jsp:include page="adminComments.jsp"></jsp:include>
+
     </div>
 </div>

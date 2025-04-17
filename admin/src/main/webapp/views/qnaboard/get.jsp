@@ -9,13 +9,13 @@
         update:function(id){
             let c = confirm('수정하시겠습니까?');
             if(c == true){
-                location.href = '<c:url value="/board/detail"/>?id='+id;
+                location.href = '<c:url value="/qnaboard/detail"/>?id='+id;
             }
         },
         delete:function(id){
             let c = confirm('삭제하시겠습니까?');
             if(c == true){
-                location.href = '<c:url value="/board/delete"/>?id='+id;
+                location.href = '<c:url value="/qnaboard/delete"/>?id='+id;
             }
         }
     };
@@ -26,10 +26,6 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800">Tables</h1>
-    <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
-        For more information about DataTables, please visit the <a target="_blank"
-                                                                   href="https://datatables.net">official DataTables documentation</a>.</p>
 
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
@@ -38,19 +34,21 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <h2> Board 문의게시판</h2>
+                <h2> QNABoard 상품 문의게시판 </h2>
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                     <tr>
                         <th>board.boardKey</th>
                         <th>board.itemKey</th>
                         <th>board.custId</th>
+                        <th>board.orderKey</th>
                         <th>board.boardTitle</th>
                         <th>board.boardRdate</th>
                         <th>board.Content</th>
                         <th>board.boardImg</th>
                         <th>board.boardOption</th>
                         <th>board.boardUpdate</th>
+                        <th>board.boardRe</th>
                         <th>수정</th>
                         <th>삭제</th>
                     </tr>
@@ -60,12 +58,14 @@
                         <th>board.boardKey</th>
                         <th>board.itemKey</th>
                         <th>board.custId</th>
+                        <th>board.orderKey</th>
                         <th>board.boardTitle</th>
                         <th>board.boardRdate</th>
                         <th>board.Content</th>
                         <th>board.boardImg</th>
                         <th>board.boardOption</th>
                         <th>board.boardUpdate</th>
+                        <th>board.boardRe</th>
                         <th>수정</th>
                         <th>삭제</th>
                     </tr>
@@ -73,15 +73,17 @@
                     <tbody>
                     <c:forEach var="board" items="${boards}">
                         <tr>
-                            <td><a href="<c:url value="/board/detail"/>?id=${board.boardKey}">${board.boardKey}</a></td>
+                            <td><a href="<c:url value="/qnaboard/detail"/>?id=${board.boardKey}">${board.boardKey}</a></td>
                             <td>${board.itemKey}</td>
                             <td>${board.custId}</td>
+                            <td>${board.orderKey}</td>
                             <td>${board.boardTitle}</td>
                             <td>${board.boardRdate}</td>
                             <td>${board.boardContent}</td>
                             <td>${board.boardImg}</td>
                             <td>${board.boardOption}</td>
                             <td>${board.boardUpdate}</td>
+                            <td>${board.boardRe}</td>
                             <td>
                                 <button onclick="board_get.update('${board.boardKey}')" type="button" class="btn btn-secondary">수정</button>
                             </td>
