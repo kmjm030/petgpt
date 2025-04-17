@@ -1,0 +1,108 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<style>
+    .notice-list {
+        max-width: 900px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .notice-list h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+        color: #1d1d1f;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .notice-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.95rem;
+    }
+
+    .notice-table th, .notice-table td {
+        padding: 0.75rem;
+        border: 1px solid #e0e0e0;
+        text-align: left;
+    }
+
+    .notice-table th {
+        background-color: #f9f9f9;
+        text-transform: uppercase;
+        font-weight: 600;
+        color: #6e6e73;
+    }
+
+    .notice-table tr:hover {
+        background-color: #f0f0f5;
+    }
+
+    .add-btn {
+        display: inline-block;
+        margin-bottom: 1rem;
+        background-color: #1d1d1f;
+        color: white;
+        padding: 0.5rem 1.2rem;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        text-decoration: none;
+    }
+
+    .add-btn:hover {
+        background-color: #333;
+    }
+
+    .delete-btn {
+        color: #d32f2f;
+        font-size: 0.85rem;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .delete-btn:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<div class="notice-list">
+    <h2><i class="fas fa-bullhorn" style="color:#1d1d1f;"></i> 관리자 공지사항</h2>
+
+    <a href="<c:url value='/admin/notice/add'/>" class="add-btn">➕ 새 공지 등록</a>
+
+    <table class="notice-table">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>제목</th>
+            <th>작성자</th>
+            <th>작성일</th>
+            <th>관리</th>
+        </tr>
+        </thead>
+        <tbody>
+        <c:forEach var="notice" items="${noticeList}" varStatus="status">
+            <tr>
+                <td>${status.index + 1}</td>
+                <td><a href="<c:url value='/admin/notice/detail?id=${notice.id}'/>">${notice.title}</a></td>
+                <td>${notice.adminId}</td>
+                <td>${notice.createdAt}</td>
+                <td>
+                    <a href="<c:url value='/admin/notice/delete?id=${notice.id}'/>" class="delete-btn"
+                       onclick="return confirm('정말 삭제하시겠습니까?');">삭제</a>
+                </td>
+            </tr>
+        </c:forEach>
+        <c:if test="${empty noticeList}">
+            <tr>
+                <td colspan="5" style="text-align:center; color: #888;">등록된 공지가 없습니다.</td>
+            </tr>
+        </c:if>
+        </tbody>
+    </table>
+</div>

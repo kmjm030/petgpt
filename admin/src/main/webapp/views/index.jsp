@@ -170,7 +170,6 @@
 <body id="page-top">
 
 <c:if test="${not empty sessionScope.admin}">
-    <!-- 관리자 정보 상단 고정 -->
     <div id="admin-info-bar">
         <span class="admin-name">
             <i class="fas fa-user-circle"></i> ${sessionScope.admin.adminName} 님
@@ -192,7 +191,6 @@
     </div>
 </c:if>
 
-<!-- 사이드바 -->
 <div id="hover-sidebar" class="hover-sidebar">
     <div class="sidebar-content">
         <div class="logo">
@@ -205,10 +203,10 @@
         <a href="<c:url value='/inquiries.jsp'/>"><i class="fas fa-question-circle"></i> 문의글 관리</a>
         <a href="<c:url value='/qnaboard/get'/>"><i class="fas fa-comment-dots"></i> 상품 문의글</a>
         <a href="<c:url value='/ws'/>"><i class="fas fa-comments"></i> 채팅</a>
+        <a href="<c:url value='/admin/notice/get'/>"><i class="fas fa-bullhorn"></i> 관리자 공지사항</a>
     </div>
 </div>
 
-<!-- 페이지 콘텐츠 영역 -->
 <c:choose>
     <c:when test="${center == null}">
         <jsp:include page="center.jsp"/>
@@ -218,7 +216,6 @@
     </c:otherwise>
 </c:choose>
 
-<!-- 스크립트 -->
 <script>
     document.addEventListener("DOMContentLoaded", () => {
         const sidebar = document.getElementById("hover-sidebar");

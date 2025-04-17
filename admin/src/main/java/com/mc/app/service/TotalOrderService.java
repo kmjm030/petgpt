@@ -55,6 +55,12 @@ public class TotalOrderService {
 
         return result;
     }
+
+    public int getUnansweredQnaCount() throws Exception {
+        return totalOrderRepository.countUnansweredQna();
+    }
+
+    public int getFlaggedReviewCount() throws Exception {
+        return totalOrderRepository.countFlaggedReviews();
+    }
 }
-
-

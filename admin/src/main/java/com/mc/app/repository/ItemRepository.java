@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
+
 import java.util.List;
 
 @Repository
@@ -14,5 +15,9 @@ public interface ItemRepository extends MCRepository<Item, Integer> {
 
     @Select("SELECT COUNT(*) FROM item")
     int count();
+
     List<Item> selectTopSellingItems(@Param("limit") int limit);
+
+    @Select("SELECT * FROM item WHERE item_count <= #{threshold}")
+    List<Item> selectItemsWithLowStock(@Param("threshold") int threshold);
 }
