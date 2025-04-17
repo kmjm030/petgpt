@@ -47,5 +47,14 @@
         DELETE FROM item WHERE item_key = #{itemKey}
     </delete>
 
+    <select id="selectTopSellingItems" resultType="Item">
+        SELECT i.*, COUNT(od.item_key) AS salesCount
+        FROM order_detail od
+                 JOIN item i ON od.item_key = i.item_key
+        GROUP BY od.item_key
+        ORDER BY salesCount DESC
+            LIMIT #{limit}
+    </select>
+
 </mapper>
 

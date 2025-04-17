@@ -65,6 +65,10 @@ public class ItemService implements MCService<Item, Integer> {
     public int getCount() throws Exception {
         return itemRepository.count();
     }
+    public List<Item> getTopSellingItems(int limit) throws Exception {
+        return itemRepository.selectTopSellingItems(limit);
+    }
+
 }
 
 

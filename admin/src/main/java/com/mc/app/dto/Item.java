@@ -23,4 +23,5 @@ public class Item {
     private String itemImg1;
     private String itemImg2;
     private String itemImg3;
+    private int salesCount;
 }

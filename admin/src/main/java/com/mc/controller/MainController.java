@@ -1,11 +1,14 @@
 package com.mc.controller;
 
+import com.mc.app.dto.Admin;
+import com.mc.app.dto.Customer;
 import com.mc.app.service.CustomerService;
 import com.mc.app.service.ItemService;
 import com.mc.app.service.TotalOrderService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -87,13 +91,17 @@ public class MainController {
         return "index";
     }
 
-    @RequestMapping("/ws")
-    public String ws(Model model, HttpSession session) {
-        if (session.getAttribute("admin") == null) {
-            return "redirect:/views/login.jsp";
+    @RequestMapping("/today")
+    public String todayJoinList(Model model) {
+        try {
+            List<Customer> list = custService.getTodayJoinedCustomers();
+            model.addAttribute("todayJoinedList", list);
+            model.addAttribute("center", "cust/todayList");
+        } catch (Exception e) {
+            model.addAttribute("todayJoinedList", null);
+            model.addAttribute("center", "cust/todayList");
         }
-        model.addAttribute("serverurl", websocketServerUrl);
-        model.addAttribute("center", "ws");
         return "index";
     }
 }
+
