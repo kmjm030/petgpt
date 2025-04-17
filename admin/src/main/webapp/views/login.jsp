@@ -26,9 +26,9 @@
       border-radius: 16px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
       width: 360px;
-      box-sizing: border-box;
       text-align: center;
       animation: fadeInUp 0.4s ease-out;
+      box-sizing: border-box;
     }
 
     .login-logo {

@@ -38,7 +38,7 @@
                 }
             });
 
-            $('#btn_reset').click(function () {
+            $('#btn_reset').click(() => {
                 $('#item_add_form')[0].reset();
                 $('#regDate').val(new Date().toISOString().slice(0, 10));
                 $('#errorMsg').hide();
@@ -190,7 +190,6 @@
             </div>
 
             <div id="errorMsg" class="text-danger mt-3">빈칸이 있습니다.</div>
-
         </form>
     </div>
 </div>

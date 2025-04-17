@@ -21,6 +21,7 @@ public class LoginController {
                             @RequestParam("pwd") String pwd,
                             HttpSession session,
                             Model model) throws Exception {
+
         Admin admin = adminService.login(id, pwd);
 
         if (admin != null) {
@@ -32,8 +33,6 @@ public class LoginController {
         }
     }
 
-
-
     @GetMapping("/logoutimpl")
     public String logoutImpl(HttpSession session) {
         if (session != null) {
@@ -42,3 +41,4 @@ public class LoginController {
         return "redirect:/main";
     }
 }
+

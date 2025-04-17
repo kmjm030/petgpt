@@ -60,7 +60,7 @@
 </head>
 <body>
 <div class="container">
-    <div class="title">📅 오늘 가입한 회원 목록</div>
+    <div class="title"> 오늘 가입한 회원 목록</div>
     <div class="card p-3">
         <c:choose>
             <c:when test="${not empty todayJoinedList}">

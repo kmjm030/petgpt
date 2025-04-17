@@ -12,16 +12,21 @@ import java.util.Map;
 @Repository
 @Mapper
 public interface TotalOrderRepository extends MCRepository<TotalOrder, Integer> {
-
     int selectOrderCount() throws Exception;
-
     int selectTodayRevenue() throws Exception;
-
     List<Map<String, Object>> selectOrderStatusCount() throws Exception;
 
-    @Select("SELECT COUNT(*) FROM qna WHERE answer IS NULL OR answer = ''")
+    @Select("""
+        SELECT COUNT(*) 
+        FROM qna 
+        WHERE answer IS NULL OR answer = ''
+    """)
     int countUnansweredQna() throws Exception;
 
-    @Select("SELECT COUNT(*) FROM review WHERE report_count > 0")
+    @Select("""
+        SELECT COUNT(*) 
+        FROM review 
+        WHERE report_count > 0
+    """)
     int countFlaggedReviews() throws Exception;
 }

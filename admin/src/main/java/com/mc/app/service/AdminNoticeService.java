@@ -14,7 +14,7 @@ public class AdminNoticeService {
     private final AdminNoticeRepository adminNoticeRepository;
 
     public List<AdminNotice> getRecentNotices() {
-        return adminNoticeRepository.selectRecent();
+        return adminNoticeRepository.selectWithAdminName();
     }
 
     public void writeNotice(AdminNotice notice) {
@@ -27,5 +27,9 @@ public class AdminNoticeService {
 
     public void deleteNotice(int id) {
         adminNoticeRepository.delete(id);
+    }
+
+    public void editNotice(AdminNotice notice) {
+        adminNoticeRepository.update(notice);
     }
 }

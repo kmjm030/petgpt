@@ -3,7 +3,6 @@ package com.mc.controller;
 import com.mc.app.dto.Admin;
 import com.mc.app.dto.AdminNotice;
 import com.mc.app.service.AdminNoticeService;
-
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -72,5 +71,19 @@ public class AdminNoticeController {
             log.error("공지 삭제 실패: {}", e.getMessage());
         }
         return "redirect:/admin/notice/get";
+    }
+
+    @PostMapping("/editimpl")
+    public String editImpl(@ModelAttribute AdminNotice notice, HttpSession session) {
+        try {
+            Admin admin = (Admin) session.getAttribute("admin");
+            if (admin != null) {
+                notice.setAdminId(admin.getAdminId());
+            }
+            adminNoticeService.editNotice(notice);
+        } catch (Exception e) {
+            log.error("공지 수정 실패: {}", e.getMessage());
+        }
+        return "redirect:/admin/notice/detail?id=" + notice.getId();
     }
 }

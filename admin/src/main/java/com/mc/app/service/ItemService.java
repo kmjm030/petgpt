@@ -14,10 +14,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ItemService implements MCService<Item, Integer> {
 
-    final ItemRepository itemRepository;
+    private final ItemRepository itemRepository;
 
     @Value("${app.dir.uploadimgdir}")
-    String uploadDir;
+    private String uploadDir;
 
     @Override
     public void add(Item item) throws Exception {
@@ -38,11 +38,13 @@ public class ItemService implements MCService<Item, Integer> {
         } catch (Exception e) {
             System.out.println("이미지1 삭제 실패: " + e.getMessage());
         }
+
         try {
             FileUploadUtil.deleteFile(item.getItemImg2(), uploadDir);
         } catch (Exception e) {
             System.out.println("이미지2 삭제 실패: " + e.getMessage());
         }
+
         try {
             FileUploadUtil.deleteFile(item.getItemImg3(), uploadDir);
         } catch (Exception e) {
@@ -74,7 +76,3 @@ public class ItemService implements MCService<Item, Integer> {
         return itemRepository.selectItemsWithLowStock(threshold);
     }
 }
-
-
-
-

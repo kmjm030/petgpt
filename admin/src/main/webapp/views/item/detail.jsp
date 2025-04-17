@@ -144,7 +144,6 @@
                     <label>상품 ID</label>
                     <input type="text" readonly class="form-control" id="itemKey" name="itemKey" value="${item.itemKey}">
                 </div>
-
                 <div class="form-group col-md-4">
                     <label>카테고리</label>
                     <select class="form-control" name="categoryKey">
@@ -152,7 +151,6 @@
                         <option value="2" ${item.categoryKey == 2 ? 'selected' : ''}>강아지</option>
                     </select>
                 </div>
-
                 <div class="form-group col-md-4">
                     <label>상품명</label>
                     <input type="text" class="form-control" name="itemName" value="${item.itemName}">
@@ -217,16 +215,20 @@
             <div class="section-title">옵션 정보</div>
             <table class="table table-bordered">
                 <tr>
-                    <th>사이즈</th><td>${option.size}</td>
+                    <th>사이즈</th>
+                    <td>${option.size}</td>
                 </tr>
                 <tr>
-                    <th>색상</th><td>${option.color}</td>
+                    <th>색상</th>
+                    <td>${option.color}</td>
                 </tr>
                 <tr>
-                    <th>옵션 재고</th><td>${option.stock}</td>
+                    <th>옵션 재고</th>
+                    <td>${option.stock}</td>
                 </tr>
                 <tr>
-                    <th>추가금액</th><td><fmt:formatNumber value="${option.additionalPrice}" pattern="#,#00"/> 원</td>
+                    <th>추가금액</th>
+                    <td><fmt:formatNumber value="${option.additionalPrice}" pattern="#,##0"/> 원</td>
                 </tr>
             </table>
 
@@ -235,7 +237,7 @@
                 <button id="btn_delete" type="button" class="btn btn-outline-danger">삭제하기</button>
             </div>
         </form>
-        <jsp:include page="adminComments.jsp"></jsp:include>
 
+        <jsp:include page="adminComments.jsp"/>
     </div>
 </div>

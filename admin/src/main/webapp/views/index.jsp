@@ -13,19 +13,22 @@
     <link href="<c:url value='/css/sb-admin-2.min.css'/>" rel="stylesheet">
 
     <style>
+        body {
+            background-color: #f5f5f7;
+            color: #1d1d1f;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            padding-top: 60px !important;
+        }
+
         body.dark-mode {
             background-color: #1d1d1f !important;
             color: #f5f5f7 !important;
         }
 
-        body.dark-mode #admin-info-bar {
-            background-color: #2c2c2e;
-            color: #f5f5f7;
-        }
-
+        body.dark-mode #admin-info-bar,
         body.dark-mode .hover-sidebar {
             background-color: #2c2c2e;
-            border-color: #444;
+            color: #f5f5f7;
         }
 
         body.dark-mode .hover-sidebar a {
@@ -36,7 +39,6 @@
             color: #0a84ff;
         }
 
-        /* 관리자 info-bar 고정 */
         #admin-info-bar {
             position: fixed;
             top: 0;
@@ -49,14 +51,12 @@
             align-items: center;
             gap: 14px;
             border-bottom-left-radius: 14px;
-            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
             height: 60px;
         }
 
         #admin-info-bar .admin-name {
             font-weight: 600;
             font-size: 0.95rem;
-            color: #1d1d1f;
             display: flex;
             align-items: center;
             gap: 6px;
@@ -77,13 +77,6 @@
             background-color: #333333;
         }
 
-        body {
-            background-color: #f5f5f7;
-            color: #1d1d1f;
-            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
-            padding-top: 60px !important; /* 고정된 상단 info-bar 피하기 */
-        }
-
         #welcome-overlay {
             position: fixed;
             z-index: 9998;
@@ -102,7 +95,6 @@
             text-align: center;
             font-size: 1.6rem;
             font-weight: 600;
-            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
             color: #1d1d1f;
             opacity: 0;
             animation: fadeIn 1s ease-in-out 0.5s forwards;
@@ -175,13 +167,10 @@
             <i class="fas fa-user-circle"></i> ${sessionScope.admin.adminName} 님
         </span>
         <a href="<c:url value='/logoutimpl'/>" onclick="sessionStorage.clear();">로그아웃</a>
-        <button id="darkModeToggle" title="다크모드 토글" style="background:none; border:none; font-size:1.2rem; cursor:pointer;">
-            🌙
-        </button>
+        <button id="darkModeToggle" title="다크모드 토글"
+                style="background:none; border:none; font-size:1.2rem; cursor:pointer;">🌙</button>
     </div>
-</c:if>
 
-<c:if test="${not empty sessionScope.admin}">
     <div id="welcome-overlay">
         <div class="welcome-box">
             <div class="welcome-text">
@@ -235,7 +224,6 @@
         const overlay = document.getElementById("welcome-overlay");
         if (overlay) {
             const hasShown = sessionStorage.getItem("welcomeShown");
-
             if (hasShown) {
                 overlay.style.display = "none";
             } else {
@@ -246,9 +234,8 @@
             }
         }
     });
-</script>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
+
+    document.addEventListener("DOMContentLoaded", () => {
         const toggle = document.getElementById("darkModeToggle");
         const isDark = localStorage.getItem("dark-mode") === "true";
 
@@ -258,8 +245,7 @@
         }
 
         toggle.addEventListener("click", () => {
-            document.body.classList.toggle("dark-mode");
-            const enabled = document.body.classList.contains("dark-mode");
+            const enabled = document.body.classList.toggle("dark-mode");
             toggle.textContent = enabled ? "☀️" : "🌙";
             localStorage.setItem("dark-mode", enabled);
         });

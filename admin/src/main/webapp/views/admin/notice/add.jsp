@@ -61,7 +61,11 @@
 </style>
 
 <div class="notice-form">
-    <h2><i class="fas fa-bullhorn" style="color:#1d1d1f;"></i> 관리자 공지 등록</h2>
+    <h2>
+        <i class="fas fa-bullhorn" style="color:#1d1d1f;"></i>
+        관리자 공지 등록
+    </h2>
+
     <form method="post" action="<c:url value='/admin/notice/addimpl'/>">
         <div class="form-group">
             <label for="adminId">작성자 ID</label>

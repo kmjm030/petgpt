@@ -13,7 +13,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class TotalOrderService {
 
-    final TotalOrderRepository totalOrderRepository;
+    private final TotalOrderRepository totalOrderRepository;
 
     public int getOrderCount() throws Exception {
         return totalOrderRepository.selectOrderCount();
@@ -21,26 +21,6 @@ public class TotalOrderService {
 
     public int getTodayRevenue() throws Exception {
         return totalOrderRepository.selectTodayRevenue();
-    }
-
-    public List<TotalOrder> getAll() throws Exception {
-        return totalOrderRepository.select();
-    }
-
-    public TotalOrder getOne(int orderKey) throws Exception {
-        return totalOrderRepository.selectOne(orderKey);
-    }
-
-    public void add(TotalOrder order) throws Exception {
-        totalOrderRepository.insert(order);
-    }
-
-    public void mod(TotalOrder order) throws Exception {
-        totalOrderRepository.update(order);
-    }
-
-    public void del(int orderKey) throws Exception {
-        totalOrderRepository.delete(orderKey);
     }
 
     public Map<String, Integer> getOrderStatusCountMap() throws Exception {
@@ -62,5 +42,25 @@ public class TotalOrderService {
 
     public int getFlaggedReviewCount() throws Exception {
         return totalOrderRepository.countFlaggedReviews();
+    }
+
+    public List<TotalOrder> getAll() throws Exception {
+        return totalOrderRepository.select();
+    }
+
+    public TotalOrder getOne(int orderKey) throws Exception {
+        return totalOrderRepository.selectOne(orderKey);
+    }
+
+    public void add(TotalOrder order) throws Exception {
+        totalOrderRepository.insert(order);
+    }
+
+    public void mod(TotalOrder order) throws Exception {
+        totalOrderRepository.update(order);
+    }
+
+    public void del(int orderKey) throws Exception {
+        totalOrderRepository.delete(orderKey);
     }
 }

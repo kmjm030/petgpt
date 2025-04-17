@@ -2,8 +2,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <style>
-  .notice-detail {
-    max-width: 800px;
+  .detail-form {
+    max-width: 600px;
     margin: 0 auto;
     background-color: #fff;
     padding: 2rem;
@@ -11,51 +11,110 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   }
 
-  .notice-detail h2 {
-    font-size: 1.6rem;
-    margin-bottom: 1.2rem;
-    color: #1d1d1f;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .notice-meta {
-    font-size: 0.9rem;
-    color: #6e6e73;
+  .detail-form h2 {
+    font-size: 1.5rem;
     margin-bottom: 1.5rem;
+    color: #1d1d1f;
   }
 
-  .notice-content {
-    font-size: 1rem;
-    line-height: 1.6;
-    color: #1d1d1f;
-    white-space: pre-line;
+  .form-group {
+    margin-bottom: 1.2rem;
+  }
+
+  .form-group label {
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 0.3rem;
+    display: block;
+  }
+
+  .form-group input,
+  .form-group textarea {
+    width: 100%;
+    padding: 0.6rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 0.95rem;
+  }
+
+  .form-group textarea {
+    min-height: 150px;
+    resize: vertical;
+  }
+
+  .form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 1rem;
+  }
+
+  .form-actions button,
+  .form-actions a {
+    font-size: 0.9rem;
+    padding: 0.5rem 1.2rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  .submit-btn {
+    background-color: #1d1d1f;
+    color: white;
+  }
+
+  .delete-btn {
+    background-color: #e53935;
+    color: white;
+  }
+
+  .form-actions a:hover {
+    background-color: #c62828;
   }
 
   .back-link {
     display: inline-block;
     margin-top: 1.5rem;
+    padding: 0.5rem 1.2rem;
+    background-color: #f5f5f7;
+    border: 1px solid #ccc;
+    border-radius: 8px;
     text-decoration: none;
+    color: #1d1d1f;
     font-size: 0.9rem;
-    color: #0071e3;
   }
 
   .back-link:hover {
-    text-decoration: underline;
+    background-color: #eaeaea;
   }
 </style>
 
-<div class="notice-detail">
-  <h2><i class="fas fa-bullhorn" style="color:#1d1d1f;"></i> ${notice.title}</h2>
+<div class="detail-form">
+  <h2>📄 공지 수정</h2>
 
-  <div class="notice-meta">
-    작성자: ${notice.adminId} | 작성일: ${notice.createdAt}
-  </div>
+  <form method="post" action="<c:url value='/admin/notice/editimpl'/>">
+    <input type="hidden" name="id" value="${notice.id}" />
+    <input type="hidden" name="adminId" value="${notice.adminId}" />
 
-  <div class="notice-content">
-    ${notice.content}
-  </div>
+    <div class="form-group">
+      <label for="title">제목</label>
+      <input type="text" id="title" name="title" value="${notice.title}" required />
+    </div>
 
-  <a href="<c:url value='/admin/notice/get'/>" class="back-link">← 공지 목록으로 돌아가기</a>
+    <div class="form-group">
+      <label for="content">내용</label>
+      <textarea id="content" name="content" required>${notice.content}</textarea>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="submit-btn">수정 완료</button>
+      <a href="<c:url value='/admin/notice/delete?id=${notice.id}'/>"
+         class="delete-btn"
+         onclick="return confirm('정말 삭제하시겠습니까?');">
+        삭제
+      </a>
+    </div>
+
+    <a href="<c:url value='/admin/notice/get'/>" class="back-link">← 목록으로</a>
+  </form>
 </div>

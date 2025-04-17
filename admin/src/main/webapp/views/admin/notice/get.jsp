@@ -26,7 +26,8 @@
         font-size: 0.95rem;
     }
 
-    .notice-table th, .notice-table td {
+    .notice-table th,
+    .notice-table td {
         padding: 0.75rem;
         border: 1px solid #e0e0e0;
         text-align: left;
@@ -71,7 +72,10 @@
 </style>
 
 <div class="notice-list">
-    <h2><i class="fas fa-bullhorn" style="color:#1d1d1f;"></i> 관리자 공지사항</h2>
+    <h2>
+        <i class="fas fa-bullhorn" style="color:#1d1d1f;"></i>
+        관리자 공지사항
+    </h2>
 
     <a href="<c:url value='/admin/notice/add'/>" class="add-btn">➕ 새 공지 등록</a>
 
@@ -89,18 +93,28 @@
         <c:forEach var="notice" items="${noticeList}" varStatus="status">
             <tr>
                 <td>${status.index + 1}</td>
-                <td><a href="<c:url value='/admin/notice/detail?id=${notice.id}'/>">${notice.title}</a></td>
-                <td>${notice.adminId}</td>
+                <td>
+                    <a href="<c:url value='/admin/notice/detail?id=${notice.id}'/>">
+                            ${notice.title}
+                    </a>
+                </td>
+                <td>${notice.adminName}</td>
                 <td>${notice.createdAt}</td>
                 <td>
-                    <a href="<c:url value='/admin/notice/delete?id=${notice.id}'/>" class="delete-btn"
-                       onclick="return confirm('정말 삭제하시겠습니까?');">삭제</a>
+                    <a href="<c:url value='/admin/notice/delete?id=${notice.id}'/>"
+                       class="delete-btn"
+                       onclick="return confirm('정말 삭제하시겠습니까?');">
+                        삭제
+                    </a>
                 </td>
             </tr>
         </c:forEach>
+
         <c:if test="${empty noticeList}">
             <tr>
-                <td colspan="5" style="text-align:center; color: #888;">등록된 공지가 없습니다.</td>
+                <td colspan="5" style="text-align:center; color: #888;">
+                    등록된 공지가 없습니다.
+                </td>
             </tr>
         </c:if>
         </tbody>

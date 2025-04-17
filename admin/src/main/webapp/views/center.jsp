@@ -14,11 +14,10 @@
     font-size: 2.5rem;
     font-weight: 600;
     margin-bottom: 2rem;
-    color: #1d1d1f;
   }
 
   .dashboard-card, .chart-card {
-    background-color: white;
+    background-color: #fff;
     border: 1px solid #e0e0e0;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
@@ -41,7 +40,6 @@
   .card-value {
     font-size: 1.75rem;
     font-weight: 600;
-    color: #1d1d1f;
   }
 
   ul.order-status {
@@ -51,7 +49,6 @@
 
   ul.order-status li {
     margin-bottom: 0.25rem;
-    color: #1d1d1f;
   }
 </style>
 
@@ -64,16 +61,12 @@
         backgroundColor: 'transparent',
         style: { fontFamily: '-apple-system, BlinkMacSystemFont' }
       },
-      title: {
-        text: '월별 매출'
-      },
+      title: { text: '월별 매출' },
       xAxis: {
         categories: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월']
       },
       yAxis: {
-        title: {
-          text: '단위: 원 (₩)'
-        }
+        title: { text: '단위: 원 (₩)' }
       },
       series: [{
         name: '매출액',
@@ -84,6 +77,7 @@
 </script>
 
 <div class="container-fluid">
+
   <div class="dashboard-header">대시보드</div>
 
   <div class="row mb-4">
@@ -95,6 +89,7 @@
         </div>
       </a>
     </div>
+
     <div class="col-lg-3 col-md-6 mb-4">
       <a href="<c:url value='/item/get'/>" style="text-decoration: none; color: inherit;">
         <div class="dashboard-card h-100">
@@ -103,6 +98,7 @@
         </div>
       </a>
     </div>
+
     <div class="col-lg-3 col-md-6 mb-4">
       <a href="<c:url value='/cust/today'/>" style="text-decoration: none; color: inherit;">
         <div class="dashboard-card h-100">
@@ -111,6 +107,7 @@
         </div>
       </a>
     </div>
+
     <div class="col-lg-3 col-md-6 mb-4">
       <a href="<c:url value='/orderdetail'/>" style="text-decoration: none; color: inherit;">
         <div class="dashboard-card h-100">
@@ -128,6 +125,7 @@
         <div class="card-value">${todayRevenue} ₩</div>
       </div>
     </div>
+
     <div class="col-lg-4 mb-4">
       <div class="dashboard-card h-100">
         <div class="card-title">배송 상태</div>
@@ -142,15 +140,12 @@
 
   <div class="row mb-4">
 
-    <!-- 🔔 관리자 알림 -->
     <div class="col-lg-6 mb-4">
       <div class="dashboard-card h-100">
         <div class="card-title">🔔 관리자 알림</div>
         <ul class="list-group list-group-flush" style="font-size: 0.95rem;">
           <c:forEach var="alert" items="${adminAlerts}">
-            <li class="list-group-item" style="background: transparent; color: #1d1d1f;">
-                ${alert}
-            </li>
+            <li class="list-group-item" style="background: transparent;">${alert}</li>
           </c:forEach>
           <c:if test="${empty adminAlerts}">
             <li class="list-group-item text-muted">현재 표시할 알림이 없습니다.</li>
@@ -159,14 +154,13 @@
       </div>
     </div>
 
-    <!-- 상품 판매 TOP 10 -->
     <div class="col-lg-6 mb-4">
       <div class="chart-card">
         <h6 class="card-title">상품 판매 TOP 10</h6>
         <ul class="list-group list-group-flush" style="font-size: 0.95rem;">
           <c:forEach var="item" items="${topItemList}" varStatus="i">
             <li class="list-group-item d-flex justify-content-between align-items-center"
-                style="background-color: transparent; color: #1d1d1f;">
+                style="background-color: transparent;">
               <span>${i.index + 1}. ${item.itemName}</span>
               <span class="badge badge-pill badge-dark">${item.salesCount}개</span>
             </li>
@@ -178,26 +172,26 @@
       </div>
     </div>
 
-    <!-- 매출 추이 -->
     <div class="col-lg-6 mb-4">
       <div class="chart-card">
         <h6 class="card-title">매출 추이</h6>
         <div id="highchartContainer" style="width:100%; height:300px;"></div>
       </div>
     </div>
-    <!-- 📢 관리자 공지사항 -->
+
     <div class="col-lg-6 mb-4">
       <div class="dashboard-card h-100">
         <div class="card-title">📢 관리자 공지사항</div>
         <ul class="list-group list-group-flush" style="font-size: 0.95rem;">
           <c:forEach var="notice" items="${adminNotices}">
-            <li class="list-group-item" style="background: transparent; color: #1d1d1f;">
-              <strong>${notice.adminId}</strong>: ${notice.content}<br/>
-              <span style="font-size: 0.8rem; color: #888;">🕒 ${notice.createdAt}</span>
+            <li class="list-group-item" style="background: transparent;">
+              <a href="<c:url value='/admin/notice/detail?id=${notice.id}'/>" style="text-decoration: none; color: inherit;">
+                📢 ${notice.title}
+              </a>
             </li>
           </c:forEach>
           <c:if test="${empty adminNotices}">
-            <li class="list-group-item text-muted">등록된 공지사항이 없습니다.</li>
+            <li class="list-group-item text-muted">현재 등록된 공지사항이 없습니다.</li>
           </c:if>
         </ul>
       </div>
