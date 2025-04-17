@@ -166,8 +166,18 @@ public class CheckOutController {
         TotalOrder order = totalOrderService.get(orderKey);
         List<OrderDetail> orderDetails = orderDetailService.findAllByOrder(orderKey);
 
+        Map<Integer, Item> itemMap = new HashMap<>();
+        for (OrderDetail od : orderDetails) {
+            int itemKey = od.getItemKey();
+            if (!itemMap.containsKey(itemKey)) {
+                Item item = itemService.get(itemKey); // itemService에서 단건 조회
+                itemMap.put(itemKey, item);
+            }
+        }
+
         model.addAttribute("order", order);
         model.addAttribute("orderDetails", orderDetails);
+        model.addAttribute("itemMap", itemMap);
         model.addAttribute("currentPage", "pages");
         model.addAttribute("pageTitle", "Order Detail");
         model.addAttribute("centerPage", "pages/mypage/order_detail.jsp");

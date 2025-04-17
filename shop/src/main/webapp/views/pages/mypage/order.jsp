@@ -116,7 +116,7 @@
             <c:forEach var="c" items="${orderList}">
               <tr>
                 <td>${c.orderKey}</td>
-                <td><strong>${itemNames[c.orderKey]}</strong></td>
+                <td><strong>${itemNames[c.orderKey]}</strong> 외 </td>
                 <td><fmt:formatDate value="${c.orderDate}" pattern="yyyy-MM-dd HH:mm" /></td>
                 <td>
                   <button id="order_detail_btn" onclick="location.href='<c:url value='/checkout/detail?orderKey='/>${c.orderKey}'">상세보기</button>
