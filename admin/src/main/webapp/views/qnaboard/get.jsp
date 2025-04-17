@@ -39,6 +39,7 @@
                     <thead>
                     <tr>
                         <th>board.boardKey</th>
+                        <th>board.boardRe</th>
                         <th>board.itemKey</th>
                         <th>board.custId</th>
                         <th>board.orderKey</th>
@@ -48,7 +49,7 @@
                         <th>board.boardImg</th>
                         <th>board.boardOption</th>
                         <th>board.boardUpdate</th>
-                        <th>board.boardRe</th>
+
                         <th>수정</th>
                         <th>삭제</th>
                     </tr>
@@ -74,6 +75,7 @@
                     <c:forEach var="board" items="${boards}">
                         <tr>
                             <td><a href="<c:url value="/qnaboard/detail"/>?id=${board.boardKey}">${board.boardKey}</a></td>
+                            <td>${board.boardRe}</td>
                             <td>${board.itemKey}</td>
                             <td>${board.custId}</td>
                             <td>${board.orderKey}</td>
@@ -83,7 +85,7 @@
                             <td>${board.boardImg}</td>
                             <td>${board.boardOption}</td>
                             <td>${board.boardUpdate}</td>
-                            <td>${board.boardRe}</td>
+
                             <td>
                                 <button onclick="board_get.update('${board.boardKey}')" type="button" class="btn btn-secondary">수정</button>
                             </td>

@@ -35,7 +35,7 @@ public class QnaBoardController {
             model.addAttribute("center",dir+"get");
             log.info("OK==============================:{}",list);
         } catch (Exception e) {
-            log.info("OK==============================:{}",e.getMessage());
+            log.info("ERROR==============================:{}",e.getMessage());
         }
         return "index";
     }
@@ -53,9 +53,9 @@ public class QnaBoardController {
 //            if(adminComments == null){
 //                model.addAttribute("reply",board);
 //            }
-            log.info("OK==============================:{}",id);
-            log.info("OK==============================:{}",board);
-            log.info("OK==============================:{}",adminComments);
+            log.info("OK==============//================:{}",id);
+            log.info("OK===============//===============:{}",board);
+            log.info("OK================//==============:{}",adminComments);
             model.addAttribute("board", board);
             model.addAttribute("item",item);
             model.addAttribute("adminComments", adminComments);

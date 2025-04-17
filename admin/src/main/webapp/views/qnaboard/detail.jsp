@@ -25,6 +25,7 @@
             $('#detail_form').submit();
         }
     };
+
     $(function(){
         board_detail.init();
     });
@@ -33,14 +34,15 @@
 <div class="container-fluid">
 
     <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800">Tables</h1>
+    <h1 class="h3 mb-2 text-gray-800">문의글 상세보기 detail </h1>
 
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">문의글 보기</h6>
+            <h6 class="m-0 font-weight-bold text-primary">문의글 보기 - ${board.boardRe}</h6>
         </div>
-        <div class="card-body">
+        <%----------------------start of--------- class="card-body" ----------------------------------------%>
+        <div style="border: 10px" class="card-body">
             <div class="table-responsive">
                 <form id="detail_form">
                     <div class="form-group">
@@ -80,20 +82,35 @@
                 </form>
             </div>
         </div>
+<%----------------------end of--------- class="card-body" ----------------------------------------%>
 
         <%--        관리자 댓글 존재 여부 확인--%>
         <c:choose>
             <c:when test="${adminComments == null}">
-                <h3><a href="#" data-toggle="modal" data-target="#loginModal">관리자 댓글 쓰기</a></h3>
+                <jsp:include page="addAdminComments.jsp"></jsp:include>
             </c:when>
             <%--         관리자 댓글 --%>
             <c:otherwise>
                 <jsp:include page="adminComments.jsp"></jsp:include>
             </c:otherwise>
         </c:choose>
-    </div>
 
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+<%--    End of class="card shadow mb-4">--------------------------------------%>
 </div>
+<%---------------   End of class="container-fluid  --------------------------%>
 
 
 
