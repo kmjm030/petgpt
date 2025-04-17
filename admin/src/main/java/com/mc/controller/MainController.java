@@ -103,5 +103,15 @@ public class MainController {
         }
         return "index";
     }
+    @RequestMapping("/ws")
+    public String ws(Model model, HttpSession session) {
+        if (session.getAttribute("admin") == null) {
+            return "redirect:/views/login.jsp";
+        }
+        model.addAttribute("serverurl", websocketServerUrl);
+        model.addAttribute("center", "ws");
+        return "index";
+    }
 }
+
 

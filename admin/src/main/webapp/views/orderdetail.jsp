@@ -70,23 +70,30 @@
         </tr>
         </thead>
         <tbody>
-        <c:forEach var="od" items="${orderDetails}">
-            <tr>
-                <td><img src="/img/item/${od.itemKey}.jpg" onerror="this.src='/img/noimage.png'" /></td>
-                <td>${od.orderKey}</td>
-                <td>${od.orderDetailCount}</td>
-                <td><fmt:formatNumber value="${od.orderDetailPrice}" type="currency" currencySymbol="₩" /></td>
-                <td class="action-buttons">
-                    <a href="/orderdetail/view/${od.orderDetailKey}">
-                        <button>상세</button>
+    <c:forEach var="orderdetail" items="${orderDetails}">
+        <tr>
+            <td><img src="/img/item/${orderdetail.itemKey}.jpg" onerror="this.src='/img/noimage.png'" /></td>
+            <td>${orderdetail.orderKey}</td>
+            <td>${orderdetail.orderDetailCount}</td>
+            <td><fmt:formatNumber value="${orderdetail.orderDetailPrice}" type="currency" currencySymbol="₩" /></td>
+            <td>
+                <div style="display: flex; gap: 6px; justify-content: center;">
+                    <a href="/orderdetail/view/${orderdetail.orderDetailKey}">
+                        <button style="padding: 4px 10px; font-size: 13px; border: 1px solid #007bff; background: white; color: #007bff; border-radius: 4px; cursor: pointer;">
+                            상세
+                        </button>
                     </a>
-                    <a href="/orderdetail/delete/${od.orderDetailKey}" onclick="return confirm('정말 삭제할까요?')">
-                        <button style="color: red;">삭제</button>
+                    <a href="/orderdetail/delete/${orderdetail.orderDetailKey}" onclick="return confirm('정말 삭제할까요?')">
+                        <button style="padding: 4px 10px; font-size: 13px; border: 1px solid #dc3545; background: white; color: #dc3545; border-radius: 4px; cursor: pointer;">
+                            삭제
+                        </button>
                     </a>
-                </td>
-            </tr>
-        </c:forEach>
-        </tbody>
+                </div>
+            </td>
+        </tr>
+    </c:forEach>
+    </tbody>
+
     </table>
 </div>
 
