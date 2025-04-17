@@ -370,7 +370,7 @@
             <div class="col-lg-3 col-md-6 col-sm-6">
                 <div class="footer__about">
                     <div class="footer__logo">
-                        <a href="#"><img src="<c:url value='/img/footer-logo.png'/>" alt=""></a>
+                        <a href="#"><img src="<c:url value='/img/logo3.png'/>" alt=""></a>
                     </div>
                     <p>The customer is at the heart of our unique business model, which includes design.</p>
                     <a href="#"><img src="<c:url value='/img/payment.png'/>" alt=""></a>
@@ -456,7 +456,7 @@
     <!-- Chat Modal - Initially Hidden -->
     <div id="chat-modal" style="display: none;"> 
         <div class="chat-modal-header">
-            <img src="<c:url value='/img/logo.png'/>" alt="PetGPT Logo" class="modal-logo">
+            <img src="<c:url value='/img/logo2.png'/>" alt="PetGPT Logo" class="modal-logo">
             <span class="modal-title">PetGPT 실시간 상담</span>
         </div>
         <div class="chat-modal-body">
