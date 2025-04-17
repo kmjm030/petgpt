@@ -194,13 +194,19 @@
                         JSON.parse(msg.body).content1
                         + "</h6>");
                 });
+                this.subscribe('/livechat/public', function(msg) {
+                    $("#all").prepend(
+                        "<h6>[Public] " + JSON.parse(msg.body).sendid +":"+
+                        JSON.parse(msg.body).content1
+                        + "</h6>");
+                });
             });
         },
-        sendAll: function () {
+        sendAll: function () { 
             const text = $('#alltext').val().trim();
             if (text) {
                 const msg = JSON.stringify({ sendid: this.id, content1: text });
-                this.stompClient.send('/receiveall', {}, msg);
+                this.stompClient.send('/app/livechat.sendMessage', {}, msg); 
                 $('#alltext').val('');
             }
         },

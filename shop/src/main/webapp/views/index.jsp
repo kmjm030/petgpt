@@ -519,7 +519,13 @@ $(document).ready(function() {
                 showMessageOutput(JSON.parse(messageOutput.body));
             });
 
-            // 서버에 사용자 입장 메시지 전송 -> 아직 구현안함 
+            stompClient.subscribe('/send/to/' + username, function(messageOutput) {
+                const message = JSON.parse(messageOutput.body);
+                message.sendid = "[Admin] " + message.sendid; 
+                showMessageOutput(message);
+            });
+
+            // 서버에 사용자 입장 메시지 전송 -> 아직 구현안함
             // stompClient.send("/app/livechat.addUser", {}, JSON.stringify({sender: username, type: 'JOIN'}));
 
         }, function(error) {
