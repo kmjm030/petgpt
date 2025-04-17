@@ -170,24 +170,21 @@
         });
     });
 </script>
-        }
-    });
-</script>
+
 <script>
     document.addEventListener("DOMContentLoaded", () => {
         const overlay = document.getElementById("welcome-overlay");
 
-        // admin이 로그인한 상태이고 overlay가 존재한다면
         if (overlay) {
             const hasShown = sessionStorage.getItem("welcomeShown");
 
             if (hasShown) {
-                overlay.style.display = "none"; // 이미 본 적 있으면 숨김
+                overlay.style.display = "none";
             } else {
-                sessionStorage.setItem("welcomeShown", "true"); // 처음이면 기록하고
+                sessionStorage.setItem("welcomeShown", "true");
                 setTimeout(() => {
-                    overlay.style.display = "none"; // 3초 후 자동 숨김
-                }, 3000);
+                    overlay.style.display = "none";
+                }, 7000);
             }
         }
     });

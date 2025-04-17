@@ -97,4 +97,17 @@ public class CustController {
         model.addAttribute("center", "center");
         return "index";
     }
+    @RequestMapping("/today")
+    public String todayJoinList(Model model) {
+        try {
+            List<Customer> list = custService.getTodayJoinedCustomers();
+            model.addAttribute("todayJoinedList", list);
+            model.addAttribute("center", "cust/todayList");
+        } catch (Exception e) {
+            model.addAttribute("todayJoinedList", null);
+            model.addAttribute("center", "cust/todayList");
+        }
+        return "index";
+    }
+
 }

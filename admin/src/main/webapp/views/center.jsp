@@ -104,10 +104,12 @@
       </a>
     </div>
     <div class="col-lg-3 col-md-6 mb-4">
-      <div class="dashboard-card h-100">
-        <div class="card-title">오늘 가입자 수</div>
-        <div class="card-value">${todayJoinCount}</div>
-      </div>
+      <a href="<c:url value='/cust/today'/>" style="text-decoration: none; color: inherit;">
+        <div class="dashboard-card h-100">
+          <div class="card-title">오늘 가입자 수</div>
+          <div class="card-value">${todayJoinCount}</div>
+        </div>
+      </a>
     </div>
     <div class="col-lg-3 col-md-6 mb-4">
       <a href="<c:url value='/orderdetail'/>" style="text-decoration: none; color: inherit;">

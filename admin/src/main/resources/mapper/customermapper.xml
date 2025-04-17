@@ -45,6 +45,11 @@
         WHERE DATE_FORMAT(cust_rdate, '%Y-%m-%d') = CURDATE()
     </select>
 
+    <select id="selectTodayJoinedCustomers" resultType="Customer">
+        SELECT *
+        FROM customer
+        WHERE DATE_FORMAT(cust_rdate, '%Y-%m-%d') = CURDATE()
+    </select>
 </mapper>
 
 
