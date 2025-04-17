@@ -143,10 +143,22 @@
   <div class="row mb-4">
     <div class="col-lg-6 mb-4">
       <div class="chart-card">
-        <h6 class="card-title">최근 활동 / 통계 / 로그</h6>
-        <div id="live_chart" style="height:300px;"></div>
+        <h6 class="card-title">상품 판매 TOP 10</h6>
+        <ul class="list-group list-group-flush" style="font-size: 0.95rem;">
+          <c:forEach var="item" items="${topItemList}" varStatus="i">
+            <li class="list-group-item d-flex justify-content-between align-items-center"
+                style="background-color: transparent; color: #1d1d1f;">
+              <span>${i.index + 1}. ${item.itemName}</span>
+              <span class="badge badge-pill badge-dark">${item.salesCount}개</span>
+            </li>
+          </c:forEach>
+          <c:if test="${empty topItemList}">
+            <li class="list-group-item text-muted">판매 데이터가 없습니다.</li>
+          </c:if>
+        </ul>
       </div>
     </div>
+
     <div class="col-lg-6 mb-4">
       <div class="chart-card">
         <h6 class="card-title">매출 추이</h6>

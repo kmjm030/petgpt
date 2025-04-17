@@ -37,11 +37,11 @@
         SELECT COUNT(*) FROM customer
     </select>
 
-<!--    <select id="selectTodayJoinCount" resultType="int">-->
-<!--        SELECT COUNT(*)-->
-<!--        FROM customer-->
-<!--        WHERE DATE_FORMAT(join_date, '%Y-%m-%d') = CURDATE()-->
-<!--    </select>-->
+    <select id="selectTodayJoinCount" resultType="int">
+        SELECT COUNT(*)
+        FROM customer
+        WHERE DATE(cust_rdate) = CURDATE()
+    </select>
 
     <select id="selectTodayJoinedCustomers" resultType="Customer">
         SELECT *

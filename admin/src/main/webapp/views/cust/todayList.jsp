@@ -48,8 +48,13 @@
             font-style: italic;
         }
 
-        .highlight {
-            background-color: #e8f0fe;
+        tr.clickable-row {
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        tr.clickable-row:hover {
+            background-color: #eef3ff;
         }
     </style>
 </head>
@@ -70,7 +75,7 @@
                     </thead>
                     <tbody>
                     <c:forEach var="cust" items="${todayJoinedList}">
-                        <tr>
+                        <tr class="clickable-row" onclick="location.href='<c:url value="/cust/detail"/>?id=${cust.custId}'">
                             <td>${cust.custId}</td>
                             <td>${cust.custName}</td>
                             <td>${cust.custEmail}</td>

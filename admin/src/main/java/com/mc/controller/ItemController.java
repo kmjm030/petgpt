@@ -147,6 +147,20 @@ public class ItemController {
 
         return "index";
     }
+    @RequestMapping("/top10")
+    public String topSellingItems(Model model) {
+        try {
+            List<Item> topItemList = itemService.getTopSellingItems(10);
+            model.addAttribute("topItemList", topItemList);
+            model.addAttribute("center", "item/top10"); // JSP 경로는 item/top10.jsp
+        } catch (Exception e) {
+            log.error("Top 10 상품 불러오기 실패: {}", e.getMessage());
+            model.addAttribute("topItemList", new ArrayList<>());
+            model.addAttribute("center", "item/top10");
+        }
+        return "index";
+    }
+
 }
 
 
