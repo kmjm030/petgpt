@@ -83,7 +83,7 @@
                     <div class="shop__sidebar__categories">
                       <ul class="nice-scroll">
                         <li><a href="<c:url value='/mypage?id=${cust.custId}'/>">회원정보</a></li>
-                        <li><a href="<c:url value='#'/>">주문내역</a></li>
+                        <li><a href="<c:url value='/checkout/orderlist?id=${cust.custId}'/>">주문내역</a></li>
                         <li><a href="<c:url value='/address?id=${cust.custId}'/>">배송지 목록</a></li>
                         <li><a href="<c:url value='/mypage/like?id=${cust.custId}'/>">찜 목록</a></li>
                         <li><a href="<c:url value='/coupon?id=${cust.custId}'/>">보유 쿠폰</a></li>

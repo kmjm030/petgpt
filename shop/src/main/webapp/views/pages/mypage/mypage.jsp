@@ -115,7 +115,7 @@
                     <div class="shop__sidebar__categories">
                       <ul class="nice-scroll">
                         <li><a href="<c:url value='/mypage?id=${cust.custId}'/>"><strong id="category">회원정보</strong></a></li>
-                        <li><a href="<c:url value='#'/>">주문내역</a></li>
+                        <li><a href="<c:url value='/checkout/orderlist?id=${cust.custId}'/>">주문내역</a></li>
                         <li><a href="<c:url value='/address?id=${cust.custId}'/>">배송지 목록</a></li>
                         <li><a href="<c:url value='/mypage/like?id=${cust.custId}'/>">찜 목록</a></li>
                         <li><a href="<c:url value='/coupon?id=${cust.custId}'/>">보유 쿠폰</a></li>
@@ -145,7 +145,7 @@
             </div>
             <div class="form-group col-md-6">
               <div class="checkout__input">
-                <label for="name">▪ 이름</label>
+                <label for="name"> 이름</label>
                 <input type="text" value="${cust.custName}" id="name" name="custName" readonly>
               </div>
             </div>
