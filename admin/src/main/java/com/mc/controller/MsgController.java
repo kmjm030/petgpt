@@ -1,9 +1,12 @@
 package com.mc.controller;
 
 import com.mc.app.msg.Msg;
+import com.mc.app.msg.Msg; 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload; 
+import org.springframework.messaging.handler.annotation.SendTo; 
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
@@ -34,5 +37,13 @@ public class MsgController {
         log.info(target);
 
         template.convertAndSend("/send/to/"+target,msg);
+    }
+
+    // 실시간 상담 메시지 처리 메소드
+    @MessageMapping("/livechat.sendMessage") 
+    @SendTo("/livechat/public") 
+    public Msg sendLiveChatMessage(@Payload Msg chatMessage) {
+        log.info("Live chat message received: {}", chatMessage);
+        return chatMessage;
     }
 }

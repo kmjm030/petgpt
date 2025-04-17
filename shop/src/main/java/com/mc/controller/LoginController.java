@@ -45,21 +45,34 @@ public class LoginController {
 
     // 로그인 페이지 보여주기 (GET 요청 처리)
     @GetMapping("/gologin")
-    public String showLoginPage(Model model) {
+    public String showLoginPage(Model model, HttpSession session, @RequestParam(name = "redirectURL", required = false) String redirectURL) { // Explicitly name the parameter
+        if (redirectURL != null && !redirectURL.isEmpty()) {
+            session.setAttribute("redirectURL", redirectURL);
+        } else {
+            session.removeAttribute("redirectURL");
+        }
         model.addAttribute("centerPage", "pages/login.jsp");
         return "index";
     }
 
     // 로그인 처리 (POST 요청 처리)
-    @PostMapping("/loginimpl") // 경로 변경 및 POST 매핑
+    @PostMapping("/loginimpl") 
     public String loginProcess(Model model, @RequestParam("id") String id,
                                @RequestParam("pwd") String pwd,
-                               HttpSession httpSession) throws Exception {
+                               HttpSession httpSession) throws Exception { 
 
         Customer dbCust = custService.get(id);
-        if(dbCust != null && pwd.equals(dbCust.getCustPwd())){
-            httpSession.setAttribute("cust", dbCust);
-            return "redirect:/";
+        if(dbCust != null && pwd.equals(dbCust.getCustPwd())){ 
+            httpSession.setAttribute("cust", dbCust); 
+
+            String redirectURL = (String) httpSession.getAttribute("redirectURL"); 
+            httpSession.removeAttribute("redirectURL"); 
+
+            if (redirectURL != null && !redirectURL.isEmpty()) {
+                 return "redirect:" + redirectURL;
+            } else {
+                 return "redirect:/"; 
+            }
         }
         model.addAttribute("centerPage", "pages/login.jsp");
         model.addAttribute("msg", "아이디 또는 패스워드가 일치하지 않습니다.");
