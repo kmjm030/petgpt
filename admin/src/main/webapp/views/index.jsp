@@ -13,9 +13,73 @@
     <link href="<c:url value='/css/sb-admin-2.min.css'/>" rel="stylesheet">
 
     <style>
+        body {
+            background-color: #f5f5f7;
+            color: #1d1d1f;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            padding-top: 60px !important;
+        }
+
+        body.dark-mode {
+            background-color: #1d1d1f !important;
+            color: #f5f5f7 !important;
+        }
+
+        body.dark-mode #admin-info-bar,
+        body.dark-mode .hover-sidebar {
+            background-color: #2c2c2e;
+            color: #f5f5f7;
+        }
+
+        body.dark-mode .hover-sidebar a {
+            color: #f5f5f7;
+        }
+
+        body.dark-mode .hover-sidebar a:hover {
+            color: #0a84ff;
+        }
+
+        #admin-info-bar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            padding: 10px 20px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            border-bottom-left-radius: 14px;
+            height: 60px;
+        }
+
+        #admin-info-bar .admin-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        #admin-info-bar a {
+            background-color: #1d1d1f;
+            color: white;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.2s ease;
+        }
+
+        #admin-info-bar a:hover {
+            background-color: #333333;
+        }
+
         #welcome-overlay {
             position: fixed;
-            z-index: 9999;
+            z-index: 9998;
             top: 0;
             left: 0;
             width: 100%;
@@ -31,16 +95,13 @@
             text-align: center;
             font-size: 1.6rem;
             font-weight: 600;
-            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
             color: #1d1d1f;
             opacity: 0;
             animation: fadeIn 1s ease-in-out 0.5s forwards;
         }
 
         @keyframes fadeIn {
-            to {
-                opacity: 1;
-            }
+            to { opacity: 1; }
         }
 
         @keyframes fadeOut {
@@ -48,12 +109,6 @@
                 opacity: 0;
                 visibility: hidden;
             }
-        }
-
-        body {
-            background-color: #f5f5f7;
-            color: #1d1d1f;
-            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
         .hover-sidebar {
@@ -66,7 +121,7 @@
             border-right: 1px solid #d2d2d7;
             transform: translateX(-100%);
             transition: transform 0.3s ease-in-out;
-            z-index: 9998;
+            z-index: 9997;
             box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
         }
 
@@ -107,25 +162,21 @@
 <body id="page-top">
 
 <c:if test="${not empty sessionScope.admin}">
+    <div id="admin-info-bar">
+        <span class="admin-name">
+            <i class="fas fa-user-circle"></i> ${sessionScope.admin.adminName} 님
+        </span>
+        <a href="<c:url value='/logoutimpl'/>" onclick="sessionStorage.clear();">로그아웃</a>
+        <button id="darkModeToggle" title="다크모드 토글"
+                style="background:none; border:none; font-size:1.2rem; cursor:pointer;">🌙</button>
+    </div>
+
     <div id="welcome-overlay">
         <div class="welcome-box">
             <div class="welcome-text">
                 <span>${sessionScope.admin.adminName}님, 환영합니다 !</span>
             </div>
         </div>
-    </div>
-</c:if>
-
-<c:if test="${not empty sessionScope.admin}">
-    <div style="position: fixed; top: 20px; right: 30px; z-index: 9999; display: flex; align-items: center; gap: 12px; font-family: 'SF Pro Display', sans-serif;">
-    <span style="font-weight: 600; font-size: 0.95rem;">
-      <i class="fas fa-user-circle"></i> ${sessionScope.admin.adminName} 님
-    </span>
-        <a href="<c:url value='/logoutimpl'/>"
-           onclick="sessionStorage.clear();"
-           style="background-color: #1d1d1f; color: white; padding: 6px 14px; border-radius: 8px; font-size: 0.85rem; text-decoration: none; font-weight: 500;">
-            로그아웃
-        </a>
     </div>
 </c:if>
 
@@ -141,6 +192,7 @@
         <a href="<c:url value='/inquiries.jsp'/>"><i class="fas fa-question-circle"></i> 문의글 관리</a>
         <a href="<c:url value='/qnaboard/get'/>"><i class="fas fa-comment-dots"></i> 상품 문의글</a>
         <a href="<c:url value='/ws'/>"><i class="fas fa-comments"></i> 채팅</a>
+        <a href="<c:url value='/admin/notice/get'/>"><i class="fas fa-bullhorn"></i> 관리자 공지사항</a>
     </div>
 </div>
 
@@ -168,29 +220,37 @@
         sidebar.addEventListener("mouseleave", () => {
             sidebar.style.transform = "translateX(-100%)";
         });
-    });
-</script>
-        }
-    });
-</script>
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const overlay = document.getElementById("welcome-overlay");
 
-        // admin이 로그인한 상태이고 overlay가 존재한다면
+        const overlay = document.getElementById("welcome-overlay");
         if (overlay) {
             const hasShown = sessionStorage.getItem("welcomeShown");
-
             if (hasShown) {
-                overlay.style.display = "none"; // 이미 본 적 있으면 숨김
+                overlay.style.display = "none";
             } else {
-                sessionStorage.setItem("welcomeShown", "true"); // 처음이면 기록하고
+                sessionStorage.setItem("welcomeShown", "true");
                 setTimeout(() => {
-                    overlay.style.display = "none"; // 3초 후 자동 숨김
-                }, 3000);
+                    overlay.style.display = "none";
+                }, 7000);
             }
         }
     });
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const toggle = document.getElementById("darkModeToggle");
+        const isDark = localStorage.getItem("dark-mode") === "true";
+
+        if (isDark) {
+            document.body.classList.add("dark-mode");
+            toggle.textContent = "☀️";
+        }
+
+        toggle.addEventListener("click", () => {
+            const enabled = document.body.classList.toggle("dark-mode");
+            toggle.textContent = enabled ? "☀️" : "🌙";
+            localStorage.setItem("dark-mode", enabled);
+        });
+    });
 </script>
+
 </body>
 </html>

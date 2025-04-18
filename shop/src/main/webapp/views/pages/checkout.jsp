@@ -7,6 +7,35 @@
           // 아임포트 초기화
   IMP.init('imp15570454'); // "가맹점 식별코드"를 실제 코드로 대체하세요
     function requestPay() {
+
+        console.log('🔥 최종 제출 데이터 확인 🔥');
+        console.log($('#orderForm').serialize());
+
+        let name = $('#recipientName').val();
+        let phone = $('#recipientPhone').val();
+        let address = $('#sample6_detailAddress').val();
+        let address2 = $('#sample6_address').val();
+
+        if(name == '' || name == null){
+            $('#msg').text('수령인 이름을 입력하세요.');
+            $('#recipientName').focus();
+            return;
+        }
+        if(phone == '' || phone == null){
+            $('#msg').text('수령인 전화번호를 입력하세요.');
+            $('#recipientPhone').focus();
+            return;
+        }
+        if(address2 == '' || address2 == null){
+            $('#msg').text('주소를 입력해주세요.');
+            $('#sample6_address').focus();
+            return;
+        }
+        if(address == '' || address == null){
+            $('#msg').text('상세주소를 입력해주세요.');
+            $('#sample6_detailAddress').focus();
+            return;
+        }
     IMP.request_pay({
       pg: "html5_inicis", // 결제사 선택
       pay_method: "card", // 결제 방법
@@ -22,6 +51,7 @@
     }, function (rsp) {
       if (rsp.success) {
         alert("결제가 완료되었습니다.");
+        document.getElementById("orderForm").submit();
         // 결제 성공 처리 로직
       } else {
         alert("결제에 실패하였습니다: " + rsp.error_msg);
@@ -104,6 +134,7 @@
                       if (!isNaN(discount) && !isNaN(discountedPrice)) {
                           $("#discount_price").text("-" + discount + "원");
                           $("#discounted_price").text(discountedPrice + "원");
+                          $("#finalAmount").val(discountedPrice);
                       } else {
                           console.warn("❗ 계산된 금액이 NaN입니다");
                       }
@@ -117,6 +148,8 @@
 
   });
 </script>
+
+
 <!-- Breadcrumb Section Begin -->
 <section class="breadcrumb-option">
     <div class="container">
@@ -141,7 +174,7 @@
     <div class="container">
         <div class="checkout__form">
             <%-- 실제 주문 처리 로직 필요 --%>
-<form action="#">
+<form id="orderForm" action="/checkout/orderimpl" method="post">
   <div class="row">
     <div class="col-lg-8 col-md-6">
 <%--      <h6 class="coupon__code"><span class="icon_tag_alt"></span> 쿠폰 적용이 완료되었습니다.</h6> &lt;%&ndash; 쿠폰 입력 필드 표시 로직 필요 &ndash;%&gt;--%>
@@ -151,6 +184,8 @@
           <div class="checkout__input">
             <p>▪ 이름</p>
             <input type="text" value="${cust.custName}" name="custName" readonly>
+            <input type="hidden" id="finalAmount" name="orderTotalPrice" value="${totalCartPrice}">
+            <input type="hidden" value="${cust.custId}" id="custId" name="custId">
           </div>
         </div>
       </div>
@@ -172,7 +207,7 @@
         <div class="col-lg-6">
           <div class="checkout__input">
             <p>▪ 받는 분 성함<span>*</span></p>
-            <input type="text" name="recipientName" placeholder="이름을 입력하세요." required>
+            <input type="text" id="recipientName" name="recipientName" placeholder="이름을 입력하세요." required>
           </div>
         </div>
       </div>
@@ -196,9 +231,9 @@
               </c:forEach>
             </select>
             </div><br/><br/><br/>
-            <input type="text" id="sample6_postcode" placeholder="우편번호"  name="addrHomecode">
+            <input type="text" id="sample6_postcode" placeholder="우편번호"  name="addrHomecode" readonly>
             <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
-            <input type="text" id="sample6_address" placeholder="주소" name="addrAddress"><br>
+            <input type="text" id="sample6_address" placeholder="주소" name="addrAddress" readonly><br>
             <input type="text" id="sample6_detailAddress" placeholder="상세주소" name="addrDetail">
             <input type="text" id="sample6_extraAddress" placeholder="참고항목" name="addrRef">
             <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -258,7 +293,7 @@
         <div class="col-lg-6">
           <div class="checkout__input">
             <p>▪ 전화번호<span>*</span></p>
-            <input type="tel" name="recipientPhone" placeholder="전화번호를 입력하세요."required>
+            <input type="tel" id="recipientPhone" name="recipientPhone" placeholder="전화번호를 입력하세요."required>
           </div>
         </div>
       </div>
@@ -269,7 +304,7 @@
                placeholder="배송시 요청사항을 입력하세요." name="orderReq">
       </div>
       <div class="form-check form-switch form-group">
-        <input class="form-check-input" type="checkbox" id="addrSave" value="Y">
+        <input class="form-check-input" type="checkbox" id="addrSave" name="addrSave" value="Y">
         <label class="form-check-label" for="isSame">위 주소를 배송지목록에 저장합니다.</label>
       </div><br/>
     </div>
@@ -298,10 +333,12 @@
           <li>최종 결제금액 <span id="discounted_price">${totalCartPrice}원</span></li>
         </ul>
         <%-- 결제 --%>
+          <div id="msg"></div><br/>
        <div>
         <button type="button" class="site-btn" onclick="requestPay()">결제하기</button>
       </div>
     </div>
+  </div>
   </div>
 </form>
 </div>

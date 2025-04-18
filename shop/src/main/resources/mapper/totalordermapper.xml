@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mc.app.repository.TotalOrderRepository">
+
+    <select id="findAllByCustomer" parameterType="String" resultType="com.mc.app.dto.TotalOrder">
+        SELECT * FROM total_order WHERE cust_id = #{custId}
+    </select>
+
+    <select id="selectOne" parameterType="int" resultType="com.mc.app.dto.TotalOrder">
+        SELECT * FROM total_order WHERE order_key = #{orderKey}
+    </select>
+
+    <insert id="insert" parameterType="com.mc.app.dto.TotalOrder" useGeneratedKeys="true" keyProperty="orderKey" keyColumn="order_key">
+        INSERT INTO total_order (
+            cust_id, order_date, item_key,
+            recipient_name, recipient_phone, order_req, order_status,
+            order_card, order_totalprice, order_shootnum,
+            order_addr, order_addrdetail, order_homecode, order_addrref
+        ) VALUES (
+                     #{custId}, now(), #{itemKey},
+                     #{recipientName}, #{recipientPhone}, #{orderReq}, "주문확인중",
+                     #{orderCard}, #{orderTotalPrice}, null,
+                     #{orderAddr}, #{orderAddrDetail}, #{orderHomecode}, #{orderAddrRef}
+                 )
+    </insert>
+
+    <update id="updateStatus">
+        UPDATE total_order
+        SET order_status = #{orderStatus}
+        WHERE order_key = #{orderKey}
+    </update>
+
+    <update id="updateShootNum">
+        UPDATE total_order
+        SET order_shootnum = #{orderShootnum}
+        WHERE order_key = #{orderKey}
+    </update>
+
+    <delete id="delete" parameterType="int">
+        DELETE FROM total_order WHERE order_key = #{orderKey}
+    </delete>
+
+</mapper>
+

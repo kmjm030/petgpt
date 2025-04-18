@@ -4,10 +4,12 @@ import com.mc.app.dto.Customer;
 import com.mc.app.frame.MCRepository;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
+import java.util.List;
 
 @Repository
 @Mapper
 public interface CustomerRepository extends MCRepository<Customer, String> {
     int selectCount();
     int selectTodayJoinCount() throws Exception;
+    List<Customer> selectTodayJoinedCustomers() throws Exception;
 }

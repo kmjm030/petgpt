@@ -62,5 +62,3 @@ public class AdminService implements MCService<Admin, String> {
         return result;
     }
 }
-
-

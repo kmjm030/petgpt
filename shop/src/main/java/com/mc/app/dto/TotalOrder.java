@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Date;
+
 @Builder
 @Data
 @NoArgsConstructor
@@ -14,7 +16,7 @@ public class TotalOrder {
     private int orderKey;
     private String custId;
     private int itemKey;
-    private LocalDateTime orderDate;
+    private Date orderDate;
     private String recipientName;
     private String recipientPhone;
     private String orderReq;
@@ -23,6 +25,7 @@ public class TotalOrder {
     private int orderTotalPrice;
     private String orderShootNum;
     private String orderAddr;
-    private String orderAddrdetail;
+    private String orderAddrRef;
+    private String orderAddrDetail;
     private String orderHomecode;
 }

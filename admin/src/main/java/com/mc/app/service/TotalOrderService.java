@@ -13,7 +13,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class TotalOrderService {
 
-    final TotalOrderRepository totalOrderRepository;
+    private final TotalOrderRepository totalOrderRepository;
 
     public int getOrderCount() throws Exception {
         return totalOrderRepository.selectOrderCount();
@@ -21,6 +21,27 @@ public class TotalOrderService {
 
     public int getTodayRevenue() throws Exception {
         return totalOrderRepository.selectTodayRevenue();
+    }
+
+    public Map<String, Integer> getOrderStatusCountMap() throws Exception {
+        List<Map<String, Object>> rawList = totalOrderRepository.selectOrderStatusCount();
+        Map<String, Integer> result = new HashMap<>();
+
+        for (Map<String, Object> row : rawList) {
+            String status = (String) row.get("order_status");
+            Integer count = ((Number) row.get("count")).intValue();
+            result.put(status, count);
+        }
+
+        return result;
+    }
+
+    public int getUnansweredQnaCount() throws Exception {
+        return totalOrderRepository.countUnansweredQna();
+    }
+
+    public int getFlaggedReviewCount() throws Exception {
+        return totalOrderRepository.countFlaggedReviews();
     }
 
     public List<TotalOrder> getAll() throws Exception {
@@ -42,19 +63,4 @@ public class TotalOrderService {
     public void del(int orderKey) throws Exception {
         totalOrderRepository.delete(orderKey);
     }
-
-    public Map<String, Integer> getOrderStatusCountMap() throws Exception {
-        List<Map<String, Object>> rawList = totalOrderRepository.selectOrderStatusCount();
-        Map<String, Integer> result = new HashMap<>();
-
-        for (Map<String, Object> row : rawList) {
-            String status = (String) row.get("order_status");
-            Integer count = ((Number) row.get("count")).intValue();
-            result.put(status, count);
-        }
-
-        return result;
-    }
 }
-
-

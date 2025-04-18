@@ -10,10 +10,10 @@
 
     <insert id="insert" parameterType="com.mc.app.dto.OrderDetail">
         INSERT INTO order_detail (
-            orderdetail_key, item_key, option_key, order_key,
+            item_key, option_key, order_key,
             orderdetail_price, orderdetail_count
         ) VALUES (
-                     #{orderDetailKey}, #{itemKey}, #{optionKey}, #{orderKey},
+                     #{itemKey}, #{optionKey}, #{orderKey},
                      #{orderDetailPrice}, #{orderDetailCount}
                  )
     </insert>

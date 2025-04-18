@@ -16,5 +16,4 @@ public class Option {
     private String color;
     private int stock;
     private int additionalPrice;
-    // private String optionName;
 }
