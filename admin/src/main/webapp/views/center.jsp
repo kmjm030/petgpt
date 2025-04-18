@@ -1,11 +1,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<!-- ⚠️ 직접 배경/색상 지정 제거, 상속으로 처리 -->
 <style>
-  body, .container-fluid {
+  .container-fluid {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    background-color: #f5f5f7;
-    color: #1d1d1f;
+    background-color: inherit;
+    color: inherit;
     margin: 0;
     padding: 2rem;
   }
@@ -16,7 +17,8 @@
     margin-bottom: 2rem;
   }
 
-  .dashboard-card, .chart-card {
+  .dashboard-card,
+  .chart-card {
     background-color: #fff;
     border: 1px solid #e0e0e0;
     border-radius: 12px;
@@ -25,7 +27,8 @@
     transition: box-shadow 0.3s ease-in-out;
   }
 
-  .dashboard-card:hover, .chart-card:hover {
+  .dashboard-card:hover,
+  .chart-card:hover {
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
   }
 
@@ -148,7 +151,7 @@
   <div class="row mb-4">
     <div class="col-lg-6 mb-4">
       <div class="dashboard-card h-100">
-        <div class="card-title"><span style="color: black;"></span> 관리자 알림</div>
+        <div class="card-title">관리자 알림</div>
         <ul class="list-group list-group-flush" style="font-size: 0.95rem;">
           <c:forEach var="alert" items="${adminAlerts}">
             <li class="list-group-item" style="background: transparent;">${alert}</li>
@@ -180,19 +183,19 @@
 
     <div class="col-lg-6 mb-4">
       <div class="chart-card">
-        <h6 class="card-title"><span style="color: black;"></span> 오늘 시간대별 매출</h6>
+        <h6 class="card-title">오늘 시간대별 매출</h6>
         <div id="hourlySalesChart" style="width:100%; height:300px;"></div>
       </div>
     </div>
 
     <div class="col-lg-6 mb-4">
       <div class="dashboard-card h-100">
-        <div class="card-title"><span style="color: black;"></span> 관리자 공지사항</div>
+        <div class="card-title">관리자 공지사항</div>
         <ul class="list-group list-group-flush" style="font-size: 0.95rem;">
           <c:forEach var="notice" items="${adminNotices}">
             <li class="list-group-item" style="background: transparent;">
               <a href="<c:url value='/admin/notice/detail?id=${notice.id}'/>" style="text-decoration: none; color: inherit;">
-                <span style="color: black;"></span> ${notice.title}
+                  ${notice.title}
               </a>
             </li>
           </c:forEach>
@@ -202,45 +205,5 @@
         </ul>
       </div>
     </div>
-
   </div>
-  <style>
-    body.dark-mode .container-fluid {
-      background-color: #1d1d1f !important;
-      color: #f5f5f7 !important;
-    }
-
-    body.dark-mode .dashboard-card,
-    body.dark-mode .chart-card {
-      background-color: #2c2c2e !important;
-      border-color: #3a3a3c !important;
-    }
-
-    body.dark-mode .card-title {
-      color: #a1a1aa !important;
-    }
-
-    body.dark-mode .list-group-item {
-      background-color: transparent !important;
-      color: #e5e5e7 !important;
-    }
-
-    body.dark-mode .badge-dark {
-      background-color: #444444 !important;
-      color: #ffffff !important;
-    }
-
-    body.dark-mode a {
-      color: #f5f5f7 !important;
-    }
-
-    body.dark-mode a:hover {
-      color: #0a84ff !important;
-    }
-
-    body.dark-mode .text-muted {
-      color: #999 !important;
-    }
-  </style>
-
 </div>
