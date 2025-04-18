@@ -148,7 +148,7 @@
   <div class="row mb-4">
     <div class="col-lg-6 mb-4">
       <div class="dashboard-card h-100">
-        <div class="card-title"><span style="color: black;">🔔</span> 관리자 알림</div>
+        <div class="card-title"><span style="color: black;"></span> 관리자 알림</div>
         <ul class="list-group list-group-flush" style="font-size: 0.95rem;">
           <c:forEach var="alert" items="${adminAlerts}">
             <li class="list-group-item" style="background: transparent;">${alert}</li>
@@ -180,19 +180,19 @@
 
     <div class="col-lg-6 mb-4">
       <div class="chart-card">
-        <h6 class="card-title"><span style="color: black;">🕒</span> 오늘 시간대별 매출</h6>
+        <h6 class="card-title"><span style="color: black;"></span> 오늘 시간대별 매출</h6>
         <div id="hourlySalesChart" style="width:100%; height:300px;"></div>
       </div>
     </div>
 
     <div class="col-lg-6 mb-4">
       <div class="dashboard-card h-100">
-        <div class="card-title"><span style="color: black;">📢</span> 관리자 공지사항</div>
+        <div class="card-title"><span style="color: black;"></span> 관리자 공지사항</div>
         <ul class="list-group list-group-flush" style="font-size: 0.95rem;">
           <c:forEach var="notice" items="${adminNotices}">
             <li class="list-group-item" style="background: transparent;">
               <a href="<c:url value='/admin/notice/detail?id=${notice.id}'/>" style="text-decoration: none; color: inherit;">
-                <span style="color: black;">📢</span> ${notice.title}
+                <span style="color: black;"></span> ${notice.title}
               </a>
             </li>
           </c:forEach>
@@ -204,4 +204,43 @@
     </div>
 
   </div>
+  <style>
+    body.dark-mode .container-fluid {
+      background-color: #1d1d1f !important;
+      color: #f5f5f7 !important;
+    }
+
+    body.dark-mode .dashboard-card,
+    body.dark-mode .chart-card {
+      background-color: #2c2c2e !important;
+      border-color: #3a3a3c !important;
+    }
+
+    body.dark-mode .card-title {
+      color: #a1a1aa !important;
+    }
+
+    body.dark-mode .list-group-item {
+      background-color: transparent !important;
+      color: #e5e5e7 !important;
+    }
+
+    body.dark-mode .badge-dark {
+      background-color: #444444 !important;
+      color: #ffffff !important;
+    }
+
+    body.dark-mode a {
+      color: #f5f5f7 !important;
+    }
+
+    body.dark-mode a:hover {
+      color: #0a84ff !important;
+    }
+
+    body.dark-mode .text-muted {
+      color: #999 !important;
+    }
+  </style>
+
 </div>
