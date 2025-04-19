@@ -158,7 +158,7 @@ public class ShopController {
             log.error("상품 상세 정보 조회 중 오류 발생 (itemKey: {})", itemKey, e);
             return "redirect:/shop";
         }
-        List<QnaBoard> qnaBoards = qnaService.findAllByItem(itemKey);
+        List<QnaBoard> qnaBoards = qnaService.findQnaByItem(itemKey);
         model.addAttribute("qnaBoards", qnaBoards);
         return "index";
     }

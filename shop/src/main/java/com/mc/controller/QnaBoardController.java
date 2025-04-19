@@ -54,7 +54,7 @@ public class QnaBoardController {
             return "redirect:/qnaboard?id=" + loggedInCustomer.getCustId();  // 자신의 마이페이지만 보여줌
         }
 
-        List<QnaBoard> qnaBoards = qnaService.findAllByCust(id);
+        List<QnaBoard> qnaBoards = qnaService.findQnaByCust(id);
 //        for (QnaBoard board : qnaBoards) {
 //            if(board.getBoardRe().equals("Y")){
 //                board.setBoardRe("답변완료");
@@ -145,6 +145,7 @@ public class QnaBoardController {
 
             // 서비스 호출 직전 로그 추가: 전달되는 custId 값 확인
             log.info("CommunityBoardService.createBoard 호출 직전 - custId: '{}', title: '{}'", board.getCustId(), board.getBoardTitle());
+            board.setBoardType(1);
             qnaService.add(board);
 
         } catch (Exception e) {

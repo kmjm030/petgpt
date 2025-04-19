@@ -10,6 +10,8 @@ import java.util.List;
 @Repository
 @Mapper
 public interface QnaBoardRepository extends MCRepository<QnaBoard, Integer> {
-    List<QnaBoard> findAllByCust(String custId) throws Exception;
-    List<QnaBoard> findAllByItem(Integer itemKey) throws Exception;
+    List<QnaBoard> findQnaByCust(String custId) throws Exception;
+    List<QnaBoard> findQnaByItem(Integer itemKey) throws Exception;
+    List<QnaBoard> findReviewByCust(String custId) throws Exception;
+    List<QnaBoard> findReviewByItem(Integer itemKey) throws Exception;
 }

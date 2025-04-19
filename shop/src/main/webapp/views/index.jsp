@@ -500,7 +500,7 @@ $(document).ready(function() {
     let stompClient = null; 
     let subscription = null; 
     let username = "User_${sessionScope.cust != null ? sessionScope.cust.custId : 'Guest'}";
-    
+
     function connectChat() {
 
         if (stompClient && stompClient.connected) {
@@ -513,7 +513,7 @@ $(document).ready(function() {
 
         stompClient.connect({}, function (frame) {
             console.log('Connected: ' + frame);
-            chatMessages.html('<p style="color: green; text-align: center;">연결되었습니다.</p>'); 
+            chatMessages.html('<p style="color: green; text-align: center;">연결되었습니다.</p>');
 
             subscription = stompClient.subscribe('/livechat/public', function (messageOutput) {
                 showMessageOutput(JSON.parse(messageOutput.body));
@@ -521,7 +521,7 @@ $(document).ready(function() {
 
             stompClient.subscribe('/send/to/' + username, function(messageOutput) {
                 const message = JSON.parse(messageOutput.body);
-                message.sendid = "[Admin] " + message.sendid; 
+                message.sendid = "[Admin] " + message.sendid;
                 showMessageOutput(message);
             });
 
@@ -536,7 +536,7 @@ $(document).ready(function() {
 
     function disconnectChat() {
         if (stompClient !== null && stompClient.connected) {
-            // 서버에 사용자 퇴장 메시지 전송 -> 아직 구현안함 
+            // 서버에 사용자 퇴장 메시지 전송 -> 아직 구현안함
             // stompClient.send("/app/livechat.sendMessage", {}, JSON.stringify({sender: username, type: 'LEAVE', content:''}));
 
             if (subscription) {
@@ -555,33 +555,33 @@ $(document).ready(function() {
         const messageContent = chatInput.val().trim();
         if(messageContent && stompClient && stompClient.connected) {
             const chatMessage = {
-                sendid: username, 
-                content1: messageContent 
+                sendid: username,
+                content1: messageContent
             };
-            
+
             stompClient.send("/app/livechat.sendMessage", {}, JSON.stringify(chatMessage));
-            chatInput.val(''); 
+            chatInput.val('');
         } else if (!stompClient || !stompClient.connected) {
              alert("서버에 연결되지 않았습니다.");
         }
     }
 
-    function showMessageOutput(messageOutput) { 
+    function showMessageOutput(messageOutput) {
         const messageElement = $('<p></p>');
-        
+
         if (messageOutput.sendid === username) {
              messageElement.css({'text-align': 'right', 'margin-bottom': '5px'});
-             messageElement.html('<strong>나:</strong> ' + messageOutput.content1); 
+             messageElement.html('<strong>나:</strong> ' + messageOutput.content1);
         } else {
              messageElement.css({'text-align': 'left', 'margin-bottom': '5px'});
-             messageElement.html('<strong>' + (messageOutput.sendid || '상담원') + ':</strong> ' + messageOutput.content1); 
+             messageElement.html('<strong>' + (messageOutput.sendid || '상담원') + ':</strong> ' + messageOutput.content1);
         }
-        
+
         if (chatMessages.find('p.initial-message').length > 0 || chatMessages.find('p:contains("연결되었습니다.")').length > 0) {
              chatMessages.empty();
         }
         chatMessages.append(messageElement);
-        
+
         chatMessages.scrollTop(chatMessages[0].scrollHeight);
     }
 
@@ -598,7 +598,7 @@ $(document).ready(function() {
     fabCloseBtn.on('click', function() {
         chatModal.removeClass('active');
         fabCloseBtn.addClass('fab-hidden').removeClass('fab-visible');
-        disconnectChat(); 
+        disconnectChat();
 
         setTimeout(function() {
             chatModal.hide();
@@ -617,12 +617,9 @@ $(document).ready(function() {
         }
     });
 
-    $('#modal-chatbot-btn').on('click', function() {
-        alert('챗봇 기능은 준비 중입니다.');
-    });
 
     $('#modal-livechat-btn').on('click', function() {
-    
+
     });
 
     fabOpenBtn.addClass('fab-visible').removeClass('fab-hidden');
