@@ -214,6 +214,73 @@
             transition: opacity 0.2s ease 0.1s, transform 0.2s ease 0.1s, visibility 0s 0.1s; 
         }
 
+        .header__search {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            margin-left: -30px;
+        }
+
+        .header__search form {
+            display: flex;
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            overflow: hidden;
+            background-color: #f9f9f9;
+            transition: border-color 0.3s ease;
+        }
+
+        .header__search form:hover {
+            border-color: #000000;
+        }
+
+        .search-input {
+            flex-grow: 1;
+            border: none;
+            padding: 10px 15px;
+            font-size: 14px;
+            border-radius: 25px 0 0 25px;
+            outline: none;
+            background-color: transparent;
+        }
+
+        .search-input::placeholder {
+            color: #aaa;
+        }
+
+        .search-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 20px;
+            font-size: 14px;
+            font-weight: bold;
+            color: white;
+            background-color: #2b2b2b;
+            border: none;
+            border-radius: 0 25px 25px 0;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .search-btn i {
+            margin-right: 5px;
+        }
+
+        .search-btn:hover {
+            background-color: #000000;
+        }
+
+        .header__top__right {
+            display: flex;
+            justify-content: flex-end;
+            padding-right: 45px; /* 헤더 메뉴와 같은 선에 맞추기 위한 조정 */
+        }
+
     </style>
 </head>
 
@@ -287,12 +354,11 @@
 
                             </c:otherwise>
                         </c:choose>
-                        <div class="header__top__hover">
-                            <span>🐶 강아지 <i class="arrow_carrot-down"></i></span>
-                            <ul>
-                                <li>🐶 강아지</li>
-                                <li>🐱 고양이</li>
-                            </ul>
+                        <div class="header__top__links">
+                            <a href="<c:url value='/mypage/like?id=${sessionScope.cust.custId}'/>">찜</a>
+                        </div>
+                        <div class="header__top__links">
+                            <a href="<c:url value="/cart"/>">장바구니</a>
                         </div>
                     </div>
                 </div>
@@ -301,15 +367,27 @@
     </div>
     <div class="container">
         <div class="row">
-            <div class="col-lg-3 col-md-3">
+            <div class="col-lg-2 col-md-2">
                 <div class="header__logo">
                     <a href="/"><img id="main-logo" src=<c:url value="/img/logo.png"/> alt=""></a>
                 </div>
             </div>
+
+            <div class="col-lg-4 col-md-4">
+                <div class="header__search">
+                    <form action="<c:url value='/shop/search'/>" method="get">
+                        <input type="text" name="keyword" placeholder="검색어를 입력하세요..." class="form-control search-input">
+                        <button type="submit" class="search-btn">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
             <div class="col-lg-6 col-md-6">
                 <nav class="header__menu mobile-menu">
                     <ul>
-                        <li class="active"><a href="/">홈</a></li>
+                        <li><a href="/">홈</a></li>
                         <li><a href="<c:url value="/shop"/>">카테고리</a></li>
                         <li><a href="<c:url value="/community"/>">커뮤니티</a></li>
                         <li><a href="<c:url value="/qboard"/>">고객지원</a>
@@ -318,28 +396,14 @@
                                 <li><a href="<c:url value="/about"/>">about us</a></li>
                             </ul>
                         </li>
-
-<%--                        <li><a href="#">Pages</a>--%>
-<%--                            <ul class="dropdown">--%>
-<%--                                <li><a href="/about">About Us</a></li>--%>
-<%--                                <li><a href="/shop-details">Shop Details</a></li>--%>
-<%--                                <li><a href="/shopping-cart">Shopping Cart</a></li>--%>
-<%--                                <li><a href="/checkout">Check Out</a></li>--%>
-<%--                                <li><a href="/blog-details">Blog Details</a></li>--%>
-<%--                            </ul>--%>
-<%--                        </li>--%>
-<%--                        <li><a href="/blog">Blog</a></li>--%>
                     </ul>
                 </nav>
             </div>
-            <div class="col-lg-3 col-md-3">
-                <div class="header__nav__option">
-                    <a href="#" class="search-switch"><img src="<c:url value='/img/icon/search.png'/>" alt=""></a>
-                    <a href="<c:url value='/mypage/like?id=${sessionScope.cust.custId}'/>"><img src="<c:url value='/img/icon/heart.png'/>" alt=""></a>
-                    <a href="<c:url value="/cart"/>"><img src="<c:url value='/img/icon/cart.png'/>" alt=""> <span>0</span></a>
-                    <div class="price"><a href="<c:url value="/cart"/>">장바구니</a></div>
-                </div>
-            </div>
+<%--            <div class="col-lg-3 col-md-3">--%>
+<%--                <div class="header__nav__option">--%>
+<%--                    --%>
+<%--                </div>--%>
+<%--            </div>--%>
         </div>
         <div class="canvas__open"><i class="fa fa-bars"></i></div>
     </div>
