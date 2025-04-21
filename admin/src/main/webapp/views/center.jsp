@@ -1,11 +1,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<!-- ⚠️ 직접 배경/색상 지정 제거, 상속으로 처리 -->
 <style>
-  body, .container-fluid {
+  .container-fluid {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    background-color: #f5f5f7;
-    color: #1d1d1f;
+    background-color: inherit;
+    color: inherit;
     margin: 0;
     padding: 2rem;
   }
@@ -16,7 +17,8 @@
     margin-bottom: 2rem;
   }
 
-  .dashboard-card, .chart-card {
+  .dashboard-card,
+  .chart-card {
     background-color: #fff;
     border: 1px solid #e0e0e0;
     border-radius: 12px;
@@ -25,7 +27,8 @@
     transition: box-shadow 0.3s ease-in-out;
   }
 
-  .dashboard-card:hover, .chart-card:hover {
+  .dashboard-card:hover,
+  .chart-card:hover {
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
   }
 
@@ -55,22 +58,29 @@
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-    Highcharts.chart('highchartContainer', {
-      chart: {
-        type: 'line',
-        backgroundColor: 'transparent',
-        style: { fontFamily: '-apple-system, BlinkMacSystemFont' }
-      },
-      title: { text: '월별 매출' },
+    const data = [
+      { hour: "09", total: 15000 },
+      { hour: "10", total: 23000 },
+      { hour: "11", total: 18000 },
+      { hour: "12", total: 32000 },
+      { hour: "13", total: 27500 },
+      { hour: "14", total: 22000 }
+    ];
+    const categories = data.map(d => d.hour + '시');
+    const values = data.map(d => d.total);
+    Highcharts.chart('hourlySalesChart', {
+      chart: { type: 'column', backgroundColor: 'transparent' },
+      title: { text: '오늘 시간대별 매출' },
       xAxis: {
-        categories: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월']
+        categories,
+        title: { text: '시간대' }
       },
       yAxis: {
-        title: { text: '단위: 원 (₩)' }
+        title: { text: '매출액 (₩)' }
       },
       series: [{
-        name: '매출액',
-        data: [29.9, 71.5, 106.4, 129.2, 144.0, 176.0, 160.0, 148.0, 132.0, 165.0, 178.0, 190.0]
+        name: '매출',
+        data: values
       }]
     });
   });
@@ -139,10 +149,9 @@
   </div>
 
   <div class="row mb-4">
-
     <div class="col-lg-6 mb-4">
       <div class="dashboard-card h-100">
-        <div class="card-title">🔔 관리자 알림</div>
+        <div class="card-title">관리자 알림</div>
         <ul class="list-group list-group-flush" style="font-size: 0.95rem;">
           <c:forEach var="alert" items="${adminAlerts}">
             <li class="list-group-item" style="background: transparent;">${alert}</li>
@@ -174,19 +183,19 @@
 
     <div class="col-lg-6 mb-4">
       <div class="chart-card">
-        <h6 class="card-title">매출 추이</h6>
-        <div id="highchartContainer" style="width:100%; height:300px;"></div>
+        <h6 class="card-title">오늘 시간대별 매출</h6>
+        <div id="hourlySalesChart" style="width:100%; height:300px;"></div>
       </div>
     </div>
 
     <div class="col-lg-6 mb-4">
       <div class="dashboard-card h-100">
-        <div class="card-title">📢 관리자 공지사항</div>
+        <div class="card-title">관리자 공지사항</div>
         <ul class="list-group list-group-flush" style="font-size: 0.95rem;">
           <c:forEach var="notice" items="${adminNotices}">
             <li class="list-group-item" style="background: transparent;">
               <a href="<c:url value='/admin/notice/detail?id=${notice.id}'/>" style="text-decoration: none; color: inherit;">
-                📢 ${notice.title}
+                  ${notice.title}
               </a>
             </li>
           </c:forEach>
@@ -196,6 +205,5 @@
         </ul>
       </div>
     </div>
-
   </div>
 </div>
