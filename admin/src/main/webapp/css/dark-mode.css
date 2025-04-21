@@ -3,25 +3,56 @@ body.dark-mode {
     color: #f5f5f7 !important;
 }
 
-body.dark-mode,
-body.dark-mode .container-fluid,
-body.dark-mode .card,
-body.dark-mode .content-box,
-body.dark-mode .table-container,
-body.dark-mode .rounded-box,
-body.dark-mode .white-box,
-body.dark-mode .chat-container,
-body.dark-mode .table-wrapper,
-body.dark-mode .notice-box,
-body.dark-mode .section-box,
-body.dark-mode .top-header,
-body.dark-mode .top-area,
-body.dark-mode .notice-form,
-body.dark-mode .detail-form,
-body.dark-mode .notice-list {
-    background-color: #1d1d1f !important;
+body.dark-mode #admin-info-bar {
+    background-color: #2c2c2e !important;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4) !important;
     color: #f5f5f7 !important;
-    border-color: #3a3a3c !important;
+}
+
+body.dark-mode #admin-info-bar #darkModeToggle {
+    background-color: #3a3a3c !important;
+    border-radius: 4px;
+    color: black !important;
+    padding: 0.3rem 0.5rem;
+}
+
+body.dark-mode #admin-info-bar .admin-name {
+    color: #f5f5f7 !important;
+}
+
+body.dark-mode #admin-info-bar a {
+    background-color: #3a3a3c !important;
+    border: 1px solid #4a4a4a !important;
+    color: #f5f5f7 !important;
+}
+
+body.dark-mode #admin-info-bar a:hover {
+    background-color: #4a4a4a !important;
+}
+
+body.dark-mode .back-link {
+    background-color: #2c2c2e !important;
+    border: 1px solid #3a3a3c !important;
+    color: #f5f5f7 !important;
+}
+
+body.dark-mode .back-link:hover {
+    background-color: #3a3a3c !important;
+}
+
+body.dark-mode .badge-primary,
+body.dark-mode .badge,
+body.dark-mode .label,
+body.dark-mode .tag {
+    background-color: #007bff !important;
+    color: #f5f5f7 !important;
+}
+
+body.dark-mode .card-title,
+body.dark-mode .text-muted,
+body.dark-mode .notice-form label,
+body.dark-mode .detail-form label {
+    color: #ccc !important;
 }
 
 body.dark-mode .dashboard-card,
@@ -31,15 +62,53 @@ body.dark-mode .chat-area,
 body.dark-mode .message-box,
 body.dark-mode .chat-log {
     background-color: #2c2c2e !important;
-    color: #f5f5f7 !important;
     border: 1px solid #3a3a3c !important;
+    color: #f5f5f7 !important;
 }
 
-body.dark-mode .card-title,
-body.dark-mode .text-muted,
-body.dark-mode .notice-form label,
-body.dark-mode .detail-form label {
-    color: #ccc !important;
+body.dark-mode .hover-sidebar {
+    background-color: #2c2c2e !important;
+    border-color: #3a3a3c !important;
+}
+
+body.dark-mode .hover-sidebar a {
+    color: #f5f5f7 !important;
+}
+
+body.dark-mode .hover-sidebar a:hover {
+    color: #0a84ff !important;
+}
+
+body.dark-mode .list-group-item,
+body.dark-mode .badge-dark {
+    background-color: transparent !important;
+    border-color: #3a3a3c !important;
+    color: #e5e5e7 !important;
+}
+
+body.dark-mode .notice-list i,
+body.dark-mode .notice-form i {
+    color: #f5f5f7 !important;
+}
+
+body.dark-mode .submit-btn:hover,
+body.dark-mode button:hover {
+    background-color: #4a4a4a !important;
+}
+
+body.dark-mode a {
+    color: #f5f5f7 !important;
+}
+
+body.dark-mode a:hover {
+    color: #0a84ff !important;
+}
+
+body.dark-mode button,
+body.dark-mode .submit-btn {
+    background-color: #3a3a3c !important;
+    border: 1px solid #4a4a4a !important;
+    color: #f5f5f7 !important;
 }
 
 body.dark-mode h1,
@@ -57,29 +126,33 @@ body.dark-mode .notice-list h2 {
     color: #f5f5f7 !important;
 }
 
-body.dark-mode .notice-list i,
-body.dark-mode .notice-form i {
+body.dark-mode input,
+body.dark-mode textarea,
+body.dark-mode .notice-form input,
+body.dark-mode .notice-form textarea,
+body.dark-mode .detail-form input,
+body.dark-mode .detail-form textarea {
+    background-color: #2c2c2e !important;
+    border: 1px solid #3a3a3c !important;
     color: #f5f5f7 !important;
 }
 
-body.dark-mode .list-group-item,
-body.dark-mode .badge-dark {
-    background-color: transparent !important;
-    color: #e5e5e7 !important;
-    border-color: #3a3a3c !important;
+body.dark-mode input::placeholder,
+body.dark-mode textarea::placeholder {
+    color: #aaa !important;
 }
 
 body.dark-mode table,
 body.dark-mode tbody td {
     background-color: #2c2c2e !important;
-    color: #e5e5e7 !important;
     border-color: #3a3a3c !important;
+    color: #e5e5e7 !important;
 }
 
 body.dark-mode thead th {
     background-color: #3a3a3c !important;
-    color: #f5f5f7 !important;
     border-color: #4a4a4c !important;
+    color: #f5f5f7 !important;
 }
 
 body.dark-mode tr:nth-child(even) td {
@@ -90,69 +163,23 @@ body.dark-mode tr:hover td {
     background-color: #3c3c3e !important;
 }
 
-body.dark-mode input,
-body.dark-mode textarea,
-body.dark-mode .notice-form input,
-body.dark-mode .notice-form textarea,
-body.dark-mode .detail-form input,
-body.dark-mode .detail-form textarea {
-    background-color: #2c2c2e !important;
-    color: #f5f5f7 !important;
-    border: 1px solid #3a3a3c !important;
-}
-
-body.dark-mode input::placeholder,
-body.dark-mode textarea::placeholder {
-    color: #aaa !important;
-}
-
-body.dark-mode button,
-body.dark-mode .submit-btn {
-    background-color: #3a3a3c !important;
-    color: #f5f5f7 !important;
-    border: 1px solid #4a4a4a !important;
-}
-
-body.dark-mode .submit-btn:hover,
-body.dark-mode button:hover {
-    background-color: #4a4a4a !important;
-}
-
-body.dark-mode a {
-    color: #f5f5f7 !important;
-}
-
-body.dark-mode a:hover {
-    color: #0a84ff !important;
-}
-
-body.dark-mode .back-link {
-    background-color: #2c2c2e !important;
-    color: #f5f5f7 !important;
-    border: 1px solid #3a3a3c !important;
-}
-
-body.dark-mode .back-link:hover {
-    background-color: #3a3a3c !important;
-}
-
-body.dark-mode .hover-sidebar {
-    background-color: #2c2c2e !important;
+body.dark-mode,
+body.dark-mode .container-fluid,
+body.dark-mode .card,
+body.dark-mode .content-box,
+body.dark-mode .table-container,
+body.dark-mode .rounded-box,
+body.dark-mode .white-box,
+body.dark-mode .chat-container,
+body.dark-mode .table-wrapper,
+body.dark-mode .notice-box,
+body.dark-mode .section-box,
+body.dark-mode .top-header,
+body.dark-mode .top-area,
+body.dark-mode .notice-form,
+body.dark-mode .detail-form,
+body.dark-mode .notice-list {
+    background-color: #1d1d1f !important;
     border-color: #3a3a3c !important;
-}
-
-body.dark-mode .hover-sidebar a {
-    color: #f5f5f7 !important;
-}
-
-body.dark-mode .hover-sidebar a:hover {
-    color: #0a84ff !important;
-}
-
-body.dark-mode .badge-primary,
-body.dark-mode .badge,
-body.dark-mode .label,
-body.dark-mode .tag {
-    background-color: #007bff !important;
     color: #f5f5f7 !important;
 }
