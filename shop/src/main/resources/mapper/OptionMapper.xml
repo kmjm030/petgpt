@@ -18,6 +18,13 @@
         WHERE option_key = #{optionKey}
     </select>
 
+    <select id="findNameByKey" parameterType="int" resultType="com.mc.app.dto.Option">
+        SELECT
+            option_key, item_key, option_name, size, color, stock, additional_price
+        FROM `option`
+        WHERE option_key = #{optionKey}
+    </select>
+
     <insert id="insert" parameterType="com.mc.app.dto.Option">
         INSERT INTO `option` (
             item_key, size, color, stock, additional_price

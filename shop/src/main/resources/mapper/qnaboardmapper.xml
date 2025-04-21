@@ -31,7 +31,7 @@
             board_content, board_img, board_option, board_update, board_re, board_score
         ) VALUES (
                      #{itemKey}, #{orderKey}, #{custId}, #{boardType}, #{boardTitle}, now(),
-                     #{boardContent}, #{boardImg}, #{boardOption}, now(), "답변대기", #{boardScore}
+                     #{boardContent}, #{boardImg}, #{boardOption}, now(), #{boardRe}, #{boardScore}
                  )
     </insert>
 

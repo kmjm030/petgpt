@@ -146,6 +146,7 @@ public class QnaBoardController {
             // 서비스 호출 직전 로그 추가: 전달되는 custId 값 확인
             log.info("CommunityBoardService.createBoard 호출 직전 - custId: '{}', title: '{}'", board.getCustId(), board.getBoardTitle());
             board.setBoardType(1);
+            board.setBoardRe("답변대기");
             qnaService.add(board);
 
         } catch (Exception e) {

@@ -21,6 +21,10 @@ public class OptionService {
         return optionRepository.findById(optionKey);
     }
 
+    public Option findNameByKey(int optionKey) throws Exception {
+        return optionRepository.findNameByKey(optionKey);
+    }
+
     public void addOption(Option option) throws Exception {
         optionRepository.insert(option);
     }

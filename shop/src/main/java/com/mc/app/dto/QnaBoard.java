@@ -23,5 +23,10 @@ public class QnaBoard {
     private String boardOption;
     private Date boardUpdate;
     private String boardRe;
+    private int boardScore;
 
+    private Item item;
+    private Option option;
+    private TotalOrder totalOrder;
+    private OrderDetail orderDetail;
 }

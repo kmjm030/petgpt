@@ -33,6 +33,11 @@
     border: 3px solid black;
     border-radius: 20px;
   }
+  .review-content-box {
+    margin: 10px 0 20px 0;
+    padding: 20px;
+    border: solid 1px lightgray;
+  }
 
 
 </style>
@@ -97,9 +102,22 @@
         <h6 class="checkout__title">📝 내가 작성한 리뷰</h6>
         <c:forEach var="c" items="${reviews}">
           <div>
-            <div>상품명 + 옵션</div>
-            <div>별점</div>
-            <div>이미지</div>
+            <div class="row">
+              <div class="col-lg-2">
+                <img src="<c:url value="/img/product/${c.item.itemImg1}"/>" width="100" style="border-radius:10px";>
+              </div>
+              <div class="col-lg-10">
+                <h5><strong>[${c.item.itemName}]</strong></h5>
+                <div><fmt:formatDate value="${c.boardRdate}" pattern="yyyy-MM-dd HH:mm" /></div>
+                <div class="review-content-box">
+                  "${c.boardContent}"<br/><br/>
+                  <c:if test="${not empty c.boardImg}">
+                    <img src="<c:url value='${c.boardImg}'/>" alt="현재 첨부파일" width="200">
+                  </c:if>
+                </div>
+
+              </div>
+            </div>
             <div><button class="site-btn review-site-btn">수정하기</button></div>
           </div>
           <hr>

@@ -17,6 +17,7 @@ public interface OptionRepository {
     List<Integer> findItemKeysBySize(String size) throws Exception;
     List<String> findAllColors() throws Exception;
     List<Integer> findItemKeysByColor(String color) throws Exception;
+    Option findNameByKey(int optionKey) throws Exception;
 
     List<String> findDistinctAvailableSizesByItem(int itemKey) throws Exception;
     List<String> findDistinctAvailableColorsByItem(int itemKey) throws Exception;

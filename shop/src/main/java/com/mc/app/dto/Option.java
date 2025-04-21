@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 public class Option {
     private int optionKey;
     private int itemKey;
-    // private String optionName; 
+    private String optionName;
     private String size;           
     private String color;         
     private int stock;           
