@@ -8,11 +8,10 @@
     <title>PetGPT 관리자 페이지</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- 공통 폰트 및 스타일 -->
     <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600&display=swap" rel="stylesheet">
     <link href="<c:url value='/vendor/fontawesome-free/css/all.min.css'/>" rel="stylesheet">
     <link href="<c:url value='/css/sb-admin-2.min.css'/>" rel="stylesheet">
-    <link href="<c:url value='/css/dark-mode.css'/>" rel="stylesheet"> <!-- ✅ 다크모드 CSS 추가 -->
+    <link href="<c:url value='/css/dark-mode.css'/>" rel="stylesheet">
 
     <style>
         body {
@@ -190,7 +189,6 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", () => {
-        // 사이드바 자동 열기/닫기
         const sidebar = document.getElementById("hover-sidebar");
         document.addEventListener("mousemove", (e) => {
             if (e.clientX < 20) {

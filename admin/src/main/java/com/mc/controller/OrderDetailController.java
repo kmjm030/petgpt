@@ -26,10 +26,4 @@ public class OrderDetailController {
         orderDetailService.deleteById(id);
         return "redirect:/orderdetail";
     }
-    @GetMapping("/order_detail/{id}")
-    public String showOrderDetail(@PathVariable("id") int id, Model model) {
-        OrderDetail detail = orderDetailService.getOrderDetailById(id);
-        model.addAttribute("orderDetail", detail);
-        return "order_detail";
-    }
 }
