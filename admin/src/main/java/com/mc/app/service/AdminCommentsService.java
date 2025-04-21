@@ -38,6 +38,9 @@ public class AdminCommentsService implements MCService<AdminComments, Integer> {
     public List<AdminComments> get() throws Exception {
         return adminCommentsRepository.select();
     }
+    public void updateBoardReStatus(Integer boardKey, String status) throws Exception {
+        adminCommentsRepository.updateBoardReStatus(boardKey, status);
+    }
 
 }
 

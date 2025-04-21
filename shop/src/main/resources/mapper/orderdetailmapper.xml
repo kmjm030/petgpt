@@ -4,6 +4,10 @@
 
 <mapper namespace="com.mc.app.repository.OrderDetailRepository">
 
+    <select id="selectOne" parameterType="int" resultType="com.mc.app.dto.OrderDetail">
+        SELECT * FROM order_detail WHERE orderdetail_key = #{orderDetailKey}
+    </select>
+
     <select id="findAllByOrder" parameterType="int" resultType="com.mc.app.dto.OrderDetail">
         SELECT * FROM order_detail WHERE order_key = #{orderKey}
     </select>

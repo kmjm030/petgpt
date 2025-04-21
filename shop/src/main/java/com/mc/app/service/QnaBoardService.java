@@ -39,12 +39,20 @@ public class QnaBoardService implements MCService<QnaBoard, Integer> {
         return qnaRepository.select();
     }
 
-    public List<QnaBoard> findAllByCust(String custId) throws Exception {
-        return qnaRepository.findAllByCust(custId);
+    public List<QnaBoard> findQnaByCust(String custId) throws Exception {
+        return qnaRepository.findQnaByCust(custId);
     }
 
-    public List<QnaBoard> findAllByItem(Integer itemKey) throws Exception {
-        return qnaRepository.findAllByItem(itemKey);
+    public List<QnaBoard> findQnaByItem(Integer itemKey) throws Exception {
+        return qnaRepository.findQnaByItem(itemKey);
+    }
+
+    public List<QnaBoard> findReviewByCust(String custId) throws Exception {
+        return qnaRepository.findReviewByCust(custId);
+    }
+
+    public List<QnaBoard> findReviewByItem(Integer itemKey) throws Exception {
+        return qnaRepository.findReviewByItem(itemKey);
     }
 
 

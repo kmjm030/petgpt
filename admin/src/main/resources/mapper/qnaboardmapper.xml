@@ -51,13 +51,14 @@
             q.board_title,
             q.board_content,
             q.board_rdate,
+            q.board_re,
             a.adcomments_key,
             a.adcomments_content,
             a.admin_id,
             a.adcomments_rdate
         FROM qnaboard q
                  LEFT JOIN admin_comments a ON q.board_key = a.board_key
-        WHERE q.item_key = #{itemKey}
+        WHERE q.item_key = #{itemKey} AND q.board_re='답변있음'
         ORDER BY q.board_rdate DESC
     </select>
 

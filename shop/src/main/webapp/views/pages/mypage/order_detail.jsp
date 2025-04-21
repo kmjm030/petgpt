@@ -31,8 +31,17 @@
   .order-site-btn {
     width: 100%;
     border-radius: 10px;
-    background-color: #fc6;
+    background-color: white;
     color: black;
+    border: 3px solid black;
+    border-radius: 10px;
+  }
+  .review-btn {
+    width: 100%;
+    color: black;
+    border: 2px solid white;
+    border-radius: 10px;
+    padding: 10px;
   }
 
 
@@ -41,7 +50,6 @@
 <script>
   const like = {
     init:function(){
-
     },
     del:function(boardKey){
       let c = confirm('문의글을 삭제하시겠습니까?');
@@ -99,7 +107,7 @@
                         <li><a href="<c:url value='/mypage/like?id=${cust.custId}'/>">찜 목록</a></li>
                         <li><a href="<c:url value='/coupon?id=${cust.custId}'/>">보유 쿠폰</a></li>
                         <li><a href="<c:url value='/qnaboard?id=${cust.custId}'/>">1:1문의</a></li>
-                        <li><a href="<c:url value='#'/>">내가 작성한 리뷰</a></li>
+                        <li><a href="<c:url value='/review?id=${cust.custId}'/>">내가 작성한 리뷰</a></li>
                       </ul>
                       <br/><br/>
                       <button class="site-btn" id="logout_btn"><a href="<c:url value="/logout"/>">로그아웃</a></button>
@@ -128,6 +136,7 @@
             <th>상품</th>
             <th>가격</th>
             <th>개수</th>
+            <th></th>
           </tr>
           </thead>
           <tbody>
@@ -139,6 +148,9 @@
               <td>${itemMap[c.itemKey].itemName}</td>
               <td>${c.orderDetailPrice}</td>
               <td>${c.orderDetailCount}</td>
+              <td><button class="review-btn"
+                          onclick="location.href='<c:url value='/review/add'/>?itemKey=${c.itemKey}&orderDetailKey=${c.orderDetailKey}'">
+                <strong>리뷰쓰기</strong></button></td>
             </tr>
           </c:forEach>
           </tbody>

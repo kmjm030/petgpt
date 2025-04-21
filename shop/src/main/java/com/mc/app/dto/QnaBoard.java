@@ -14,6 +14,7 @@ public class QnaBoard {
     private int boardKey;
     private int itemKey;
     private int orderKey;
+    private int boardType;
     private String custId;
     private String boardTitle;
     private Date boardRdate;
@@ -22,5 +23,10 @@ public class QnaBoard {
     private String boardOption;
     private Date boardUpdate;
     private String boardRe;
+    private int boardScore;
 
+    private Item item;
+    private Option option;
+    private TotalOrder totalOrder;
+    private OrderDetail orderDetail;
 }

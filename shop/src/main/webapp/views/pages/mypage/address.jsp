@@ -8,6 +8,14 @@
     #category {
         color: rosybrown;
     }
+    .address-btn {
+        width: 100%;
+        border-radius: 10px;
+        background-color: white;
+        color: black;
+        border: 3px solid black;
+        border-radius: 10px;
+    }
 </style>
 
 <script>
@@ -70,7 +78,7 @@
                                                 <li><a href="<c:url value='/mypage/like?id=${cust.custId}'/>">찜 목록</a></li>
                                                 <li><a href="<c:url value='/coupon?id=${cust.custId}'/>">보유 쿠폰</a></li>
                                                 <li><a href="<c:url value='/qnaboard?id=${cust.custId}'/>">1:1문의</a></li>
-                                                <li><a href="<c:url value='#'/>">내가 작성한 리뷰</a></li>
+                                                <li><a href="<c:url value='/review?id=${cust.custId}'/>">내가 작성한 리뷰</a></li>
                                             </ul>
                                             <br/><br/>
                                             <button class="site-btn" id="logout_btn"><a href="<c:url value="/logout"/>">로그아웃</a></button>
@@ -108,10 +116,10 @@
                             <td>${c.addrAddress}</td>
                             <td>${c.addrDetail}</td>
                             <td>
-                                <button id="addr_mod_btn" onclick="location.href='<c:url value='/address/mod?addrKey='/>${c.addrKey}'">수정</button>
+                                <button class="address-btn" id="addr_mod_btn" onclick="location.href='<c:url value='/address/mod?addrKey='/>${c.addrKey}'">수정</button>
                             </td>
                             <td>
-                                <button id="addr_del_btn" onclick="address.del(${c.addrKey})">삭제</button>
+                                <button class="address-btn" id="addr_del_btn" onclick="address.del(${c.addrKey})">삭제</button>
                             </td>
 <%--                            <td class="cart__close">--%>
 <%--                                <i class="fa fa-close"></i>--%>

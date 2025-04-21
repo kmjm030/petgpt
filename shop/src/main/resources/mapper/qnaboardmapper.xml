@@ -5,12 +5,20 @@
 <mapper namespace="com.mc.app.repository.QnaBoardRepository">
 
 
-    <select id="findAllByItem" parameterType="int" resultType="com.mc.app.dto.QnaBoard">
-        SELECT * FROM qnaboard WHERE item_key = #{itemKey}
+    <select id="findQnaByItem" parameterType="int" resultType="com.mc.app.dto.QnaBoard">
+        SELECT * FROM qnaboard WHERE item_key = #{itemKey} AND board_type = 1
     </select>
 
-    <select id="findAllByCust" parameterType="String" resultType="com.mc.app.dto.QnaBoard">
-        SELECT * FROM qnaboard WHERE cust_id = #{custId}
+    <select id="findReviewByItem" parameterType="int" resultType="com.mc.app.dto.QnaBoard">
+        SELECT * FROM qnaboard WHERE item_key = #{itemKey} AND board_type = 2
+    </select>
+
+    <select id="findQnaByCust" parameterType="String" resultType="com.mc.app.dto.QnaBoard">
+        SELECT * FROM qnaboard WHERE cust_id = #{custId} AND board_type = 1
+    </select>
+
+    <select id="findReviewByCust" parameterType="String" resultType="com.mc.app.dto.QnaBoard">
+        SELECT * FROM qnaboard WHERE cust_id = #{custId} AND board_type = 2
     </select>
 
     <select id="selectOne" parameterType="int" resultType="com.mc.app.dto.QnaBoard">
@@ -19,11 +27,11 @@
 
     <insert id="insert" parameterType="com.mc.app.dto.QnaBoard">
         INSERT INTO qnaboard (
-            item_key, order_key, cust_id, board_title, board_rdate,
-            board_content, board_img, board_option, board_update, board_re
+            item_key, order_key, cust_id, board_type, board_title, board_rdate,
+            board_content, board_img, board_option, board_update, board_re, board_score
         ) VALUES (
-                     #{itemKey}, #{orderKey}, #{custId}, #{boardTitle}, now(),
-                     #{boardContent}, #{boardImg}, #{boardOption}, now(), "답변대기"
+                     #{itemKey}, #{orderKey}, #{custId}, #{boardType}, #{boardTitle}, now(),
+                     #{boardContent}, #{boardImg}, #{boardOption}, now(), #{boardRe}, #{boardScore}
                  )
     </insert>
 
