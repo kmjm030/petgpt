@@ -48,18 +48,18 @@
 </style>
 
 <script>
-  const like = {
+  const order_detail = {
     init:function(){
     },
-    del:function(boardKey){
-      let c = confirm('문의글을 삭제하시겠습니까?');
+    del:function(orderKey){
+      let c = confirm('주문을 취소하시겠습니까?');
       if(c == true){
-        location.href = '<c:url value="/qnaboard/delimpl?boardKey="/>' + boardKey;
+        location.href = '<c:url value="/checkout/delimpl?orderKey="/>' + orderKey;
       }
     }
   }
   $(function(){
-    like.init();
+    order_detail.init();
   });
 </script>
 
@@ -158,10 +158,12 @@
           <br/><br/>
         <div class="row">
           <div class="col-lg-6">
-            <button class="site-btn order-site-btn">교환/환불 신청</button>
+            <button class="site-btn order-site-btn"
+                    onclick="location.href='<c:url value='/qnaboard/add'/>?id=${cust.custId}'">교환/환불 신청</button>
           </div>
           <div class="col-lg-6">
-            <button class="site-btn order-site-btn">주문 취소하기</button>
+            <button class="site-btn order-site-btn"
+                  onclick="order_detail.del(${order.orderKey})">주문 취소하기</button>
           </div>
         </div>
         </div>

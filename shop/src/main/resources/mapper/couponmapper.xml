@@ -8,6 +8,7 @@
         SELECT * FROM coupon
     </select>
 
+
     <select id="selectOne" parameterType="int" resultType="com.mc.app.dto.Coupon">
         SELECT * FROM coupon WHERE coupon_id = #{couponId}
     </select>
@@ -16,13 +17,17 @@
         SELECT * FROM coupon WHERE cust_id = #{custId}
     </select>
 
+    <select id="findUsableByCustId" parameterType="String" resultType="com.mc.app.dto.Coupon">
+        SELECT * FROM coupon WHERE cust_id = #{custId} and coupon_use != 'Y'
+    </select>
+
     <insert id="insert" parameterType="com.mc.app.dto.Coupon">
         INSERT INTO coupon (
             cust_id, coupon_name, coupon_price, coupon_rate, coupon_maxprice,
             coupon_type, coupon_issue, coupon_expire, coupon_use
         ) VALUES (
                      #{custId}, #{couponName}, #{couponPrice}, #{couponRate}, #{couponMaxPrice},
-                     #{couponType}, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 30 DAY), "미사용"
+                     #{couponType}, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 30 DAY), 'N'
                  )
     </insert>
 

@@ -3,6 +3,7 @@ package com.mc.controller;
 import com.mc.app.dto.*;
 import com.mc.app.service.ItemService;
 import com.mc.app.service.QnaBoardService;
+import com.mc.app.service.TotalOrderService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,9 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Controller
@@ -30,6 +33,7 @@ public class QnaBoardController {
 
     private final QnaBoardService qnaService;
     private final ItemService itemService;
+    private final TotalOrderService totalOrderService;
 
     @Value("${file.upload.directory}")
     private String uploadDirectory;
@@ -67,6 +71,14 @@ public class QnaBoardController {
     public String add(Model model, @RequestParam("id") String id, HttpSession session) throws Exception {
         List<Item> items = itemService.get();
 
+        List<TotalOrder> orders = totalOrderService.findAllByCust(id);
+        Map<Integer, String> itemNames = new HashMap<>();
+
+        for (TotalOrder order : orders) {
+            Item item = itemService.get(order.getItemKey());
+            itemNames.put(order.getOrderKey(), item.getItemName());
+        }
+
         // 세션에서 로그인된 사용자 확인
         Customer loggedInCustomer = (Customer) session.getAttribute("cust");
 
@@ -81,6 +93,8 @@ public class QnaBoardController {
         }
 
         model.addAttribute("items", items);
+        model.addAttribute("orders", orders);
+        model.addAttribute("itemNames", itemNames);
         model.addAttribute("currentPage", "pages");
         model.addAttribute("pageTitle", "QnA Add");
         model.addAttribute("centerPage", "pages/mypage/qnaboard_add.jsp");

@@ -50,7 +50,7 @@ public class CheckOutController {
             }
         }
 
-        List<Coupon> coupons = couponService.findByCustId(custId);
+        List<Coupon> coupons = couponService.findUsableByCustId(custId);
         session.setAttribute("cartItems", cartItems);
 
         model.addAttribute("coupons", coupons);
@@ -67,10 +67,16 @@ public class CheckOutController {
     public String orderimpl(Model model, Address address, TotalOrder totalOrder, HttpSession session,
                             @RequestParam("custId") String custId,
                             @RequestParam(value = "addrSave", required = false) String addrSave,
-                            @RequestParam("orderTotalPrice") int orderTotalPrice) throws Exception {
+                            @RequestParam("orderTotalPrice") int orderTotalPrice,
+                            @RequestParam("couponId") int couponId) throws Exception {
 
         // 세션에서 cartItems 꺼내기
         List<Map<String, Object>> cartItems = (List<Map<String, Object>>) session.getAttribute("cartItems");
+
+        // 쿠폰 사용완료로 바꾸기
+        Coupon coupon = couponService.get(couponId);
+        coupon.setCouponUse("Y");
+        couponService.mod(coupon);
 
         // TotalOrder 저장하기
         TotalOrder order = totalOrder;
@@ -81,6 +87,7 @@ public class CheckOutController {
         order.setOrderHomecode(address.getAddrHomecode());
         order.setOrderTotalPrice(orderTotalPrice);
         order.setItemKey((int)cartItems.get(0).get("item_key"));
+        order.setCouponId(couponId);
         totalOrderService.add(order);
 
         int orderKey = order.getOrderKey();
@@ -116,7 +123,7 @@ public class CheckOutController {
             addressService.add(addr);
         }
 
-        log.info(address.toString());
+
 
         session.removeAttribute("cartItems"); // 사용 후 정리!
         return "redirect:/checkout/success";
@@ -182,6 +189,19 @@ public class CheckOutController {
         model.addAttribute("pageTitle", "Order Detail");
         model.addAttribute("centerPage", "pages/mypage/order_detail.jsp");
         return "index";
+    }
+
+    @RequestMapping("/delimpl")
+    public String delimpl(Model model, HttpSession session, @RequestParam("orderKey") int orderKey) throws Exception {
+        TotalOrder order = totalOrderService.get(orderKey);
+        Coupon coupon = couponService.get(order.getCouponId());
+        coupon.setCouponUse("N");
+        couponService.mod(coupon);
+
+        totalOrderService.del(orderKey);
+
+        Customer loggedInCustomer = (Customer) session.getAttribute("cust");
+        return "redirect:/checkout/orderlist?id=" + loggedInCustomer.getCustId();
     }
 
 

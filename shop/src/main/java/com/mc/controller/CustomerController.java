@@ -3,6 +3,7 @@ package com.mc.controller;
 import com.mc.app.dto.Customer;
 import com.mc.app.dto.Item;
 import com.mc.app.dto.Like;
+import com.mc.app.service.CouponService;
 import com.mc.app.service.CustomerService;
 import com.mc.app.service.ItemService;
 import com.mc.app.service.LikeService;
@@ -26,9 +27,10 @@ public class CustomerController {
 
     String dir = "mypage/";
 
-    final CustomerService custService;
-    final LikeService likeService;
-    final ItemService itemService;
+    private final CustomerService custService;
+    private final LikeService likeService;
+    private final ItemService itemService;
+
 
     @GetMapping("")
     public String mypage(Model model, @RequestParam("id") String id, HttpSession session) throws Exception{
