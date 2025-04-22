@@ -2,6 +2,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+
 <style>
   .site-btn > a{
     color:white;
@@ -41,6 +44,23 @@
 
 
 </style>
+
+<script>
+  const review = {
+    init:function(){
+
+    },
+    del:function(boardKey){
+      let c = confirm('리뷰를 삭제 하시겠습니까 ?');
+      if(c == true){
+        location.href='<c:url value="/review/delimpl?boardKey='+boardKey+'"/>';
+      }
+    }
+  }
+  $(function(){
+    review.init();
+  });
+</script>
 
 
 <!-- Breadcrumb Section Begin -->
@@ -109,6 +129,19 @@
               <div class="col-lg-10">
                 <h5><strong>[${c.item.itemName}]</strong></h5>
                 <div><fmt:formatDate value="${c.boardRdate}" pattern="yyyy-MM-dd HH:mm" /></div>
+                  <!-- 별점 표시 추가 -->
+                  <div class="star-rating mb-2">
+                    <c:forEach var="i" begin="1" end="5">
+                      <c:choose>
+                        <c:when test="${i <= c.boardScore}">
+                          <i class="bi bi-star-fill text-warning"></i>
+                        </c:when>
+                        <c:otherwise>
+                          <i class="bi bi-star"></i>
+                        </c:otherwise>
+                      </c:choose>
+                    </c:forEach>
+                  </div>
                 <div class="review-content-box">
                   "${c.boardContent}"<br/><br/>
                   <c:if test="${not empty c.boardImg}">
@@ -118,7 +151,15 @@
 
               </div>
             </div>
-            <div><button class="site-btn review-site-btn">수정하기</button></div>
+            <div class="row">
+              <div class="col-lg-6">
+                <div><button class="site-btn review-site-btn" onclick="location.href='<c:url value='/review/detail?boardKey='/>${c.boardKey}'">수정하기</button></div>
+              </div>
+              <div class="col-lg-6">
+                <div><button class="site-btn review-site-btn" onclick="review.del(${c.boardKey})">삭제하기</button></div>
+              </div>
+            </div>
+
           </div>
           <hr>
         </c:forEach>

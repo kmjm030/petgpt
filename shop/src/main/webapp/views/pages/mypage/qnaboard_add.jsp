@@ -1,5 +1,6 @@
 <%@ page pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!-- Select2 CSS -->
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
@@ -55,7 +56,7 @@
       });
 
       // niceSelect는 select2 제외하고 적용
-      $('select').not('.select2').niceSelect();
+      $('select').not('.select2, #orderSelect').niceSelect();
 
       // 초기상태가 '상품문의'이면 select2보이도록
       if ($('#optionSelect').val() === '상품문의') {
@@ -71,6 +72,16 @@
         } else {
           $('#itemSelectWrapper').hide();
           $('#itemSelect').val(null).trigger('change'); // 아이템 선택값 초기화
+        }
+        if (['배송문의', '교환/환불문의'].includes(selectedOption)) {
+          $('#orderSelectWrapper').show();
+          $('#orderSelect').select2({
+            placeholder: "문의하실 주문건을 선택하세요",
+            allowClear: true
+          });
+        } else {
+          $('#orderSelectWrapper').hide();
+          $('#orderSelect').val(null).trigger('change');
         }
       });
 
@@ -196,6 +207,17 @@
                     <option disabled selected hidden>상품을 선택하세요</option>
                     <c:forEach var="c" items="${items}">
                       <option value="${c.itemKey}">${c.itemName}</option>
+                    </c:forEach>
+                  </select>
+                </div>
+              </div>
+              <div class="row" id="orderSelectWrapper" style="display:none;">
+                <div class="form-group col-md-12">
+                  <h6>▪ 주문 선택 </h6><br/>
+                  <select class="select2" id="orderSelect" name="itemKey">
+                    <option disabled selected hidden>문의하실 주문건을 선택하세요</option>
+                    <c:forEach var="c" items="${orders}">
+                      <option value="${c.orderKey}">[<fmt:formatDate value="${c.orderDate}" pattern="yyyy-MM-dd" />]${itemNames[c.orderKey]} 외</option>
                     </c:forEach>
                   </select>
                 </div>

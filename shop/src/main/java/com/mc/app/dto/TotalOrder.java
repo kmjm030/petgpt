@@ -16,6 +16,7 @@ public class TotalOrder {
     private int orderKey;
     private String custId;
     private int itemKey;
+    private int couponId;
     private Date orderDate;
     private String recipientName;
     private String recipientPhone;

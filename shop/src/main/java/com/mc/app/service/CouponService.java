@@ -45,4 +45,8 @@ public class CouponService implements MCService<Coupon, Integer> {
     public List<Coupon> findByCustId(String custId) throws Exception {
         return couponRepository.findByCustId(custId);
     }
+
+    public List<Coupon> findUsableByCustId(String custId) throws Exception {
+        return couponRepository.findUsableByCustId(custId);
+    }
 }
