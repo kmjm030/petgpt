@@ -14,17 +14,17 @@ spring:
       max-file-size: 10MB
       max-request-size: 15MB
   mvc:
-    static-path-pattern: /uploads/**  
+    # static-path-pattern: /uploads/**  # WebMvcConfig에서 처리하므로 주석 처리
     view:
       prefix: /views/
       suffix: .jsp
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/petgpt?characterEncoding=utf8
-    username: root
-    password: 1234
-  web:
-    resources:
-      static-locations: file:///C:/petshop/uploads/
+    url: jdbc:mysql://118.67.143.55:3306/petgpt?characterEncoding=utf8
+    username: mcuser
+    password: 111111
+  # web:
+    # resources: # WebMvcConfig에서 처리하므로 주석 처리
+      # static-locations: file:///C:/petshop/uploads/ # WebMvcConfig에서 처리하므로 주석 처리
 
 # 3. Mybatis
 mybatis:

@@ -120,6 +120,20 @@
                     border-radius: 4px;
                     border: 1px solid #ddd;
                 }
+
+                .blog__post__image-container {
+                    padding: 0 20px;
+                    margin-top: 15px;
+                    margin-bottom: 15px;
+                }
+
+                .blog__post__image {
+                    display: block;
+                    width: 100%;
+                    max-height: 400px;
+                    object-fit: cover;
+                    border-radius: 4px;
+                }
             </style>
 
             <script>
@@ -187,45 +201,53 @@
                                         (postDate.getMonth() + 1).toString().padStart(2, '0') + '.' +
                                         postDate.getDate().toString().padStart(2, '0');
 
-                                    postsHtml += `
-                                        <div class="col-lg-12">
-                                            <div class="blog__post">
-                                                <div class="blog__post__header">
-                                                    <div>
-                                                        <h3 class="blog__post__title">
-                                                            <a href="/community/detail?id=\${post.postId}">\${post.title}</a>
-                                                        </h3>
-                                                        <div class="blog__post__meta">
-                                                            <span>작성자: \${post.authorName}</span>
-                                                            <span>작성일: \${formattedDate}</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="blog__post__body">
-                                                    <p class="blog__post__content">\${post.summary}</p>
-                                                </div>
-                                                <div class="blog__post__footer">
-                                                    <div class="blog__post__stats">
-                                                        <div class="stats__item">
-                                                            <i class="fa fa-eye"></i> \${post.viewCount}
-                                                        </div>
-                                                        <div class="stats__item">
-                                                            <i class="fa fa-heart"></i> \${post.likeCount}
-                                                        </div>
-                                                        <div class="stats__item">
-                                                            <i class="fa fa-comment"></i> \${post.commentCount}
-                                                        </div>
-                                                    </div>
-                                                    <div class="blog__post__category">
-                                                        <span>#\${post.category}</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    `;
+                                    const colDiv = $('<div>').addClass('col-lg-12');
+                                    const postDiv = $('<div>').addClass('blog__post');
+
+                                    const header = $('<div>').addClass('blog__post__header');
+                                    const headerInnerDiv = $('<div>');
+                                    const title = $('<h3>').addClass('blog__post__title');
+                                    const titleLink = $('<a>').attr('href', '/community/detail?id=' + post.postId).text(post.title);
+                                    const meta = $('<div>').addClass('blog__post__meta');
+                                    const authorSpan = $('<span>').text('작성자: ' + post.authorName);
+                                    const dateSpan = $('<span>').text('작성일: ' + formattedDate);
+                                    title.append(titleLink);
+                                    meta.append(authorSpan).append(dateSpan);
+                                    headerInnerDiv.append(title).append(meta);
+                                    header.append(headerInnerDiv);
+                                    postDiv.append(header);
+
+                                    if (post.image) {
+                                        const imageContainer = $('<div>').addClass('blog__post__image-container');
+                                        const image = $('<img>').addClass('blog__post__image')
+                                            .attr('src', post.image)
+                                            .attr('alt', '게시글 이미지');
+                                        imageContainer.append(image);
+                                        postDiv.append(imageContainer);
+                                    }
+
+                                    const body = $('<div>').addClass('blog__post__body');
+                                    const content = $('<p>').addClass('blog__post__content').html(post.summary);
+                                    body.append(content);
+                                    postDiv.append(body);
+
+                                    const footer = $('<div>').addClass('blog__post__footer');
+                                    const stats = $('<div>').addClass('blog__post__stats');
+                                    const viewStat = $('<div>').addClass('stats__item').append($('<i>').addClass('fa fa-eye')).append(' ' + (post.viewCount || 0));
+                                    const likeStat = $('<div>').addClass('stats__item').append($('<i>').addClass('fa fa-heart')).append(' ' + (post.likeCount || 0));
+                                    const commentStat = $('<div>').addClass('stats__item').append($('<i>').addClass('fa fa-comment')).append(' ' + (post.commentCount || 0));
+                                    const categoryDiv = $('<div>').addClass('blog__post__category');
+                                    const categorySpan = $('<span>').text('#' + post.category);
+                                    stats.append(viewStat).append(likeStat).append(commentStat);
+                                    categoryDiv.append(categorySpan);
+                                    footer.append(stats).append(categoryDiv);
+                                    postDiv.append(footer);
+
+                                    colDiv.append(postDiv);
+                                    postsContainer.append(colDiv);
                                 });
 
-                                postsContainer.html(postsHtml);
+                                // postsContainer.html(postsHtml); // 이 라인 제거
 
                                 let paginationHtml = '';
                                 const totalPages = data.totalPages;
@@ -333,7 +355,7 @@
                                 <a href="<c:url value='/community/write'/>" class="write-btn">게시글 작성</a>
 
                                 <div class="shop__sidebar__search">
-                                    <form action="<c:url value='/community/view/search'/>" method="GET">
+                                    <form action="<c:url value='/community/search'/>" method="GET">
                                         <input type="text" name="keyword" placeholder="검색어를 입력하세요..."
                                             value="${keyword}">
                                         <button type="submit"><span class="icon_search"></span></button>
@@ -429,46 +451,6 @@
                                         <a href="<c:url value='/community'/>" class="primary-btn mt-3">전체 게시글 보기</a>
                                     </div>
                                 </div>
-
-                                <!-- 블로그 샘플 아이템 (주석 처리) -->
-                                <!-- <div class="col-lg-4 col-md-6 col-sm-6">
-                                        <div class="blog__item">
-                                            <div class="blog__item__pic set-bg"
-                                                data-setbg="<c:url value='/img/blog/blog-1.jpg'/>"></div>
-                                            <div class="blog__item__text">
-                                                <span><img src="<c:url value='/img/icon/calendar.png'/>" alt=""> 16
-                                                    February 2020</span>
-                                                <h5>What Curling Irons Are The Best Ones</h5>
-                                                <a href="<c:url value='/community/detail?id=1'/>">Read More</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-6 col-sm-6">
-                                        <div class="blog__item">
-                                            <div class="blog__item__pic set-bg"
-                                                data-setbg="<c:url value='/img/blog/blog-2.jpg'/>"></div>
-                                            <div class="blog__item__text">
-                                                <span><img src="<c:url value='/img/icon/calendar.png'/>" alt=""> 21
-                                                    February
-                                                    2020</span>
-                                                <h5>Eternity Bands Do Last Forever</h5>
-                                                <a href="<c:url value='/community/detail?id=2'/>">Read More</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4 col-md-6 col-sm-6">
-                                        <div class="blog__item">
-                                            <div class="blog__item__pic set-bg"
-                                                data-setbg="<c:url value='/img/blog/blog-3.jpg'/>"></div>
-                                            <div class="blog__item__text">
-                                                <span><img src="<c:url value='/img/icon/calendar.png'/>" alt=""> 28
-                                                    February
-                                                    2020</span>
-                                                <h5>The Health Benefits Of Sunglasses</h5>
-                                                <a href="<c:url value='/community/detail?id=3'/>">Read More</a>
-                                            </div>
-                                        </div>
-                                    </div> -->
                             </div>
                             <div class="row">
                                 <div class="col-lg-12">
