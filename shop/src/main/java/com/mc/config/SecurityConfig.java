@@ -26,7 +26,8 @@ public class SecurityConfig {
     }
 
     @Bean
-    public StandardPBEStringEncryptor  textEncoder(@Value("${app.key.algo}") String algo, @Value("${app.key.skey}") String skey) {
+    public StandardPBEStringEncryptor textEncoder(@Value("${app.key.algo}") String algo,
+            @Value("${app.key.skey}") String skey) {
         StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
         encryptor.setAlgorithm(algo);
         encryptor.setPassword(skey);
@@ -35,9 +36,9 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        //CSRF, CORS
+        // CSRF, CORS
         http.csrf((csrf) -> csrf.disable());
-        //http.cors(Customizer.withDefaults());
+        // http.cors(Customizer.withDefaults());
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.addAllowedOrigin(CorsConfiguration.ALL);
         configuration.addAllowedMethod(CorsConfiguration.ALL);
@@ -47,20 +48,20 @@ public class SecurityConfig {
 
         // 권한 규칙 작성
         http.authorizeHttpRequests(authorize -> authorize
-                        // 정적 리소스 경로 명시적 허용
-                        .requestMatchers(
-                                new AntPathRequestMatcher("/css/**"),
-                                new AntPathRequestMatcher("/js/**"),
-                                new AntPathRequestMatcher("/img/**"),
-                                new AntPathRequestMatcher("/fonts/**"),
-                                new AntPathRequestMatcher("/favicon.ico")
-                        ).permitAll()
-                        //@PreAuthrization을 사용할 것이기 때문에 모든 경로에 대한 인증처리는 Pass
-                        .anyRequest().permitAll() // 나머지 요청도 허용 (기존 유지)
-//                        .anyRequest().authenticated()
+                // 정적 리소스 경로 명시적 허용
+                .requestMatchers(
+                        new AntPathRequestMatcher("/css/**"),
+                        new AntPathRequestMatcher("/js/**"),
+                        new AntPathRequestMatcher("/img/**"),
+                        new AntPathRequestMatcher("/fonts/**"),
+                        new AntPathRequestMatcher("/favicon.ico"),
+                        new AntPathRequestMatcher("/uploads/images/**") // 업로드 이미지 경로 추가
+                ).permitAll()
+                // @PreAuthrization을 사용할 것이기 때문에 모든 경로에 대한 인증처리는 Pass
+                .anyRequest().permitAll() // 나머지 요청도 허용 (기존 유지)
+        // .anyRequest().authenticated()
         );
         return http.build();
     }
-
 
 }
