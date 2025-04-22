@@ -149,7 +149,7 @@
               <td>${c.orderDetailPrice}</td>
               <td>${c.orderDetailCount}</td>
               <td><button class="review-btn"
-                          onclick="location.href='<c:url value='/review/add'/>?itemKey=${c.itemKey}&orderDetailKey=${c.orderDetailKey}'">
+                          onclick="location.href='<c:url value='/review/add'/>?itemKey=${c.itemKey}&orderKey=${c.orderKey}&orderDetailKey=${c.orderDetailKey}'">
                 <strong>리뷰쓰기</strong></button></td>
             </tr>
           </c:forEach>
@@ -169,3 +169,8 @@
     </div>
   </div>
 </section>
+<c:if test="${not empty msg}">
+  <script>
+    alert("${msg}");
+  </script>
+</c:if>

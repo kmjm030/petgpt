@@ -40,7 +40,8 @@
                          board_title = #{boardTitle},
                          board_content = #{boardContent},
                          board_img = #{boardImg},
-                         board_update = now()
+                         board_update = now(),
+                         board_score = #{boardScore}
         WHERE board_key = #{boardKey}
     </update>
 

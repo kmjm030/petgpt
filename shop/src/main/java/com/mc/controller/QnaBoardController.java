@@ -55,13 +55,7 @@ public class QnaBoardController {
         }
 
         List<QnaBoard> qnaBoards = qnaService.findQnaByCust(id);
-//        for (QnaBoard board : qnaBoards) {
-//            if(board.getBoardRe().equals("Y")){
-//                board.setBoardRe("답변완료");
-//            }else{
-//                board.setBoardRe("답변대기");
-//            }
-//        }
+
         model.addAttribute("qnaBoards", qnaBoards);
         model.addAttribute("currentPage", "pages");
         model.addAttribute("pageTitle", "QnA Board");
