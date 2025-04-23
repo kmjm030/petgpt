@@ -144,6 +144,14 @@
 <body id="page-top">
 
 <c:if test="${not empty sessionScope.admin}">
+    <div id="admin-info-bar">
+        <span class="admin-name">
+            <i class="fas fa-user-circle"></i> ${sessionScope.admin.adminName} 님
+        </span>
+        <a href="<c:url value='/logoutimpl'/>" onclick="sessionStorage.clear();">로그아웃</a>
+        <button id="darkModeToggle" title="다크모드 토글"
+                style="background:none; border:none; font-size:1.2rem; cursor:pointer;">🌙</button>
+    </div>
 
     <div id="welcome-overlay">
         <div class="welcome-box">
@@ -163,7 +171,7 @@
         <a href="<c:url value='/cust/get'/>"><i class="fas fa-users"></i> 사용자 관리</a>
         <a href="<c:url value='/item/get'/>"><i class="fas fa-box"></i> 상품 관리</a>
         <a href="<c:url value='/orderdetail'/>"><i class="fas fa-shopping-cart"></i> 주문 관리</a>
-        <a href="<c:url value='/inquiries.jsp'/>"><i class="fas fa-question-circle"></i> 문의글 관리</a>
+        <a href="<c:url value='/qnaboard/get'/>"><i class="fas fa-comment-dots"></i> 문의글 관리</a>
         <a href="<c:url value='/qnaboard/get'/>"><i class="fas fa-comment-dots"></i> 상품 문의글</a>
         <a href="<c:url value='/ws'/>"><i class="fas fa-comments"></i> 채팅</a>
         <a href="<c:url value='/admin/notice/get'/>"><i class="fas fa-bullhorn"></i> 관리자 공지사항</a>

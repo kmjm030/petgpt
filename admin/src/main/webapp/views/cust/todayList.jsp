@@ -9,13 +9,13 @@
         body {
             padding: 2rem;
             background-color: #f5f5f7;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            color: #1d1d1f;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
 
         .title {
             font-size: 2rem;
             font-weight: 600;
-            color: #1d1d1f;
             margin-bottom: 2rem;
         }
 
@@ -23,7 +23,7 @@
             border-radius: 16px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
             border: none;
-            background-color: white;
+            background-color: #fff;
             overflow: hidden;
         }
 
@@ -38,7 +38,6 @@
         .table td {
             vertical-align: middle;
             font-size: 0.95rem;
-            color: #1d1d1f;
         }
 
         .no-data {
@@ -56,11 +55,40 @@
         tr.clickable-row:hover {
             background-color: #eef3ff;
         }
+
+        body.dark-mode {
+            background-color: #1d1d1f;
+            color: #f5f5f7;
+        }
+
+        body.dark-mode .card {
+            background-color: #2c2c2e;
+            color: #f5f5f7;
+            border: 1px solid #3a3a3c;
+        }
+
+        body.dark-mode .table thead th {
+            background-color: #3a3a3c;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .table td {
+            background-color: #2c2c2e;
+            color: #f5f5f7;
+        }
+
+        body.dark-mode tr.clickable-row:hover {
+            background-color: #3c3c3e;
+        }
+
+        body.dark-mode .no-data {
+            color: #aaa;
+        }
     </style>
 </head>
 <body>
 <div class="container">
-    <div class="title"> 오늘 가입한 회원 목록</div>
+    <div class="title">오늘 가입한 회원 목록</div>
     <div class="card p-3">
         <c:choose>
             <c:when test="${not empty todayJoinedList}">
@@ -75,7 +103,7 @@
                     </thead>
                     <tbody>
                     <c:forEach var="cust" items="${todayJoinedList}">
-                        <tr class="clickable-row" onclick="location.href='<c:url value="/cust/detail"/>?id=${cust.custId}'">
+                        <tr class="clickable-row" onclick="location.href='<c:url value='/cust/detail'/>?id=${cust.custId}'">
                             <td>${cust.custId}</td>
                             <td>${cust.custName}</td>
                             <td>${cust.custEmail}</td>

@@ -1,198 +1,178 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<link href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
 
 <style>
-    body, .container-fluid {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    body {
         background-color: #f5f5f7;
         color: #1d1d1f;
+        font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         padding: 2rem;
+    }
+
+    body.dark-mode {
+        background-color: #1d1d1f;
+        color: #f5f5f7;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
     }
 
     .card {
         background-color: #fff;
         border: 1px solid #e0e0e0;
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        margin-bottom: 2rem;
+        border-radius: 20px;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+        padding: 2rem;
     }
 
-    .card-header {
-        border-bottom: 1px solid #e0e0e0;
-        padding: 1rem 1.25rem;
-        background-color: transparent;
+    body.dark-mode .card {
+        background-color: #2c2c2e;
+        border-color: #3a3a3c;
     }
 
     .card-header h6 {
-        font-size: 1.125rem;
+        font-size: 1.1rem;
         font-weight: 600;
-        color: #1d1d1f;
+        margin-bottom: 1rem;
     }
 
     .table {
         width: 100%;
-        border-collapse: collapse;
         font-size: 0.95rem;
-        margin-top: 1rem;
-    }
-
-    .table th, .table td {
-        padding: 0.75rem;
-        border: 1px solid #e0e0e0;
-        text-align: center;
-        vertical-align: middle;
+        border-collapse: collapse;
     }
 
     .table thead th {
         background-color: #f9f9fa;
-        font-weight: 600;
         color: #6e6e73;
-        text-transform: uppercase;
-        font-size: 0.85rem;
+        font-weight: 600;
+        font-size: 0.8rem;
+        padding: 0.75rem;
+        text-align: center;
     }
 
-    .table tfoot th {
-        background-color: #f5f5f7;
-        color: #999;
-        font-weight: 400;
-        font-size: 0.8rem;
+    body.dark-mode .table thead th {
+        background-color: #3a3a3c;
+        color: #f5f5f7;
+    }
+
+    .table td {
+        padding: 0.75rem;
+        border-bottom: 1px solid #e0e0e0;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    body.dark-mode .table td {
+        border-bottom: 1px solid #3a3a3c;
+        color: #f5f5f7;
     }
 
     .table tbody tr:hover {
         background-color: #f0f0f5;
     }
 
-    .btn {
-        border-radius: 8px;
-        font-size: 0.85rem;
-        padding: 0.35rem 0.9rem;
-        transition: background-color 0.2s ease;
+    body.dark-mode .table tbody tr:hover {
+        background-color: #3c3c3e;
     }
 
     .btn-secondary {
         background-color: #1d1d1f;
-        color: white;
+        color: #fff;
         border: none;
+        border-radius: 12px;
+        padding: 0.4rem 1rem;
+        font-size: 0.85rem;
+        font-weight: 600;
     }
 
     .btn-secondary:hover {
         background-color: #333;
     }
 
-    h1 {
-        font-size: 2rem;
-        font-weight: 600;
-        margin-bottom: 0.5rem;
-    }
-
-    p.mb-4 {
-        font-size: 0.95rem;
-        color: #555;
-        margin-bottom: 2rem;
-    }
-
     a {
-        color: #0071e3;
+        color: inherit;
         text-decoration: none;
     }
 
     a:hover {
         text-decoration: underline;
+        opacity: 0.8;
+    }
+
+
+    body.dark-mode a {
+        color: #58a6ff;
     }
 </style>
 
 <script>
-    let cust_get = {
-        init: function () {},
+    const cust_get = {
         update: function (id) {
             if (confirm('수정하시겠습니까?')) {
-                location.href = '<c:url value="/cust/detail"/>?id=' + id;
+                location.href = '<c:url value="/cust/detail"/>' + '?id=' + id;
             }
         },
         delete: function (id) {
             if (confirm('삭제하시겠습니까?')) {
-                location.href = '<c:url value="/cust/delete"/>?id=' + id;
+                location.href = '<c:url value="/cust/delete"/>' + '?id=' + id;
             }
         }
     };
-    $(function () {
-        cust_get.init();
-    });
 </script>
 
 <div class="container-fluid">
-
-    <!-- Page Heading -->
-    <h1 class="h3 mb-2">고객 정보 테이블</h1>
-    <p class="mb-4">
-        아래는 모든 고객 정보를 나열한 표입니다.
-        <a target="_blank" href="https://datatables.net">DataTables 공식 문서</a>도 참고해보세요.
-    </p>
-
+    <h1>고객 정보 테이블</h1>
     <div class="card">
         <div class="card-header">
             <h6>고객 전체 정보 목록</h6>
         </div>
-        <div class="card-body">
-            <div class="table-responsive">
-                <h2 style="font-size: 1.25rem; font-weight: 500; margin-bottom: 1rem;">관리자는 고객의 모든 것을 알고 있다.</h2>
-                <table class="table table-bordered" id="dataTable">
-                    <thead>
+        <div class="table-responsive">
+            <table class="table" id="dataTable">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>PWD</th>
+                    <th>NAME</th>
+                    <th>EMAIL</th>
+                    <th>PHONE</th>
+                    <th>가입일</th>
+                    <th>포인트</th>
+                    <th>별명</th>
+                    <th>적립량</th>
+                    <th>사유</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <c:forEach var="c" items="${custs}">
                     <tr>
-                        <th>ID</th>
-                        <th>PWD</th>
-                        <th>NAME</th>
-                        <th>EMAIL</th>
-                        <th>PHONE</th>
-                        <th>가입일</th>
-                        <th>보유포인트</th>
-                        <th>별명</th>
-                        <th>적립량</th>
-                        <th>적립사유</th>
-                        <th>수정</th>
-                        <th>삭제</th>
+                        <td><a href="<c:url value='/cust/detail'/>?id=${c.custId}">${c.custId}</a></td>
+                        <td>${c.custPwd}</td>
+                        <td>${c.custName}</td>
+                        <td>${c.custEmail}</td>
+                        <td>${c.custPhone}</td>
+                        <td>${c.custRdate}</td>
+                        <td>${c.custPoint}</td>
+                        <td>${c.custNick}</td>
+                        <td>${c.pointCharge}</td>
+                        <td>${c.pointReason}</td>
+                        <td><button onclick="cust_get.update('${c.custId}')" class="btn-secondary">수정</button></td>
+                        <td><button onclick="cust_get.delete('${c.custId}')" class="btn-secondary">삭제</button></td>
                     </tr>
-                    </thead>
-                    <tfoot>
-                    <tr>
-                        <th>Cust_id</th>
-                        <th>cust_pwd</th>
-                        <th>cust_name</th>
-                        <th>cust_email</th>
-                        <th>cust_phone</th>
-                        <th>custRdate</th>
-                        <th>custPoint</th>
-                        <th>custNick</th>
-                        <th>pointCharge</th>
-                        <th>pointReason</th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                    </tfoot>
-                    <tbody>
-                    <c:forEach var="c" items="${custs}">
-                        <tr>
-                            <td><a href="<c:url value='/cust/detail'/>?id=${c.custId}">${c.custId}</a></td>
-                            <td>${c.custPwd}</td>
-                            <td>${c.custName}</td>
-                            <td>${c.custEmail}</td>
-                            <td>${c.custPhone}</td>
-                            <td>${c.custRdate}</td>
-                            <td>${c.custPoint}</td>
-                            <td>${c.custNick}</td>
-                            <td>${c.pointCharge}</td>
-                            <td>${c.pointReason}</td>
-                            <td>
-                                <button onclick="cust_get.update('${c.custId}')" type="button" class="btn btn-secondary">수정</button>
-                            </td>
-                            <td>
-                                <button onclick="cust_get.delete('${c.custId}')" type="button" class="btn btn-secondary">삭제</button>
-                            </td>
-                        </tr>
-                    </c:forEach>
-                    </tbody>
-                </table>
-            </div>
+                </c:forEach>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
