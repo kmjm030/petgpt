@@ -6,13 +6,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+
 @Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class PetBoard {
     private int pboardKey;
-    private int custKey;
+    private String custId;
     private int itemKey;
     private String pboardTitle;
     private LocalDateTime pboardRdate;

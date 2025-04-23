@@ -15,16 +15,16 @@
 
     <insert id="insert" parameterType="TotalOrder">
         INSERT INTO total_order
-        (cust_key, addr_key, item_key, order_date, recipient_name, recipient_phone,
+        (cust_id, addr_key, item_key, order_date, recipient_name, recipient_phone,
          order_req, order_status, order_card, order_total_price, order_shoot_num)
         VALUES
-            (#{custKey}, #{addrKey}, #{itemKey}, #{orderDate}, #{recipientName}, #{recipientPhone},
+            (#{custId}, #{addrKey}, #{itemKey}, #{orderDate}, #{recipientName}, #{recipientPhone},
              #{orderReq}, #{orderStatus}, #{orderCard}, #{orderTotalPrice}, #{orderShootNum})
     </insert>
 
     <update id="update" parameterType="TotalOrder">
         UPDATE total_order SET
-                               cust_key = #{custKey},
+                               cust_id = #{custId},
                                addr_key = #{addrKey},
                                item_key = #{itemKey},
                                order_date = #{orderDate},

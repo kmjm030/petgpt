@@ -4,19 +4,40 @@
 
 <mapper namespace="com.mc.app.repository.CommentsRepository">
 
-    <select id="findAllByPboard" parameterType="int" resultType="com.mc.app.dto.Comments">
-        SELECT * FROM comments WHERE pboard_key = #{pboardKey}
+    <select id="findAllByPboard" parameterType="map" resultType="com.mc.app.dto.Comments">
+        SELECT
+            c.comments_key,
+            c.pboard_key,
+            c.cust_id, 
+            c.comments_content,
+            c.comments_rdate,
+            c.comments_update,
+            c.parent_comment_key,
+            c.depth,
+            cu.cust_id AS custId, -- DTO 필드명과 맞추기 위해 alias 사용
+            cu.cust_img AS custProfileImgUrl, 
+            (SELECT COUNT(*) FROM comment_likes cl WHERE cl.comments_key = c.comments_key) AS likeCount, -- 좋아요 수 계산
+            (CASE WHEN EXISTS (SELECT 1 FROM comment_likes cl WHERE cl.comments_key = c.comments_key AND cl.cust_id = #{currentCustId})
+                  THEN 1 ELSE 0 END) AS likedByCurrentUser -- 현재 사용자 좋아요 여부 계산
+        FROM
+            comments c
+        LEFT JOIN -- 댓글 작성자가 탈퇴했을 수도 있으니 LEFT JOIN 고려
+            customer cu ON c.cust_id = cu.cust_id 
+        WHERE
+            c.pboard_key = #{pboardKey}
+        ORDER BY
+            COALESCE(c.parent_comment_key, c.comments_key), c.comments_rdate
     </select>
 
     <select id="findById" parameterType="int" resultType="com.mc.app.dto.Comments">
         SELECT * FROM comments WHERE comments_key = #{commentsKey}
     </select>
 
-    <insert id="insert" parameterType="com.mc.app.dto.Comments">
+    <insert id="insert" parameterType="com.mc.app.dto.Comments" useGeneratedKeys="true" keyProperty="commentsKey">
         INSERT INTO comments (
-            pboard_key, cust_key, comments_content, comments_rdate, comments_update
+            pboard_key, cust_id, comments_content, comments_rdate, comments_update
         ) VALUES (
-                     #{pboardKey}, #{custKey}, #{commentsContent}, #{commentsRdate}, #{commentsUpdate}
+                     #{pboardKey}, #{custId}, #{commentsContent}, #{commentsRdate}, #{commentsUpdate}
                  )
     </insert>
 

@@ -1,7 +1,9 @@
 package com.mc.controller;
 
+import com.mc.app.dto.Comments;
 import com.mc.app.dto.Customer;
 import com.mc.app.dto.CommunityBoard;
+import com.mc.app.service.CommentsService;
 import com.mc.app.service.CommunityBoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +21,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+
 import java.util.Map;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -27,6 +31,10 @@ import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 
 @Slf4j
 @Controller
@@ -35,6 +43,7 @@ import java.util.UUID;
 public class CommunityController {
 
     private final CommunityBoardService communityBoardService;
+    private final CommentsService commentsService;
 
     /**
      * 커뮤니티 목록 페이지 조회
@@ -65,7 +74,7 @@ public class CommunityController {
      * 게시글 상세 페이지 조회
      */
     @GetMapping("/detail")
-    public String communityDetail(@RequestParam("id") int id, Model model) {
+    public String communityDetail(@RequestParam("id") int id, Model model, HttpSession session) {
         try {
             CommunityBoard board = communityBoardService.getBoardDetail(id);
 
@@ -84,6 +93,43 @@ public class CommunityController {
                     model.addAttribute("formattedRegDate", "작성일 정보 없음");
                 }
                 model.addAttribute("centerPage", "pages/community_detail.jsp");
+
+                Customer loggedInUser = (Customer) session.getAttribute("cust");
+                String loggedInUserId = null;
+                if (loggedInUser != null) {
+                    model.addAttribute("loggedInUser", loggedInUser);
+                    loggedInUserId = loggedInUser.getCustId();
+                }
+
+                try {
+                    List<Comments> commentsData = commentsService.getCommentsByPboardKey(id, loggedInUserId);
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm");
+
+                    List<Map<String, Object>> commentViews = new ArrayList<>();
+                    for (Comments comment : commentsData) {
+                        Map<String, Object> viewMap = new HashMap<>();
+                        viewMap.put("commentsKey", comment.getCommentsKey());
+                        viewMap.put("custId", comment.getCustId());
+                        viewMap.put("commentsContent", comment.getCommentsContent());
+                        viewMap.put("custProfileImgUrl", comment.getCustProfileImgUrl());
+                        viewMap.put("likeCount", comment.getLikeCount());
+                        viewMap.put("likedByCurrentUser", comment.isLikedByCurrentUser());
+
+                        String formattedDate = comment.getCommentsRdate() != null
+                                ? comment.getCommentsRdate().format(formatter)
+                                : "";
+                        viewMap.put("formattedCommentsRdate", formattedDate);
+
+                        commentViews.add(viewMap);
+                    }
+
+                    model.addAttribute("comments", commentViews);
+                    model.addAttribute("commentCount", commentViews.size());
+
+                } catch (Exception commentEx) {
+                    log.error("게시글 ID {}의 댓글 조회 중 오류 발생", id, commentEx);
+                    model.addAttribute("commentErrorMessage", "댓글을 불러오는 중 오류가 발생했습니다.");
+                }
             }
 
         } catch (Exception e) {
