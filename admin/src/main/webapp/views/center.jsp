@@ -130,8 +130,8 @@
   <div class="row mb-4">
     <div class="col-lg-8 mb-4">
       <div class="dashboard-card h-100">
-        <div class="card-title">오늘 매출</div>
-        <div class="card-value">${todayRevenue} ₩</div>
+        <div class="card-title">총 매출</div>
+        <div class="card-value">${totalRevenue} ₩</div>
       </div>
     </div>
 
