@@ -43,7 +43,7 @@ public interface CommentsRepository {
      * 
      * @param comments 수정할 댓글 정보
      */
-    void update(Comments comments) throws Exception;
+    int update(Comments comments) throws Exception;
 
     /**
      * 댓글 삭제 (PK 기준)

@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/api")
@@ -86,19 +87,24 @@ public class CommentsController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
         }
 
-        String custId = loggedInUser.getCustId();
-
         try {
             comment.setCommentsKey(commentId);
+            comment.setCustId(loggedInUser.getCustId());
 
             commentsService.modifyComment(comment);
-            return ResponseEntity.ok("댓글이 성공적으로 수정되었습니다.");
+            Comments updatedComment = commentsService.getCommentById(commentId);
 
-        } catch (Exception e) {
-            if (e.getMessage().contains("권한이 없습니다")) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+            if (updatedComment == null) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("댓글 수정 후 정보를 가져오는데 실패했습니다.");
             }
 
+            return ResponseEntity.ok(updatedComment);
+
+        } catch (SecurityException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("댓글 수정 중 오류 발생: " + e.getMessage());
         }
     }

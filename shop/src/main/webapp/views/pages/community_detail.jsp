@@ -222,21 +222,16 @@
                     }
 
                     .comment-meta .reply-link,
-                    .comment-meta .comment-like-button {
-                        cursor: pointer;
-                        color: #888;
-                    }
-
-                    .comment-meta .reply-link:hover {
-                        text-decoration: underline;
-                    }
-
+                    .comment-meta .comment-like-button,
+                    .comment-meta .edit-comment-btn,
                     .comment-meta .delete-comment-btn {
-                        color: #888;
-                        text-decoration: none;
                         cursor: pointer;
+                        color: #888;
                     }
 
+                    .comment-meta .reply-link:hover,
+                    .comment-meta .edit-comment-btn:hover,
+                    /* Add edit button hover selector */
                     .comment-meta .delete-comment-btn:hover {
                         text-decoration: underline;
                     }
@@ -371,6 +366,8 @@
                                                         <a href="#" class="reply-link">답글쓰기</a>
                                                         <c:if
                                                             test="${not empty loggedInUser && loggedInUser.custId eq comment.custId}">
+                                                            <a href="#" class="edit-comment-btn"
+                                                                data-comment-key="${comment.commentsKey}">수정</a>
                                                             <a href="#" class="delete-comment-btn"
                                                                 data-comment-key="${comment.commentsKey}">삭제</a>
                                                         </c:if>
@@ -588,6 +585,7 @@
 
                         let deleteButtonHTML = '';
                         if (loggedInCustId && loggedInCustId === commentAuthorId) {
+                            editButtonHTML = ' <a href="#" class="edit-comment-btn" data-comment-key="' + commentId + '">수정</a>';
                             deleteButtonHTML = ' <a href="#" class="delete-comment-btn" data-comment-key="' + commentId + '">삭제</a>';
                         }
 
@@ -602,6 +600,7 @@
                             '<div class="comment-meta">' +
                             '<span class="comment-timestamp">' + formattedDate + '</span>' +
                             ' <a href="#" class="reply-link">답글쓰기</a> ' +
+                            editButtonHTML +
                             deleteButtonHTML +
                             ' <span class="comment-like-button" data-comment-key="' + commentId + '">' +
                             ' <i class="fa fa-heart-o"></i>' +
@@ -611,27 +610,144 @@
                             '</div>' +
                             '</div>';
 
+                        const noCommentMsg = commentSection.querySelector('p');
+                        if (noCommentMsg && noCommentMsg.textContent.includes('댓글이 없습니다')) {
+                            noCommentMsg.remove();
+                        }
+
                         commentSection.insertAdjacentHTML('beforeend', commentItemHTML);
                     }
 
                     const commentSection = document.querySelector('.comment-section');
                     if (commentSection) {
                         commentSection.addEventListener('click', function (event) {
+                            const target = event.target;
 
-                            if (event.target.classList.contains('delete-comment-btn')) {
+                            if (target.classList.contains('delete-comment-btn')) {
                                 event.preventDefault();
-
-                                const commentId = event.target.dataset.commentKey;
+                                const commentId = target.dataset.commentKey;
                                 if (!commentId) {
                                     alert('댓글 정보를 찾을 수 없습니다.');
                                     return;
                                 }
 
                                 if (confirm('정말로 이 댓글을 삭제하시겠습니까?')) {
-                                    deleteComment(commentId, event.target);
+                                    deleteComment(commentId, target);
+                                }
+                            }
+
+                            else if (target.classList.contains('edit-comment-btn')) {
+                                event.preventDefault();
+                                const commentItem = target.closest('.comment-item');
+                                if (commentItem) {
+                                    showEditForm(commentItem);
+                                }
+                            }
+
+                            else if (target.classList.contains('save-edit-btn')) {
+                                event.preventDefault();
+                                const commentItem = target.closest('.comment-item')
+                                const commentId = commentItem?.dataset.commentKey;
+                                const textarea = commentItem?.querySelector('.edit-textarea');
+                                if (commentItem && commentId && textarea) {
+                                    saveCommentEdit(commentId, textarea.value, commentItem);
+                                } else {
+                                    console.error("수정 저장 버튼 클릭 오류: 댓글 정보 또는 입력 필드를 찾을 수 없습니다.");
+                                    alert("댓글 수정 정보를 찾는 중 오류가 발생했습니다.");
+                                }
+                            }
+
+                            else if (target.classList.contains('cancel-edit-btn')) {
+                                event.preventDefault();
+                                const commentItem = target.closest('.comment-item');
+                                if (commentItem) {
+                                    cancelCommentEdit(commentItem);
                                 }
                             }
                         });
+                    }
+
+                    function showEditForm(commentItem) {
+                        if (commentItem.querySelector('.edit-form')) {
+                            return;
+                        }
+
+                        const commentContentWrap = commentItem.querySelector('.comment-content-wrap');
+                        const commentTextDiv = commentContentWrap.querySelector('.comment-text');
+                        const commentMetaDiv = commentContentWrap.querySelector('.comment-meta');
+
+                        commentTextDiv.style.display = 'none';
+                        commentMetaDiv.style.display = 'none';
+
+                        const currentContent = commentTextDiv.textContent.trim();
+
+                        const editFormHTML =
+                            '<div class="edit-form" style="margin-top: 10px;">' +
+                            '<textarea class="edit-textarea" style="width: 100%; min-height: 80px; margin-bottom: 10px; padding: 10px; border: 1px solid #eee; border-radius: 4px; font-size: 15px;">' +
+                            currentContent +
+                            '</textarea>' +
+                            '<div class="edit-actions" style="text-align: right;">' +
+                            '<button type="button" class="site-btn save-edit-btn" style="margin-left: 5px; padding: 8px 25px; border-radius: 4px;">저장</button>' +
+                            '<button type="button" class="site-btn site-btn-outline cancel-edit-btn" style="margin-left: 5px; padding: 8px 25px;">취소</button>' +
+                            '</div>' +
+                            '</div>';
+
+                        const authorNameDiv = commentContentWrap.querySelector('.comment-author-name');
+                        commentTextDiv.insertAdjacentHTML('afterend', editFormHTML);
+                    }
+
+                    function removeEditForm(commentItem) {
+                        const editForm = commentItem.querySelector('.edit-form');
+                        if (editForm) {
+                            editForm.remove();
+                        }
+
+                        const commentTextDiv = commentItem.querySelector('.comment-text');
+                        const commentMetaDiv = commentItem.querySelector('.comment-meta');
+                        if (commentTextDiv) commentTextDiv.style.display = 'block';
+                        if (commentMetaDiv) commentMetaDiv.style.display = 'flex';
+                    }
+
+                    function cancelCommentEdit(commentItem) {
+                        removeEditForm(commentItem);
+                    }
+
+                    function saveCommentEdit(commentId, newContent, commentItem) {
+                        const trimmedContent = newContent.trim();
+                        if (!trimmedContent) {
+                            alert('댓글 내용을 입력해주세요.');
+                            commentItem.querySelector('.edit-textarea').focus();
+                            return;
+                        }
+
+                        fetch('/api/comments/' + commentId, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ commentsContent: trimmedContent }),
+                        })
+                            .then(async (response) => {
+                                if (!response.ok) {
+                                    const errorText = await response.text();
+                                    throw new Error(errorText || "댓글 수정 처리 중 오류 발생 (HTTP " + response.status + ")");
+                                }
+                                return response.json();
+
+                            })
+                            .then(updatedComment => {
+                                const commentTextDiv = commentItem.querySelector('.comment-text');
+                                if (commentTextDiv) {
+                                    commentTextDiv.textContent = updatedComment.commentsContent;
+                                    // TODO: 수정 시간도 업데이트하려면 해당 요소 찾아서 updatedComment.commentsUpdate 값으로 업데이트
+                                }
+                                removeEditForm(commentItem);
+                                alert('댓글이 성공적으로 수정되었습니다.');
+                            })
+                            .catch(error => {
+                                console.error('댓글 수정 중 오류:', error);
+                                alert('댓글 수정 중 오류가 발생했습니다. \n' + error.message);
+                            });
                     }
 
                     function deleteComment(commentId, buttonElement) {

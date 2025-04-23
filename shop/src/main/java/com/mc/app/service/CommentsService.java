@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -75,9 +76,25 @@ public class CommentsService {
      * @param comments 수정할 댓글 정보
      */
     @Transactional
-    public void modifyComment(Comments comments) throws Exception {
-        comments.setCommentsUpdate(LocalDateTime.now());
-        commentsRepository.update(comments);
+    public void modifyComment(Comments comments) throws SecurityException, NoSuchElementException, Exception {
+
+        Comments existingComment = commentsRepository.findById(comments.getCommentsKey());
+        if (existingComment == null) {
+            throw new NoSuchElementException("수정할 댓글을 찾을 수 없습니다. ID: " + comments.getCommentsKey());
+        }
+
+        if (!existingComment.getCustId().equals(comments.getCustId())) {
+            throw new SecurityException("댓글을 수정할 권한이 없습니다.");
+        }
+
+        existingComment.setCommentsContent(comments.getCommentsContent());
+        existingComment.setCommentsUpdate(LocalDateTime.now());
+
+        int updatedRows = commentsRepository.update(existingComment);
+
+        if (updatedRows == 0) {
+            throw new Exception("댓글 업데이트에 실패했습니다. ID: " + comments.getCommentsKey());
+        }
     }
 
     /**
