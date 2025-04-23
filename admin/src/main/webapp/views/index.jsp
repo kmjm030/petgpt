@@ -144,14 +144,6 @@
 <body id="page-top">
 
 <c:if test="${not empty sessionScope.admin}">
-    <div id="admin-info-bar">
-        <span class="admin-name">
-            <i class="fas fa-user-circle"></i> ${sessionScope.admin.adminName} 님
-        </span>
-        <a href="<c:url value='/logoutimpl'/>" onclick="sessionStorage.clear();">로그아웃</a>
-        <button id="darkModeToggle" title="다크모드 토글"
-                style="background:none; border:none; font-size:1.2rem; cursor:pointer;">🌙</button>
-    </div>
 
     <div id="welcome-overlay">
         <div class="welcome-box">

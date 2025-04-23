@@ -1,0 +1,237 @@
+body.dark-mode {
+    background-color: #1d1d1f;
+    color: #f5f5f7;
+}
+
+body.dark-mode,
+body.dark-mode p,
+body.dark-mode span,
+body.dark-mode a,
+body.dark-mode li,
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode h4,
+body.dark-mode h5,
+body.dark-mode h6,
+body.dark-mode div,
+body.dark-mode label,
+body.dark-mode strong {
+    color: #f5f5f7 !important;
+}
+
+body.dark-mode a:hover,
+body.dark-mode .highlight,
+body.dark-mode .text-primary {
+    color: #ccccff !important;
+}
+
+body.dark-mode .header,
+body.dark-mode .header__top,
+body.dark-mode .header__top__left,
+body.dark-mode .header__top__right,
+body.dark-mode .header__menu,
+body.dark-mode .navbar {
+    background-color: #2c2c2e;
+    color: #f5f5f7;
+    border-color: #3a3a3c;
+}
+
+body.dark-mode .header__top__links a,
+body.dark-mode .header__menu a {
+    color: #f5f5f7 !important;
+}
+
+body.dark-mode .header__top__links a:hover,
+body.dark-mode .header__menu a:hover {
+    color: #ccccff !important;
+}
+
+body.dark-mode .header__search form {
+    background-color: #3a3a3c;
+    border-color: #5c5c5e;
+}
+
+body.dark-mode .search-input {
+    color: #f5f5f7;
+}
+
+body.dark-mode .search-input::placeholder {
+    color: #aaa;
+}
+
+body.dark-mode .search-btn {
+    background-color: #444;
+}
+
+body.dark-mode .search-btn:hover {
+    background-color: #666;
+}
+
+body.dark-mode button,
+body.dark-mode .btn {
+    background-color: #3a3a3c;
+    color: #f5f5f7;
+    border: 1px solid #555;
+}
+
+body.dark-mode button:hover {
+    background-color: #4a4a4c;
+}
+
+body.dark-mode .hero,
+body.dark-mode .banner,
+body.dark-mode .slider,
+body.dark-mode .main-banner {
+    background-color: #1d1d1f;
+    color: #f5f5f7;
+}
+
+body.dark-mode .card,
+body.dark-mode .section,
+body.dark-mode .box,
+body.dark-mode .rounded-box {
+    background-color: #2c2c2e;
+    border-color: #3a3a3c;
+    color: #f5f5f7;
+}
+
+body.dark-mode .chat-widget,
+body.dark-mode .chat-button,
+body.dark-mode .chat-output,
+body.dark-mode #chat-modal,
+body.dark-mode .chat-modal-header,
+body.dark-mode .chat-modal-body,
+body.dark-mode .chat-modal-footer,
+body.dark-mode #chat-input,
+body.dark-mode #send-button {
+    background-color: #2c2c2e;
+    color: #f5f5f7;
+    border-color: #444;
+}
+
+body.dark-mode .footer,
+body.dark-mode .footer__about,
+body.dark-mode .footer__widget,
+body.dark-mode .footer__newslatter,
+body.dark-mode .footer__copyright__text {
+    background-color: #2c2c2e;
+    color: #f5f5f7;
+}
+
+body.dark-mode .footer__widget h6,
+body.dark-mode .footer__widget a {
+    color: #f5f5f7 !important;
+}
+
+body.dark-mode .footer__widget a:hover {
+    color: #ccccff !important;
+}
+
+body.dark-mode .mode-options {
+    background-color: #2c2c2e;
+    color: #f5f5f7;
+    border: 1px solid #444;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+body.dark-mode .mode-options div {
+    color: #f5f5f7;
+}
+
+body.dark-mode .mode-options div:hover {
+    background-color: #3a3a3c;
+}
+
+body.dark-mode #fab-open {
+    background-color: #2c2c2e;
+    color: #f5f5f7;
+    border: 1px solid #555;
+}
+
+body.dark-mode #fab-open span {
+    color: #f5f5f7;
+}
+
+body.dark-mode #fab-close {
+    background-color: #2c2c2e;
+    border: 1px solid #555;
+}
+body.dark-mode .hero__text,
+body.dark-mode .banner__text,
+body.dark-mode .product__details,
+body.dark-mode .discount__content,
+body.dark-mode .deal__text,
+body.dark-mode .countdown__item,
+body.dark-mode .countdown__item span,
+body.dark-mode .timer,
+body.dark-mode .timer span {
+    color: #f5f5f7 !important;
+}
+
+body.dark-mode .banner__text span,
+body.dark-mode .deal__text span,
+body.dark-mode .discount__content span {
+    color: #ffcc00 !important;
+}
+
+body.dark-mode .hero__text,
+body.dark-mode .banner__text,
+body.dark-mode .product__details,
+body.dark-mode .discount__content,
+body.dark-mode .countdown__item,
+body.dark-mode .countdown__item span,
+body.dark-mode .timer,
+body.dark-mode .timer span,
+body.dark-mode .deal__text,
+body.dark-mode .deal__text span {
+    color: #f5f5f7 !important;
+}
+
+body.dark-mode .banner__text span,
+body.dark-mode .deal__text span,
+body.dark-mode .discount__content span {
+    color: #ffcc00 !important;
+}
+/* 배너/슬라이드 텍스트 박스 */
+body.dark-mode .hero__text,
+body.dark-mode .banner__text,
+body.dark-mode .discount__content,
+body.dark-mode .deal__text {
+    background-color: transparent !important;
+    color: #f5f5f7 !important;
+}
+
+/* 강조 블럭 배경 (특가 배지, 타이머 안내 등) */
+body.dark-mode .banner__text span,
+body.dark-mode .deal__text span,
+body.dark-mode .discount__content span,
+body.dark-mode .product__discount__percent {
+    background-color: #444 !important;
+    color: #ffcc00 !important;
+}
+
+/* 카운트다운 타이머 숫자 */
+body.dark-mode .countdown__item,
+body.dark-mode .countdown__item span,
+body.dark-mode .timer span {
+    color: #f5f5f7 !important;
+}
+body.dark-mode .categories,
+body.dark-mode .categories * {
+    background-color: transparent !important;
+    color: #f5f5f7 !important;
+}
+
+body.dark-mode .categories span,
+body.dark-mode .categories strong {
+    color: #ffcc00 !important;
+}
+body.dark-mode .text-before,
+body.dark-mode .text-before * {
+    background-color: transparent !important;
+    color: #f5f5f7 !important;
+}
+body.dark-mode .categories__text::before {
+    background-color: transparent !important;
+}
