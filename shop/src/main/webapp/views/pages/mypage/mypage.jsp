@@ -1,5 +1,9 @@
 <%@ page pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%
+  request.setAttribute("now", System.currentTimeMillis());
+%>
+
 <style>
   .site-btn > a{
     color:white;
@@ -7,6 +11,13 @@
   #category {
     color: rosybrown;
   }
+  #profile-img {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+  }
+
 </style>
 
 
@@ -14,6 +25,17 @@
 <script>
   const mypage = {
     init:function(){
+      $('#uploadFile').change(function(e) {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            $('#profile-img').attr('src', e.target.result);  // 이미지 미리보기 변경
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+
       $('#cust_update_btn').click(()=>{
         this.check();
       });
@@ -66,6 +88,12 @@
         this.send();
       }
     },
+    imgDelete:function(){
+      $('#imgDeleteFlag').val('true');
+      $('#profile-img').attr('src', '<c:url value="/img/clients/profile.png"/>');
+
+
+    },
     send:function(){
       $('#cust_update_form').attr('method','post');
       $('#cust_update_form').attr('action','<c:url value="/mypage/updateimpl"/>');
@@ -75,6 +103,8 @@
   $(function(){
     mypage.init();
   });
+
+
 </script>
 
 
@@ -113,8 +143,9 @@
                 <div id="collapseOne" class="collapse show" data-parent="#accordionExample">
                   <div class="card-body">
                     <div class="shop__sidebar__categories">
-                      <ul class="nice-scroll">
+                      <ul>
                         <li><a href="<c:url value='/mypage?id=${cust.custId}'/>"><strong id="category">회원정보</strong></a></li>
+                        <li><a href="<c:url value='/pet?id=#${cust.custId}'/>">나의 펫 정보</a></li>
                         <li><a href="<c:url value='/checkout/orderlist?id=${cust.custId}'/>">주문내역</a></li>
                         <li><a href="<c:url value='/address?id=${cust.custId}'/>">배송지 목록</a></li>
                         <li><a href="<c:url value='/mypage/like?id=${cust.custId}'/>">찜 목록</a></li>
@@ -135,7 +166,25 @@
 <%--    회원 정보 --%>
       <div class="col-lg-9">
         <h6 class="checkout__title">📌 회원 정보 조회</h6>
-        <form id="cust_update_form">
+        <form id="cust_update_form" enctype="multipart/form-data">
+          <div class="row">
+            <div class="form-group col-md-12" style="text-align:center; margin:10px;">
+              <c:choose>
+                <c:when test="${not empty cust.custImg}">
+                  <img id="profile-img" src="<c:url value='${cust.custImg}'/>?t=${now}" alt="현재 첨부파일" width="200">
+                </c:when>
+                <c:otherwise>
+                  <img id="profile-img" src="<c:url value='/img/clients/profile.png'/>"/>
+                </c:otherwise>
+              </c:choose>
+              <br/><br/>
+              <input type="file" id="uploadFile" name="img" hidden>
+              <label for="uploadFile" class="btn btn-light">📁 이미지 찾기</label>
+              <button id="img_del_btn" type="button"  class="btn btn-light" onclick="mypage.imgDelete()">❌ 삭제</button>
+              <input type="hidden" id="imgDeleteFlag" name="imgDelete" value="false">
+
+            </div>
+          </div><hr><br/>
           <div class="row">
             <div class="form-group col-md-6">
               <div class="checkout__input">
