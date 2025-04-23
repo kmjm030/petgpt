@@ -171,7 +171,7 @@
         <a href="<c:url value='/cust/get'/>"><i class="fas fa-users"></i> 사용자 관리</a>
         <a href="<c:url value='/item/get'/>"><i class="fas fa-box"></i> 상품 관리</a>
         <a href="<c:url value='/orderdetail'/>"><i class="fas fa-shopping-cart"></i> 주문 관리</a>
-        <a href="<c:url value='/inquiries.jsp'/>"><i class="fas fa-question-circle"></i> 문의글 관리</a>
+        <a href="<c:url value='/qnaboard/get'/>"><i class="fas fa-comment-dots"></i> 문의글 관리</a>
         <a href="<c:url value='/qnaboard/get'/>"><i class="fas fa-comment-dots"></i> 상품 문의글</a>
         <a href="<c:url value='/ws'/>"><i class="fas fa-comments"></i> 채팅</a>
         <a href="<c:url value='/admin/notice/get'/>"><i class="fas fa-bullhorn"></i> 관리자 공지사항</a>

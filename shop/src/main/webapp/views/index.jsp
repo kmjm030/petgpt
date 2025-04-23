@@ -23,8 +23,66 @@
             <link rel="stylesheet" href="<c:url value='/css/owl.carousel.min.css'/>" type="text/css">
             <link rel="stylesheet" href="<c:url value='/css/slicknav.min.css'/>" type="text/css">
             <link rel="stylesheet" href="<c:url value='/css/style.css'/>" type="text/css">
+            <link rel="stylesheet" href="<c:url value='/css/dark-mode.css' />">
+
 
             <style>
+                .mode-options {
+                    display: none;
+                    position: absolute;
+                    top: 30px;
+                    right: 0;
+                    background-color: #ffffff;
+                    color: #000000;
+                    border: 1px solid #ccc;
+                    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+                    z-index: 9999;
+                    min-width: 140px;
+                    font-family: inherit;
+                    text-align: center;
+                }
+
+                .mode-options div {
+                    padding: 10px 0;
+                    cursor: pointer;
+                }
+
+                .mode-options div:hover {
+                    background-color: #f5f5f5;
+                }
+
+                .mode-options {
+                    min-width: 140px;
+                    white-space: nowrap;
+                }
+
+                #modeToggleBtn {
+                    color: #ffffff !important;
+                }
+
+                .mode-options {
+                    display: none;
+                    position: absolute;
+                    top: 30px;
+                    right: 0;
+                    background-color: #ffffff;
+                    color: #000000;
+                    border: 1px solid #ccc;
+                    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+                    z-index: 1000;
+                    font-family: inherit;
+                }
+
+                .mode-options div {
+                    padding: 8px 12px;
+                    cursor: pointer;
+                    white-space: nowrap;
+                }
+
+                .mode-options div:hover {
+                    background-color: #f5f5f5;
+                }
+
                 #fab-container {
                     position: fixed;
                     bottom: 30px;
@@ -372,6 +430,13 @@
                                     <div class="header__top__links">
                                         <a href="<c:url value=" /cart" />">장바구니</a>
                                     </div>
+                                    <div class="header__top__links" style="position: relative;">
+                                        <span id="modeToggleBtn" style="cursor: pointer;">모드 선택 ▾</span>
+                                        <div id="modeOptions" class="mode-options">
+                                            <div data-mode="light">라이트 모드</div>
+                                            <div data-mode="dark">다크 모드</div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -706,6 +771,36 @@
 
                     fabOpenBtn.addClass('fab-visible').removeClass('fab-hidden');
 
+                });
+            </script>
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    const toggleBtn = document.getElementById("modeToggleBtn");
+                    const modeOptions = document.getElementById("modeOptions");
+
+                    const savedMode = localStorage.getItem("darkMode");
+                    if (savedMode === "true") {
+                        document.body.classList.add("dark-mode");
+                    }
+
+                    toggleBtn.addEventListener("click", function () {
+                        modeOptions.style.display = modeOptions.style.display === "block" ? "none" : "block";
+                    });
+
+                    document.querySelectorAll("#modeOptions div").forEach(option => {
+                        option.addEventListener("click", () => {
+                            const isDark = option.getAttribute("data-mode") === "dark";
+                            document.body.classList.toggle("dark-mode", isDark);
+                            localStorage.setItem("darkMode", isDark.toString());
+                            modeOptions.style.display = "none";
+                        });
+                    });
+
+                    document.addEventListener("click", function (e) {
+                        if (!toggleBtn.contains(e.target) && !modeOptions.contains(e.target)) {
+                            modeOptions.style.display = "none";
+                        }
+                    });
                 });
             </script>
 
