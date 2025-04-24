@@ -95,6 +95,7 @@
 <script>
   function openModal() {
     document.getElementById("petModal").style.display = "block";
+    pet.info();
   }
 
   function closeModal() {
@@ -108,6 +109,129 @@
       modal.style.display = "none";
     }
   }
+</script>
+
+<script>
+  const pet = {
+    init:function(){
+      $('#uploadFile').change(function(e) {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            $('#profile-img').attr('src', e.target.result);  // 이미지 미리보기 변경
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+
+      $('#cust_update_btn').click(()=>{
+        this.check();
+      });
+    },
+    info:function(){
+      console.log("pet.info() 호출됨");
+      $('#petName').on('input', function () {
+        const name = $(this).val();
+        $('#modal-pet-name').text(name || '');
+      });
+      $('#petType').on('change', function () {
+        let type = $(this).val();
+        if(type == 'dog'){
+          type = "🐶"
+        }else if(type == 'cat'){
+          type = "🐱"
+        }
+        $('#modal-pet-type').text(type);
+      });
+      $('#petBreed').on('input', function () {
+        const breed = $(this).val();
+        $('#modal-pet-breed').text('▪ 종: ' + breed || '');
+      });
+      $('#petGender').on('input', function () {
+        let gender = $(this).val();
+        if(gender == 'F'){
+          gender = "여자"
+        }else if(gender == 'M'){
+          gender = "남자"
+        }
+        $('#modal-pet-gender').text('▪ 성별: ' + gender || '');
+      });
+
+      $('#petBirthdate').on('input', function () {
+        const birth = $(this).val();
+        if (birth) {
+          $('#modal-pet-birthdate').text('▪ 생년월일: ' + birth);
+        } else {
+          $('#modal-pet-birthdate').text('▪ 생년월일: ');
+        }
+      });
+    },
+    check:function(){
+      let pwd = $('#pwd').val();
+      let new_pwd = $('#new_pwd').val();
+      let new_pwd2 = $('#new_pwd2').val();
+      let nick = $('#nick').val();
+      let phone = $('#phone').val();
+      let email = $('#email').val();
+
+      if(pwd == '' || pwd == null){
+        $('#msg').text('수정을 위해서는 비밀번호를 입력해야 합니다.');
+        $('#pwd').focus();
+        return;
+      }
+      if(nick == '' || phone == null){
+        $('#msg').text('닉네임을 입력하세요.');
+        $('#nick').focus();
+        return;
+      }
+      if(phone == '' || phone == null){
+        $('#msg').text('전화번호를 입력하세요.');
+        $('#phone').focus();
+        return;
+      }
+      if(email == '' || email == null){
+        $('#msg').text('이메일을 입력하세요.');
+        $('#email').focus();
+        return;
+      }
+      if ((!new_pwd || new_pwd.trim() === '') && new_pwd2 && new_pwd2.trim() !== '') {
+        $('#msg').text('새 비밀번호를 입력해주세요.');
+        $('#new_pwd').focus();
+        return;
+      }
+      if (new_pwd && new_pwd.trim() !== '' && (!new_pwd2 || new_pwd2.trim() === '')) {
+        $('#msg').text('새 비밀번호를 확인해주세요.');
+        $('#new_pwd2').focus();
+        return;
+      }
+      if(new_pwd != new_pwd2){
+        $('#msg').text('새 비밀번호를 확인해주세요.');
+        $('#new_pwd2').focus();
+        return;
+      }
+      let c = confirm('회원정보를 수정하시겠습니까?');
+      if (c == true) {
+        this.send();
+      }
+    },
+    imgDelete:function(){
+      $('#imgDeleteFlag').val('true');
+      $('#profile-img').attr('src', '<c:url value="/img/clients/profile.png"/>');
+
+
+    },
+    send:function(){
+      $('#cust_update_form').attr('method','post');
+      $('#cust_update_form').attr('action','<c:url value="/mypage/updateimpl"/>');
+      $('#cust_update_form').submit();
+    },
+  }
+  $(function(){
+    pet.init();
+  });
+
+
 </script>
 
 
@@ -168,7 +292,9 @@
       </div>
       <%--    회원 정보 --%>
       <div class="col-lg-9 container mt-3">
-        <h6 class="checkout__title">🐶 나의 펫 정보</h6>
+        <h6 class="checkout__title">🐶 나의 펫 정보'
+
+        </h6>
         <div class="row">
           <div class="col-md-6">
             <div class="pet-box">
@@ -213,16 +339,18 @@
           <div class="row">
             <div class="col-md-6">
               <div class="pet-img-box">
-                <img src="<c:url value='/img/clients/profile.png'/>">
+                <img id="profile-img" src="<c:url value='/img/clients/profile.png'/>">
               </div>
             </div>
             <div class="col-md-6">
-              <div class="pet-name-box"><h5>🐶 <strong>강아지 이름</strong></h5></div>
+              <div class="pet-name-box"><strong id="modal-pet-type"></strong>  <strong id="modal-pet-name">이름</strong></div>
               <hr>
               <div class="pet-desc-box">
-                <div>▪ 생일: 2022.01.12</div>
-                <div>▪ 성별: 여자</div>
-                <div>▪ 종류: 푸들</div>
+                <div id="modal-pet-birthdate">▪ 생년월일:</div>
+                <div id="modal-pet-gender">▪ 성별:</div>
+                <div id="modal-pet-breed">▪ 종:</div>
+                <input type="file" id="uploadFile" name="img" hidden><br><br>
+                <label for="uploadFile" class="btn btn-light">📁 이미지 찾기</label>
               </div>
             </div>
           </div>
@@ -262,19 +390,7 @@
         </div>
       </div>
     </div>
-<%--    <div class="row">--%>
-<%--      <div class="form-group col-md-6">--%>
-<%--        <label class="form-label">✔ 성별</label>--%>
-<%--        <div class="gender-toggle d-flex gap-2">--%>
-<%--          <input type="radio" class="btn-check" name="gender" id="gender_m" autocomplete="off" value="M">--%>
-<%--          <label class="btn btn-outline-primary rounded-pill px-4" for="gender_m">🐶 남자</label>--%>
-
-<%--          <input type="radio" class="btn-check" name="gender" id="gender_f" autocomplete="off" value="F">--%>
-<%--          <label class="btn btn-outline-pink rounded-pill px-4" for="gender_f">😺 여자</label>--%>
-<%--        </div>--%>
-<%--      </div>--%>
-<%--    </div>--%>
-<%--    </div>--%>
-
-
+    <!-- 성별 라디오 버튼 추가 -->
+    <!-- ... -->
+</div>
 </div>
