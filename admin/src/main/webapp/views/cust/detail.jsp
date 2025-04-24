@@ -12,26 +12,15 @@
     h1 {
         font-size: 1.8rem;
         font-weight: 700;
-        margin-bottom: 1rem;
+        margin-bottom: 1.5rem;
     }
 
     .card {
         background-color: #fff;
         border: 1px solid #e0e0e0;
-        border-radius: 20px;
+        border-radius: 16px;
         box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
-    }
-
-    .card-header {
-        padding: 1.25rem;
-        background-color: #fff;
-        border-bottom: 1px solid #e0e0e0;
-    }
-
-    .card-header h6 {
-        font-size: 1.1rem;
-        font-weight: 600;
-        color: #1d1d1f;
+        padding: 2rem;
     }
 
     .form-group {
@@ -41,9 +30,11 @@
     label {
         font-weight: 500;
         margin-bottom: 0.5rem;
+        display: block;
     }
 
     .form-control {
+        width: 100%;
         border-radius: 10px;
         padding: 0.75rem;
         border: 1px solid #ccc;
@@ -60,6 +51,7 @@
         color: #fff;
         margin-right: 0.5rem;
         border: none;
+        font-size: 0.9rem;
     }
 
     .btn:hover {
@@ -71,11 +63,9 @@
         color: #f5f5f7;
     }
 
-    body.dark-mode .card,
-    body.dark-mode .card-header {
+    body.dark-mode .card {
         background-color: #2c2c2e;
         border-color: #3a3a3c;
-        color: #f5f5f7;
     }
 
     body.dark-mode .form-control {
@@ -101,22 +91,26 @@
 
 <script>
     const cust_detail = {
-        init: function () {
-            $('#detail_form > #btn_update').click(() => this.send());
-            $('#detail_form > #btn_delete').click(() => {
+        init() {
+            $('#btn_update').click(() => this.send());
+            $('#btn_delete').click(() => {
                 if (confirm('삭제하시겠습니까?')) {
                     const id = $('#id').val();
                     location.href = '<c:url value="/cust/delete"/>?id=' + id;
                 }
             });
-            $('#detail_form > #btn_showlist').click(() => {
+            $('#btn_showlist').click(() => {
                 location.href = '<c:url value="/cust/get"/>';
             });
         },
-        send: function () {
-            $('#detail_form').attr({ method: 'post', action: '<c:url value="/cust/update"/>' }).submit();
+        send() {
+            $('#detail_form').attr({
+                method: 'post',
+                action: '<c:url value="/cust/update"/>'
+            }).submit();
         }
     };
+
     $(function () {
         cust_detail.init();
     });
@@ -126,49 +120,47 @@
     <h1>${cust.custName}님, 회원정보 수정</h1>
 
     <div class="card">
-        <div class="card-body">
-            <form id="detail_form">
-                <div class="form-group">
-                    <label for="id">ID</label>
-                    <input type="text" readonly value="${cust.custId}" class="form-control" id="id" name="custId">
-                </div>
-                <div class="form-group">
-                    <label for="pwd">Password</label>
-                    <input type="password" value="${cust.custPwd}" class="form-control" id="pwd" name="custPwd">
-                </div>
-                <div class="form-group">
-                    <label for="name">Name</label>
-                    <input type="text" value="${cust.custName}" class="form-control" id="name" name="custName">
-                </div>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="text" value="${cust.custEmail}" class="form-control" id="email" name="custEmail">
-                </div>
-                <div class="form-group">
-                    <label for="phone">Phone</label>
-                    <input type="text" value="${cust.custPhone}" class="form-control" id="phone" name="custPhone">
-                </div>
-                <div class="form-group">
-                    <label for="point">Point</label>
-                    <input type="text" value="${cust.custPoint}" class="form-control" id="point" name="custPoint">
-                </div>
-                <div class="form-group">
-                    <label for="nick">Nick</label>
-                    <input type="text" value="${cust.custNick}" class="form-control" id="nick" name="custNick">
-                </div>
-                <div class="form-group">
-                    <label for="pointcharge">Point Charge</label>
-                    <input type="text" value="${cust.pointCharge}" class="form-control" id="pointcharge" name="pointCharge">
-                </div>
-                <div class="form-group">
-                    <label for="pointreason">Point Reason</label>
-                    <input type="text" value="${cust.pointReason}" class="form-control" id="pointreason" name="pointReason">
-                </div>
+        <form id="detail_form">
+            <div class="form-group">
+                <label for="id">ID</label>
+                <input type="text" readonly value="${cust.custId}" class="form-control" id="id" name="custId">
+            </div>
+            <div class="form-group">
+                <label for="pwd">Password</label>
+                <input type="password" value="${cust.custPwd}" class="form-control" id="pwd" name="custPwd">
+            </div>
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" value="${cust.custName}" class="form-control" id="name" name="custName">
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="text" value="${cust.custEmail}" class="form-control" id="email" name="custEmail">
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone</label>
+                <input type="text" value="${cust.custPhone}" class="form-control" id="phone" name="custPhone">
+            </div>
+            <div class="form-group">
+                <label for="point">Point</label>
+                <input type="text" value="${cust.custPoint}" class="form-control" id="point" name="custPoint">
+            </div>
+            <div class="form-group">
+                <label for="nick">Nick</label>
+                <input type="text" value="${cust.custNick}" class="form-control" id="nick" name="custNick">
+            </div>
+            <div class="form-group">
+                <label for="pointcharge">Point Charge</label>
+                <input type="text" value="${cust.pointCharge}" class="form-control" id="pointcharge" name="pointCharge">
+            </div>
+            <div class="form-group">
+                <label for="pointreason">Point Reason</label>
+                <input type="text" value="${cust.pointReason}" class="form-control" id="pointreason" name="pointReason">
+            </div>
 
-                <button id="btn_update" type="button" class="btn">수정</button>
-                <button id="btn_delete" type="button" class="btn">삭제</button>
-                <button id="btn_showlist" type="button" class="btn">목록보기</button>
-            </form>
-        </div>
+            <button id="btn_update" type="button" class="btn">수정</button>
+            <button id="btn_delete" type="button" class="btn">삭제</button>
+            <button id="btn_showlist" type="button" class="btn">목록보기</button>
+        </form>
     </div>
 </div>

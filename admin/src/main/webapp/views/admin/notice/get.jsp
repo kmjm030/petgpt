@@ -7,12 +7,13 @@
         margin: 0 auto;
         background-color: #fff;
         padding: 2rem;
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        border-radius: 14px;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
     }
 
     .notice-list h2 {
         font-size: 1.5rem;
+        font-weight: 600;
         margin-bottom: 1.5rem;
         color: #1d1d1f;
         display: flex;
@@ -34,10 +35,11 @@
     }
 
     .notice-table th {
-        background-color: #f9f9f9;
-        text-transform: uppercase;
-        font-weight: 600;
+        background-color: #f5f5f7;
         color: #6e6e73;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.85rem;
     }
 
     .notice-table tr:hover {
@@ -46,13 +48,15 @@
 
     .add-btn {
         display: inline-block;
-        margin-bottom: 1rem;
+        margin-bottom: 1.2rem;
         background-color: #1d1d1f;
-        color: white;
+        color: #fff;
         padding: 0.5rem 1.2rem;
         border-radius: 8px;
         font-size: 0.9rem;
         text-decoration: none;
+        font-weight: 500;
+        transition: background-color 0.2s ease;
     }
 
     .add-btn:hover {
@@ -62,12 +66,52 @@
     .delete-btn {
         color: #d32f2f;
         font-size: 0.85rem;
+        font-weight: 600;
         text-decoration: none;
-        font-weight: bold;
     }
 
     .delete-btn:hover {
         text-decoration: underline;
+    }
+
+    /* 다크모드 대응 */
+    body.dark-mode .notice-list {
+        background-color: #2c2c2e;
+        color: #f5f5f7;
+    }
+
+    body.dark-mode .notice-list h2 {
+        color: #f5f5f7;
+    }
+
+    body.dark-mode .notice-table th,
+    body.dark-mode .notice-table td {
+        background-color: #2c2c2e;
+        border-color: #3a3a3c;
+        color: #f5f5f7;
+    }
+
+    body.dark-mode .notice-table th {
+        background-color: #3a3a3c;
+        color: #f5f5f7;
+    }
+
+    body.dark-mode .notice-table tr:hover {
+        background-color: #3c3c3e;
+    }
+
+    body.dark-mode .add-btn {
+        background-color: #3a3a3c;
+        color: #f5f5f7;
+        border: 1px solid #4a4a4a;
+    }
+
+    body.dark-mode .add-btn:hover {
+        background-color: #4a4a4a;
+    }
+
+    body.dark-mode .delete-btn {
+        color: #ff6b6b;
     }
 </style>
 
@@ -94,7 +138,7 @@
             <tr>
                 <td>${status.index + 1}</td>
                 <td>
-                    <a href="<c:url value='/admin/notice/detail?id=${notice.id}'/>">
+                    <a href="<c:url value='/admin/notice/detail?id=${notice.id}'/>" style="color:inherit; text-decoration:none;">
                             ${notice.title}
                     </a>
                 </td>
@@ -112,9 +156,7 @@
 
         <c:if test="${empty noticeList}">
             <tr>
-                <td colspan="5" style="text-align:center; color: #888;">
-                    등록된 공지가 없습니다.
-                </td>
+                <td colspan="5" style="text-align:center; color: #999;">등록된 공지가 없습니다.</td>
             </tr>
         </c:if>
         </tbody>

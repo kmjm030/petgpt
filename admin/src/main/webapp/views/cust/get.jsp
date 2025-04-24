@@ -109,7 +109,6 @@
         opacity: 0.8;
     }
 
-
     body.dark-mode a {
         color: #58a6ff;
     }

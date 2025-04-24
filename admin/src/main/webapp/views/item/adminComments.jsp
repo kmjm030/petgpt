@@ -2,84 +2,54 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-
-
 <div class="card-body">
   <div class="table-responsive">
     <c:forEach var="qna" items="${qnaList}">
-<%--      <H1>${qna.boardKey}</H1>--%>
-<%--      <H5>난는 ${map.get(qna.boardKey)}</H5>--%>
-<%--       게시판원글  --%>
-      <h4> 게시판글</h4>
-      <table class="table table-bordered"  width="100%" cellspacing="0">
+      <h4 class="font-weight-bold mb-3">게시판 글</h4>
+      <table class="table table-bordered mb-5">
         <thead class="thead-dark">
-        <tr class="table-dark">
-          <th>boardKey</th>
-          <th>ItemKey</th>
-          <th>custId</th>
-          <th>boardTitle</th>
-          <th>boardContent</th>
-          <th>boardRdate</th>
-<%--          <th>boardImg</th>--%>
-<%--          <th>boardOption</th>--%>
-<%--          <th>boardUpdate</th>--%>
-
+        <tr>
+          <th>글 번호</th>
+          <th>상품 번호</th>
+          <th>작성자 ID</th>
+          <th>제목</th>
+          <th>내용</th>
+          <th>작성일</th>
         </tr>
         </thead>
         <tbody>
-          <%--                    <c:forEach var="a" items="${adminComments}">--%>
-
         <tr>
-          <td><a href="<c:url value="/board/detail"/>?id=${qna.boardKey}">${qna.boardKey}</a></td>
+          <td><a href="<c:url value='/board/detail'/>?id=${qna.boardKey}" class="text-dark">${qna.boardKey}</a></td>
           <td>${qna.itemKey}</td>
           <td>${qna.custId}</td>
           <td>${qna.boardTitle}</td>
           <td>${qna.boardContent}</td>
           <td>${qna.boardRdate}</td>
-<%--          <td>${qna.boardImg}</td>--%>
-<%--          <td>${qna.boardOption}</td>--%>
-<%--          <td>${qna.boardUpdate}</td>--%>
-
-
         </tr>
-          <%--                    </c:forEach>--%>
         </tbody>
       </table>
 
-
-<%--        게시판원글끝--%>
-
-
-      <h5> 관리자답변</h5>
-      <table class="table table-bordered"  width="100%" cellspacing="0">
+      <h5 class="font-weight-bold mb-3 text-warning">관리자 답변</h5>
+      <table class="table table-bordered">
         <thead class="thead-light">
-        <tr class="table-warning">
-          <th>qna.adminComments.boardKey</th>
-          <th>qna.adminComments.adcommentsKey</th>
-          <th>qna.adminComments.ItemKey</th>
-          <th>qna.adminComments.adminId</th>
-          <th>qna.adminComments.adcommentsContent</th>
-          <th>qna.adminComments.adcommentsRdate</th>
-<%--          <th>adcommentsUpdate</th>--%>
-
+        <tr class="bg-warning text-dark">
+          <th>글 번호</th>
+          <th>답변 번호</th>
+          <th>상품 번호</th>
+          <th>관리자 ID</th>
+          <th>답변 내용</th>
+          <th>답변일</th>
         </tr>
         </thead>
         <tbody>
-        <%--                    <c:forEach var="a" items="${adminComments}">--%>
-
         <tr>
-          <td><a href="<c:url value="/board/detail"/>?id=${qna.boardKey}">${qna.boardKey}</a></td>
+          <td>${qna.boardKey}</td>
           <td>${qna.adcommentsKey}</td>
-<%--          <td>${qna.boardKey}</td>--%>
           <td>${qna.itemKey}</td>
           <td>${qna.adminId}</td>
           <td>${qna.adcommentsContent}</td>
           <td>${qna.adcommentsRdate}</td>
-<%--          <td>${qna.adminComments.adcommentsUpdate}</td>--%>
-
-
         </tr>
-        <%--                    </c:forEach>--%>
         </tbody>
       </table>
     </c:forEach>

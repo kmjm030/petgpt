@@ -33,9 +33,8 @@
         color: #1d1d1f;
         font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     }
-    h1, label, th, td { color: #1d1d1f; }
+    h1, label, th, td { color: inherit; }
     label { font-weight: 500; margin-bottom: 6px; display: block; }
-
     .section-title {
         font-size: 1.2rem;
         font-weight: 600;
@@ -62,7 +61,6 @@
         filter: none;
         border-color: #1d1d1f;
     }
-
     .form-control,
     select.form-control,
     input[type="file"] {
@@ -73,43 +71,32 @@
         font-size: 0.95rem;
         padding: 10px;
         height: 38px;
-        line-height: 1.5;
-        vertical-align: middle;
-    }
-    select.form-control,
-    input[type="file"] {
-        padding-top: 6px;
-        padding-bottom: 6px;
     }
     .form-control:focus {
         box-shadow: none;
         border-color: #1d1d1f;
     }
-
-    .btn-dark {
-        background-color: #1d1d1f;
-        color: #fff;
+    .btn-dark, .btn-outline-danger {
         font-weight: 600;
         border-radius: 12px;
         padding: 10px 24px;
-        border: none;
         min-width: 120px;
+    }
+    .btn-dark {
+        background-color: #1d1d1f;
+        color: #fff;
+        border: none;
     }
     .btn-outline-danger {
         border: 1px solid #999;
         background-color: transparent;
         color: #1d1d1f;
-        font-weight: 600;
-        border-radius: 12px;
-        padding: 10px 24px;
-        min-width: 120px;
     }
     .btn-outline-danger:hover {
         background-color: #1d1d1f;
         color: #fff;
         border-color: #1d1d1f;
     }
-
     .badge-secondary {
         background-color: #f2f2f2;
         color: #888;
@@ -134,13 +121,36 @@
         border-color: #e0e0e0;
         color: #1d1d1f;
     }
+    body.dark-mode {
+        background-color: #1d1d1f;
+        color: #f5f5f7;
+    }
+    body.dark-mode .card,
+    body.dark-mode .card-section,
+    body.dark-mode .form-control,
+    body.dark-mode .table-bordered th,
+    body.dark-mode .table-bordered td {
+        background-color: #2c2c2e;
+        color: #f5f5f7;
+        border-color: #3a3a3c;
+    }
+    body.dark-mode .btn-dark {
+        background-color: #3a3a3c;
+        color: #f5f5f7;
+    }
+    body.dark-mode .btn-outline-danger {
+        color: #f5f5f7;
+        border-color: #4a4a4a;
+    }
+    body.dark-mode .btn-outline-danger:hover {
+        background-color: #4a4a4a;
+    }
 </style>
 
 <div class="container-fluid">
     <h1 class="h3 mb-4 font-weight-bold">상품 상세 정보</h1>
     <div class="card shadow-sm p-4 mb-4">
         <form id="item_update_form">
-
             <div class="card-section">
                 <div class="section-title">기본 정보</div>
                 <div class="form-row">
@@ -237,7 +247,6 @@
                 </button>
             </div>
         </form>
-
         <jsp:include page="adminComments.jsp"/>
     </div>
 </div>

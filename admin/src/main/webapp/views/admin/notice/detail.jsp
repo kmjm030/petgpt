@@ -87,6 +87,52 @@
   .back-link:hover {
     background-color: #eaeaea;
   }
+
+  body.dark-mode .detail-form {
+    background-color: #1d1d1f;
+    color: #f5f5f7;
+    border: 1px solid #3a3a3c;
+  }
+
+  body.dark-mode .detail-form h2,
+  body.dark-mode .detail-form label {
+    color: #f5f5f7;
+  }
+
+  body.dark-mode .form-group input,
+  body.dark-mode .form-group textarea {
+    background-color: #2c2c2e;
+    border: 1px solid #3a3a3c;
+    color: #f5f5f7;
+  }
+
+  body.dark-mode .form-group input::placeholder,
+  body.dark-mode .form-group textarea::placeholder {
+    color: #aaa;
+  }
+
+  body.dark-mode .submit-btn {
+    background-color: #3a3a3c;
+    color: #f5f5f7;
+  }
+
+  body.dark-mode .submit-btn:hover {
+    background-color: #4a4a4a;
+  }
+
+  body.dark-mode .delete-btn {
+    background-color: #c62828;
+  }
+
+  body.dark-mode .back-link {
+    background-color: #2c2c2e;
+    color: #f5f5f7;
+    border: 1px solid #3a3a3c;
+  }
+
+  body.dark-mode .back-link:hover {
+    background-color: #3a3a3c;
+  }
 </style>
 
 <div class="detail-form">

@@ -1,87 +1,134 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<script>
+    const board_get = {
+        update: function(id) {
+            if (confirm('수정하시겠습니까?')) {
+                location.href = '<c:url value="/board/detail"/>' + '?id=' + id;
+            }
+        },
+        delete: function(id) {
+            if (confirm('삭제하시겠습니까?')) {
+                location.href = '<c:url value="/board/delete"/>' + '?id=' + id;
+            }
+        }
+    };
+</script>
 
 <style>
-    .notice-form {
-        max-width: 600px;
-        margin: 0 auto;
+    body {
         background-color: #fff;
-        padding: 2rem;
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    }
-
-    .notice-form h2 {
-        font-size: 1.5rem;
-        margin-bottom: 1.5rem;
         color: #1d1d1f;
-        display: flex;
-        align-items: center;
-        gap: 10px;
+        font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        padding: 2rem;
     }
-
-    .form-group {
-        margin-bottom: 1.2rem;
+    .card {
+        border-radius: 16px;
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+        padding: 2rem;
+        background-color: #fff;
     }
-
-    .form-group label {
-        display: block;
-        font-weight: 500;
-        margin-bottom: 0.5rem;
-        color: #333;
+    h1 {
+        font-size: 1.75rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
     }
-
-    .form-group input,
-    .form-group textarea {
-        width: 100%;
-        padding: 0.6rem;
-        border: 1px solid #ccc;
-        border-radius: 8px;
+    table th, table td {
+        text-align: center;
+        vertical-align: middle;
+    }
+    table th {
+        background-color: #f9f9fa;
+        font-size: 0.9rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        color: #6e6e73;
+    }
+    table td {
+        background-color: #fff;
         font-size: 0.95rem;
     }
-
-    .form-group textarea {
-        resize: vertical;
-        min-height: 120px;
-    }
-
-    .submit-btn {
+    .btn-secondary {
         background-color: #1d1d1f;
         color: white;
-        padding: 0.6rem 1.5rem;
-        border: none;
+        font-weight: 600;
         border-radius: 8px;
-        cursor: pointer;
-        font-size: 0.95rem;
+        border: none;
+        padding: 6px 14px;
+        font-size: 0.85rem;
+    }
+    .btn-secondary:hover {
+        background-color: #333;
     }
 
-    .submit-btn:hover {
-        background-color: #333;
+    body.dark-mode {
+        background-color: #1d1d1f;
+        color: #f5f5f7;
+    }
+    body.dark-mode .card {
+        background-color: #2c2c2e;
+        border-color: #3a3a3c;
+    }
+    body.dark-mode table th,
+    body.dark-mode table td {
+        background-color: #2c2c2e;
+        color: #f5f5f7;
+        border-color: #3a3a3c;
+    }
+    body.dark-mode table th {
+        background-color: #3a3a3c;
+    }
+    body.dark-mode .btn-secondary {
+        background-color: #3a3a3c;
+        border: 1px solid #4a4a4a;
+        color: #f5f5f7;
+    }
+    body.dark-mode .btn-secondary:hover {
+        background-color: #4a4a4a;
     }
 </style>
 
-<div class="notice-form">
-    <h2>
-        <i class="fas fa-bullhorn" style="color:#1d1d1f;"></i>
-        관리자 공지 등록
-    </h2>
-
-    <form method="post" action="<c:url value='/admin/notice/addimpl'/>">
-        <div class="form-group">
-            <label for="adminId">작성자 ID</label>
-            <input type="text" id="adminId" name="adminId" required>
+<div class="container-fluid">
+    <h1>문의글 게시판 목록</h1>
+    <div class="card">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable">
+                <thead>
+                <tr>
+                    <th>No</th>
+                    <th>상품 번호</th>
+                    <th>작성자</th>
+                    <th>제목</th>
+                    <th>작성일</th>
+                    <th>내용</th>
+                    <th>이미지</th>
+                    <th>옵션</th>
+                    <th>수정일</th>
+                    <th>수정</th>
+                    <th>삭제</th>
+                </tr>
+                </thead>
+                <tbody>
+                <c:forEach var="board" items="${boards}">
+                    <tr>
+                        <td><a href="<c:url value='/board/detail'/>?id=${board.boardKey}">${board.boardKey}</a></td>
+                        <td>${board.itemKey}</td>
+                        <td>${board.custId}</td>
+                        <td>${board.boardTitle}</td>
+                        <td>${board.boardRdate}</td>
+                        <td>${board.boardContent}</td>
+                        <td>${board.boardImg}</td>
+                        <td>${board.boardOption}</td>
+                        <td>${board.boardUpdate}</td>
+                        <td><button onclick="board_get.update('${board.boardKey}')" class="btn btn-secondary">수정</button></td>
+                        <td><button onclick="board_get.delete('${board.boardKey}')" class="btn btn-secondary">삭제</button></td>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
         </div>
-
-        <div class="form-group">
-            <label for="title">공지 제목</label>
-            <input type="text" id="title" name="title" required>
-        </div>
-
-        <div class="form-group">
-            <label for="content">공지 내용</label>
-            <textarea id="content" name="content" required></textarea>
-        </div>
-
-        <button type="submit" class="submit-btn">등록</button>
-    </form>
+    </div>
 </div>

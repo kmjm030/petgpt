@@ -14,30 +14,43 @@
         }
 
         .title {
-            font-size: 2rem;
-            font-weight: 600;
-            margin-bottom: 2rem;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1.8rem;
         }
 
         .card {
             border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-            border: none;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
             background-color: #fff;
-            overflow: hidden;
+            border: none;
+        }
+
+        table {
+            font-size: 0.95rem;
         }
 
         .table thead th {
             background-color: #f0f0f5;
-            color: #555;
-            font-size: 0.95rem;
+            color: #6e6e73;
             text-transform: uppercase;
-            letter-spacing: 0.05rem;
+            letter-spacing: 0.03rem;
+            font-weight: 600;
+            text-align: center;
         }
 
         .table td {
+            text-align: center;
             vertical-align: middle;
-            font-size: 0.95rem;
+        }
+
+        .clickable-row {
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .clickable-row:hover {
+            background-color: #eef3ff;
         }
 
         .no-data {
@@ -47,15 +60,7 @@
             font-style: italic;
         }
 
-        tr.clickable-row {
-            cursor: pointer;
-            transition: background-color 0.2s ease-in-out;
-        }
-
-        tr.clickable-row:hover {
-            background-color: #eef3ff;
-        }
-
+        /* 다크모드 대응 */
         body.dark-mode {
             background-color: #1d1d1f;
             color: #f5f5f7;
@@ -63,7 +68,6 @@
 
         body.dark-mode .card {
             background-color: #2c2c2e;
-            color: #f5f5f7;
             border: 1px solid #3a3a3c;
         }
 
@@ -77,7 +81,7 @@
             color: #f5f5f7;
         }
 
-        body.dark-mode tr.clickable-row:hover {
+        body.dark-mode .clickable-row:hover {
             background-color: #3c3c3e;
         }
 
