@@ -178,6 +178,7 @@
                 </c:otherwise>
               </c:choose>
               <br/><br/>
+<%--              사진 받기 --%>
               <input type="file" id="uploadFile" name="img" hidden>
               <label for="uploadFile" class="btn btn-light">📁 이미지 찾기</label>
               <button id="img_del_btn" type="button"  class="btn btn-light" onclick="mypage.imgDelete()">❌ 삭제</button>
