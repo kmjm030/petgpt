@@ -1,11 +1,6 @@
 # 1. Server Config
 server:
-  port: 8443  # HTTPS를 위한 포트 설정
-  ssl:
-    enabled: true
-    key-store: classpath:keystore.p12  # 인증서 파일 경로 <- keystore.p12를 resource 아래 위치
-    key-store-password: 111111  # 인증서 생성 시 설정한 비밀번호
-    key-store-type: PKCS12  # 인증서 형식
+  port: 8088
   servlet:
     encoding:
       charset: UTF-8
