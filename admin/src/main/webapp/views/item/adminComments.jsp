@@ -4,54 +4,50 @@
 
 <div class="card-body">
   <div class="table-responsive">
+    <h4 class="font-weight-bold mb-3">문의 글 목록</h4>
     <c:forEach var="qna" items="${qnaList}">
-      <h4 class="font-weight-bold mb-3">게시판 글</h4>
-      <table class="table table-bordered mb-5">
-        <thead class="thead-dark">
-        <tr>
-          <th>글 번호</th>
-          <th>상품 번호</th>
-          <th>작성자 ID</th>
-          <th>제목</th>
-          <th>내용</th>
-          <th>작성일</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-          <td><a href="<c:url value='/board/detail'/>?id=${qna.boardKey}" class="text-dark">${qna.boardKey}</a></td>
-          <td>${qna.itemKey}</td>
-          <td>${qna.custId}</td>
-          <td>${qna.boardTitle}</td>
-          <td>${qna.boardContent}</td>
-          <td>${qna.boardRdate}</td>
-        </tr>
-        </tbody>
-      </table>
+      <div class="border rounded mb-3">
+        <!-- 질문 헤더 (클릭 영역) -->
+        <div class="p-3 bg-light d-flex justify-content-between align-items-center inquiry-toggle" style="cursor: pointer;">
+          <div>
+            <strong>[${qna.boardKey}] ${qna.boardTitle}</strong>
+            <small class="ml-3 text-muted">작성자: ${qna.custId} | 작성일: <fmt:formatDate value="${qna.boardRdate}" pattern="yyyy-MM-dd HH:mm"/></small>
+          </div>
+          <i class="bi bi-chevron-down toggle-icon"></i>
+        </div>
 
-      <h5 class="font-weight-bold mb-3 text-warning">관리자 답변</h5>
-      <table class="table table-bordered">
-        <thead class="thead-light">
-        <tr class="bg-warning text-dark">
-          <th>글 번호</th>
-          <th>답변 번호</th>
-          <th>상품 번호</th>
-          <th>관리자 ID</th>
-          <th>답변 내용</th>
-          <th>답변일</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-          <td>${qna.boardKey}</td>
-          <td>${qna.adcommentsKey}</td>
-          <td>${qna.itemKey}</td>
-          <td>${qna.adminId}</td>
-          <td>${qna.adcommentsContent}</td>
-          <td>${qna.adcommentsRdate}</td>
-        </tr>
-        </tbody>
-      </table>
+        <!-- 답변 영역 -->
+        <div class="answer-content px-4 py-3" style="display: none;">
+          <div><strong>📌 질문 내용:</strong><br>${qna.boardContent}</div>
+          <hr>
+          <c:if test="${not empty qna.adcommentsContent}">
+            <div><strong>🛡 관리자(${qna.adminId})의 답변:</strong><br>${qna.adcommentsContent}</div>
+            <div class="text-muted mt-2" style="font-size: 12px;">
+              답변일: <fmt:formatDate value="${qna.adcommentsRdate}" pattern="yyyy-MM-dd HH:mm"/>
+            </div>
+          </c:if>
+          <c:if test="${empty qna.adcommentsContent}">
+            <div class="text-muted">⏳ 아직 답변이 등록되지 않았습니다.</div>
+          </c:if>
+        </div>
+      </div>
     </c:forEach>
   </div>
 </div>
+
+<script>
+  $(document).ready(function () {
+    $('.inquiry-toggle').click(function () {
+      const $answer = $(this).next('.answer-content');
+      const isVisible = $answer.is(':visible');
+
+      $('.answer-content').slideUp();
+      $('.toggle-icon').removeClass('bi-chevron-up').addClass('bi-chevron-down');
+
+      if (!isVisible) {
+        $answer.slideDown();
+        $(this).find('.toggle-icon').removeClass('bi-chevron-down').addClass('bi-chevron-up');
+      }
+    });
+  });
+</script>
