@@ -1,40 +1,60 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.mc.app.repository.TotalOrderRepository">
 
-    <select id="select" resultType="TotalOrder">
+    <!-- DTO 매핑: cust_id 컬럼을 int custId로 변환 -->
+    <resultMap id="TotalOrderResult" type="com.mc.app.dto.TotalOrder">
+        <id     property="orderKey"       column="order_key"/>
+        <result property="custId"         column="cust_id" jdbcType="VARCHAR"/>
+        <result property="addrKey"        column="addr_key"/>
+        <result property="itemKey"        column="item_key"/>
+        <result property="orderDate"      column="order_date"/>
+        <result property="recipientName"  column="recipient_name"/>
+        <result property="recipientPhone" column="recipient_phone"/>
+        <result property="orderReq"       column="order_req"/>
+        <result property="orderStatus"    column="order_status"/>
+        <result property="orderCard"      column="order_card"/>
+        <result property="orderShootNum"  column="order_shootnum"/>
+    </resultMap>
+
+    <select id="select" resultMap="TotalOrderResult">
         SELECT * FROM total_order
     </select>
 
-    <select id="selectOne" parameterType="int" resultType="TotalOrder">
+    <select id="selectOne" parameterType="int" resultMap="TotalOrderResult">
         SELECT * FROM total_order WHERE order_key = #{orderKey}
     </select>
 
-    <insert id="insert" parameterType="TotalOrder">
-        INSERT INTO total_order
-        (cust_key, addr_key, item_key, order_date, recipient_name, recipient_phone,
-         order_req, order_status, order_card, order_total_price, order_shoot_num)
-        VALUES
-            (#{custKey}, #{addrKey}, #{itemKey}, #{orderDate}, #{recipientName}, #{recipientPhone},
-             #{orderReq}, #{orderStatus}, #{orderCard}, #{orderTotalPrice}, #{orderShootNum})
+    <insert id="insert" parameterType="com.mc.app.dto.TotalOrder">
+        INSERT INTO total_order (
+            cust_id, addr_key, item_key, order_date,
+            recipient_name, recipient_phone,
+            order_req, order_status, order_card,
+            order_totalprice, order_shootnum
+        ) VALUES (
+                     #{custId}, #{addrKey}, #{itemKey}, #{orderDate},
+                     #{recipientName}, #{recipientPhone},
+                     #{orderReq}, #{orderStatus}, #{orderCard},
+                     #{orderTotalPrice}, #{orderShootNum}
+                 )
     </insert>
 
-    <update id="update" parameterType="TotalOrder">
+    <update id="update" parameterType="com.mc.app.dto.TotalOrder">
         UPDATE total_order SET
-                               cust_key = #{custKey},
-                               addr_key = #{addrKey},
-                               item_key = #{itemKey},
-                               order_date = #{orderDate},
-                               recipient_name = #{recipientName},
-                               recipient_phone = #{recipientPhone},
-                               order_req = #{orderReq},
-                               order_status = #{orderStatus},
-                               order_card = #{orderCard},
-                               order_total_price = #{orderTotalPrice},
-                               order_shoot_num = #{orderShootNum}
+                               cust_id           = #{custId},
+                               addr_key          = #{addrKey},
+                               item_key          = #{itemKey},
+                               order_date        = #{orderDate},
+                               recipient_name    = #{recipientName},
+                               recipient_phone   = #{recipientPhone},
+                               order_req         = #{orderReq},
+                               order_status      = #{orderStatus},
+                               order_card        = #{orderCard},
+                               order_totalprice  = #{orderTotalPrice},
+                               order_shootnum    = #{orderShootNum}
         WHERE order_key = #{orderKey}
     </update>
 
@@ -47,17 +67,14 @@
     </select>
 
     <select id="selectTodayRevenue" resultType="int">
-        SELECT IFNULL(SUM(order_total_price), 0)
-        FROM total_order
-        WHERE DATE(order_date) = CURDATE()
+        SELECT IFNULL(SUM(order_totalprice), 0) FROM total_order WHERE DATE(order_date)=CURDATE()
     </select>
 
     <select id="selectOrderStatusCount" resultType="map">
         SELECT order_status, COUNT(*) AS count
         FROM total_order
-        WHERE DATE(order_date) = CURDATE()
+        WHERE DATE(order_date)=CURDATE()
         GROUP BY order_status
     </select>
 
 </mapper>
-

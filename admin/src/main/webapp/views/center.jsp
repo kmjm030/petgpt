@@ -118,7 +118,7 @@
     </div>
 
     <div class="col-lg-3 col-md-6 mb-4">
-      <a href="<c:url value='/orderdetail'/>" style="text-decoration: none; color: inherit;">
+      <a href="<c:url value='/totalorder'/>" style="text-decoration: none; color: inherit;">
         <div class="dashboard-card h-100">
           <div class="card-title">총 주문 수</div>
           <div class="card-value">${orderCount}</div>
