@@ -6,16 +6,21 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <style>
   body {
-    background-color: #f5f5f7;
-    color: #1d1d1f;
+    background-color: #fff0f5; /* 봄 벚꽃 느낌의 배경 */
+    color: #4b2c2c;
     font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     padding: 2rem;
+    background-image: linear-gradient(to bottom right, #fff0f5, #ffe4e1);
   }
 
   body.dark-mode {
-    background-color: #1d1d1f;
+    background-color: #2c2c2e;
     color: #f5f5f7;
   }
 
@@ -24,19 +29,27 @@
     font-weight: 800;
     margin-bottom: 2.5rem;
     text-align: center;
+    color: #d63384;
   }
 
   .dashboard-card,
   .chart-card {
-    background-color: #fff;
-    border: 1px solid #e0e0e0;
+    background-color: #ffffffcc;
+    border: 1px solid #f8c1d0;
     border-radius: 16px;
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 6px 16px rgba(255, 182, 193, 0.2);
     padding: 1.5rem;
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    transition: transform 0.3s ease;
+  }
+
+  .dashboard-card:hover,
+  .chart-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(255, 182, 193, 0.3);
   }
 
   body.dark-mode .dashboard-card,
@@ -50,7 +63,7 @@
     font-weight: 600;
     margin-bottom: 0.75rem;
     text-transform: uppercase;
-    color: #6e6e73;
+    color: #d63384;
     text-align: center;
   }
 
@@ -62,7 +75,7 @@
     font-size: 2.2rem;
     font-weight: 800;
     text-align: center;
-    color: #000;
+    color: #c9184a;
   }
 
   body.dark-mode .card-value {
@@ -89,7 +102,7 @@
   }
 
   .badge-dark {
-    background-color: #1d1d1f;
+    background-color: #d63384;
     color: #fff;
     padding: 0.3rem 0.75rem;
     border-radius: 12px;
@@ -100,6 +113,7 @@
     color: #1d1d1f;
   }
 </style>
+
 
 
 <script src="https://code.highcharts.com/highcharts.js"></script>
