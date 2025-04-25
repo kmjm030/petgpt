@@ -1,5 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <style>
   body {
@@ -15,9 +20,10 @@
   }
 
   .dashboard-header {
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 2rem;
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 2.5rem;
+    text-align: center;
   }
 
   .dashboard-card,
@@ -27,6 +33,10 @@
     border-radius: 16px;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
     padding: 1.5rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 
   body.dark-mode .dashboard-card,
@@ -41,6 +51,7 @@
     margin-bottom: 0.75rem;
     text-transform: uppercase;
     color: #6e6e73;
+    text-align: center;
   }
 
   body.dark-mode .card-title {
@@ -48,8 +59,14 @@
   }
 
   .card-value {
-    font-size: 1.75rem;
-    font-weight: 700;
+    font-size: 2.2rem;
+    font-weight: 800;
+    text-align: center;
+    color: #000;
+  }
+
+  body.dark-mode .card-value {
+    color: #fff;
   }
 
   ul.order-status,
@@ -84,6 +101,7 @@
   }
 </style>
 
+
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function () {
@@ -100,13 +118,8 @@
     Highcharts.chart('hourlySalesChart', {
       chart: { type: 'column', backgroundColor: 'transparent' },
       title: { text: '오늘 시간대별 매출' },
-      xAxis: {
-        categories,
-        title: { text: '시간대' }
-      },
-      yAxis: {
-        title: { text: '매출액 (₩)' }
-      },
+      xAxis: { categories, title: { text: '시간대' } },
+      yAxis: { title: { text: '매출액 (₩)' } },
       series: [{ name: '매출', data: values }]
     });
   });
@@ -118,7 +131,7 @@
   <div class="row mb-4">
     <div class="col-lg-3 col-md-6 mb-4">
       <a href="<c:url value='/cust/get'/>" style="text-decoration: none; color: inherit;">
-        <div class="dashboard-card h-100">
+        <div class="dashboard-card">
           <div class="card-title">전체 사용자</div>
           <div class="card-value">${custCount}</div>
         </div>
@@ -126,7 +139,7 @@
     </div>
     <div class="col-lg-3 col-md-6 mb-4">
       <a href="<c:url value='/item/get'/>" style="text-decoration: none; color: inherit;">
-        <div class="dashboard-card h-100">
+        <div class="dashboard-card">
           <div class="card-title">전체 상품</div>
           <div class="card-value">${itemCount}</div>
         </div>
@@ -134,7 +147,7 @@
     </div>
     <div class="col-lg-3 col-md-6 mb-4">
       <a href="<c:url value='/cust/today'/>" style="text-decoration: none; color: inherit;">
-        <div class="dashboard-card h-100">
+        <div class="dashboard-card">
           <div class="card-title">오늘 가입자 수</div>
           <div class="card-value">${todayJoinCount}</div>
         </div>
@@ -142,7 +155,7 @@
     </div>
     <div class="col-lg-3 col-md-6 mb-4">
       <a href="<c:url value='/orderdetail'/>" style="text-decoration: none; color: inherit;">
-        <div class="dashboard-card h-100">
+        <div class="dashboard-card">
           <div class="card-title">총 주문 수</div>
           <div class="card-value">${orderCount}</div>
         </div>
@@ -151,14 +164,16 @@
   </div>
 
   <div class="row mb-4">
-    <div class="col-lg-8 mb-4">
-      <div class="dashboard-card h-100">
+    <div class="col-lg-6 mb-4">
+      <div class="dashboard-card">
         <div class="card-title">총 매출</div>
-        <div class="card-value">${totalRevenue} ₩</div>
+        <div class="card-value">
+          <fmt:formatNumber value="${totalRevenue}" type="number" groupingUsed="true"/>원
+        </div>
       </div>
     </div>
-    <div class="col-lg-4 mb-4">
-      <div class="dashboard-card h-100">
+    <div class="col-lg-6 mb-4">
+      <div class="dashboard-card">
         <div class="card-title">배송 상태</div>
         <ul class="order-status">
           <li>결제 완료: ${orderStatusMap['결제완료']}</li>
@@ -171,7 +186,7 @@
 
   <div class="row mb-4">
     <div class="col-lg-6 mb-4">
-      <div class="dashboard-card h-100">
+      <div class="dashboard-card">
         <div class="card-title">관리자 알림</div>
         <ul class="list-group list-group-flush">
           <c:forEach var="alert" items="${adminAlerts}">
@@ -206,7 +221,7 @@
       </div>
     </div>
     <div class="col-lg-6 mb-4">
-      <div class="dashboard-card h-100">
+      <div class="dashboard-card">
         <div class="card-title">관리자 공지사항</div>
         <ul class="list-group list-group-flush">
           <c:forEach var="notice" items="${adminNotices}">

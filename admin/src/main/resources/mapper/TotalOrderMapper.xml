@@ -59,5 +59,11 @@
         GROUP BY order_status
     </select>
 
+    <select id="selectTotalRevenue" resultType="int">
+        SELECT IFNULL(SUM(order_totalprice), 0)
+        FROM total_order
+        WHERE order_status IN ('결제완료', '배송중', '배송완료')
+    </select>
+
 </mapper>
 
