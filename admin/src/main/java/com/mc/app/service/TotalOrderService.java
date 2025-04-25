@@ -67,4 +67,9 @@ public class TotalOrderService {
     public void del(int orderKey) throws Exception {
         totalOrderRepository.delete(orderKey);
     }
+
+    public List<Map<String, Object>> getTop10Items() throws Exception {
+        return totalOrderRepository.selectTop10Items();
+    }
+
 }

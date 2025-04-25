@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%--1--%>
+
 <style>
   body {
     background-color: #fff0f5;
@@ -9,6 +9,7 @@
     font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     padding: 2rem;
     background-image: linear-gradient(to bottom right, #fff0f5, #ffe4e1);
+    overflow-x: hidden;
   }
 
   body.dark-mode {
@@ -104,9 +105,47 @@
     background-color: #f5f5f7;
     color: #1d1d1f;
   }
+
+  .petal {
+    position: fixed;
+    top: -50px;
+    width: 32px;
+    height: 32px;
+    font-size: 24px;
+    line-height: 32px;
+    text-align: center;
+    color: #ff69b4;
+    animation: fall 10s linear infinite;
+    z-index: 1000;
+    pointer-events: none;
+  }
+
+  @keyframes fall {
+    0% {
+      transform: translateY(-100px) rotate(0deg);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(100vh) rotate(360deg);
+      opacity: 0;
+    }
+  }
 </style>
 
-
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const petalCount = 20;
+    for (let i = 0; i < petalCount; i++) {
+      const petal = document.createElement('div');
+      petal.className = 'petal';
+      petal.textContent = '🌸';
+      petal.style.left = Math.random() * 100 + 'vw';
+      petal.style.animationDelay = (Math.random() * 10) + 's';
+      petal.style.animationDuration = (8 + Math.random() * 5) + 's';
+      document.body.appendChild(petal);
+    }
+  });
+</script>
 
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script>
@@ -130,6 +169,8 @@
     });
   });
 </script>
+
+
 
 <div class="container-fluid">
   <div class="dashboard-header">대시보드</div>

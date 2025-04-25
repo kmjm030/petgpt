@@ -77,6 +77,13 @@ public class MainController {
             model.addAttribute("orderStatusMap", new HashMap<>());
         }
 
+        try {
+            model.addAttribute("topItemList", totalOrderService.getTop10Items());
+        } catch (Exception e) {
+            log.warn("[MainController] TOP10 로드 실패: {}", e.getMessage());
+            model.addAttribute("topItemList", new ArrayList<>());
+        }
+
         List<String> alerts = new ArrayList<>();
 
         try {
