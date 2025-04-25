@@ -30,57 +30,38 @@
                 .mode-options {
                     display: none;
                     position: absolute;
-                    top: 30px;
+                    /* top: 30px; -> 버튼 바로 아래로 조정 */
+                    top: 100%;
+                    /* 버튼 높이에 따라 아래로 */
                     right: 0;
+                    margin-top: 5px;
+                    /* 버튼과의 간격 */
                     background-color: #ffffff;
                     color: #000000;
                     border: 1px solid #ccc;
                     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-                    z-index: 9999;
-                    min-width: 140px;
-                    font-family: inherit;
-                    text-align: center;
-                }
-
-                .mode-options div {
-                    padding: 10px 0;
-                    cursor: pointer;
-                }
-
-                .mode-options div:hover {
-                    background-color: #f5f5f5;
-                }
-
-                .mode-options {
-                    min-width: 140px;
-                    white-space: nowrap;
-                }
-
-                #modeToggleBtn {
-                    color: #ffffff !important;
-                }
-
-                .mode-options {
-                    display: none;
-                    position: absolute;
-                    top: 30px;
-                    right: 0;
-                    background-color: #ffffff;
-                    color: #000000;
-                    border: 1px solid #ccc;
-                    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+                    /* z-index: 9999; 또는 z-index: 1000; 하나만 사용 */
                     z-index: 1000;
+                    min-width: 120px;
+                    /* 필요시 조정 */
                     font-family: inherit;
+                    /* text-align: center; -> 왼쪽 정렬이 더 일반적 */
+                    text-align: left;
+                    white-space: nowrap;
+                    /* 옵션 줄바꿈 방지 */
                 }
 
                 .mode-options div {
                     padding: 8px 12px;
                     cursor: pointer;
-                    white-space: nowrap;
                 }
 
                 .mode-options div:hover {
                     background-color: #f5f5f5;
+                }
+
+                #modeToggleBtn {
+                    color: #ffffff;
                 }
 
                 #fab-container {
@@ -346,9 +327,65 @@
 
                 .header__top__right {
                     display: flex;
+                    align-items: center;
                     justify-content: flex-end;
-                    padding-right: 45px;
-                    /* 헤더 메뉴와 같은 선에 맞추기 위한 조정 */
+                    padding-right: 5px;
+                    flex-wrap: nowrap;
+                    /* 자식 요소 줄바꿈 방지 */
+                }
+
+                .header__top__links {
+                    /* 링크들을 담는 컨테이너 */
+                    display: flex;
+                    /* 내부 링크들도 flex로 정렬 (선택 사항) */
+                    align-items: center;
+                    /* flex-wrap: nowrap; */
+                    /* 링크 자체는 a 태그에서 nowrap 처리 */
+                }
+
+                .header__top__links a {
+                    font-size: 14px;
+                    color: #ffffff;
+                    margin-left: 15px;
+                    display: inline-block;
+                    /* 또는 block */
+                    white-space: nowrap;
+                    /* 링크 텍스트 줄바꿈 방지 */
+                }
+
+                /* 첫번째 링크의 margin-left 제거 (선택 사항) */
+                .header__top__links a:first-child {
+                    margin-left: 0;
+                }
+
+                /* #mode-select-wrapper 스타일 (HTML 인라인 스타일과 동일하게 유지) */
+                #mode-select-wrapper {
+                    position: relative;
+                    /* 드롭다운 기준점 */
+                    margin-left: 15px;
+                    /* 다른 링크와의 간격 */
+                    white-space: nowrap;
+                    /* 버튼 텍스트 줄바꿈 방지 */
+                }
+
+                .header__menu {
+                    text-align: right;
+                    /* 내부 ul 요소를 오른쪽으로 정렬 */
+                }
+
+                /* 기본 스타일에서 float: left 등을 사용하고 있다면 제거 또는 수정 */
+                .header__menu ul li {
+                    display: inline-block;
+                    /* float 대신 inline-block 사용 권장 */
+                    margin-left: 10px;
+                    /* 항목 간 간격 (기존 값 유지 또는 조정) */
+                    float: none;
+                    /* 기존 float 속성 제거 */
+                }
+
+                /* 첫번째 li의 margin-left 제거 */
+                .header__menu ul li:first-child {
+                    margin-left: 0;
                 }
             </style>
         </head>
@@ -420,18 +457,16 @@
                                                 <a href="<c:url value=" #" />">${sessionScope.cust.custId}님, 안녕하세요!</a>
                                                 <a href="<c:url value="
                                                     /mypage?id=${sessionScope.cust.custId}" />">마이페이지</a>
+                                                <a
+                                                    href="<c:url value='/mypage/like?id=${sessionScope.cust.custId}'/>">찜</a>
+                                                <a href="<c:url value=" /cart" />">장바구니</a>
                                             </div>
-
                                         </c:otherwise>
                                     </c:choose>
-                                    <div class="header__top__links">
-                                        <a href="<c:url value='/mypage/like?id=${sessionScope.cust.custId}'/>">찜</a>
-                                    </div>
-                                    <div class="header__top__links">
-                                        <a href="<c:url value=" /cart" />">장바구니</a>
-                                    </div>
-                                    <div class="header__top__links" style="position: relative;">
-                                        <span id="modeToggleBtn" style="cursor: pointer;">모드 선택 ▾</span>
+                                    <div id="mode-select-wrapper" style="position: relative; margin-left: 20px;">
+                                        <span id="modeToggleBtn"
+                                            style="cursor: pointer; font-size: 14px; color: #ffffff; white-space: nowrap;">모드
+                                            선택 ▾</span>
                                         <div id="modeOptions" class="mode-options">
                                             <div data-mode="light">라이트 모드</div>
                                             <div data-mode="dark">다크 모드</div>
