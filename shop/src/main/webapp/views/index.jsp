@@ -329,7 +329,7 @@
                     display: flex;
                     align-items: center;
                     justify-content: flex-end;
-                    padding-right: 5px;
+                    /* padding-right: 5px; */
                     flex-wrap: nowrap;
                     /* 자식 요소 줄바꿈 방지 */
                 }

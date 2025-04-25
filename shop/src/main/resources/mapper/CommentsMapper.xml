@@ -4,7 +4,22 @@
 
 <mapper namespace="com.mc.app.repository.CommentsRepository">
 
-    <select id="findAllByPboard" parameterType="map" resultType="com.mc.app.dto.Comments">
+    <resultMap id="commentsWithLikeInfoMap" type="com.mc.app.dto.Comments">
+        <id property="commentsKey" column="comments_key"/>
+        <result property="pboardKey" column="pboard_key"/>
+        <result property="custId" column="cust_id"/> 
+        <result property="commentsContent" column="comments_content"/>
+        <result property="commentsRdate" column="comments_rdate"/>
+        <result property="commentsUpdate" column="comments_update"/>
+        <result property="parentCommentKey" column="parent_comment_key"/>
+        <result property="depth" column="depth"/>
+        <result property="custProfileImgUrl" column="custProfileImgUrl"/>
+        <result property="parentCustId" column="parentCustId"/> 
+        <result property="likeCount" column="likeCount"/> 
+        <result property="likedByCurrentUser" column="likedByCurrentUser"/>
+    </resultMap>
+
+    <select id="findAllByPboard" parameterType="map" resultMap="commentsWithLikeInfoMap">
         SELECT
             c.comments_key,
             c.pboard_key,
@@ -14,42 +29,69 @@
             c.comments_update,
             c.parent_comment_key,
             c.depth,
-            cu.cust_id AS custId, 
             cu.cust_img AS custProfileImgUrl, 
             pc.cust_id AS parentCustId,
+            COUNT(DISTINCT cl.like_key) AS likeCount, 
 
-            (SELECT 
-                COUNT(*) 
-            FROM 
-                comment_likes cl 
-            WHERE 
-                cl.comments_key = c.comments_key) 
-            AS likeCount, -- 좋아요 수 계산
-
-            (CASE WHEN EXISTS
-            (SELECT 
-                1 
-            FROM 
-                comment_likes cl 
-            WHERE cl.comments_key = c.comments_key AND cl.cust_id = #{currentCustId})
-
-            THEN 1 ELSE 0 END) 
-            AS likedByCurrentUser -- 현재 사용자 좋아요 여부 계산
-
+            <if test="currentCustId != null">
+                MAX(CASE WHEN cl.cust_id = #{currentCustId} THEN 1 ELSE 0 END) = 1
+            </if>
+            <if test="currentCustId == null">
+                0
+            </if>
         FROM
             comments c
-        LEFT JOIN -- 댓글 작성자가 탈퇴했을 수도 있으니 LEFT JOIN 고려
-            customer cu ON c.cust_id = cu.cust_id 
+       LEFT JOIN
+            customer cu ON c.cust_id = cu.cust_id
         LEFT JOIN
             comments pc ON c.parent_comment_key = pc.comments_key
+        LEFT JOIN
+            comment_likes cl ON c.comments_key = cl.comments_key 
         WHERE
             c.pboard_key = #{pboardKey}
+        GROUP BY
+            c.comments_key 
+            , c.pboard_key, c.cust_id, c.comments_content, c.comments_rdate, c.comments_update
+            , c.parent_comment_key, c.depth, cu.cust_img, pc.cust_id
         ORDER BY
             COALESCE(c.parent_comment_key, c.comments_key), c.comments_rdate
     </select>
 
-    <select id="findById" parameterType="int" resultType="com.mc.app.dto.Comments">
-        SELECT * FROM comments WHERE comments_key = #{commentsKey}
+    <!-- 중요: 이 쿼리를 사용하려면 Service의 getCommentById 메서드에서 currentCustId도 받아 Map으로 전달해야 함 -->
+    <select id="findById" parameterType="map" resultMap="commentsWithLikeInfoMap">
+        SELECT
+            c.comments_key,
+            c.pboard_key,
+            c.cust_id,
+            c.comments_content,
+            c.comments_rdate,
+            c.comments_update,
+            c.parent_comment_key,
+            c.depth,
+            cu.cust_img AS custProfileImgUrl,
+            pc.cust_id AS parentCustId,
+            COUNT(DISTINCT cl.like_key) AS likeCount,
+            <if test="currentCustId != null">
+                MAX(CASE WHEN cl.cust_id = #{currentCustId} THEN 1 ELSE 0 END) = 1
+            </if>
+            <if test="currentCustId == null">
+                0 -- 로그인 안 한 경우 false
+            </if>
+            AS likedByCurrentUser
+        FROM
+            comments c
+        LEFT JOIN
+            customer cu ON c.cust_id = cu.cust_id
+        LEFT JOIN
+            comments pc ON c.parent_comment_key = pc.comments_key
+        LEFT JOIN
+            comment_likes cl ON c.comments_key = cl.comments_key
+        WHERE
+            c.comments_key = #{commentsKey}
+        GROUP BY
+            c.comments_key
+            , c.pboard_key, c.cust_id, c.comments_content, c.comments_rdate, c.comments_update
+            , c.parent_comment_key, c.depth, cu.cust_img, pc.cust_id
     </select>
 
     <insert id="insert" parameterType="com.mc.app.dto.Comments" useGeneratedKeys="true" keyProperty="commentsKey">
@@ -83,5 +125,10 @@
     <delete id="delete" parameterType="int">
         DELETE FROM comments WHERE comments_key = #{commentsKey}
     </delete>
+
+    <!-- 특정 댓글의 좋아요 수 조회 -->
+    <select id="getLikeCount" parameterType="int" resultType="int">
+        SELECT COUNT(*) FROM comment_likes WHERE comments_key = #{commentsKey}
+    </select>
 
 </mapper>
