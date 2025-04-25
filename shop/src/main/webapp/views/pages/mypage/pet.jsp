@@ -6,54 +6,12 @@
 
 
 <style>
-  .btn-check:checked + .btn-outline-primary {
-    background-color: #0d6efd;
-    color: white;
-  }
 
-  .btn-check:checked + .btn-outline-pink {
-    background-color: #e83e8c;
-    color: white;
-  }
-
-  .btn-outline-pink {
-    border: 1px solid #e83e8c;
-    color: #e83e8c;
-  }
   .site-btn > a{
     color:white;
   }
   #category {
     color: rosybrown;
-  }
-  #like_img {
-    width: 150px;
-    height: 150px;
-  }
-  #like_del_icon{
-    color: black;
-  }
-  #boardRe {
-    color: rosybrown;
-    text-align: center;
-    border-radius: 10px;
-    padding: 10px;
-  }
-  #boardTitle {
-    color: black;
-  }
-  .review-site-btn {
-    width: 100%;
-    border-radius: 10px;
-    background-color: white;
-    color: black;
-    border: 3px solid black;
-    border-radius: 20px;
-  }
-  .review-content-box {
-    margin: 10px 0 20px 0;
-    padding: 20px;
-    border: solid 1px lightgray;
   }
   .pet-box {
     margin: 10px;
@@ -61,15 +19,20 @@
     background-color: white;
     box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
     border-radius: 10px;
+    transition: transform 0.3s ease
+  }
+  .pet-box:hover{
+    transform: translateY(-8px) scale(1.02) rotateZ(0.3deg);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
   }
   .pet-name-box {
     margin-top: 10px;
     padding:10px;
   }
-  .pet-img-box {
+  .pet-img-box img {
     margin: 10px;
     width: 100%;
-
+    aspect-ratio: 1 / 1;
   }
   .modal-content {
     background-color: #fff;
@@ -81,13 +44,14 @@
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    max-height: 80vh;
+    max-height: 95vh;
     overflow-y: auto;
   }
 
   .modal-input-box {
     margin: 10px;
   }
+
 
 
 </style>
@@ -97,17 +61,8 @@
     document.getElementById("petModal").style.display = "block";
     pet.info();
   }
-
   function closeModal() {
     document.getElementById("petModal").style.display = "none";
-  }
-
-  // 바깥 클릭 시 닫기
-  window.onclick = function(event) {
-    const modal = document.getElementById("petModal");
-    if (event.target === modal) {
-      modal.style.display = "none";
-    }
   }
 </script>
 
@@ -125,12 +80,11 @@
         }
       });
 
-      $('#cust_update_btn').click(()=>{
+      $('#modal_pet_add_btn').click(()=>{
         this.check();
       });
     },
     info:function(){
-      console.log("pet.info() 호출됨");
       $('#petName').on('input', function () {
         const name = $(this).val();
         $('#modal-pet-name').text(name || '');
@@ -143,6 +97,15 @@
           type = "🐱"
         }
         $('#modal-pet-type').text(type);
+      });
+      $('#petGender').on('change', function () {
+        let type = $(this).val();
+        if(type == 'M'){
+          type = "남자"
+        }else if(type == 'F'){
+          type = "여자"
+        }
+        $('#modal-pet-gender').text('▪ 성별: ' + type);
       });
       $('#petBreed').on('input', function () {
         const breed = $(this).val();
@@ -168,64 +131,59 @@
       });
     },
     check:function(){
-      let pwd = $('#pwd').val();
-      let new_pwd = $('#new_pwd').val();
-      let new_pwd2 = $('#new_pwd2').val();
-      let nick = $('#nick').val();
-      let phone = $('#phone').val();
-      let email = $('#email').val();
+      let name = $('#petName').val();
+      let type = $('#petType').val();
+      let gender = $('#petGender').val();
+      let birth = $('#petBirthdate').val();
+      let breed = $('#petBreed').val();
+      let imgFile = $('#uploadFile')[0].files[0];
 
-      if(pwd == '' || pwd == null){
-        $('#msg').text('수정을 위해서는 비밀번호를 입력해야 합니다.');
-        $('#pwd').focus();
+      if (!imgFile) {
+        $('#msg').text('❗ 반려동물의 사진을 등록해주세요.');
+        $('#uploadFile').focus();
         return;
       }
-      if(nick == '' || phone == null){
-        $('#msg').text('닉네임을 입력하세요.');
-        $('#nick').focus();
+      if(name == '' || name == null){
+        $('#msg').text('❗ 반려동물의 이름을 입력해주세요.');
+        $('#petName').focus();
         return;
       }
-      if(phone == '' || phone == null){
-        $('#msg').text('전화번호를 입력하세요.');
-        $('#phone').focus();
+      if(type == '' || type == null){
+        $('#msg').text('❗ 강아지인가요, 고양이인가요? 선택해주세요!');
+        $('#petType').focus();
         return;
       }
-      if(email == '' || email == null){
-        $('#msg').text('이메일을 입력하세요.');
-        $('#email').focus();
+      if(gender == '' || gender == null){
+        $('#msg').text('❗ 성별을 입력해주세요.');
+        $('#petGender').focus();
         return;
       }
-      if ((!new_pwd || new_pwd.trim() === '') && new_pwd2 && new_pwd2.trim() !== '') {
-        $('#msg').text('새 비밀번호를 입력해주세요.');
-        $('#new_pwd').focus();
+      if(breed == '' || breed == null){
+        $('#msg').text('❗ 종을 입력해주세요.');
+        $('#petBreed').focus();
         return;
       }
-      if (new_pwd && new_pwd.trim() !== '' && (!new_pwd2 || new_pwd2.trim() === '')) {
-        $('#msg').text('새 비밀번호를 확인해주세요.');
-        $('#new_pwd2').focus();
+      if (!birth) {
+        $('#msg').text('❗ 생일을 입력해주세요.');
+        $('#petBirthdate').focus();
         return;
       }
-      if(new_pwd != new_pwd2){
-        $('#msg').text('새 비밀번호를 확인해주세요.');
-        $('#new_pwd2').focus();
-        return;
-      }
-      let c = confirm('회원정보를 수정하시겠습니까?');
-      if (c == true) {
-        this.send();
-      }
+      this.send();
     },
-    imgDelete:function(){
-      $('#imgDeleteFlag').val('true');
-      $('#profile-img').attr('src', '<c:url value="/img/clients/profile.png"/>');
-
-
+    submitForm:function(){
+      document.getElementById('pet_update_form').submit();
     },
     send:function(){
-      $('#cust_update_form').attr('method','post');
-      $('#cust_update_form').attr('action','<c:url value="/mypage/updateimpl"/>');
-      $('#cust_update_form').submit();
+      $('#pet_add_form').attr('method','post');
+      $('#pet_add_form').attr('action','<c:url value="/pet/addimpl"/>');
+      $('#pet_add_form').submit();
     },
+    del:function(petKey){
+      let c = confirm('삭제하시겠습니까?');
+      if(c == true){
+        location.href = '<c:url value="/pet/delimpl?petKey="/>' + petKey;
+      }
+    }
   }
   $(function(){
     pet.init();
@@ -292,31 +250,60 @@
       </div>
       <%--    회원 정보 --%>
       <div class="col-lg-9 container mt-3">
-        <h6 class="checkout__title">🐶 나의 펫 정보'
-
-        </h6>
+        <h6 class="checkout__title">🐶 나의 펫 정보</h6>
+        <h6 class="coupon__code"><span class="icon_tag_alt"></span> 이미지를 클릭하면 수정할 수 있어요!</h6>
         <div class="row">
+        <c:forEach var="p" items="${pets}">
           <div class="col-md-6">
             <div class="pet-box">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h5 style="margin: 10px auto; color:lightgray">반려동물 등록증</h5>
+                <p style="text-align:right; cursor: pointer;" onclick="pet.del(${p.petKey})">&times;</p>
+              </div>
               <div class="row">
                 <div class="col-md-6">
+                  <form id="pet_update_form" action="${pageContext.request.contextPath}/pet/petimgupdate" method="post" enctype="multipart/form-data">
+                    <input type="file" id="fileInput" name="petImg" style="display: none;" onchange="pet.submitForm()"/>
+                    <input type="hidden" value="${p.custId}" name="custId">
+                    <input type="hidden" value="${p.petKey}" name="petKey">
+
+                  </form>
                   <div class="pet-img-box">
-                    <img src="<c:url value='/img/clients/profile.png'/>">
+                    <img  src="<c:url value='${p.petImg}'/>" alt="현재 첨부파일" onclick="document.getElementById('fileInput').click();" style="cursor: pointer;">
                   </div>
                 </div>
                 <div class="col-md-6">
-                  <div class="pet-name-box"><h5>🐶 <strong>강아지 이름</strong></h5></div>
+                  <div class="pet-name-box"><h5>
+                    <c:choose>
+                      <c:when test="${p.petType eq 'cat'}">
+                        🐱
+                      </c:when>
+                      <c:otherwise>
+                        🐶
+                      </c:otherwise>
+                    </c:choose>
+                    <strong>${p.petName}</strong></div>
                   <hr>
                   <div class="pet-desc-box">
-                    <div>▪ 생일: 2022.01.12</div>
-                    <div>▪ 성별: 여자</div>
-                    <div>▪ 종류: 푸들</div>
+                    <div>▪ 생일: <fmt:formatDate  value="${p.petBirthdate}" pattern="yyyy.MM.dd" /></div>
+                    <div>▪ 성별:
+                      <c:choose>
+                        <c:when test="${p.petGender eq 'M'}">
+                          남자
+                        </c:when>
+                        <c:otherwise>
+                          여자
+                        </c:otherwise>
+                      </c:choose>
+                    </div>
+                    <div>▪ 종류: ${p.petBreed}</div>
                   </div>
                 </div>
               </div>
           </div>
         </div>
-      </div>
+        </c:forEach>
+        </div>
         <hr>
         <div class="checkout__order">
           <button class="site-btn" id="pet_add_btn" onclick="openModal()">반려동물 등록하기</button>
@@ -331,6 +318,7 @@
   <div class="modal-content" style="background-color:#edede9">
     <span class="close-btn" onclick="closeModal()">&times;</span>
     <h4 style="text-align:center">반려동물 등록카드 만들기🐾</h4>
+  <form id="pet_add_form" enctype="multipart/form-data">
     <hr>
     <!-- 내용시작 -->
     <div class="row">
@@ -339,7 +327,7 @@
           <div class="row">
             <div class="col-md-6">
               <div class="pet-img-box">
-                <img id="profile-img" src="<c:url value='/img/clients/profile.png'/>">
+                <img id="profile-img" name="img" src="<c:url value='/img/clients/profile.png'/>">
               </div>
             </div>
             <div class="col-md-6">
@@ -358,20 +346,30 @@
       </div>
     </div><hr>
     <div class="row">
-      <div class="form-group col-md-6">
+      <div class="form-group col-md-4">
         <div class="checkout__input">
           <label for="petName">✔ 이름</label>
           <input type="text" placeholder="이름을 입력하세요." id="petName" name="petName">
           <input type="hidden" value="${sessionScope.cust.custId}" id="custId" name="custId">
         </div>
       </div>
-      <div class="form-group col-md-6">
+      <div class="form-group col-md-4">
         <div class="checkout__input">
-          <label for="petType">✔ 강아지?고양이?</label><br/>
+          <label for="petType">✔ 타입</label><br/>
           <select id="petType" class="form-select" name="petType">
-            <option value="">선택하세요!</option>
+            <option value="">강아지?고양이?</option>
             <option value="dog">🐶 강아지</option>
             <option value="cat">🐱 고양이</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group col-md-4">
+        <div class="checkout__input">
+          <label for="petGender">✔ 성별</label><br/>
+          <select id="petGender" class="form-select" name="petGender">
+            <option value="">선택하세요!</option>
+            <option value="M"> 남자</option>
+            <option value="F"> 여자</option>
           </select>
         </div>
       </div>
@@ -390,7 +388,8 @@
         </div>
       </div>
     </div>
-    <!-- 성별 라디오 버튼 추가 -->
-    <!-- ... -->
-</div>
+  </form>
+    <div id="msg" style="color:darkred; margin-bottom:20px;"></div>
+    <button class="site-btn" id="modal_pet_add_btn">등록하기</button>
+  </div>
 </div>
