@@ -565,6 +565,7 @@
                         const commentAuthorId = comment.custId || '';
                         const isAuthor = postAuthorId && postAuthorId === commentAuthorId;
 
+                        let editButtonHTML = '';
                         let deleteButtonHTML = '';
                         if (loggedInCustId && loggedInCustId === commentAuthorId) {
                             editButtonHTML = ' <a href="#" class="edit-comment-btn" data-comment-key="' + commentId + '">수정</a>';
@@ -686,8 +687,32 @@
                             .then(updatedComment => {
                                 const commentTextDiv = commentItem.querySelector('.comment-text');
                                 if (commentTextDiv) {
-                                    commentTextDiv.textContent = updatedComment.commentsContent;
-                                    // TODO: 수정 시간도 업데이트하려면 해당 요소 찾아서 updatedComment.commentsUpdate 값으로 업데이트
+                                    const mentionStrongTag = commentTextDiv.querySelector('strong');
+                                    if (mentionStrongTag) {
+                                        let textNodeFound = false;
+                                        let nextNode = mentionStrongTag.nextSibling;
+                                        while (nextNode) {
+                                            if (nextNode.nodeType === Node.TEXT_NODE) {
+                                                nextNode.textContent = ' ' + updatedComment.commentsContent;
+                                                textNodeFound = true;
+                                                let nodeToRemove = nextNode.nextSibling;
+                                                while (nodeToRemove) {
+                                                    let nextToRemove = nodeToRemove.nextSibling;
+                                                    if (nodeToRemove.nodeType === Node.TEXT_NODE) {
+                                                        commentTextDiv.removeChild(nodeToRemove);
+                                                    }
+                                                    nodeToRemove = nextToRemove;
+                                                }
+                                                break;
+                                            }
+                                            nextNode = nextNode.nextSibling;
+                                        }
+                                        if (!textNodeFound) {
+                                            mentionStrongTag.insertAdjacentText('afterend', ' ' + updatedComment.commentsContent);
+                                        }
+                                    } else {
+                                        commentTextDiv.textContent = updatedComment.commentsContent;
+                                    }
                                 }
                                 removeEditForm(commentItem);
                             })
@@ -768,7 +793,7 @@
                     function closeAllForms() {
                         document.querySelectorAll('.reply-form').forEach(form => form.remove());
                         document.querySelectorAll('.edit-form').forEach(form => {
-                            const commentItem = form.closest('comment-item');
+                            const commentItem = form.closest('.comment-item');
                             if (commentItem) {
                                 removeEditForm(commentItem);
                             }
@@ -850,11 +875,14 @@
 
                         let editButtonHTML = '';
                         let deleteButtonHTML = '';
-
                         if (loggedInCustId && loggedInCustId === commentAuthorId) {
                             editButtonHTML = ' <a href="#" class="edit-comment-btn" data-comment-key="' + commentId + '">수정</a>';
                             deleteButtonHTML = ' <a href="#" class="delete-comment-btn" data-comment-key="' + commentId + '">삭제</a>';
                         }
+
+                        const isLiked = replyData.likedByCurrentUser || false;
+                        const likeIconClass = isLiked ? 'fa-heart' : 'fa-heart-o';
+                        const likeCount = replyData.likeCount || 0;
 
                         const replyHTML =
                             '<div class="comment-item ' + depthClass + '" data-comment-key="' + commentId + '">' +
@@ -870,7 +898,14 @@
                             (replyData.commentsContent || '') +
                             '</div>' +
                             '<div class="comment-meta">' +
-                            '<!-- ... meta content ... -->' +
+                            '<span class="comment-timestamp">' + formattedDate + '</span>' +
+                            ' <a href="#" class="reply-link" data-comment-key="' + commentId + '">답글쓰기</a> ' +
+                            editButtonHTML +
+                            deleteButtonHTML +
+                            ' <span class="comment-like-button ' + (isLiked ? 'liked' : '') + '" data-comment-key="' + commentId + '">' +
+                            ' <i class="fa ' + likeIconClass + '"></i>' +
+                            ' <span class="count">' + likeCount + '</span>' +
+                            '</span>' +
                             '</div>' +
                             '<div class="reply-form-container"></div>' +
                             '</div>' +
@@ -896,30 +931,30 @@
 
                     }
 
-                    const commentLikeButtons = document.querySelectorAll('.comment-like-button');
+                    // const commentLikeButtons = document.querySelectorAll('.comment-like-button');
 
-                    commentLikeButtons.forEach(button => {
-                        const icon = button.querySelector('i');
-                        const countSpan = button.querySelector('.count');
+                    // commentLikeButtons.forEach(button => {
+                    //     const icon = button.querySelector('i');
+                    //     const countSpan = button.querySelector('.count');
 
-                        if (icon && countSpan) {
-                            button.addEventListener('click', () => {
-                                const isLiked = button.classList.toggle('liked');
-                                let currentCount = parseInt(countSpan.textContent || '0', 10);
+                    //     if (icon && countSpan) {
+                    //         button.addEventListener('click', () => {
+                    //             const isLiked = button.classList.toggle('liked');
+                    //             let currentCount = parseInt(countSpan.textContent || '0', 10);
 
-                                if (isLiked) {
-                                    icon.classList.remove('fa-heart-o');
-                                    icon.classList.add('fa-heart');
-                                    currentCount++;
-                                } else {
-                                    icon.classList.remove('fa-heart');
-                                    icon.classList.add('fa-heart-o');
-                                    currentCount--;
-                                }
-                                countSpan.textContent = currentCount;
-                            });
-                        }
-                    });
+                    //             if (isLiked) {
+                    //                 icon.classList.remove('fa-heart-o');
+                    //                 icon.classList.add('fa-heart');
+                    //                 currentCount++;
+                    //             } else {
+                    //                 icon.classList.remove('fa-heart');
+                    //                 icon.classList.add('fa-heart-o');
+                    //                 currentCount--;
+                    //             }
+                    //             countSpan.textContent = currentCount;
+                    //         });
+                    //     }
+                    // });
 
                     const commentForm = document.querySelector('.comment-form');
                     const commentTextarea = commentForm?.querySelector('textarea');
@@ -985,6 +1020,52 @@
                     if (commentSection) {
                         commentSection.addEventListener('click', function (event) {
                             const target = event.target;
+                            const likeButton = target.closest('.comment-like-button');
+
+                            if (likeButton) {
+                                event.preventDefault();
+                                const commentId = likeButton.dataset.commentKey;
+                                const icon = likeButton.querySelector('i');
+                                const countSpan = likeButton.querySelector('.count');
+
+                                if (!loggedInCustId) {
+                                    alert('좋아요를 누르려면 로그인이 필요합니다.');
+                                    window.location.href = '<c:url value="/gologin"/>';
+                                    return;
+                                }
+
+                                if (!commentId || !icon || !countSpan) {
+                                    console.error("좋아요 버튼 오류: 필요한 요소 또는 데이터 키를 찾을 수 없습니다.");
+                                    return;
+                                }
+
+                                fetch('/api/comments/' + commentId + '/like', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                    }
+                                })
+                                    .then(async response => {
+                                        if (!response.ok) {
+                                            const errorText = await response.text();
+                                            throw new Error(errorText || "좋아요 처리 중 오류 발생 (HTTP " + response.status + ")");
+                                        }
+                                        return response.json();
+                                    })
+                                    .then(likeResult => {
+                                        const isLikedNow = likeResult.liked;
+                                        const newCount = likeResult.likeCount;
+
+                                        likeButton.classList.toggle('liked', isLikedNow);
+                                        icon.classList.toggle('fa-heart', isLikedNow);
+                                        icon.classList.toggle('fa-heart-o', !isLikedNow);
+                                        countSpan.textContent = newCount;
+                                    })
+                                    .catch(error => {
+                                        console.error('좋아요 처리 중 오류:', error);
+                                        alert('좋아요 처리 중 오류가 발생했습니다. \n' + error.message);
+                                    });
+                            }
 
                             if (target.classList.contains('delete-comment-btn')) {
                                 event.preventDefault();
