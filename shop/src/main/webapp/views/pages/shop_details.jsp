@@ -935,15 +935,15 @@
                             <%-- Tabs for Description, Reviews, Q&A should start here --%>
                                 <div class="row">
                                     <div class="col-lg-12">
-                                        <div class="product__details__tab">
+                                        <di class="product__details__tab">
                                             <ul class="nav nav-tabs" role="tablist">
                                                 <li class="nav-item">
                                                     <a class="nav-link active" data-toggle="tab" href="#tabs-5"
-                                                        role="tab">Description</a>
+                                                        role="tab">상세설명</a>
                                                 </li>
                                                 <li class="nav-item">
                                                     <a class="nav-link" data-toggle="tab" href="#tabs-6"
-                                                        role="tab">Customer Previews(5)</a> <%-- 리뷰 개수 동적 표시 --%>
+                                                        role="tab">상품후기</a> <%-- 리뷰 개수 동적 표시 --%>
                                                 </li>
                                                 <li class="nav-item">
                                                     <a class="nav-link" data-toggle="tab" href="#tabs-7" role="tab">Q &
@@ -972,10 +972,31 @@
                                                             </div>
                                                     </div>
                                                 </div>
-                                                <div class="tab-pane" id="tabs-6" role="tabpanel">
+                                                <div class="tab-pane shop-detail-board" id="tabs-6" role="tabpanel">
                                                     <div class="product__details__tab__content">
                                                         <%-- 고객 리뷰 동적 표시 필요 --%>
-                                                            <p>Customer reviews will be displayed here.</p>
+                                                        <c:forEach var="c" items="${reviews}">
+                                                            <div class="container mt-4">
+                                                                <div class="card mb-3 p-3">
+                                                                    <div class="d-flex">
+                                                                        <img src="<c:url value="#"/>" class="rounded-circle me-3" alt="user" style="width:60px; height:60px; object-fit:cover;">
+                                                                        <div class="flex-grow-1">
+                                                                            <div class="d-flex justify-content-between">
+                                                                                <div>
+                                                                                    <strong>닉네임</strong>
+                                                                                    <span class="text-warning ms-2">별점표시영역</span>
+                                                                                </div>
+                                                                                <small class="text-muted">${c.boardRdate}</small>
+                                                                            </div>
+                                                                            <p class="mt-2 mb-1">${c.boardContent}</p>
+                                                                            <div class="d-flex gap-2 mt-2">
+                                                                                <img src="<c:url value="${c.boardImg}"/>" class="img-thumbnail" style="width:80px; height:80px; object-fit:cover;">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </c:forEach>
                                                     </div>
                                                 </div>
                                                 <div class="tab-pane shop-detail-board" id="tabs-7" role="tabpanel">
@@ -1013,7 +1034,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </di>
                                     </div>
                                 </div>
                     </div> <%-- End of container --%>

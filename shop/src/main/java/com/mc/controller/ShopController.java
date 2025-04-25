@@ -159,7 +159,10 @@ public class ShopController {
             return "redirect:/shop";
         }
         List<QnaBoard> qnaBoards = qnaService.findQnaByItem(itemKey);
+        List<QnaBoard> reviews = qnaService.findReviewByItem(itemKey);
+
         model.addAttribute("qnaBoards", qnaBoards);
+        model.addAttribute("reviews", reviews);
         return "index";
     }
     
