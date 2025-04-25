@@ -94,6 +94,7 @@ public class CommunityController {
                 }
                 model.addAttribute("centerPage", "pages/community_detail.jsp");
 
+                String boardAuthorId = board.getCustId();
                 Customer loggedInUser = (Customer) session.getAttribute("cust");
                 String loggedInUserId = null;
                 if (loggedInUser != null) {
@@ -114,6 +115,10 @@ public class CommunityController {
                         viewMap.put("custProfileImgUrl", comment.getCustProfileImgUrl());
                         viewMap.put("likeCount", comment.getLikeCount());
                         viewMap.put("likedByCurrentUser", comment.isLikedByCurrentUser());
+                        viewMap.put("depth", comment.getDepth());
+                        viewMap.put("parentCustId", comment.getParentCustId());
+                        boolean isAuthorComment = boardAuthorId != null && boardAuthorId.equals(comment.getCustId());
+                        viewMap.put("isAuthorComment", isAuthorComment);
 
                         String formattedDate = comment.getCommentsRdate() != null
                                 ? comment.getCommentsRdate().format(formatter)

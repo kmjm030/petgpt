@@ -3,6 +3,8 @@ package com.mc.app.service;
 import com.mc.app.dto.Comments;
 import com.mc.app.repository.CommentsRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CommentsService {
@@ -31,6 +34,7 @@ public class CommentsService {
         params.put("currentCustId", currentCustId);
 
         List<Comments> commentsList = commentsRepository.findAllByPboard(params);
+
         return commentsList;
     }
 
@@ -45,29 +49,34 @@ public class CommentsService {
     }
 
     /**
-     * 댓글 등록
+     * 댓글 등록 (답글 포함)
      * 
-     * @param comments 등록할 댓글 정보 (pboardKey, custId, commentsContent 필수)
+     * @param comments 등록할 댓글 정보 (pboardKey, custId, commentsContent 필수,
+     *                 parentCommentKey는 답글일 경우 포함)
+     * @throws NoSuchElementException 답글 등록 시 부모 댓글을 찾을 수 없는 경우
      */
-    @Transactional // 댓글 등록과 게시글 카운트 업데이트를 한 트랜잭션으로 묶음
+    @Transactional // 댓글 등록과 게시글 카운트 업데이트를 한 트랜잭션으로 묶음(카운트 로직은 아직 없음)
     public void addComment(Comments comments) throws Exception {
+        // 답글인 경우 depth 설정
+        if (comments.getParentCommentKey() != null) {
+            Comments parentComment = commentsRepository.findById(comments.getParentCommentKey());
+            if (parentComment == null) {
+                throw new NoSuchElementException("답글을 작성할 원 댓글을 찾을 수 없습니다. ID: " + comments.getParentCommentKey());
+            }
+            // 부모 댓글의 depth + 1로 설정
+            comments.setDepth(parentComment.getDepth() + 1);
+        } else {
+            // 원 댓글인 경우 depth 0으로 설정
+            comments.setDepth(0);
+        }
+
+        // 등록 시간 설정
         comments.setCommentsRdate(LocalDateTime.now());
         comments.setCommentsUpdate(LocalDateTime.now());
 
-        // 기본 depth 설정 (원댓글)
-        if (comments.getParentCommentKey() == null) {
-            comments.setDepth(0);
-        } else {
-            // 답글의 depth 설정 (부모 댓글 depth + 1)
-            Comments parentComment = commentsRepository.findById(comments.getParentCommentKey());
-            if (parentComment != null) {
-                comments.setDepth(parentComment.getDepth() + 1);
-            } else {
-                comments.setDepth(0);
-            }
-        }
-
+        // 댓글 저장
         commentsRepository.insert(comments);
+
     }
 
     /**
@@ -118,7 +127,5 @@ public class CommentsService {
         // TODO: 관련 좋아요 정보 삭제
 
         commentsRepository.delete(commentsKey);
-
-        // TODO: 게시글의 댓글 수 업데이트
     }
 }
