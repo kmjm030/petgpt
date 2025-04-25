@@ -5,7 +5,7 @@ import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity; // Import 변경
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -55,10 +55,10 @@ public class SecurityConfig {
                         new AntPathRequestMatcher("/img/**"),
                         new AntPathRequestMatcher("/fonts/**"),
                         new AntPathRequestMatcher("/favicon.ico"),
-                        new AntPathRequestMatcher("/uploads/images/**") // 업로드 이미지 경로 추가
-                ).permitAll()
+                        new AntPathRequestMatcher("/uploads/images/**"))
+                .permitAll()
                 // @PreAuthrization을 사용할 것이기 때문에 모든 경로에 대한 인증처리는 Pass
-                .anyRequest().permitAll() // 나머지 요청도 허용 (기존 유지)
+                .anyRequest().permitAll()
         // .anyRequest().authenticated()
         );
         return http.build();
