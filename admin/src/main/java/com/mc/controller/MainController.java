@@ -64,10 +64,10 @@ public class MainController {
         }
 
         try {
-            model.addAttribute("todayRevenue", totalOrderService.getTodayRevenue());
+            model.addAttribute("totalRevenue", totalOrderService.getTotalRevenue());
         } catch (Exception e) {
-            log.error("[MainController] 오늘 매출 로드 실패: {}", e.getMessage());
-            model.addAttribute("todayRevenue", 0);
+            log.error("[MainController] 총 매출 로드 실패: {}", e.getMessage());
+            model.addAttribute("totalRevenue", 0);
         }
 
         try {
