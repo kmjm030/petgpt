@@ -19,6 +19,11 @@
     background-color: white;
     box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
     border-radius: 10px;
+    transition: transform 0.3s ease
+  }
+  .pet-box:hover{
+    transform: translateY(-8px) scale(1.02) rotateZ(0.3deg);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
   }
   .pet-name-box {
     margin-top: 10px;
