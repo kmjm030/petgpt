@@ -131,4 +131,22 @@
         SELECT COUNT(*) FROM comment_likes WHERE comments_key = #{commentsKey}
     </select>
 
+    <!-- 댓글 삭제 상태로 업데이트 -->
+    <update id="updateForDeletion" parameterType="com.mc.app.dto.Comments">
+        UPDATE comments
+        SET
+            comments_content = #{commentsContent},
+            cust_id = #{custId}, 
+            comments_update = #{commentsUpdate}
+        WHERE
+            comments_key = #{commentsKey}
+    </update>
+
+    <!-- 특정 댓글에 대한 특정 사용자의 좋아요 존재 여부 확인 -->
+    <select id="countByCommentKeyAndCustId" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM comment_likes
+        WHERE comments_key = #{commentsKey} AND cust_id = #{custId}
+    </select>
+
 </mapper>

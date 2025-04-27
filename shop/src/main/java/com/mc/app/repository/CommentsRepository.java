@@ -13,44 +13,44 @@ public interface CommentsRepository {
 
     /**
      * 특정 게시글(pboardKey)의 모든 댓글 목록 조회 (작성자 정보, 좋아요 수 포함)
-     * CommentsMapper.xml 의 findAllByPboard id 와 매핑됨
-     * 
-     * @param params Map containing pboardKey (Integer) and currentCustId (String)
-     * @return 댓글 목록 (List<Comments>)
+     * commentsmapper.xml 의 findAllByPboard id 와 매핑됨됨
      */
     List<Comments> findAllByPboard(Map<String, Object> params) throws Exception;
 
     /**
      * 댓글 단 건 조회
-     * CommentsMapper.xml 의 findById id 와 매핑됨
-     * 
-     * @param commentsKey 조회할 댓글 키
-     * @return 댓글 정보 (Comments)
+     * commentsmapper.xml 의 findById id 와 매핑됨
      */
-    Comments findById(Integer commentsKey) throws Exception;
+    Comments findById(Map<String, Object> params) throws Exception;
 
     /**
      * 댓글 등록
-     * CommentsMapper.xml 의 insert id 와 매핑됨
-     * 
-     * @param comments 등록할 댓글 정보
+     * commentsmapper.xml 의 insert id 와 매핑됨
      */
-    void insert(Comments comments) throws Exception;
+    int insert(Comments comments) throws Exception;
 
     /**
      * 댓글 수정
-     * CommentsMapper.xml 의 update id 와 매핑됨
-     * 
-     * @param comments 수정할 댓글 정보
+     * commentsmapper.xml 의 update id 와 매핑됨
      */
     int update(Comments comments) throws Exception;
 
     /**
      * 댓글 삭제 (PK 기준)
-     * CommentsMapper.xml 의 delete id 와 매핑됨
-     * 
-     * @param commentsKey 삭제할 댓글 키
+     * commentsmapper.xml 의 delete id 와 매핑됨
      */
-    void delete(Integer commentsKey) throws Exception;
+    int delete(Integer commentsKey) throws Exception;
+
+    /**
+     * 특정 댓글의 좋아요 수 조회
+     * commentsmapper.xml의 getLikeCount id와 매핑됨
+     */
+    int getLikeCount(Integer commentsKey) throws Exception;
+
+    /**
+     * 댓글 삭제 상태로 업데이트
+     * commentsmapper.xml 의 updateForDeletion id 와 매핑됨
+     */
+    int updateForDeletion(Comments comment) throws Exception;
 
 }
