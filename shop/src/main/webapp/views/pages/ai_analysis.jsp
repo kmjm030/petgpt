@@ -137,6 +137,8 @@
             <!-- Script Begin -->
             <script>
                 document.addEventListener('DOMContentLoaded', function () {
+                    console.log("DOM 로드 완료됨"); // DOM 로딩 확인
+
                     const petImageInput = document.getElementById('petImage');
                     const analyzeButton = document.getElementById('analyzeButton');
                     const analysisResultDiv = document.getElementById('analysisResult');
@@ -144,31 +146,71 @@
                     const imagePreviewDiv = document.getElementById('imagePreview');
                     const previewImage = document.getElementById('previewImage');
 
+                    // 각 요소가 제대로 찾아졌는지 확인
+                    if (!petImageInput) console.error("오류: 'petImage' ID를 가진 요소를 찾을 수 없습니다.");
+                    if (!analyzeButton) console.error("오류: 'analyzeButton' ID를 가진 요소를 찾을 수 없습니다.");
+                    if (!imagePreviewDiv) console.error("오류: 'imagePreview' ID를 가진 요소를 찾을 수 없습니다.");
+                    if (!previewImage) console.error("오류: 'previewImage' ID를 가진 요소를 찾을 수 없습니다.");
+
                     petImageInput.addEventListener('change', function () {
-                        const file = this.files[0];
-                        analysisResultDiv.innerHTML = '';
-                        imagePreviewDiv.style.display = 'none';
+                        console.log("파일 입력 변경 감지됨"); // change 이벤트 발생 확인
+                        analysisResultDiv.innerHTML = ''; // 이전 결과 초기화
+                        imagePreviewDiv.style.display = 'none'; // 미리보기 일단 숨김
 
-                        if (file && (file.type === "image/jpeg" || file.type === "image/png")) {
-                            analyzeButton.disabled = false;
+                        // 파일이 선택되었는지 확인
+                        if (this.files && this.files.length > 0) {
+                            const file = this.files[0];
+                            console.log("선택된 파일:", file.name, "| 타입:", file.type); // 파일 정보 로깅
 
-                            // 이미지 미리보기
-                            const reader = new FileReader();
-                            reader.onload = function (e) {
-                                previewImage.src = e.target.result;
-                                imagePreviewDiv.style.display = 'block';
-                            }
-                            reader.readAsDataURL(file);
+                            // 파일 타입 확인 (JPEG 또는 PNG)
+                            if (file.type === "image/jpeg" || file.type === "image/png") {
+                                console.log("파일 타입 유효함 (JPEG 또는 PNG)");
+                                analyzeButton.disabled = false; // 버튼 활성화
+                                console.log("분석 시작 버튼 활성화됨");
 
-                        } else {
-                            analyzeButton.disabled = true;
-                            if (file) {
+                                // --- 이미지 미리보기 로직 ---
+                                const reader = new FileReader();
+
+                                reader.onload = function (e) {
+                                    console.log("FileReader 로드 완료 (onload 이벤트 발생)"); // onload 이벤트 확인
+                                    if (previewImage) {
+                                        previewImage.src = e.target.result; // 이미지 소스 설정
+                                        console.log("미리보기 이미지 src 설정 완료");
+                                    } else {
+                                        console.error("오류: previewImage 요소를 찾을 수 없음 (onload 내부)");
+                                    }
+                                    if (imagePreviewDiv) {
+                                        imagePreviewDiv.style.display = 'block'; // 미리보기 컨테이너 표시
+                                        console.log("미리보기 컨테이너 표시됨");
+                                    } else {
+                                        console.error("오류: imagePreviewDiv 요소를 찾을 수 없음 (onload 내부)");
+                                    }
+                                }
+
+                                reader.onerror = function (e) {
+                                    console.error("FileReader 오류 발생:", e); // FileReader 오류 로깅
+                                }
+
+                                reader.readAsDataURL(file); // 파일 읽기 시작
+                                console.log("FileReader readAsDataURL 호출됨");
+                                // --- 이미지 미리보기 로직 끝 ---
+
+                            } else {
+                                // 유효하지 않은 파일 타입 처리
+                                console.log("유효하지 않은 파일 타입:", file.type);
+                                analyzeButton.disabled = true; // 버튼 비활성화
                                 alert('JPEG 또는 PNG 이미지만 선택 가능합니다.');
-                                petImageInput.value = '';
+                                petImageInput.value = ''; // 파일 입력 초기화
+                                console.log("분석 시작 버튼 비활성화됨, 파일 입력 초기화됨");
                             }
+                        } else {
+                            // 파일이 선택되지 않은 경우
+                            console.log("파일이 선택되지 않았거나 files 배열이 비어있음");
+                            analyzeButton.disabled = true; // 버튼 비활성화
                         }
                     });
 
+                    // --- 분석 시작 버튼 클릭 이벤트 리스너 (기존 코드 유지) ---
                     analyzeButton.addEventListener('click', function () {
                         const file = petImageInput.files[0];
                         if (!file) {
@@ -176,15 +218,17 @@
                             return;
                         }
 
+                        // 로딩 UI 표시 및 버튼 비활성화
                         analysisResultDiv.innerHTML = '';
                         analysisLoadingDiv.classList.remove('d-none');
                         analysisLoadingDiv.style.display = 'block';
                         analyzeButton.disabled = true;
-                        analyzeButton.innerHTML = `<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span> 분석 중...`; // 버튼 텍스트 변경 (로딩 스피너 추가)
+                        analyzeButton.innerHTML = '<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span> 분석 중...';
 
                         const formData = new FormData();
                         formData.append('image', file);
 
+                        // API 호출
                         fetch('/api/pets/analyze-breed', {
                             method: 'POST',
                             body: formData
@@ -192,37 +236,63 @@
                             .then(response => {
                                 if (!response.ok) {
                                     return response.text().then(text => {
-                                        throw new Error(text || `이미지 분석 요청 실패 (Status: ${response.status})`);
+                                        throw new Error(text || '이미지 분석 요청 실패 (Status: ' + response.status + ')');
                                     });
                                 }
                                 return response.json();
                             })
                             .then(results => {
+                                // 로딩 UI 숨김 및 버튼 활성화
                                 analysisLoadingDiv.classList.add('d-none');
                                 analysisLoadingDiv.style.display = 'none';
                                 analyzeButton.disabled = false;
                                 analyzeButton.innerHTML = '분석 시작';
 
+                                // 결과 표시 로직
                                 if (results && results.length > 0) {
-                                    let resultHTML = '<h5 class="text-primary fw-semibold mb-3"><i class="fas fa-paw me-2"></i>AI 분석 결과</h5><ul class="list-unstyled">';
+                                    let resultHTML = '<h5 class="text-primary fw-semibold mb-3"><i class="fas fa-paw me-2"></i>AI 분석 결과</h5>';
                                     results.slice(0, 5).forEach(result => {
-                                        resultHTML += '<li class="mb-2 fs-6 fw-medium text-dark">' + result.breedName + ' <span class="text-muted">(' + result.scorePercent + '%)</span></li>';
+                                        resultHTML += '<div class="result-item mb-3 p-3 border rounded bg-light shadow-sm">';
+                                        resultHTML += '<div class="d-flex justify-content-between align-items-center mb-2">';
+                                        resultHTML += '<span class="breed-name fs-6 fw-bold text-dark">' + result.breedName + '</span>';
+                                        resultHTML += '<span class="score badge bg-primary rounded-pill">' + result.scorePercent + '%</span>';
+                                        resultHTML += '</div>';
+
+                                        if (result.characteristics && Object.keys(result.characteristics).length > 0) {
+                                            resultHTML += '<div class="characteristics mt-2 pt-2 border-top">';
+                                            resultHTML += '<small class="text-muted d-block mb-1">주요 특징:</small>';
+                                            resultHTML += '<ul class="list-unstyled mb-0" style="font-size: 0.9em;">';
+                                            for (const [key, value] of Object.entries(result.characteristics)) {
+                                                let koreanKey = key;
+                                                if (key === 'size') koreanKey = '크기';
+                                                else if (key === 'activityLevel') koreanKey = '활동량';
+                                                else if (key === 'groomingNeeds') koreanKey = '털 관리';
+                                                else if (key === 'temperament') koreanKey = '성격';
+                                                resultHTML += '<li class="mb-1"><span class="fw-medium">' + koreanKey + ':</span> ' + value + '</li>';
+                                            }
+                                            resultHTML += '</ul>';
+                                            resultHTML += '</div>';
+                                        } else {
+                                            resultHTML += '<p class="text-muted fst-italic mt-2 mb-0" style="font-size: 0.9em;">추가 특징 정보 없음</p>';
+                                        }
+                                        resultHTML += '</div>';
                                     });
-                                    resultHTML += '</ul>';
                                     analysisResultDiv.innerHTML = resultHTML;
                                 } else {
                                     analysisResultDiv.innerHTML = '<p class="text-muted text-center fst-italic mt-3">관련 품종 정보를 찾을 수 없거나, 분석에 실패했습니다.</p>';
                                 }
                             })
                             .catch(error => {
-                                console.error('Error during analysis:', error);
+                                // 오류 처리
+                                console.error('분석 중 오류 발생:', error);
                                 analysisLoadingDiv.classList.add('d-none');
                                 analysisLoadingDiv.style.display = 'none';
                                 analyzeButton.disabled = false;
                                 analyzeButton.innerHTML = '분석 시작';
-                                analysisResultDiv.innerHTML = `<p class="text-danger text-center fw-medium mt-3"><strong>분석 오류:</strong> ${error.message}</p>`;
+                                analysisResultDiv.innerHTML = '<p class="text-danger text-center fw-medium mt-3"><strong>분석 오류:</strong> ' + error.message + '</p>';
                             });
                     });
+                    // --- 분석 시작 버튼 클릭 이벤트 리스너 끝 ---
                 });
             </script>
             <!-- Script End -->
