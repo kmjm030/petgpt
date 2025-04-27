@@ -28,36 +28,71 @@
 
             <style>
                 .mode-options {
-                    display: none;
+                    /* display: none; 제거 -> opacity/visibility로 제어 */
                     position: absolute;
-                    /* top: 30px; -> 버튼 바로 아래로 조정 */
                     top: 100%;
-                    /* 버튼 높이에 따라 아래로 */
+                    /* 부모 요소 바로 아래 */
                     right: 0;
-                    margin-top: 5px;
-                    /* 버튼과의 간격 */
+                    /* 오른쪽 정렬 유지 */
                     background-color: #ffffff;
-                    color: #000000;
-                    border: 1px solid #ccc;
-                    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-                    /* z-index: 9999; 또는 z-index: 1000; 하나만 사용 */
-                    z-index: 1000;
+                    /* 배경색 */
                     min-width: 120px;
-                    /* 필요시 조정 */
-                    font-family: inherit;
-                    /* text-align: center; -> 왼쪽 정렬이 더 일반적 */
+                    /* 최소 너비 */
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                    /* 그림자 */
+                    z-index: 1000;
+                    /* z-index */
+                    border: 1px solid #eee;
+                    /* 테두리 */
+                    border-radius: 10px;
+                    overflow: hidden;
+                    /* 둥근 모서리 */
+                    margin-top: 5px;
+                    /* 부모 요소와의 간격 (필요시 조정) */
+                    padding-left: 0;
+                    /* ul 스타일 초기화 */
+                    list-style: none;
+                    /* ul 스타일 초기화 */
                     text-align: left;
-                    white-space: nowrap;
-                    /* 옵션 줄바꿈 방지 */
+                    /* 텍스트 왼쪽 정렬 */
+
+                    /* 나타나는 효과 */
+                    opacity: 0;
+                    visibility: hidden;
+                    transform: translateY(-10px);
+                    transition: opacity 0.1s ease, visibility 0s 0.1s, transform 0.1s ease;
                 }
 
+                /* JS로 제어할 때 표시 상태 클래스 (선택 사항) */
+                .mode-options.active {
+                    opacity: 1;
+                    visibility: visible;
+                    transform: translateY(0);
+                    transition: opacity 0.1s ease, visibility 0s 0s, transform 0.1s ease;
+                }
+
+
+                /* 모드 선택 드롭다운 항목 스타일 (고객지원 드롭다운 항목과 유사하게) */
                 .mode-options div {
-                    padding: 8px 12px;
+                    display: flex;
+                    /* 아이콘 중앙 정렬을 위해 flex 사용 */
+                    align-items: center;
+                    justify-content: center;
+                    padding: 10px;
+                    /* 패딩 조정 (상하좌우 동일하게) */
+                    color: #333;
                     cursor: pointer;
+                    transition: background-color 0.1s ease;
+                    /* transform 제거 */
+                    /* white-space: nowrap; 제거 */
+                    /* transform-origin: left center; 제거 */
+                    font-size: 16px;
+                    /* 아이콘 크기 조절 (필요시) */
                 }
 
                 .mode-options div:hover {
                     background-color: #f5f5f5;
+                    /* transform: scale(1.05); 제거 */
                 }
 
                 #modeToggleBtn {
@@ -348,44 +383,85 @@
                     color: #ffffff;
                     margin-left: 15px;
                     display: inline-block;
-                    /* 또는 block */
                     white-space: nowrap;
-                    /* 링크 텍스트 줄바꿈 방지 */
+                    transition: transform 0.1s ease;
+                    transform-origin: center center;
                 }
 
-                /* 첫번째 링크의 margin-left 제거 (선택 사항) */
+                .header__top__links a:hover {
+                    transform: scale(1.05);
+
+                }
+
                 .header__top__links a:first-child {
                     margin-left: 0;
                 }
 
-                /* #mode-select-wrapper 스타일 (HTML 인라인 스타일과 동일하게 유지) */
                 #mode-select-wrapper {
                     position: relative;
-                    /* 드롭다운 기준점 */
                     margin-left: 15px;
-                    /* 다른 링크와의 간격 */
                     white-space: nowrap;
-                    /* 버튼 텍스트 줄바꿈 방지 */
                 }
 
                 .header__menu {
                     text-align: right;
-                    /* 내부 ul 요소를 오른쪽으로 정렬 */
                 }
 
-                /* 기본 스타일에서 float: left 등을 사용하고 있다면 제거 또는 수정 */
                 .header__menu ul li {
                     display: inline-block;
-                    /* float 대신 inline-block 사용 권장 */
                     margin-left: 10px;
-                    /* 항목 간 간격 (기존 값 유지 또는 조정) */
                     float: none;
-                    /* 기존 float 속성 제거 */
+                    position: relative;
                 }
 
-                /* 첫번째 li의 margin-left 제거 */
                 .header__menu ul li:first-child {
                     margin-left: 0;
+                }
+
+                .header__menu ul .dropdown {
+                    padding-left: 0;
+                    list-style: none;
+                    text-align: left;
+                    position: absolute;
+                    top: 100%;
+                    left: 0;
+                    background-color: #ffffff;
+                    min-width: 160px;
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                    z-index: 1000;
+                    border: 1px solid #eee;
+                    border-radius: 10px;
+                    margin-top: 25px;
+                    opacity: 0;
+                    visibility: hidden;
+                    transform: translateY(-10px);
+                    transition: opacity 0.1s ease, visibility 0s 0.1s, transform 0.1s ease;
+                }
+
+                .header__menu ul li:hover>.dropdown {
+                    opacity: 1;
+                    visibility: visible;
+                    transform: translateY(0);
+                    transition: opacity 0.1s ease, visibility 0s 0s, transform 0.1s ease;
+                }
+
+                .header__menu ul .dropdown li {
+                    display: block;
+                    margin-left: 0;
+                    width: 100%;
+                }
+
+                .header__menu ul .dropdown li a {
+                    display: block;
+                    padding: 10px 15px;
+                    white-space: nowrap;
+                    color: #333;
+                    transition: background-color 0.1s ease, transform 0.1s ease;
+                    transform-origin: left center;
+                }
+
+                .header__menu ul .dropdown li a:hover {
+                    transform: scale(1.05);
                 }
             </style>
         </head>
@@ -468,8 +544,8 @@
                                             style="cursor: pointer; font-size: 14px; color: #ffffff; white-space: nowrap;">모드
                                             선택 ▾</span>
                                         <div id="modeOptions" class="mode-options">
-                                            <div data-mode="light">라이트 모드</div>
-                                            <div data-mode="dark">다크 모드</div>
+                                            <div data-mode="light" title="라이트 모드"><i class="fa fa-sun-o"></i></div>
+                                            <div data-mode="dark" title="다크 모드"><i class="fa fa-moon-o"></i></div>
                                         </div>
                                     </div>
                                 </div>
@@ -507,6 +583,7 @@
                                         <ul class="dropdown">
                                             <li><a href="<c:url value="
                                                     /qnaboard/add?id=${sessionScope.cust.custId}" />">1:1 문의하기</a></li>
+                                            <li><a href="<c:url value='/ai-analysis'/>">AI 품종 분석</a></li>
                                             <li><a href="<c:url value=" /about" />">about us</a></li>
                                         </ul>
                                     </li>
@@ -818,22 +895,39 @@
                         document.body.classList.add("dark-mode");
                     }
 
-                    toggleBtn.addEventListener("click", function () {
-                        modeOptions.style.display = modeOptions.style.display === "block" ? "none" : "block";
+                    toggleBtn.addEventListener("click", function (event) {
+                        event.stopPropagation(); // 이벤트 버블링 방지
+                        // modeOptions.style.display = modeOptions.style.display === "block" ? "none" : "block";
+                        // 위 코드 대신 클래스 토글 사용
+                        modeOptions.classList.toggle("active");
                     });
 
+                    // 드롭다운 옵션 클릭 시 모드 변경 로직 추가
                     document.querySelectorAll("#modeOptions div").forEach(option => {
                         option.addEventListener("click", () => {
-                            const isDark = option.getAttribute("data-mode") === "dark";
-                            document.body.classList.toggle("dark-mode", isDark);
-                            localStorage.setItem("darkMode", isDark.toString());
-                            modeOptions.style.display = "none";
+                            const selectedMode = option.getAttribute("data-mode"); // 'light' 또는 'dark'
+
+                            if (selectedMode === "dark") {
+                                document.body.classList.add("dark-mode");
+                                localStorage.setItem("darkMode", "true");
+                                // 로고 변경 로직 추가 (필요시)
+                                // document.getElementById('main-logo').src = '<c:url value="/img/logo-dark.png"/>';
+                            } else { // selectedMode === "light"
+                                document.body.classList.remove("dark-mode");
+                                localStorage.setItem("darkMode", "false");
+                                // 로고 변경 로직 추가 (필요시)
+                                // document.getElementById('main-logo').src = '<c:url value="/img/logo.png"/>';
+                            }
+
+                            // 드롭다운 닫기
+                            modeOptions.classList.remove("active");
                         });
                     });
 
+                    // 다른 곳 클릭 시 닫기
                     document.addEventListener("click", function (e) {
-                        if (!toggleBtn.contains(e.target) && !modeOptions.contains(e.target)) {
-                            modeOptions.style.display = "none";
+                        if (!modeOptions.contains(e.target) && !toggleBtn.contains(e.target)) {
+                            modeOptions.classList.remove("active");
                         }
                     });
                 });

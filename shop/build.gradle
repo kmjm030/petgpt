@@ -61,6 +61,15 @@ dependencies {
     implementation 'org.webjars:stomp-websocket:2.3.3'
     implementation 'org.webjars:bootstrap:3.3.7'
 
+    // Google Cloud Vision API Client
+    implementation 'com.google.cloud:google-cloud-vision:3.58.0' // 최신 버전 확인 권장
+
+    // Apache Commons FileUpload (파일 업로드 처리)
+    implementation 'commons-fileupload:commons-fileupload:1.5' // 최신 버전 확인 권장
+
+    // Apache Commons IO (파일 처리 유틸리티)
+    implementation 'commons-io:commons-io:2.19.0' // 최신 버전 확인 권장
+
 
     testImplementation 'org.projectlombok:lombok'
     testAnnotationProcessor 'org.projectlombok:lombok'
