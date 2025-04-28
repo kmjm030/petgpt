@@ -65,5 +65,15 @@
         WHERE order_status IN ('결제완료', '배송중', '배송완료')
     </select>
 
+    <select id="selectTop10Items" resultType="map">
+        SELECT i.item_name AS itemName, COUNT(*) AS salesCount
+        FROM total_order o
+                 JOIN item i ON o.item_key = i.item_key
+        GROUP BY o.item_key
+        ORDER BY salesCount DESC
+            LIMIT 10
+    </select>
+
+
 </mapper>
 
