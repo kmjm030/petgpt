@@ -1,6 +1,204 @@
 <%@ page pageEncoding="UTF-8" %>
   <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+    <script type="text/javascript"
+      src="//dapi.kakao.com/v2/maps/sdk.js?appkey=1d80cc061f948248f9465d96f87b1f5c&libraries=services"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+
+        var mapContainer = document.getElementById('map');
+        if (!mapContainer) {
+          console.error("Map container element with id 'map' not found.");
+          return;
+        }
+
+        var mapOption = {
+          center: new kakao.maps.LatLng(36.3504, 127.3845),
+          level: 7
+        };
+
+        window.map = new kakao.maps.Map(mapContainer, mapOption);
+        window.ps = new kakao.maps.services.Places();
+        window.geocoder = new kakao.maps.services.Geocoder();
+        window.infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
+
+        window.nearbyMarkers = [];
+        window.currentLocationMarker = null;
+        window.storePositions = [
+          { title: 'PetGPT 강남점', latlng: new kakao.maps.LatLng(37.4980, 127.0276) },
+          { title: 'PetGPT 홍대점', latlng: new kakao.maps.LatLng(37.5559, 126.9238) },
+          { title: 'PetGPT 명동점', latlng: new kakao.maps.LatLng(37.5630, 126.9830) },
+          { title: 'PetGPT 부산 서면점', latlng: new kakao.maps.LatLng(35.1578, 129.0594) },
+          { title: 'PetGPT 부산 해운대점', latlng: new kakao.maps.LatLng(35.1630, 129.1639) },
+          { title: 'PetGPT 대구 동성로점', latlng: new kakao.maps.LatLng(35.8694, 128.5931) },
+          { title: 'PetGPT 대구 수성못점', latlng: new kakao.maps.LatLng(35.8280, 128.6150) },
+          { title: 'PetGPT 인천 부평점', latlng: new kakao.maps.LatLng(37.4924, 126.7235) },
+          { title: 'PetGPT 광주 충장로점', latlng: new kakao.maps.LatLng(35.1468, 126.9198) },
+          { title: 'PetGPT 대전 둔산점', latlng: new kakao.maps.LatLng(36.3519, 127.3850) },
+          { title: 'PetGPT 울산 삼산점', latlng: new kakao.maps.LatLng(35.5390, 129.3380) },
+          { title: 'PetGPT 수원 인계점', latlng: new kakao.maps.LatLng(37.2670, 127.0300) },
+          { title: 'PetGPT 춘천 명동점', latlng: new kakao.maps.LatLng(37.8811, 127.7299) },
+          { title: 'PetGPT 강릉 교동점', latlng: new kakao.maps.LatLng(37.7640, 128.8980) },
+          { title: 'PetGPT 청주 성안길점', latlng: new kakao.maps.LatLng(36.6350, 127.4890) },
+          { title: 'PetGPT 전주 객사점', latlng: new kakao.maps.LatLng(35.8170, 127.1480) },
+          { title: 'PetGPT 창원 상남점', latlng: new kakao.maps.LatLng(35.2280, 128.6810) },
+          { title: 'PetGPT 제주 노형점', latlng: new kakao.maps.LatLng(33.4850, 126.4800) },
+          { title: 'PetGPT 서울 잠실점', latlng: new kakao.maps.LatLng(37.5146, 127.1060) },
+          { title: 'PetGPT 서울 종로점', latlng: new kakao.maps.LatLng(37.5720, 126.9810) },
+          { title: 'PetGPT 서울 신촌점', latlng: new kakao.maps.LatLng(37.5598, 126.9423) },
+          { title: 'PetGPT 부산 남포동점', latlng: new kakao.maps.LatLng(35.0995, 129.0320) },
+          { title: 'PetGPT 부산 센텀시티점', latlng: new kakao.maps.LatLng(35.1710, 129.1290) },
+          { title: 'PetGPT 대구 칠곡점', latlng: new kakao.maps.LatLng(35.9430, 128.5550) },
+          { title: 'PetGPT 대구 상인점', latlng: new kakao.maps.LatLng(35.8180, 128.5380) },
+          { title: 'PetGPT 인천 송도점', latlng: new kakao.maps.LatLng(37.3940, 126.6500) },
+          { title: 'PetGPT 인천 구월점', latlng: new kakao.maps.LatLng(37.4510, 126.7050) },
+          { title: 'PetGPT 광주 상무점', latlng: new kakao.maps.LatLng(35.1510, 126.8510) },
+          { title: 'PetGPT 광주 수완점', latlng: new kakao.maps.LatLng(35.1900, 126.8100) },
+          { title: 'PetGPT 대전 유성점', latlng: new kakao.maps.LatLng(36.3610, 127.3400) },
+          { title: 'PetGPT 대전 은행동점', latlng: new kakao.maps.LatLng(36.3280, 127.4280) },
+          { title: 'PetGPT 울산 동구점', latlng: new kakao.maps.LatLng(35.5100, 129.4200) },
+          { title: 'PetGPT 수원 영통점', latlng: new kakao.maps.LatLng(37.2500, 127.0700) },
+          { title: 'PetGPT 성남 분당점', latlng: new kakao.maps.LatLng(37.3800, 127.1180) },
+          { title: 'PetGPT 고양 일산점', latlng: new kakao.maps.LatLng(37.6580, 126.7700) },
+          { title: 'PetGPT 용인 수지점', latlng: new kakao.maps.LatLng(37.3200, 127.0950) },
+          { title: 'PetGPT 원주 단계점', latlng: new kakao.maps.LatLng(37.3400, 127.9300) },
+          { title: 'PetGPT 속초 중앙점', latlng: new kakao.maps.LatLng(38.2050, 128.5900) },
+          { title: 'PetGPT 충주 연수점', latlng: new kakao.maps.LatLng(36.9800, 127.9200) },
+          { title: 'PetGPT 천안 두정점', latlng: new kakao.maps.LatLng(36.8300, 127.1450) },
+          { title: 'PetGPT 군산 수송점', latlng: new kakao.maps.LatLng(35.9680, 126.7100) },
+          { title: 'PetGPT 익산 영등점', latlng: new kakao.maps.LatLng(35.9450, 126.9500) },
+          { title: 'PetGPT 목포 하당점', latlng: new kakao.maps.LatLng(34.8000, 126.4100) },
+          { title: 'PetGPT 여수 학동점', latlng: new kakao.maps.LatLng(34.7500, 127.6600) },
+          { title: 'PetGPT 순천 연향점', latlng: new kakao.maps.LatLng(34.9400, 127.5200) },
+          { title: 'PetGPT 포항 양덕점', latlng: new kakao.maps.LatLng(36.0700, 129.3800) },
+          { title: 'PetGPT 구미 인동점', latlng: new kakao.maps.LatLng(36.1000, 128.4000) },
+          { title: 'PetGPT 경주 황성점', latlng: new kakao.maps.LatLng(35.8600, 129.2000) },
+          { title: 'PetGPT 김해 내외점', latlng: new kakao.maps.LatLng(35.2350, 128.8700) },
+          { title: 'PetGPT 진주 평거점', latlng: new kakao.maps.LatLng(35.1750, 128.0700) },
+          { title: 'PetGPT 거제 고현점', latlng: new kakao.maps.LatLng(34.8900, 128.6200) },
+          { title: 'PetGPT 제주 시청점', latlng: new kakao.maps.LatLng(33.4990, 126.5310) },
+          { title: 'PetGPT 서귀포 올레시장점', latlng: new kakao.maps.LatLng(33.2480, 126.5600) }
+        ];
+      });
+
+      function searchAddress() {
+        var keyword = document.getElementById('address').value;
+        if (!keyword) {
+          alert('검색어를 입력해주세요.');
+          return;
+        }
+
+        if (currentLocationMarker) {
+          currentLocationMarker.setMap(null);
+          currentLocationMarker = null;
+        }
+
+        removeNearbyMarkers();
+
+        ps.keywordSearch(keyword, function (data, status, pagination) {
+          if (status === kakao.maps.services.Status.OK) {
+            var coords = new kakao.maps.LatLng(data[0].y, data[0].x);
+
+            var locationImageSrc = '<c:url value="/img/icon/location-pin.png"/>',
+              locationImageSize = new kakao.maps.Size(48, 48),
+              locationImageOption = { offset: new kakao.maps.Point(24, 48) };
+
+            var locationMarkerImage = new kakao.maps.MarkerImage(locationImageSrc, locationImageSize, locationImageOption);
+
+            currentLocationMarker = new kakao.maps.Marker({
+              map: map,
+              position: coords,
+              image: locationMarkerImage
+            });
+
+            map.setCenter(coords);
+            map.setLevel(7);
+
+            displayNearbyStores(coords);
+
+          } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
+            alert('검색 결과가 존재하지 않습니다.');
+          } else if (status === kakao.maps.services.Status.ERROR) {
+            alert('검색 중 오류가 발생했습니다.');
+          } else {
+            alert('검색 중 알 수 없는 오류가 발생했습니다.');
+          }
+        });
+      }
+
+      function displayNearbyStores(centerCoords) {
+        var searchRadius = 10000;
+        var found = false;
+        var bounds = new kakao.maps.LatLngBounds();
+
+        bounds.extend(centerCoords);
+
+        storePositions.forEach(function (store) {
+          var storeCoords = store.latlng;
+          var distance = getDistance(centerCoords.getLat(), centerCoords.getLng(), storeCoords.getLat(), storeCoords.getLng());
+
+          if (distance <= searchRadius) {
+            displayStoreMarker(store, distance);
+            bounds.extend(storeCoords);
+            found = true;
+          }
+        });
+
+        if (!found) {
+          alert('반경 ' + (searchRadius / 1000) + 'km 내에 매장이 없습니다.');
+        } else {
+          map.setBounds(bounds);
+        }
+      }
+
+      function displayStoreMarker(store, distance) {
+        var storeImageSrc = '<c:url value="/img/icon/store-marker.png"/>',
+          storeImageSize = new kakao.maps.Size(48, 48),
+          storeImageOption = { offset: new kakao.maps.Point(24, 48) };
+
+        var storeMarkerImage = new kakao.maps.MarkerImage(storeImageSrc, storeImageSize, storeImageOption);
+
+        var marker = new kakao.maps.Marker({
+          map: map,
+          position: store.latlng,
+          title: store.title,
+          image: storeMarkerImage
+        });
+
+        var distanceInKm = (distance / 1000).toFixed(1);
+
+        nearbyMarkers.push(marker);
+      }
+
+      function removeNearbyMarkers() {
+        if (nearbyMarkers && nearbyMarkers.length) {
+          for (var i = 0; i < nearbyMarkers.length; i++) {
+            if (nearbyMarkers[i] && typeof nearbyMarkers[i].setMap === 'function') {
+              nearbyMarkers[i].setMap(null);
+            }
+          }
+        }
+        nearbyMarkers = [];
+      }
+
+      function getDistance(lat1, lon1, lat2, lon2) {
+        function deg2rad(deg) {
+          return deg * (Math.PI / 180)
+        }
+        var R = 6371;
+        var dLat = deg2rad(lat2 - lat1);
+        var dLon = deg2rad(lon2 - lon1);
+        var a =
+          Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+          Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+          Math.sin(dLon / 2) * Math.sin(dLon / 2)
+          ;
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        var d = R * c;
+        return d * 1000;
+      }
+    </script>
+
     <!-- Breadcrumb Section Begin -->
     <section class="breadcrumb-option">
       <div class="container">
@@ -26,74 +224,21 @@
         <div class="row">
           <div class="col-lg-12">
             <div class="section-title">
-              <span>Our Stores</span>
-              <h2>오프라인 매장 위치</h2>
+              <span>Find Our Stores</span>
+              <h2>내 주변 매장 찾기</h2>
             </div>
+            <!-- Search Input and Button -->
             <div style="margin-bottom: 20px; text-align: center;">
-              <button onclick="panTo(37.5665, 126.9780)" class="site-btn">서울</button>
-              <button onclick="panTo(36.3504, 127.3845)" class="site-btn">대전</button>
-              <button onclick="panTo(35.8714, 128.6014)" class="site-btn">대구</button>
-              <button onclick="panTo(35.1796, 129.0756)" class="site-btn">부산</button>
+              <input type="text" id="address" placeholder="동, 면, 읍 또는 주소 입력"
+                style="padding: 10px; width: 300px; border: 1px solid #e1e1e1; margin-right: 5px;">
+              <button onclick="searchAddress()" class="site-btn">검색</button>
             </div>
-            <div id="map" style="width:100%;height:400px;"></div>
+            <div id="map" style="width:100%;height:500px;"></div>
           </div>
         </div>
       </div>
     </section>
     <!-- Offline Store Location Section End -->
-
-
-    <script type="text/javascript"
-      src="//dapi.kakao.com/v2/maps/sdk.js?appkey=1d80cc061f948248f9465d96f87b1f5c"></script>
-    <script>
-      var mapContainer = document.getElementById('map');
-      mapOption = {
-        center: new kakao.maps.LatLng(36.3504, 127.3845),
-        level: 7
-      };
-
-      var map = new kakao.maps.Map(mapContainer, mapOption);
-
-
-      var positions = [
-        {
-          title: '서울 매장',
-          latlng: new kakao.maps.LatLng(37.5665, 126.9780)
-        },
-        {
-          title: '대전 매장',
-          latlng: new kakao.maps.LatLng(36.3504, 127.3845)
-        },
-        {
-          title: '대구 매장',
-          latlng: new kakao.maps.LatLng(35.8714, 128.6014)
-        },
-        {
-          title: '부산 매장',
-          latlng: new kakao.maps.LatLng(35.1796, 129.0756)
-        }
-      ];
-
-
-      for (var i = 0; i < positions.length; i++) {
-
-
-        var marker = new kakao.maps.Marker({
-          map: map,
-          position: positions[i].latlng,
-          title: positions[i].title
-        });
-      }
-
-
-      function panTo(lat, lng) {
-        var moveLatLon = new kakao.maps.LatLng(lat, lng);
-
-        map.panTo(moveLatLon);
-
-      }
-    </script>
-
 
     <!-- PetGPT Info Section Begin -->
     <section class="petgpt-info spad" style="padding-top: 100px; margin-bottom: 0px;">

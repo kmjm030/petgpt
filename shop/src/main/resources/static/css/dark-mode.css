@@ -1,237 +1,429 @@
+/* --- Base Dark Mode Styles --- */
 body.dark-mode {
-    background-color: #1d1d1f;
-    color: #f5f5f7;
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-body.dark-mode,
-body.dark-mode p,
-body.dark-mode span,
-body.dark-mode a,
-body.dark-mode li,
+/* --- General Text & Links --- */
 body.dark-mode h1,
 body.dark-mode h2,
 body.dark-mode h3,
 body.dark-mode h4,
 body.dark-mode h5,
 body.dark-mode h6,
-body.dark-mode div,
+body.dark-mode p,
+body.dark-mode span,
+body.dark-mode li,
 body.dark-mode label,
-body.dark-mode strong {
-    color: #f5f5f7 !important;
+body.dark-mode strong,
+body.dark-mode div:not([class*="countdown"]):not([class*="timer"]) {
+    color: #e0e0e0;
+    transition: color 0.3s ease;
 }
 
+body.dark-mode a {
+    color: #b0c4de;
+    transition: color 0.3s ease;
+}
+
+/* Hover transitions are handled implicitly by the base 'a' transition */
 body.dark-mode a:hover,
 body.dark-mode .highlight,
 body.dark-mode .text-primary {
-    color: #ccccff !important;
+    color: #87ceeb;
 }
 
+/* --- Header & Navigation --- */
 body.dark-mode .header,
 body.dark-mode .header__top,
-body.dark-mode .header__top__left,
-body.dark-mode .header__top__right,
-body.dark-mode .header__menu,
 body.dark-mode .navbar {
-    background-color: #2c2c2e;
-    color: #f5f5f7;
-    border-color: #3a3a3c;
+    background-color: #252526;
+    color: #e0e0e0;
+    border-bottom: 1px solid #3a3a3c;
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+body.dark-mode .header__menu {
+    background-color: #252526;
+    color: #e0e0e0;
+    border-bottom: none;
+
+    /* --- 메뉴 수직 위치 조정 --- */
+    /* 기존 padding 값을 확인하고 조정하세요. */
+    /* 예시: 원래 padding: 20px 0; 이었다면 아래처럼 상단 패딩을 늘려봅니다. */
+    padding-top: 45px;
+    /* 기존 값 + 원하는 만큼 증가 (예: 5px 증가) */
+    padding-bottom: 15px;
+    /* 하단 패딩은 필요에 따라 조절 (예: 5px 감소) */
+    /* 또는 padding: 25px 0 15px 0; 와 같이 한 줄로 작성 */
+    /* --- 메뉴 수직 위치 조정 끝 --- */
+
+    transition: background-color 0.3s ease, color 0.3s ease, padding 0.3s ease;
 }
 
 body.dark-mode .header__top__links a,
-body.dark-mode .header__menu a {
-    color: #f5f5f7 !important;
+body.dark-mode .header__menu ul li a {
+    color: #e0e0e0;
+    /* Transition inherited from general 'a' rule */
 }
 
 body.dark-mode .header__top__links a:hover,
-body.dark-mode .header__menu a:hover {
-    color: #ccccff !important;
+body.dark-mode .header__menu ul li a:hover,
+body.dark-mode .header__menu ul li.active>a {
+    color: #87ceeb;
 }
 
-body.dark-mode .header__search form {
-    background-color: #3a3a3c;
-    border-color: #5c5c5e;
-}
-
+/* --- Search --- */
+body.dark-mode .header__search form,
 body.dark-mode .search-input {
-    color: #f5f5f7;
+    background-color: #3a3a3c;
+    border: 1px solid #555;
+    color: #e0e0e0;
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+    /* Already good */
 }
 
 body.dark-mode .search-input::placeholder {
-    color: #aaa;
+    color: #a0a0a0;
 }
 
 body.dark-mode .search-btn {
-    background-color: #444;
+    background-color: #4a4a4c;
+    color: #e0e0e0;
+    border: 1px solid #555;
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+    /* Added transition */
 }
 
 body.dark-mode .search-btn:hover {
-    background-color: #666;
+    background-color: #5a5a5c;
 }
 
+
+/* --- Buttons --- */
 body.dark-mode button,
-body.dark-mode .btn {
+body.dark-mode .btn,
+body.dark-mode .site-btn {
     background-color: #3a3a3c;
-    color: #f5f5f7;
+    color: #e0e0e0;
     border: 1px solid #555;
+    box-shadow: none;
+    /* Assuming buttons might have a shadow normally */
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+    /* Added box-shadow */
 }
 
-body.dark-mode button:hover {
+body.dark-mode button:hover,
+body.dark-mode .btn:hover,
+body.dark-mode .site-btn:hover {
     background-color: #4a4a4c;
+    border-color: #666;
+    /* Add hover box-shadow if needed */
 }
 
+/* --- Sections, Cards, Boxes --- */
+body.dark-mode .section,
+body.dark-mode .card,
+body.dark-mode .box,
+body.dark-mode .rounded-box,
+body.dark-mode .product__item,
+body.dark-mode .cart__total,
+body.dark-mode .checkout__order,
+body.dark-mode .blog__item,
+body.dark-mode .about__item,
+body.dark-mode .contact__form {
+    background-color: #2c2c2e;
+    border: 1px solid #3a3a3c;
+    color: #e0e0e0;
+    box-shadow: none;
+    /* Assuming these might have shadows */
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+    /* Added color, box-shadow */
+}
+
+/* --- Hero, Banners, Sliders --- */
 body.dark-mode .hero,
 body.dark-mode .banner,
-body.dark-mode .slider,
 body.dark-mode .main-banner {
-    background-color: #1d1d1f;
-    color: #f5f5f7;
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    /* Added transition */
 }
 
-body.dark-mode .card,
-body.dark-mode .section,
-body.dark-mode .box,
-body.dark-mode .rounded-box {
+/* Specific text elements transitions covered by general text rules */
+body.dark-mode .hero__text h2,
+body.dark-mode .banner__text h2,
+body.dark-mode .discount__content h2,
+body.dark-mode .deal__text h2 {
+    color: #ffffff;
+}
+
+body.dark-mode .hero__text p,
+body.dark-mode .banner__text p,
+body.dark-mode .discount__content p,
+body.dark-mode .deal__text p {
+    color: #c0c0c0;
+}
+
+/* Highlighted text/badges in banners */
+body.dark-mode .banner__text span,
+body.dark-mode .deal__text span,
+body.dark-mode .discount__content span,
+body.dark-mode .product__discount__percent {
+    background-color: #4a4a4c;
+    color: #ffd700;
+    padding: 2px 6px;
+    border-radius: 3px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    /* Added transition */
+}
+
+/* Countdown Timer */
+body.dark-mode .countdown__item,
+body.dark-mode .timer {
     background-color: #2c2c2e;
-    border-color: #3a3a3c;
-    color: #f5f5f7;
+    border: 1px solid #3a3a3c;
+    padding: 5px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    /* Added transition */
 }
 
-body.dark-mode .chat-widget,
-body.dark-mode .chat-button,
-body.dark-mode .chat-output,
-body.dark-mode #chat-modal,
-body.dark-mode .chat-modal-header,
-body.dark-mode .chat-modal-body,
-body.dark-mode .chat-modal-footer,
-body.dark-mode #chat-input,
-body.dark-mode #send-button {
-    background-color: #2c2c2e;
-    color: #f5f5f7;
-    border-color: #444;
+/* Text inside timer covered by general text rules */
+body.dark-mode .countdown__item span,
+body.dark-mode .timer span {
+    color: #e0e0e0;
 }
 
-body.dark-mode .footer,
-body.dark-mode .footer__about,
-body.dark-mode .footer__widget,
-body.dark-mode .footer__newslatter,
+body.dark-mode .countdown__item p,
+body.dark-mode .timer p {
+    color: #a0a0a0;
+    font-size: 0.8em;
+}
+
+
+/* --- Footer --- */
+body.dark-mode .footer {
+    background-color: #252526;
+    color: #c0c0c0;
+    border-top: 1px solid #3a3a3c;
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+    /* Added color */
+}
+
+/* Footer text/links covered by general rules */
+body.dark-mode .footer__widget h6 {
+    color: #e0e0e0;
+}
+
+body.dark-mode .footer__widget ul li a {
+    color: #b0c4de;
+}
+
+body.dark-mode .footer__widget ul li a:hover {
+    color: #87ceeb;
+}
+
 body.dark-mode .footer__copyright__text {
+    color: #a0a0a0;
+    border-top: 1px solid #3a3a3c;
+    padding-top: 15px;
+    margin-top: 15px;
+    transition: border-color 0.3s ease, color 0.3s ease;
+    /* Added transition */
+}
+
+/* --- Chat Widget & FAB --- */
+body.dark-mode .chat-widget,
+body.dark-mode #chat-modal .modal-content {
     background-color: #2c2c2e;
-    color: #f5f5f7;
+    color: #e0e0e0;
+    border: 1px solid #444;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+    /* Added transition */
 }
 
-body.dark-mode .footer__widget h6,
-body.dark-mode .footer__widget a {
-    color: #f5f5f7 !important;
+body.dark-mode .chat-modal-header,
+body.dark-mode .chat-modal-footer {
+    background-color: #3a3a3c;
+    border-bottom: 1px solid #444;
+    border-top: 1px solid #444;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    /* Added transition */
 }
 
-body.dark-mode .footer__widget a:hover {
-    color: #ccccff !important;
+body.dark-mode .chat-modal-header .close span {
+    color: #e0e0e0;
+    opacity: 0.8;
+    transition: color 0.3s ease, opacity 0.3s ease;
+    /* Added transition */
+}
+
+body.dark-mode .chat-output {
+    background-color: #1a1a1a;
+    border: 1px solid #3a3a3c;
+    padding: 10px;
+    margin-bottom: 10px;
+    height: 300px;
+    overflow-y: auto;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    /* Added transition */
+}
+
+/* Message colors covered by general text rules */
+body.dark-mode .user-message {
+    color: #e0e0e0;
+    text-align: right;
+    margin-bottom: 5px;
+}
+
+body.dark-mode .bot-message {
+    color: #c0c0c0;
+    text-align: left;
+    margin-bottom: 5px;
+}
+
+
+body.dark-mode #chat-input {
+    background-color: #3a3a3c;
+    border: 1px solid #555;
+    color: #e0e0e0;
+    /* Inherit transition from base input rule */
+}
+
+body.dark-mode #chat-input::placeholder {
+    color: #a0a0a0;
+}
+
+body.dark-mode #send-button,
+body.dark-mode #fab-open,
+body.dark-mode #fab-close {
+    background-color: #4a4a4c;
+    color: #e0e0e0;
+    border: 1px solid #555;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+    /* Inherit transition from base button rule (includes box-shadow) */
+}
+
+body.dark-mode #send-button:hover,
+body.dark-mode #fab-open:hover,
+body.dark-mode #fab-close:hover {
+    background-color: #5a5a5c;
 }
 
 body.dark-mode .mode-options {
     background-color: #2c2c2e;
-    color: #f5f5f7;
     border: 1px solid #444;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    /* Added transition */
 }
 
 body.dark-mode .mode-options div {
-    color: #f5f5f7;
+    color: #e0e0e0;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    /* Added background-color transition for hover */
 }
 
 body.dark-mode .mode-options div:hover {
     background-color: #3a3a3c;
 }
 
-body.dark-mode #fab-open {
-    background-color: #2c2c2e;
-    color: #f5f5f7;
-    border: 1px solid #555;
+/* --- Image Filter --- */
+body.dark-mode img:not(.no-dark-filter) {
+    /* Allow excluding images */
+    filter: brightness(0.75) contrast(0.9);
+    /* Further reduce brightness and slightly contrast */
+    opacity: 0.85;
+    /* Make image slightly transparent */
+    transition: filter 0.3s ease, opacity 0.3s ease;
+    /* Add opacity to transition */
 }
 
-body.dark-mode #fab-open span {
-    color: #f5f5f7;
-}
-
-body.dark-mode #fab-close {
-    background-color: #2c2c2e;
-    border: 1px solid #555;
-}
-body.dark-mode .hero__text,
-body.dark-mode .banner__text,
-body.dark-mode .product__details,
-body.dark-mode .discount__content,
-body.dark-mode .deal__text,
-body.dark-mode .countdown__item,
-body.dark-mode .countdown__item span,
-body.dark-mode .timer,
-body.dark-mode .timer span {
-    color: #f5f5f7 !important;
-}
-
-body.dark-mode .banner__text span,
-body.dark-mode .deal__text span,
-body.dark-mode .discount__content span {
-    color: #ffcc00 !important;
-}
-
-body.dark-mode .hero__text,
-body.dark-mode .banner__text,
-body.dark-mode .product__details,
-body.dark-mode .discount__content,
-body.dark-mode .countdown__item,
-body.dark-mode .countdown__item span,
-body.dark-mode .timer,
-body.dark-mode .timer span,
-body.dark-mode .deal__text,
-body.dark-mode .deal__text span {
-    color: #f5f5f7 !important;
-}
-
-body.dark-mode .banner__text span,
-body.dark-mode .deal__text span,
-body.dark-mode .discount__content span {
-    color: #ffcc00 !important;
-}
-/* 배너/슬라이드 텍스트 박스 */
-body.dark-mode .hero__text,
-body.dark-mode .banner__text,
-body.dark-mode .discount__content,
-body.dark-mode .deal__text {
-    background-color: transparent !important;
-    color: #f5f5f7 !important;
-}
-
-/* 강조 블럭 배경 (특가 배지, 타이머 안내 등) */
-body.dark-mode .banner__text span,
-body.dark-mode .deal__text span,
-body.dark-mode .discount__content span,
-body.dark-mode .product__discount__percent {
-    background-color: #444 !important;
-    color: #ffcc00 !important;
-}
-
-/* 카운트다운 타이머 숫자 */
-body.dark-mode .countdown__item,
-body.dark-mode .countdown__item span,
-body.dark-mode .timer span {
-    color: #f5f5f7 !important;
-}
-body.dark-mode .categories,
-body.dark-mode .categories * {
-    background-color: transparent !important;
-    color: #f5f5f7 !important;
-}
-
-body.dark-mode .categories span,
-body.dark-mode .categories strong {
-    color: #ffcc00 !important;
-}
-body.dark-mode .text-before,
-body.dark-mode .text-before * {
-    background-color: transparent !important;
-    color: #f5f5f7 !important;
-}
+/* --- Specific Overrides --- */
 body.dark-mode .categories__text::before {
-    background-color: transparent !important;
+    background-color: transparent;
+    /* Add transition if it changes from a color */
+    /* transition: background-color 0.3s ease; */
+}
+
+/* --- Form Elements --- */
+body.dark-mode input[type="text"],
+body.dark-mode input[type="email"],
+body.dark-mode input[type="password"],
+body.dark-mode input[type="number"],
+body.dark-mode input[type="tel"],
+body.dark-mode textarea,
+body.dark-mode select {
+    background-color: #3a3a3c;
+    border: 1px solid #555;
+    color: #e0e0e0;
+    padding: 8px 12px;
+    border-radius: 4px;
+    box-shadow: none;
+    /* Base shadow state */
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+    /* Added box-shadow */
+}
+
+body.dark-mode input[type="text"]::placeholder,
+body.dark-mode input[type="email"]::placeholder,
+body.dark-mode textarea::placeholder {
+    color: #a0a0a0;
+}
+
+body.dark-mode input:focus,
+body.dark-mode textarea:focus,
+body.dark-mode select:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(135, 206, 235, 0.3);
+    /* Transition handled by base input rule */
+}
+
+body.dark-mode select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23a0a0a0' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 30px;
+}
+
+/* --- Tables --- */
+body.dark-mode table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+/* Add base tr transition */
+body.dark-mode tr {
+    transition: background-color 0.3s ease;
+}
+
+body.dark-mode th,
+body.dark-mode td {
+    border: 1px solid #3a3a3c;
+    padding: 8px 12px;
+    text-align: left;
+    transition: border-color 0.3s ease;
+    /* Added transition */
+}
+
+body.dark-mode th {
+    background-color: #3a3a3c;
+    color: #e0e0e0;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    /* Added border-color */
+}
+
+body.dark-mode tr:nth-child(even) {
+    background-color: #252526;
+    /* Transition handled by base tr rule */
+}
+
+body.dark-mode tr:hover {
+    background-color: #4a4a4c;
+    /* Transition handled by base tr rule */
 }
