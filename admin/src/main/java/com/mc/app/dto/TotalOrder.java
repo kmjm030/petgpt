@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class TotalOrder {
     private int orderKey;
-    private int custId;
+    private String custId;
     private int addrKey;
     private int itemKey;
     private LocalDateTime orderDate;

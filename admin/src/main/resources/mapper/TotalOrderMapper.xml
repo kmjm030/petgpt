@@ -5,22 +5,7 @@
 
 <mapper namespace="com.mc.app.repository.TotalOrderRepository">
 
-    <!-- DTO 매핑: cust_id 컬럼을 int custId로 변환 -->
-    <resultMap id="TotalOrderResult" type="com.mc.app.dto.TotalOrder">
-        <id     property="orderKey"       column="order_key"/>
-        <result property="custId"         column="cust_id" jdbcType="VARCHAR"/>
-        <result property="addrKey"        column="addr_key"/>
-        <result property="itemKey"        column="item_key"/>
-        <result property="orderDate"      column="order_date"/>
-        <result property="recipientName"  column="recipient_name"/>
-        <result property="recipientPhone" column="recipient_phone"/>
-        <result property="orderReq"       column="order_req"/>
-        <result property="orderStatus"    column="order_status"/>
-        <result property="orderCard"      column="order_card"/>
-        <result property="orderShootNum"  column="order_shootnum"/>
-    </resultMap>
-
-    <select id="select" resultMap="TotalOrderResult">
+    <select id="select" resultType="TotalOrder">
         SELECT * FROM total_order
     </select>
 
@@ -30,16 +15,16 @@
 
     <insert id="insert" parameterType="TotalOrder">
         INSERT INTO total_order
-        (cust_id, addr_key, item_key, order_date, recipient_name, recipient_phone,
+        (cust_key, addr_key, item_key, order_date, recipient_name, recipient_phone,
          order_req, order_status, order_card, order_total_price, order_shoot_num)
         VALUES
-            (#{custId}, #{addrKey}, #{itemKey}, #{orderDate}, #{recipientName}, #{recipientPhone},
+            (#{custKey}, #{addrKey}, #{itemKey}, #{orderDate}, #{recipientName}, #{recipientPhone},
              #{orderReq}, #{orderStatus}, #{orderCard}, #{orderTotalPrice}, #{orderShootNum})
     </insert>
 
     <update id="update" parameterType="TotalOrder">
         UPDATE total_order SET
-                               cust_id = #{custId},
+                               cust_key = #{custKey},
                                addr_key = #{addrKey},
                                item_key = #{itemKey},
                                order_date = #{orderDate},
@@ -73,22 +58,6 @@
         WHERE DATE(order_date) = CURDATE()
         GROUP BY order_status
     </select>
-
-    <select id="selectTotalRevenue" resultType="int">
-        SELECT IFNULL(SUM(order_totalprice), 0)
-        FROM total_order
-        WHERE order_status IN ('결제완료', '배송중', '배송완료')
-    </select>
-
-    <select id="selectTop10Items" resultType="map">
-        SELECT i.item_name AS itemName, COUNT(*) AS salesCount
-        FROM total_order o
-                 JOIN item i ON o.item_key = i.item_key
-        GROUP BY o.item_key
-        ORDER BY salesCount DESC
-            LIMIT 10
-    </select>
-
 
 </mapper>
 
