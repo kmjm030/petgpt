@@ -84,7 +84,6 @@ public class MainController {
         return "index";
     }
 
-
     @GetMapping("/faq")
     public String faq(Model model) {
         return "redirect:/";
@@ -93,5 +92,10 @@ public class MainController {
     @GetMapping("/signin")
     public String signin(Model model) {
         return "redirect:/";
+    }
+
+    @GetMapping("/ai-analysis")
+    public String aiAnalysisPage(Model model) {
+        return "pages/ai_analysis";
     }
 }

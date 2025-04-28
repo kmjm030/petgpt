@@ -23,6 +23,10 @@ public class TotalOrderService {
         return totalOrderRepository.selectTodayRevenue();
     }
 
+    public int getTotalRevenue() throws Exception {  // ✅ 추가된 메서드
+        return totalOrderRepository.selectTotalRevenue();
+    }
+
     public Map<String, Integer> getOrderStatusCountMap() throws Exception {
         List<Map<String, Object>> rawList = totalOrderRepository.selectOrderStatusCount();
         Map<String, Integer> result = new HashMap<>();
@@ -63,4 +67,9 @@ public class TotalOrderService {
     public void del(int orderKey) throws Exception {
         totalOrderRepository.delete(orderKey);
     }
+
+    public List<Map<String, Object>> getTop10Items() throws Exception {
+        return totalOrderRepository.selectTop10Items();
+    }
+
 }

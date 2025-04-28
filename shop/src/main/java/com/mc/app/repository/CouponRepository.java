@@ -11,4 +11,5 @@ import java.util.List;
 @Mapper
 public interface CouponRepository extends MCRepository<Coupon, Integer>{
     List<Coupon> findByCustId(String custId) throws Exception;
+    List<Coupon> findUsableByCustId(String custId) throws Exception;
 }

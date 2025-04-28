@@ -32,10 +32,9 @@ public class LoginController {
         address.setAddrDef("Y");
         address.setAddrName("기본배송지");
         address.setAddrTel(cust.getCustPhone());
-        address.setAddrReq(null);
         addrService.add(address);
         Coupon coupon = Coupon.builder().custId(cust.getCustId()).couponName("회원가입 축하 쿠폰")
-                .couponPrice(1000).couponMaxPrice(1000).couponType("정액")
+                .couponPrice(5000).couponMaxPrice(5000).couponType("정액")
                 .couponUse("미사용").build();
         couponService.add(coupon);
 

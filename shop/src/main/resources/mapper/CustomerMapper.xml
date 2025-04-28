@@ -13,7 +13,7 @@
     </select>
 
     <insert id="insert" parameterType="Customer">
-        INSERT INTO customer VALUES (#{custId}, #{custPwd}, #{custName}, #{custEmail}, #{custPhone},now(), 0, 1000, #{custNick}, 1000, "가입축하")
+        INSERT INTO customer VALUES (#{custId}, #{custPwd}, #{custName}, #{custEmail}, #{custPhone},now(), 0, 1000, #{custNick}, #{custImg}, 1000, "가입축하")
     </insert>
 
     <update id="update" parameterType="Customer">
@@ -22,7 +22,8 @@
                             cust_email = #{custEmail},
                             cust_phone = #{custPhone},
                             cust_point = #{custPoint},
-                            cust_nick = #{custNick}
+                            cust_nick = #{custNick},
+                            cust_img = #{custImg}
         WHERE cust_id = #{custId}
     </update>
 

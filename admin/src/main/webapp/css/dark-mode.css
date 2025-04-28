@@ -1,185 +1,424 @@
+/* 다크모드 전역 테마 스타일 */
 body.dark-mode {
-    background-color: #1d1d1f !important;
-    color: #f5f5f7 !important;
+    background-color: #1d1d1f;
+    color: #f5f5f7;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
 
-body.dark-mode #admin-info-bar {
-    background-color: #2c2c2e !important;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4) !important;
-    color: #f5f5f7 !important;
+/* 컨테이너, 카드, 박스류 */
+body.dark-mode .container-fluid,
+body.dark-mode .card,
+body.dark-mode .card-section,
+body.dark-mode .section-box,
+body.dark-mode .content-box,
+body.dark-mode .table-container,
+body.dark-mode .rounded-box,
+body.dark-mode .white-box {
+    background-color: #1d1d1f;
+    color: #f5f5f7;
+    border: 1px solid #3a3a3c;
 }
 
-body.dark-mode #admin-info-bar #darkModeToggle {
-    background-color: #3a3a3c !important;
-    border-radius: 4px;
-    color: black !important;
-    padding: 0.3rem 0.5rem;
-}
-
-body.dark-mode #admin-info-bar .admin-name {
-    color: #f5f5f7 !important;
-}
-
-body.dark-mode #admin-info-bar a {
-    background-color: #3a3a3c !important;
-    border: 1px solid #4a4a4a !important;
-    color: #f5f5f7 !important;
-}
-
-body.dark-mode #admin-info-bar a:hover {
-    background-color: #4a4a4a !important;
-}
-
-body.dark-mode .back-link {
-    background-color: #2c2c2e !important;
-    border: 1px solid #3a3a3c !important;
-    color: #f5f5f7 !important;
-}
-
-body.dark-mode .back-link:hover {
-    background-color: #3a3a3c !important;
-}
-
-body.dark-mode .badge-primary,
-body.dark-mode .badge,
-body.dark-mode .label,
-body.dark-mode .tag {
-    background-color: #007bff !important;
-    color: #f5f5f7 !important;
-}
-
-body.dark-mode .card-title,
-body.dark-mode .text-muted,
-body.dark-mode .notice-form label,
-body.dark-mode .detail-form label {
-    color: #ccc !important;
-}
-
-body.dark-mode .dashboard-card,
-body.dark-mode .chart-card,
-body.dark-mode .chat-output,
-body.dark-mode .chat-area,
-body.dark-mode .message-box,
-body.dark-mode .chat-log {
-    background-color: #2c2c2e !important;
-    border: 1px solid #3a3a3c !important;
-    color: #f5f5f7 !important;
-}
-
-body.dark-mode .hover-sidebar {
-    background-color: #2c2c2e !important;
-    border-color: #3a3a3c !important;
-}
-
-body.dark-mode .hover-sidebar a {
-    color: #f5f5f7 !important;
-}
-
-body.dark-mode .hover-sidebar a:hover {
-    color: #0a84ff !important;
-}
-
-body.dark-mode .list-group-item,
-body.dark-mode .badge-dark {
-    background-color: transparent !important;
-    border-color: #3a3a3c !important;
-    color: #e5e5e7 !important;
-}
-
-body.dark-mode .notice-list i,
-body.dark-mode .notice-form i {
-    color: #f5f5f7 !important;
-}
-
-body.dark-mode .submit-btn:hover,
-body.dark-mode button:hover {
-    background-color: #4a4a4a !important;
-}
-
-body.dark-mode a {
-    color: #f5f5f7 !important;
-}
-
-body.dark-mode a:hover {
-    color: #0a84ff !important;
-}
-
-body.dark-mode button,
-body.dark-mode .submit-btn {
-    background-color: #3a3a3c !important;
-    border: 1px solid #4a4a4a !important;
-    color: #f5f5f7 !important;
-}
-
+/* 타이틀/텍스트 */
 body.dark-mode h1,
 body.dark-mode h2,
 body.dark-mode h3,
 body.dark-mode h4,
+body.dark-mode h5,
+body.dark-mode h6,
+body.dark-mode label,
 body.dark-mode .page-title,
 body.dark-mode .section-title,
-body.dark-mode .title,
-body.dark-mode .chat-header,
-body.dark-mode .text-center,
-body.dark-mode .notice-form h2,
-body.dark-mode .detail-form h2,
-body.dark-mode .notice-list h2 {
-    color: #f5f5f7 !important;
+body.dark-mode .card-title,
+body.dark-mode .text-muted {
+    color: #f5f5f7;
 }
 
+/* 입력 요소 */
 body.dark-mode input,
+body.dark-mode select,
 body.dark-mode textarea,
-body.dark-mode .notice-form input,
-body.dark-mode .notice-form textarea,
-body.dark-mode .detail-form input,
-body.dark-mode .detail-form textarea {
-    background-color: #2c2c2e !important;
-    border: 1px solid #3a3a3c !important;
-    color: #f5f5f7 !important;
+body.dark-mode .form-control,
+body.dark-mode .form-select {
+    background-color: #2c2c2e;
+    border: 1px solid #3a3a3c;
+    color: #f5f5f7;
+    box-shadow: none;
 }
-
 body.dark-mode input::placeholder,
 body.dark-mode textarea::placeholder {
-    color: #aaa !important;
+    color: #aaa;
+}
+body.dark-mode select option {
+    background-color: #2c2c2e;
+    color: #f5f5f7;
 }
 
+/* 버튼 */
+body.dark-mode .btn,
+body.dark-mode button,
+body.dark-mode .submit-btn {
+    background-color: #3a3a3c;
+    border: 1px solid #4a4a4a;
+    color: #f5f5f7;
+}
+body.dark-mode .btn:hover,
+body.dark-mode button:hover,
+body.dark-mode .submit-btn:hover {
+    background-color: #4a4a4a;
+}
+
+/* 링크 */
+body.dark-mode a {
+    color: #0a84ff;
+}
+body.dark-mode a:hover {
+    color: #58a6ff;
+}
+
+/* 테이블 */
 body.dark-mode table,
-body.dark-mode tbody td {
-    background-color: #2c2c2e !important;
-    border-color: #3a3a3c !important;
-    color: #e5e5e7 !important;
+body.dark-mode thead,
+body.dark-mode th,
+body.dark-mode td {
+    background-color: #2c2c2e;
+    color: #e5e5e7;
+    border-color: #3a3a3c;
 }
-
-body.dark-mode thead th {
-    background-color: #3a3a3c !important;
-    border-color: #4a4a4c !important;
-    color: #f5f5f7 !important;
-}
-
 body.dark-mode tr:nth-child(even) td {
-    background-color: #262628 !important;
+    background-color: #262628;
 }
-
 body.dark-mode tr:hover td {
-    background-color: #3c3c3e !important;
+    background-color: #3c3c3e;
 }
 
-body.dark-mode,
-body.dark-mode .container-fluid,
-body.dark-mode .card,
-body.dark-mode .content-box,
-body.dark-mode .table-container,
-body.dark-mode .rounded-box,
-body.dark-mode .white-box,
-body.dark-mode .chat-container,
-body.dark-mode .table-wrapper,
-body.dark-mode .notice-box,
-body.dark-mode .section-box,
-body.dark-mode .top-header,
-body.dark-mode .top-area,
-body.dark-mode .notice-form,
-body.dark-mode .detail-form,
+/* Datatables UI */
+body.dark-mode .dataTables_wrapper .dataTables_length select,
+body.dark-mode .dataTables_wrapper .dataTables_filter input {
+    background-color: #2c2c2e;
+    color: #f5f5f7;
+    border: 1px solid #3a3a3c;
+}
+body.dark-mode .dataTables_wrapper .dataTables_info,
+body.dark-mode .dataTables_wrapper .dataTables_paginate,
+body.dark-mode .dataTables_wrapper .dataTables_filter label,
+body.dark-mode .dataTables_wrapper .dataTables_length label {
+    color: #f5f5f7;
+}
+
+/* 아이콘박스, 뱃지 */
+body.dark-mode .badge,
+body.dark-mode .badge-primary,
+body.dark-mode .tag,
+body.dark-mode .label {
+    background-color: #007bff;
+    color: #f5f5f7;
+}
+
+/* 특수 영역 (예: admin bar, 사이드바) */
+body.dark-mode #admin-info-bar {
+    background-color: #2c2c2e;
+    color: #f5f5f7;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+}
+body.dark-mode #admin-info-bar a,
+body.dark-mode #admin-info-bar .admin-name {
+    color: #f5f5f7;
+}
+body.dark-mode #admin-info-bar a:hover {
+    background-color: #3a3a3c;
+    border-color: #4a4a4a;
+}
+
+body.dark-mode .sidebar-content {
+    background-color: #1d1d1f;
+    color: #f5f5f7;
+    border-right: 1px solid #3a3a3c;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 내부 링크나 텍스트 */
+body.dark-mode .sidebar-content a {
+    color: #f5f5f7;
+    text-decoration: none;
+}
+
+body.dark-mode .sidebar-content a:hover {
+    background-color: #2c2c2e;
+    color: #0a84ff;
+}
+
+/* 아이콘 또는 버튼이 있을 경우 */
+body.dark-mode .sidebar-content .icon,
+body.dark-mode .sidebar-content button {
+    background: none;
+    border: none;
+    color: #f5f5f7;
+}
+body.dark-mode #hover-sidebar,
+body.dark-mode .hover-sidebar {
+    background-color: #1d1d1f;
+    color: #f5f5f7;
+    border-right: 1px solid #3a3a3c;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+}
+
+/* 사이드바 내부 링크/아이템 */
+body.dark-mode .hover-sidebar a {
+    color: #f5f5f7;
+    text-decoration: none;
+    padding: 0.75rem 1rem;
+    display: block;
+}
+
+body.dark-mode .hover-sidebar a:hover {
+    background-color: #2c2c2e;
+    color: #0a84ff;
+}
+
+/* 아이콘 버튼 등이 있을 경우 */
+body.dark-mode .hover-sidebar button,
+body.dark-mode .hover-sidebar .icon {
+    background: none;
+    border: none;
+    color: #f5f5f7;
+}
 body.dark-mode .notice-list {
-    background-color: #1d1d1f !important;
-    border-color: #3a3a3c !important;
+    background-color: #1d1d1f;
+    color: #f5f5f7;
+    border: 1px solid #3a3a3c;
+}
+
+/* 목록 아이템이 테이블 or 리스트 구조일 때 */
+body.dark-mode .notice-list table,
+body.dark-mode .notice-list th,
+body.dark-mode .notice-list td,
+body.dark-mode .notice-list li {
+    background-color: #2c2c2e;
+    color: #f5f5f7;
+    border-color: #3a3a3c;
+}
+
+/* hover 효과 */
+body.dark-mode .notice-list tr:hover td,
+body.dark-mode .notice-list li:hover {
+    background-color: #3c3c3e;
+}
+
+/* 링크 */
+body.dark-mode .notice-list a {
+    color: #f5f5f7;
+}
+body.dark-mode .notice-list a:hover {
+    color: #0a84ff;
+}
+body.dark-mode .notice-form {
+    background-color: #1d1d1f;
+    color: #f5f5f7;
+    border: 1px solid #3a3a3c;
+    padding: 1rem;
+}
+
+/* 텍스트, 라벨 */
+body.dark-mode .notice-form label,
+body.dark-mode .notice-form h1,
+body.dark-mode .notice-form h2,
+body.dark-mode .notice-form h3 {
+    color: #ffffff;
+}
+
+/* 입력 요소 */
+body.dark-mode .notice-form input,
+body.dark-mode .notice-form select,
+body.dark-mode .notice-form textarea {
+    background-color: #2c2c2e;
+    border: 1px solid #3a3a3c;
+    color: #f5f5f7;
+}
+body.dark-mode .notice-form input::placeholder,
+body.dark-mode .notice-form textarea::placeholder {
+    color: #aaa;
+}
+body.dark-mode .notice-form select option {
+    background-color: #2c2c2e;
+    color: #f5f5f7;
+}
+
+/* 버튼 */
+body.dark-mode .notice-form button,
+body.dark-mode .notice-form .btn {
+    background-color: #3a3a3c;
+    border: 1px solid #4a4a4a;
+    color: #f5f5f7;
+}
+body.dark-mode .notice-form button:hover,
+body.dark-mode .notice-form .btn:hover {
+    background-color: #4a4a4a;
+}
+body.dark-mode .chat-container {
+    background-color: #1d1d1f;
+    color: #f5f5f7;
+    border: 1px solid #3a3a3c;
+}
+
+/* 채팅 로그 (대화 내용 나열) */
+body.dark-mode .chat-container .chat-log,
+body.dark-mode .chat-container .message-list {
+    background-color: #1d1d1f;
+    color: #f5f5f7;
+    border-top: 1px solid #3a3a3c;
+}
+
+/* 말풍선 */
+body.dark-mode .chat-container .message-box,
+body.dark-mode .chat-container .chat-bubble {
+    background-color: #2c2c2e;
+    border: 1px solid #3a3a3c;
+    color: #ffffff;
+}
+
+/* 입력 영역 */
+body.dark-mode .chat-container input,
+body.dark-mode .chat-container textarea {
+    background-color: #2c2c2e;
+    border: 1px solid #3a3a3c;
+    color: #ffffff;
+}
+body.dark-mode .chat-container input::placeholder,
+body.dark-mode .chat-container textarea::placeholder {
+    color: #aaa;
+}
+
+/* 버튼 */
+body.dark-mode .chat-container button,
+body.dark-mode .chat-container .btn {
+    background-color: #3a3a3c;
+    border: 1px solid #4a4a4a;
+    color: #f5f5f7;
+}
+body.dark-mode .chat-container button:hover,
+body.dark-mode .chat-container .btn:hover {
+    background-color: #4a4a4a;
+}
+body.dark-mode #all.chat-box {
+    background-color: #1d1d1f;
+    color: #f5f5f7;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #3a3a3c;
+    padding: 1rem;
+}
+
+/* 채팅 아이템 (말풍선 등) */
+body.dark-mode .chat-box .chat-bubble,
+body.dark-mode .chat-box .message-box {
+    background-color: #2c2c2e;
+    color: #ffffff;
+    border: 1px solid #3a3a3c;
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    margin-bottom: 0.5rem;
+}
+
+/* 사용자 이름, 시간 */
+body.dark-mode .chat-box .chat-meta {
+    color: #bbbbbb;
+    font-size: 0.8rem;
+    margin-bottom: 0.25rem;
+}
+
+/* 입력창 또는 버튼이 같이 들어간 경우 */
+body.dark-mode .chat-box input,
+body.dark-mode .chat-box textarea {
+    background-color: #2c2c2e;
+    border: 1px solid #3a3a3c;
+    color: #ffffff;
+}
+body.dark-mode .chat-box input::placeholder,
+body.dark-mode .chat-box textarea::placeholder {
+    color: #aaa;
+}
+
+body.dark-mode .chat-box button,
+body.dark-mode .chat-box .btn {
+    background-color: #3a3a3c;
+    border: 1px solid #4a4a4a;
+    color: #f5f5f7;
+}
+body.dark-mode .chat-box button:hover {
+    background-color: #4a4a4a;
+}
+body.dark-mode #me.chat-box {
+    background-color: #1d1d1f;
+    color: #f5f5f7;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* 오른쪽 정렬 */
+    border: 1px solid #3a3a3c;
+    padding: 1rem;
+}
+
+/* 내가 보낸 말풍선 */
+body.dark-mode #me.chat-box .chat-bubble,
+body.dark-mode #me.chat-box .message-box {
+    background-color: #0a84ff; /* 파란 배경 강조 */
+    color: #ffffff;
+    border: none;
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    margin-bottom: 0.5rem;
+    max-width: 75%;
+    text-align: left;
+}
+
+/* 타임스탬프 또는 이름 */
+body.dark-mode #me.chat-box .chat-meta {
+    color: #d0d0d0;
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+}
+body.dark-mode #to.chat-box {
+    background-color: #1d1d1f;
+    color: #f5f5f7;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* 왼쪽 정렬 */
+    border: 1px solid #3a3a3c;
+    padding: 1rem;
+}
+
+/* 상대방 말풍선 */
+body.dark-mode #to.chat-box .chat-bubble,
+body.dark-mode #to.chat-box .message-box {
+    background-color: #2c2c2e;
+    color: #ffffff;
+    border: 1px solid #3a3a3c;
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    margin-bottom: 0.5rem;
+    max-width: 75%;
+    text-align: left;
+}
+
+/* 상대방 이름, 시간 등 메타 정보 */
+body.dark-mode #to.chat-box .chat-meta {
+    color: #aaaaaa;
+    font-size: 0.75rem;
+    margin-bottom: 0.25rem;
+}
+
+body.dark-mode a {
+    color: inherit !important;
+}
+
+body.dark-mode a:hover {
+    text-decoration: underline;
+    opacity: 0.85;
+}
+body.dark-mode .card-header {
+    background-color: #2c2c2e !important;
+    border-bottom: 1px solid #3a3a3c !important;
     color: #f5f5f7 !important;
 }

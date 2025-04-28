@@ -17,7 +17,14 @@
       align-items: center;
       justify-content: center;
       background-color: #f5f5f7;
+      color: #1d1d1f;
       font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    body.dark-mode {
+      background-color: #1d1d1f;
+      color: #f5f5f7;
     }
 
     .login-box {
@@ -29,6 +36,11 @@
       text-align: center;
       animation: fadeInUp 0.4s ease-out;
       box-sizing: border-box;
+      transition: background-color 0.3s ease;
+    }
+
+    body.dark-mode .login-box {
+      background: #2c2c2e;
     }
 
     .login-logo {
@@ -46,7 +58,6 @@
       font-size: 1.4rem;
       font-weight: 600;
       margin-bottom: 2rem;
-      color: #1d1d1f;
     }
 
     .form-input {
@@ -57,13 +68,21 @@
       border-radius: 8px;
       font-size: 0.95rem;
       box-sizing: border-box;
-      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      background-color: #fff;
+      color: #1d1d1f;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, color 0.3s ease;
     }
 
     .form-input:focus {
       outline: none;
       border-color: #0071e3;
       box-shadow: 0 0 0 2px rgba(0, 113, 227, 0.2);
+    }
+
+    body.dark-mode .form-input {
+      background-color: #2c2c2e;
+      color: #f5f5f7;
+      border: 1px solid #3a3a3c;
     }
 
     ::placeholder {

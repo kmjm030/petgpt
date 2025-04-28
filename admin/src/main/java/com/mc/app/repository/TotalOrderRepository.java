@@ -12,9 +12,12 @@ import java.util.Map;
 @Repository
 @Mapper
 public interface TotalOrderRepository extends MCRepository<TotalOrder, Integer> {
+
     int selectOrderCount() throws Exception;
     int selectTodayRevenue() throws Exception;
     List<Map<String, Object>> selectOrderStatusCount() throws Exception;
+    int selectTotalRevenue() throws Exception;
+    List<Map<String, Object>> selectTop10Items() throws Exception;
 
     @Select("""
         SELECT COUNT(*) 

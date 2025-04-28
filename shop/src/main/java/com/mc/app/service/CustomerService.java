@@ -45,4 +45,5 @@ public class CustomerService implements MCService<Customer, String> {
         PageHelper.startPage(pageNo, 3); // pageSize: 한화면에 출력되는 개수
         return custRepository.getpage();
     }
+
 }

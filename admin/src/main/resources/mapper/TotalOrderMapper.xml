@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
@@ -24,37 +24,32 @@
         SELECT * FROM total_order
     </select>
 
-    <select id="selectOne" parameterType="int" resultMap="TotalOrderResult">
+    <select id="selectOne" parameterType="int" resultType="TotalOrder">
         SELECT * FROM total_order WHERE order_key = #{orderKey}
     </select>
 
-    <insert id="insert" parameterType="com.mc.app.dto.TotalOrder">
-        INSERT INTO total_order (
-            cust_id, addr_key, item_key, order_date,
-            recipient_name, recipient_phone,
-            order_req, order_status, order_card,
-            order_totalprice, order_shootnum
-        ) VALUES (
-                     #{custId}, #{addrKey}, #{itemKey}, #{orderDate},
-                     #{recipientName}, #{recipientPhone},
-                     #{orderReq}, #{orderStatus}, #{orderCard},
-                     #{orderTotalPrice}, #{orderShootNum}
-                 )
+    <insert id="insert" parameterType="TotalOrder">
+        INSERT INTO total_order
+        (cust_id, addr_key, item_key, order_date, recipient_name, recipient_phone,
+         order_req, order_status, order_card, order_total_price, order_shoot_num)
+        VALUES
+            (#{custId}, #{addrKey}, #{itemKey}, #{orderDate}, #{recipientName}, #{recipientPhone},
+             #{orderReq}, #{orderStatus}, #{orderCard}, #{orderTotalPrice}, #{orderShootNum})
     </insert>
 
-    <update id="update" parameterType="com.mc.app.dto.TotalOrder">
+    <update id="update" parameterType="TotalOrder">
         UPDATE total_order SET
-                               cust_id           = #{custId},
-                               addr_key          = #{addrKey},
-                               item_key          = #{itemKey},
-                               order_date        = #{orderDate},
-                               recipient_name    = #{recipientName},
-                               recipient_phone   = #{recipientPhone},
-                               order_req         = #{orderReq},
-                               order_status      = #{orderStatus},
-                               order_card        = #{orderCard},
-                               order_totalprice  = #{orderTotalPrice},
-                               order_shootnum    = #{orderShootNum}
+                               cust_id = #{custId},
+                               addr_key = #{addrKey},
+                               item_key = #{itemKey},
+                               order_date = #{orderDate},
+                               recipient_name = #{recipientName},
+                               recipient_phone = #{recipientPhone},
+                               order_req = #{orderReq},
+                               order_status = #{orderStatus},
+                               order_card = #{orderCard},
+                               order_total_price = #{orderTotalPrice},
+                               order_shoot_num = #{orderShootNum}
         WHERE order_key = #{orderKey}
     </update>
 
@@ -67,14 +62,33 @@
     </select>
 
     <select id="selectTodayRevenue" resultType="int">
-        SELECT IFNULL(SUM(order_totalprice), 0) FROM total_order WHERE DATE(order_date)=CURDATE()
+        SELECT IFNULL(SUM(order_total_price), 0)
+        FROM total_order
+        WHERE DATE(order_date) = CURDATE()
     </select>
 
     <select id="selectOrderStatusCount" resultType="map">
         SELECT order_status, COUNT(*) AS count
         FROM total_order
-        WHERE DATE(order_date)=CURDATE()
+        WHERE DATE(order_date) = CURDATE()
         GROUP BY order_status
     </select>
 
+    <select id="selectTotalRevenue" resultType="int">
+        SELECT IFNULL(SUM(order_totalprice), 0)
+        FROM total_order
+        WHERE order_status IN ('결제완료', '배송중', '배송완료')
+    </select>
+
+    <select id="selectTop10Items" resultType="map">
+        SELECT i.item_name AS itemName, COUNT(*) AS salesCount
+        FROM total_order o
+                 JOIN item i ON o.item_key = i.item_key
+        GROUP BY o.item_key
+        ORDER BY salesCount DESC
+            LIMIT 10
+    </select>
+
+
 </mapper>
+

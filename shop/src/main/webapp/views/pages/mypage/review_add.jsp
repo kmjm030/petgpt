@@ -160,8 +160,9 @@
                 <div id="collapseOne" class="collapse show" data-parent="#accordionExample">
                   <div class="card-body">
                     <div class="shop__sidebar__categories">
-                      <ul class="nice-scroll">
+                      <ul>
                         <li><a href="<c:url value='/mypage?id=${cust.custId}'/>">회원정보</a></li>
+                        <li><a href="<c:url value='/pet?id=#${cust.custId}'/>">나의 펫 정보</a></li>
                         <li><a href="<c:url value='/checkout/orderlist?id=${cust.custId}'/>">주문내역</a></li>
                         <li><a href="<c:url value='/address?id=${cust.custId}'/>">배송지 목록</a></li>
                         <li><a href="<c:url value='/mypage/like?id=${cust.custId}'/>">찜 목록</a></li>

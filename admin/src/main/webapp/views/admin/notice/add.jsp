@@ -58,6 +58,38 @@
     .submit-btn:hover {
         background-color: #333;
     }
+
+    body.dark-mode .notice-form {
+        background-color: #1d1d1f;
+        color: #f5f5f7;
+        border: 1px solid #3a3a3c;
+    }
+
+    body.dark-mode .notice-form h2,
+    body.dark-mode .notice-form label {
+        color: #f5f5f7;
+    }
+
+    body.dark-mode .form-group input,
+    body.dark-mode .form-group textarea {
+        background-color: #2c2c2e;
+        border: 1px solid #3a3a3c;
+        color: #f5f5f7;
+    }
+
+    body.dark-mode .form-group input::placeholder,
+    body.dark-mode .form-group textarea::placeholder {
+        color: #aaa;
+    }
+
+    body.dark-mode .submit-btn {
+        background-color: #3a3a3c;
+        color: #f5f5f7;
+    }
+
+    body.dark-mode .submit-btn:hover {
+        background-color: #4a4a4a;
+    }
 </style>
 
 <div class="notice-form">

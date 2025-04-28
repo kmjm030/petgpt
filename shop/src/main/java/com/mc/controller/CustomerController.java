@@ -3,20 +3,31 @@ package com.mc.controller;
 import com.mc.app.dto.Customer;
 import com.mc.app.dto.Item;
 import com.mc.app.dto.Like;
+import com.mc.app.dto.QnaBoard;
+import com.mc.app.service.CouponService;
 import com.mc.app.service.CustomerService;
 import com.mc.app.service.ItemService;
 import com.mc.app.service.LikeService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 @Slf4j
@@ -24,11 +35,16 @@ import java.util.List;
 @RequestMapping("/mypage")
 public class CustomerController {
 
-    String dir = "mypage/";
+    @Value("${file.upload.directory}")
+    private String uploadDirectory;
 
-    final CustomerService custService;
-    final LikeService likeService;
-    final ItemService itemService;
+    @Value("${file.upload.url.prefix}")
+    private String uploadUrlPrefix;
+
+    private final CustomerService custService;
+    private final LikeService likeService;
+    private final ItemService itemService;
+
 
     @GetMapping("")
     public String mypage(Model model, @RequestParam("id") String id, HttpSession session) throws Exception{
@@ -56,7 +72,9 @@ public class CustomerController {
 
     @RequestMapping("/updateimpl")
     public String updateimpl(Model model, Customer cust,
-                             @RequestParam("newPwd") String newPwd) throws Exception {
+                             @RequestParam("newPwd") String newPwd,
+                             @RequestParam("img") MultipartFile img,
+                             @RequestParam(value = "imgDelete", required = false) String imgDelete) throws Exception {
 
         // 현재 비밀번호 확인
         Customer dbCust = custService.get(cust.getCustId());
@@ -74,7 +92,52 @@ public class CustomerController {
             cust.setCustPwd(newPwd);
         }
 
-        custService.mod(cust);
+        try {
+            // 기존 게시글을 불러와서 기존 이미지 경로를 알아냄
+            Customer exCust = custService.get(cust.getCustId());
+            String oldImgPath = exCust.getCustImg();
+
+            // 새 이미지가 업로드되었을 경우
+            if (img != null && !img.isEmpty()) {
+                // 기존 이미지 삭제
+                if (oldImgPath != null && !oldImgPath.isEmpty()) {
+                    // 웹 경로를 실제 경로로 변환
+                    String relativePath = oldImgPath.replace(uploadUrlPrefix, ""); // "/2025/04/15/abc.jpg"
+                    Path oldFilePath = Paths.get(uploadDirectory, relativePath);
+                    Files.deleteIfExists(oldFilePath);
+                    log.info("기존 이미지 삭제됨: {}", oldFilePath);
+                }
+
+                // 새 이미지 저장
+                String dateFolder = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+                String originalFilename = img.getOriginalFilename();
+                String fileExtension = extractExtension(originalFilename);
+                String storedFileName = UUID.randomUUID().toString() + fileExtension;
+                Path targetDirectory = Paths.get(uploadDirectory, dateFolder);
+                Path targetLocation = targetDirectory.resolve(storedFileName);
+
+                Files.createDirectories(targetDirectory);
+                Files.copy(img.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+
+                String webAccessiblePath = uploadUrlPrefix + "/" + dateFolder + "/" + storedFileName;
+                cust.setCustImg(webAccessiblePath);
+
+            } else if ("true".equals(imgDelete)) {
+                // 이미지를 삭제만 하고 새 업로드 없음
+                if (oldImgPath != null && !oldImgPath.isEmpty()) {
+                    String relativePath = oldImgPath.replace(uploadUrlPrefix, "");
+                    Path oldFilePath = Paths.get(uploadDirectory, relativePath);
+                    Files.deleteIfExists(oldFilePath);
+                }
+                cust.setCustImg(null);  // DB에서도 제거
+            } else {
+                // 아무 변화 없으면 기존 이미지 유지
+                cust.setCustImg(oldImgPath);
+            }
+            custService.mod(cust);
+        } catch (Exception e) {
+            log.error("게시글 수정 중 오류", e);
+        }
         return "redirect:/mypage?id=" + dbCust.getCustId();
     }
 
@@ -100,6 +163,13 @@ public class CustomerController {
                                             @RequestParam("id") String custId) throws Exception {
         likeService.deleteForMypage(custId, itemKey);
         return "redirect:/mypage/like?id=" + custId;
+    }
+
+    private String extractExtension(String fileName) {
+        if (fileName == null || fileName.lastIndexOf(".") == -1) {
+            return "";
+        }
+        return fileName.substring(fileName.lastIndexOf("."));
     }
 
 

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mc.app.repository.PetRepository">
+
+    <select id="select" resultType="Pet">
+        SELECT * FROM pet
+    </select>
+
+    <select id="selectOne" parameterType="int" resultType="Pet">
+        SELECT * FROM pet WHERE pet_key = #{petKey}
+    </select>
+
+    <select id="findByCust" parameterType="String" resultType="Pet">
+        SELECT * FROM pet WHERE cust_id = #{custId}
+    </select>
+
+    <insert id="insert" parameterType="com.mc.app.dto.Pet">
+        INSERT INTO pet (
+            cust_id, pet_name, pet_type, pet_breed, pet_birthdate,
+            pet_gender, pet_img, pet_rdate
+        ) VALUES (
+                     #{custId}, #{petName}, #{petType}, #{petBreed}, #{petBirthdate},
+                     #{petGender}, #{petImg}, now()
+                 )
+    </insert>
+
+    <update id="update" parameterType="Pet">
+        UPDATE pet SET pet_img = #{petImg}
+        WHERE pet_key = #{petKey}
+    </update>
+
+    <delete id="delete" parameterType="int">
+        DELETE FROM pet WHERE pet_key = #{petKey}
+    </delete>
+
+</mapper>

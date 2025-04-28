@@ -2,86 +2,52 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-
-
 <div class="card-body">
   <div class="table-responsive">
+    <h4 class="font-weight-bold mb-3">문의 글 목록</h4>
     <c:forEach var="qna" items="${qnaList}">
-<%--      <H1>${qna.boardKey}</H1>--%>
-<%--      <H5>난는 ${map.get(qna.boardKey)}</H5>--%>
-<%--       게시판원글  --%>
-      <h4> 게시판글</h4>
-      <table class="table table-bordered"  width="100%" cellspacing="0">
-        <thead class="thead-dark">
-        <tr class="table-dark">
-          <th>boardKey</th>
-          <th>ItemKey</th>
-          <th>custId</th>
-          <th>boardTitle</th>
-          <th>boardContent</th>
-          <th>boardRdate</th>
-<%--          <th>boardImg</th>--%>
-<%--          <th>boardOption</th>--%>
-<%--          <th>boardUpdate</th>--%>
+      <div class="border rounded mb-3">
+        <!-- 질문 헤더 (클릭 영역) -->
+        <div class="p-3 bg-light d-flex justify-content-between align-items-center inquiry-toggle" style="cursor: pointer;">
+          <div>
+            <strong>[${qna.boardKey}] ${qna.boardTitle}</strong>
+            <small class="ml-3 text-muted">작성자: ${qna.custId} | 작성일: <fmt:formatDate value="${qna.boardRdate}" pattern="yyyy-MM-dd HH:mm"/></small>
+          </div>
+          <i class="bi bi-chevron-down toggle-icon"></i>
+        </div>
 
-        </tr>
-        </thead>
-        <tbody>
-          <%--                    <c:forEach var="a" items="${adminComments}">--%>
-
-        <tr>
-          <td><a href="<c:url value="/board/detail"/>?id=${qna.boardKey}">${qna.boardKey}</a></td>
-          <td>${qna.itemKey}</td>
-          <td>${qna.custId}</td>
-          <td>${qna.boardTitle}</td>
-          <td>${qna.boardContent}</td>
-          <td>${qna.boardRdate}</td>
-<%--          <td>${qna.boardImg}</td>--%>
-<%--          <td>${qna.boardOption}</td>--%>
-<%--          <td>${qna.boardUpdate}</td>--%>
-
-
-        </tr>
-          <%--                    </c:forEach>--%>
-        </tbody>
-      </table>
-
-
-<%--        게시판원글끝--%>
-
-
-      <h5> 관리자답변</h5>
-      <table class="table table-bordered"  width="100%" cellspacing="0">
-        <thead class="thead-light">
-        <tr class="table-warning">
-          <th>qna.adminComments.boardKey</th>
-          <th>qna.adminComments.adcommentsKey</th>
-          <th>qna.adminComments.ItemKey</th>
-          <th>qna.adminComments.adminId</th>
-          <th>qna.adminComments.adcommentsContent</th>
-          <th>qna.adminComments.adcommentsRdate</th>
-<%--          <th>adcommentsUpdate</th>--%>
-
-        </tr>
-        </thead>
-        <tbody>
-        <%--                    <c:forEach var="a" items="${adminComments}">--%>
-
-        <tr>
-          <td><a href="<c:url value="/board/detail"/>?id=${qna.boardKey}">${qna.boardKey}</a></td>
-          <td>${qna.adcommentsKey}</td>
-<%--          <td>${qna.boardKey}</td>--%>
-          <td>${qna.itemKey}</td>
-          <td>${qna.adminId}</td>
-          <td>${qna.adcommentsContent}</td>
-          <td>${qna.adcommentsRdate}</td>
-<%--          <td>${qna.adminComments.adcommentsUpdate}</td>--%>
-
-
-        </tr>
-        <%--                    </c:forEach>--%>
-        </tbody>
-      </table>
+        <!-- 답변 영역 -->
+        <div class="answer-content px-4 py-3" style="display: none;">
+          <div><strong>📌 질문 내용:</strong><br>${qna.boardContent}</div>
+          <hr>
+          <c:if test="${not empty qna.adcommentsContent}">
+            <div><strong>🛡 관리자(${qna.adminId})의 답변:</strong><br>${qna.adcommentsContent}</div>
+            <div class="text-muted mt-2" style="font-size: 12px;">
+              답변일: <fmt:formatDate value="${qna.adcommentsRdate}" pattern="yyyy-MM-dd HH:mm"/>
+            </div>
+          </c:if>
+          <c:if test="${empty qna.adcommentsContent}">
+            <div class="text-muted">⏳ 아직 답변이 등록되지 않았습니다.</div>
+          </c:if>
+        </div>
+      </div>
     </c:forEach>
   </div>
 </div>
+
+<script>
+  $(document).ready(function () {
+    $('.inquiry-toggle').click(function () {
+      const $answer = $(this).next('.answer-content');
+      const isVisible = $answer.is(':visible');
+
+      $('.answer-content').slideUp();
+      $('.toggle-icon').removeClass('bi-chevron-up').addClass('bi-chevron-down');
+
+      if (!isVisible) {
+        $answer.slideDown();
+        $(this).find('.toggle-icon').removeClass('bi-chevron-down').addClass('bi-chevron-up');
+      }
+    });
+  });
+</script>

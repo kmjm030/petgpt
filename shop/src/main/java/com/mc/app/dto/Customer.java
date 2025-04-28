@@ -16,7 +16,8 @@ public class Customer {
     private String custName;   
     private String custEmail;  
     private String custPhone;  
-    private LocalDateTime custRdate;  
+    private LocalDateTime custRdate;
+    private String custImg;
     private int custAuth;     
     private int custPoint;     
     private String custNick;   

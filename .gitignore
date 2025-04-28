@@ -112,3 +112,5 @@ logs/
 # 데이터베이스 덤프 (필요에 따라 주석 해제)
 # *.sql
 # *.dump
+
+gen-lang-client-0283444979-e37cfc993ab4.json

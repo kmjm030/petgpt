@@ -21,6 +21,11 @@
             padding-top: 60px !important;
         }
 
+        body.dark-mode {
+            background-color: #1d1d1f;
+            color: #f5f5f7;
+        }
+
         #admin-info-bar {
             position: fixed;
             top: 0;
@@ -34,6 +39,12 @@
             gap: 14px;
             border-bottom-left-radius: 14px;
             height: 60px;
+        }
+
+        body.dark-mode #admin-info-bar {
+            background-color: #2c2c2e;
+            color: #f5f5f7;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
         }
 
         #admin-info-bar .admin-name {
@@ -59,6 +70,15 @@
             background-color: #333333;
         }
 
+        body.dark-mode #admin-info-bar a {
+            background-color: #3a3a3c;
+            color: #f5f5f7;
+        }
+
+        body.dark-mode #admin-info-bar a:hover {
+            background-color: #4a4a4a;
+        }
+
         #welcome-overlay {
             position: fixed;
             z-index: 9998;
@@ -73,6 +93,10 @@
             animation: fadeOut 1s ease 2.5s forwards;
         }
 
+        body.dark-mode #welcome-overlay {
+            background-color: #1d1d1f;
+        }
+
         .welcome-box {
             text-align: center;
             font-size: 1.6rem;
@@ -80,6 +104,10 @@
             color: #1d1d1f;
             opacity: 0;
             animation: fadeIn 1s ease-in-out 0.5s forwards;
+        }
+
+        body.dark-mode .welcome-box {
+            color: #f5f5f7;
         }
 
         @keyframes fadeIn {
@@ -107,6 +135,11 @@
             box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
         }
 
+        body.dark-mode .hover-sidebar {
+            background-color: #2c2c2e;
+            border-color: #3a3a3c;
+        }
+
         .hover-sidebar .sidebar-content {
             padding: 2rem 1rem;
             display: flex;
@@ -121,8 +154,16 @@
             transition: all 0.2s ease;
         }
 
+        body.dark-mode .hover-sidebar a {
+            color: #f5f5f7;
+        }
+
         .hover-sidebar a:hover {
             color: #0071e3;
+        }
+
+        body.dark-mode .hover-sidebar a:hover {
+            color: #58a6ff;
         }
 
         .hover-sidebar .logo {
@@ -149,8 +190,7 @@
             <i class="fas fa-user-circle"></i> ${sessionScope.admin.adminName} 님
         </span>
         <a href="<c:url value='/logoutimpl'/>" onclick="sessionStorage.clear();">로그아웃</a>
-        <button id="darkModeToggle" title="다크모드 토글"
-                style="background:none; border:none; font-size:1.2rem; cursor:pointer;">🌙</button>
+        <button id="darkModeToggle" title="다크모드 토글" style="background:none; border:none; font-size:1.2rem; cursor:pointer;">🌙</button>
     </div>
 
     <div id="welcome-overlay">
@@ -170,8 +210,8 @@
         <a href="<c:url value='/'/>"><i class="fas fa-tachometer-alt"></i> 대시보드</a>
         <a href="<c:url value='/cust/get'/>"><i class="fas fa-users"></i> 사용자 관리</a>
         <a href="<c:url value='/item/get'/>"><i class="fas fa-box"></i> 상품 관리</a>
-        <a href="<c:url value='/totalorder'/>"><i class="fas fa-shopping-cart"></i> 주문 관리</a>
-        <a href="<c:url value='/inquiries.jsp'/>"><i class="fas fa-question-circle"></i> 문의글 관리</a>
+        <a href="<c:url value='/orderdetail'/>"><i class="fas fa-shopping-cart"></i> 주문 관리</a>
+        <a href="<c:url value='/qnaboard/get'/>"><i class="fas fa-comment-dots"></i> 문의글 관리</a>
         <a href="<c:url value='/qnaboard/get'/>"><i class="fas fa-comment-dots"></i> 상품 문의글</a>
         <a href="<c:url value='/ws'/>"><i class="fas fa-comments"></i> 채팅</a>
         <a href="<c:url value='/admin/notice/get'/>"><i class="fas fa-bullhorn"></i> 관리자 공지사항</a>
@@ -201,7 +241,6 @@
             sidebar.style.transform = "translateX(-100%)";
         });
 
-        // 환영 오버레이 처리
         const overlay = document.getElementById("welcome-overlay");
         if (overlay) {
             const hasShown = sessionStorage.getItem("welcomeShown");

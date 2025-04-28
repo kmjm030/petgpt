@@ -1,11 +1,7 @@
 package com.mc.controller;
 
-import com.mc.app.dto.Item;
-import com.mc.app.dto.TotalOrder;
-import com.mc.app.service.CustomerService;
-import com.mc.app.service.ItemService;
-import com.mc.app.service.TotalOrderService;
-import com.mc.app.service.AdminNoticeService;
+import com.mc.app.dto.*;
+import com.mc.app.service.*;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +16,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Slf4j
 public class MainController {
+
     private final CustomerService custService;
     private final ItemService itemService;
     private final TotalOrderService totalOrderService;
@@ -41,6 +38,7 @@ public class MainController {
         if (session.getAttribute("admin") == null) {
             return "redirect:/views/login.jsp";
         }
+
         try {
             model.addAttribute("custCount", custService.getCount());
             model.addAttribute("todayJoinCount", custService.getTodayJoinCount());
@@ -49,54 +47,80 @@ public class MainController {
             model.addAttribute("custCount", 0);
             model.addAttribute("todayJoinCount", 0);
         }
+
         try {
             model.addAttribute("itemCount", itemService.get().size());
         } catch (Exception e) {
             log.error("[MainController] 상품 수 로드 실패: {}", e.getMessage());
             model.addAttribute("itemCount", 0);
         }
+
         try {
             model.addAttribute("orderCount", totalOrderService.getOrderCount());
         } catch (Exception e) {
             log.error("[MainController] 주문 수 로드 실패: {}", e.getMessage());
             model.addAttribute("orderCount", 0);
         }
+
         try {
-            model.addAttribute("todayRevenue", totalOrderService.getTodayRevenue());
+            model.addAttribute("totalRevenue", totalOrderService.getTotalRevenue());
         } catch (Exception e) {
-            log.error("[MainController] 오늘 매출 로드 실패: {}", e.getMessage());
-            model.addAttribute("todayRevenue", 0);
+            log.error("[MainController] 총 매출 로드 실패: {}", e.getMessage());
+            model.addAttribute("totalRevenue", 0);
         }
+
         try {
             model.addAttribute("orderStatusMap", totalOrderService.getOrderStatusCountMap());
         } catch (Exception e) {
             log.error("[MainController] 주문 상태 로드 실패: {}", e.getMessage());
             model.addAttribute("orderStatusMap", new HashMap<>());
         }
-        List<String> alerts = new ArrayList<>();
+
         try {
-            itemService.getItemsWithLowStock(5).forEach(item ->
-                    alerts.add("[상품] '" + item.getItemName() + "' 재고 " + item.getStock() + "개 이하"));
+            model.addAttribute("topItemList", totalOrderService.getTop10Items());
         } catch (Exception e) {
-            log.warn("[MainController] 알림(재고) 오류: {}", e.getMessage());
+            log.warn("[MainController] TOP10 로드 실패: {}", e.getMessage());
+            model.addAttribute("topItemList", new ArrayList<>());
         }
-        try { int uq = totalOrderService.getUnansweredQnaCount();
-            if (uq>0) alerts.add("[문의] 미답변 Q&A " + uq + "건");
+
+        List<String> alerts = new ArrayList<>();
+
+        try {
+            List<Item> lowStockItems = itemService.getItemsWithLowStock(5);
+            for (Item item : lowStockItems) {
+                alerts.add(" [상품] '" + item.getItemName() + "'의 재고가 " + item.getStock() + "개 이하입니다.");
+            }
         } catch (Exception e) {
-            log.warn("[MainController] 알림(Q&A) 오류: {}", e.getMessage());
+            log.warn("[MainController] 알림 생성 중 오류 (재고): {}", e.getMessage());
         }
-        try { int fr = totalOrderService.getFlaggedReviewCount();
-            if (fr>0) alerts.add("[리뷰] 신고된 리뷰 " + fr + "건");
+
+        try {
+            int unansweredQna = totalOrderService.getUnansweredQnaCount();
+            if (unansweredQna > 0) {
+                alerts.add(" [문의] 미답변 Q&A가 " + unansweredQna + "건 있습니다.");
+            }
         } catch (Exception e) {
-            log.warn("[MainController] 알림(리뷰) 오류: {}", e.getMessage());
+            log.warn("[MainController] 알림 생성 중 오류 (Q&A): {}", e.getMessage());
         }
+
+        try {
+            int flaggedReviews = totalOrderService.getFlaggedReviewCount();
+            if (flaggedReviews > 0) {
+                alerts.add(" [리뷰] 신고된 리뷰가 " + flaggedReviews + "건 있습니다.");
+            }
+        } catch (Exception e) {
+            log.warn("[MainController] 알림 생성 중 오류 (리뷰): {}", e.getMessage());
+        }
+
         model.addAttribute("adminAlerts", alerts);
+
         try {
             model.addAttribute("adminNotices", adminNoticeService.getRecentNotices());
         } catch (Exception e) {
             log.warn("[MainController] 공지사항 로드 실패: {}", e.getMessage());
             model.addAttribute("adminNotices", new ArrayList<>());
         }
+
         model.addAttribute("serverurl", websocketServerUrl);
         model.addAttribute("center", "center");
         return "index";
@@ -104,8 +128,11 @@ public class MainController {
 
     @RequestMapping("/today")
     public String todayJoinList(Model model) {
-        try { model.addAttribute("todayJoinedList", custService.getTodayJoinedCustomers()); }
-        catch (Exception e) { model.addAttribute("todayJoinedList", null); }
+        try {
+            model.addAttribute("todayJoinedList", custService.getTodayJoinedCustomers());
+        } catch (Exception e) {
+            model.addAttribute("todayJoinedList", null);
+        }
         model.addAttribute("center", "cust/todayList");
         return "index";
     }

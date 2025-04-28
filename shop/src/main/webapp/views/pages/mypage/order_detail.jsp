@@ -48,18 +48,18 @@
 </style>
 
 <script>
-  const like = {
+  const order_detail = {
     init:function(){
     },
-    del:function(boardKey){
-      let c = confirm('문의글을 삭제하시겠습니까?');
+    del:function(orderKey){
+      let c = confirm('주문을 취소하시겠습니까?');
       if(c == true){
-        location.href = '<c:url value="/qnaboard/delimpl?boardKey="/>' + boardKey;
+        location.href = '<c:url value="/checkout/delimpl?orderKey="/>' + orderKey;
       }
     }
   }
   $(function(){
-    like.init();
+    order_detail.init();
   });
 </script>
 
@@ -100,8 +100,9 @@
                 <div id="collapseOne" class="collapse show" data-parent="#accordionExample">
                   <div class="card-body">
                     <div class="shop__sidebar__categories">
-                      <ul class="nice-scroll">
+                      <ul>
                         <li><a href="<c:url value='/mypage?id=${cust.custId}'/>">회원정보</a></li>
+                        <li><a href="<c:url value='/pet?id=#${cust.custId}'/>">나의 펫 정보</a></li>
                         <li><a href="<c:url value='/checkout/orderlist?id=${cust.custId}'/>"><strong id="category">주문내역</strong></a></li>
                         <li><a href="<c:url value='/address?id=${cust.custId}'/>">배송지 목록</a></li>
                         <li><a href="<c:url value='/mypage/like?id=${cust.custId}'/>">찜 목록</a></li>
@@ -149,7 +150,7 @@
               <td>${c.orderDetailPrice}</td>
               <td>${c.orderDetailCount}</td>
               <td><button class="review-btn"
-                          onclick="location.href='<c:url value='/review/add'/>?itemKey=${c.itemKey}&orderDetailKey=${c.orderDetailKey}'">
+                          onclick="location.href='<c:url value='/review/add'/>?itemKey=${c.itemKey}&orderKey=${c.orderKey}&orderDetailKey=${c.orderDetailKey}'">
                 <strong>리뷰쓰기</strong></button></td>
             </tr>
           </c:forEach>
@@ -158,10 +159,12 @@
           <br/><br/>
         <div class="row">
           <div class="col-lg-6">
-            <button class="site-btn order-site-btn">교환/환불 신청</button>
+            <button class="site-btn order-site-btn"
+                    onclick="location.href='<c:url value='/qnaboard/add'/>?id=${cust.custId}'">교환/환불 신청</button>
           </div>
           <div class="col-lg-6">
-            <button class="site-btn order-site-btn">주문 취소하기</button>
+            <button class="site-btn order-site-btn"
+                  onclick="order_detail.del(${order.orderKey})">주문 취소하기</button>
           </div>
         </div>
         </div>
@@ -169,3 +172,8 @@
     </div>
   </div>
 </section>
+<c:if test="${not empty msg}">
+  <script>
+    alert("${msg}");
+  </script>
+</c:if>

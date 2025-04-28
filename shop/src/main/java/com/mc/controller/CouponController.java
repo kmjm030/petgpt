@@ -36,7 +36,7 @@ public class CouponController {
             return "redirect:/mypage?id=" + loggedInCustomer.getCustId();  // 자신의 마이페이지만 보여줌
         }
 
-        List<Coupon> coupons = couponService.findByCustId(id);
+        List<Coupon> coupons = couponService.findUsableByCustId(id);
 
         model.addAttribute("coupons", coupons);
         model.addAttribute("currentPage", "pages");
