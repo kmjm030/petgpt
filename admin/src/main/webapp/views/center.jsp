@@ -4,11 +4,10 @@
 
 <style>
   body {
-    background-color: #fff0f5;
-    color: #4b2c2c;
-    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background: linear-gradient(to bottom right, #fff0f5, #ffe4e1);
+    color: #d63384; /* 기본 핑크톤 */
+    font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     padding: 2rem;
-    background-image: linear-gradient(to bottom right, #fff0f5, #ffe4e1);
     overflow-x: hidden;
   }
 
@@ -37,6 +36,14 @@
     flex-direction: column;
     justify-content: center;
     transition: transform 0.3s ease;
+    color: #d63384; /* 카드 안 전체 핑크톤으로 */
+  }
+
+  body.dark-mode .dashboard-card,
+  body.dark-mode .chart-card {
+    background-color: #2c2c2e;
+    border-color: #3a3a3c;
+    color: #f5f5f7;
   }
 
   .dashboard-card:hover,
@@ -45,19 +52,13 @@
     box-shadow: 0 12px 24px rgba(255, 182, 193, 0.3);
   }
 
-  body.dark-mode .dashboard-card,
-  body.dark-mode .chart-card {
-    background-color: #2c2c2e;
-    border-color: #3a3a3c;
-  }
-
   .card-title {
     font-size: 1rem;
     font-weight: 600;
     margin-bottom: 0.75rem;
     text-transform: uppercase;
-    color: #d63384;
     text-align: center;
+    color: #d63384;
   }
 
   body.dark-mode .card-title {
@@ -75,23 +76,45 @@
     color: #fff;
   }
 
-  ul.order-status,
-  .list-group {
-    padding-left: 0;
-    list-style: none;
-    margin: 0;
-  }
-
-  .order-status li,
+  ul.order-status li,
+  ul.list-group li,
   .list-group-item {
-    padding: 0.5rem 0;
+    color: #d63384;
     font-size: 0.95rem;
-  }
-
-  .list-group-item {
     background-color: transparent;
     border: none;
-    color: inherit;
+  }
+
+  body.dark-mode ul.order-status li,
+  body.dark-mode ul.list-group li,
+  body.dark-mode .list-group-item {
+    color: #f5f5f7;
+  }
+
+  .list-group-item.text-muted {
+    color: #bdbdbd;
+  }
+
+  body.dark-mode .list-group-item.text-muted {
+    color: #888;
+  }
+
+  .list-group-item a {
+    color: #d63384;
+    text-decoration: none;
+  }
+
+  .list-group-item a:hover {
+    color: #ad1457;
+    text-decoration: underline;
+  }
+
+  body.dark-mode .list-group-item a {
+    color: #f5f5f7;
+  }
+
+  body.dark-mode .list-group-item a:hover {
+    color: #ff90c2;
   }
 
   .badge-dark {
@@ -131,6 +154,9 @@
     }
   }
 </style>
+
+
+
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
