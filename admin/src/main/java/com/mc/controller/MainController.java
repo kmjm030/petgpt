@@ -8,10 +8,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-
+import org.springframework.web.bind.annotation.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -145,6 +144,29 @@ public class MainController {
         }
         model.addAttribute("serverurl", websocketServerUrl);
         model.addAttribute("center", "ws");
+        return "index";
+    }
+
+    @GetMapping("/totalorder")
+    public String showTotalOrders(Model model) throws Exception {
+        List<TotalOrder> orders = totalOrderService.getAll();
+        model.addAttribute("totalorderList", orders);
+
+        Map<Integer,String> itemNameMap = itemService.get()
+                .stream()
+                .collect(Collectors.toMap(
+                        Item::getItemKey,
+                        Item::getItemName
+                ));
+        model.addAttribute("itemNameMap", itemNameMap);
+        model.addAttribute("center", "totalorder");
+        return "index";
+    }
+
+    @GetMapping("/totalorder/{orderKey}")
+    public String showOrderDetail(@PathVariable int orderKey, Model model) throws Exception {
+        model.addAttribute("totalorder", totalOrderService.getOne(orderKey));
+        model.addAttribute("center", "totalorder_detail");
         return "index";
     }
 }
