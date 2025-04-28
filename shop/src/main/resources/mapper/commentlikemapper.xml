@@ -19,4 +19,11 @@
         WHERE comments_key = #{commentsKey}
     </delete>
 
+    <!-- 특정 댓글에 대한 특정 사용자의 좋아요 존재 여부 확인 -->
+    <select id="countByCommentKeyAndCustId" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM comment_likes
+        WHERE comments_key = #{commentsKey} AND cust_id = #{custId}
+    </select>
+
 </mapper>
