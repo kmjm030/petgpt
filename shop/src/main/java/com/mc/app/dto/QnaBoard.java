@@ -29,4 +29,7 @@ public class QnaBoard {
     private Option option;
     private TotalOrder totalOrder;
     private OrderDetail orderDetail;
+    private Customer customer;
+    private AdminComments adminComments;
+
 }

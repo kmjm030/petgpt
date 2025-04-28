@@ -68,18 +68,26 @@ public class CheckOutController {
                             @RequestParam("custId") String custId,
                             @RequestParam(value = "addrSave", required = false) String addrSave,
                             @RequestParam("orderTotalPrice") int orderTotalPrice,
-                            @RequestParam("couponId") int couponId) throws Exception {
+                            @RequestParam(value = "couponId", required = false) Integer couponId) throws Exception {
 
         // 세션에서 cartItems 꺼내기
         List<Map<String, Object>> cartItems = (List<Map<String, Object>>) session.getAttribute("cartItems");
 
         // 쿠폰 사용완료로 바꾸기
-        Coupon coupon = couponService.get(couponId);
-        coupon.setCouponUse("Y");
-        couponService.mod(coupon);
 
-        // TotalOrder 저장하기
         TotalOrder order = totalOrder;
+        if (couponId != null) {
+            Coupon coupon = couponService.get(couponId);
+            if (coupon != null) {
+                coupon.setCouponUse("Y");
+                couponService.mod(coupon);
+            }
+            order.setCouponId(couponId);
+        } else {
+            order.setCouponId(0);
+        }
+        // TotalOrder 저장하기
+
         order.setCustId(custId);
         order.setOrderAddr(address.getAddrAddress());
         order.setOrderAddrDetail(address.getAddrDetail());
@@ -87,7 +95,6 @@ public class CheckOutController {
         order.setOrderHomecode(address.getAddrHomecode());
         order.setOrderTotalPrice(orderTotalPrice);
         order.setItemKey((int)cartItems.get(0).get("item_key"));
-        order.setCouponId(couponId);
         totalOrderService.add(order);
 
         int orderKey = order.getOrderKey();
@@ -195,9 +202,10 @@ public class CheckOutController {
     public String delimpl(Model model, HttpSession session, @RequestParam("orderKey") int orderKey) throws Exception {
         TotalOrder order = totalOrderService.get(orderKey);
         Coupon coupon = couponService.get(order.getCouponId());
-        coupon.setCouponUse("N");
-        couponService.mod(coupon);
-
+        if (coupon != null) {
+            coupon.setCouponUse("N");
+            couponService.mod(coupon);
+        }
         totalOrderService.del(orderKey);
 
         Customer loggedInCustomer = (Customer) session.getAttribute("cust");

@@ -28,6 +28,8 @@ public class ShopController {
     private final LikeService likeService;
     private final OptionService optionService;
     private final QnaBoardService qnaService;
+    private final CustomerService custService;
+    private final AdminCommentsService adminCommentsService;
 
     @GetMapping("")
     public String shop(
@@ -158,8 +160,24 @@ public class ShopController {
             log.error("상품 상세 정보 조회 중 오류 발생 (itemKey: {})", itemKey, e);
             return "redirect:/shop";
         }
+
         List<QnaBoard> qnaBoards = qnaService.findQnaByItem(itemKey);
         List<QnaBoard> reviews = qnaService.findReviewByItem(itemKey);
+
+        for (QnaBoard review : reviews) {
+            Customer customer = custService.get(review.getCustId());
+            review.setCustomer(customer);
+        }
+
+        for(QnaBoard qnaBoard : qnaBoards) {
+            Customer customer = custService.get(qnaBoard.getCustId());
+            qnaBoard.setCustomer(customer);
+            AdminComments comments = adminCommentsService.get(qnaBoard.getBoardKey());
+            if(comments != null){
+                qnaBoard.setAdminComments(comments);
+            }
+
+        }
 
         model.addAttribute("qnaBoards", qnaBoards);
         model.addAttribute("reviews", reviews);

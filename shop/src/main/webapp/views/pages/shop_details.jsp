@@ -1,8 +1,10 @@
 <%@ page pageEncoding="UTF-8" %>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
         <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+            <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
-            <style>
+<style>
                 .quantity-controls .btn:hover {
                     background-color: #000 !important;
                     border-color: #000 !important;
@@ -457,7 +459,38 @@
                 .selected-option-item .remove-item-btn:hover {
                     color: #555;
                 }
+
+                .fade-in {
+                    animation: fadeIn 0.3s ease-in-out;
+                }
+
+                @keyframes fadeIn {
+                    from {
+                        opacity: 0;
+                        transform: translateY(-10px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
+
+                .product__details__tab__content a{
+                    color: black;
+                }
             </style>
+<script>
+    function toggleContent(id) {
+        var contentRow = document.getElementById(id);
+        if (contentRow.style.display === "none" || contentRow.style.display === "") {
+            contentRow.style.display = "table-row";
+            contentRow.classList.add('fade-in');
+        } else {
+            contentRow.style.display = "none";
+            contentRow.classList.remove('fade-in');
+        }
+    }
+</script>
 
             <script>
                 $(function () {
@@ -979,18 +1012,42 @@
                                                             <div class="container mt-4">
                                                                 <div class="card mb-3 p-3">
                                                                     <div class="d-flex">
-                                                                        <img src="<c:url value="#"/>" class="rounded-circle me-3" alt="user" style="width:60px; height:60px; object-fit:cover;">
+                                                                        <c:choose>
+                                                                            <c:when test="${not empty c.customer.custImg}">
+                                                                                <img src="<c:url value="${c.customer.custImg}"/>" class="rounded-circle me-3" alt="user" style="width:60px; height:60px; object-fit:cover; margin-right: 20px;">
+                                                                            </c:when>
+                                                                            <c:otherwise>
+                                                                                <img src="<c:url value='/img/clients/profile.png'/>" class="rounded-circle me-3" alt="user" style="width:60px; height:60px; object-fit:cover; margin-right: 20px;"/>
+                                                                            </c:otherwise>
+                                                                        </c:choose>
                                                                         <div class="flex-grow-1">
                                                                             <div class="d-flex justify-content-between">
                                                                                 <div>
-                                                                                    <strong>닉네임</strong>
-                                                                                    <span class="text-warning ms-2">별점표시영역</span>
+                                                                                    <strong>${c.customer.custNick}</strong>
+                                                                                    <div class="text-warning ms-2">
+                                                                                        <div class="star-rating mb-2">
+                                                                                             <c:forEach var="i" begin="1" end="5">
+                                                                                                 <c:choose>
+                                                                                                    <c:when test="${i <= c.boardScore}">
+                                                                                                        <i class="bi bi-star-fill text-warning"></i>
+                                                                                                    </c:when>
+                                                                                                    <c:otherwise>
+                                                                                                        <i class="bi bi-star"></i>
+                                                                                                    </c:otherwise>
+                                                                                                </c:choose>
+                                                                                             </c:forEach>
+                                                                                        </div>
+                                                                                    </div>
                                                                                 </div>
-                                                                                <small class="text-muted">${c.boardRdate}</small>
+                                                                                <small class="text-muted"><fmt:formatDate value="${c.boardRdate}" pattern="yyyy-MM-dd" /></small>
                                                                             </div>
                                                                             <p class="mt-2 mb-1">${c.boardContent}</p>
                                                                             <div class="d-flex gap-2 mt-2">
-                                                                                <img src="<c:url value="${c.boardImg}"/>" class="img-thumbnail" style="width:80px; height:80px; object-fit:cover;">
+                                                                                <c:choose>
+                                                                                    <c:when test="${not empty c.boardImg}">
+                                                                                        <img src="<c:url value="${c.boardImg}"/>" class="img-thumbnail" style="width:80px; height:80px; object-fit:cover;">
+                                                                                    </c:when>
+                                                                                </c:choose>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -1010,25 +1067,40 @@
                                                     <div class="product__details__tab__content">
                                                         <table class="table">
                                                             <thead>
-                                                                <tr>
-                                                                    <th>제목</th>
-                                                                    <th>등록날짜</th>
-                                                                    <th></th>
-                                                                </tr>
+                                                            <tr>
+                                                                <th>제목</th>
+                                                                <th>등록날짜</th>
+                                                                <th></th>
+                                                            </tr>
                                                             </thead>
                                                             <tbody>
-                                                                <c:forEach var="c" items="${qnaBoards}">
-                                                                    <tr>
-                                                                        <td>${c.boardTitle}</td>
-                                                                        <td>
-                                                                            <fmt:formatDate value="${c.boardRdate}"
-                                                                                pattern="yyyy-MM-dd" />
-                                                                        </td>
-                                                                        <td>
-                                                                            <p id="boardRe">${c.boardRe}</p>
-                                                                        </td>
-                                                                    </tr>
-                                                                </c:forEach>
+                                                            <c:forEach var="c" items="${qnaBoards}" varStatus="status">
+                                                                <tr id="title-content-${status.index}">
+                                                                    <td>
+                                                                        <a href="javascript:void(0);" onclick="toggleContent('content-${status.index}')">
+                                                                                ${c.boardTitle}
+                                                                        </a>
+                                                                    </td>
+                                                                    <td>
+                                                                        <fmt:formatDate value="${c.boardRdate}" pattern="yyyy-MM-dd" />
+                                                                    </td>
+                                                                    <td>
+                                                                        <p id="boardRe">${c.boardRe}</p>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr id="content-${status.index}" style="display:none;">
+                                                                    <td colspan="3">
+                                                                        <div style="margin: 20px;">${fn:escapeXml(c.boardContent)}</div>
+                                                                        <c:if test="${not empty c.adminComments}">
+                                                                            <div style="margin-top: 10px; padding: 10px; background-color: #f9f9f9; border-radius: 5px; border: 1px solid #ddd;">
+                                                                                <strong>└ 🗨️</strong>
+                                                                                <p style="display:inline-block;">${fn:escapeXml(c.adminComments.adcommentsContent)}   (<fmt:formatDate value="${c.adminComments.adcommentsRdate}" pattern="yyyy-MM-dd" />)</p>
+                                                                            </div>
+                                                                        </c:if>
+                                                                    </td>
+
+                                                                </tr>
+                                                            </c:forEach>
                                                             </tbody>
                                                         </table>
                                                     </div>
