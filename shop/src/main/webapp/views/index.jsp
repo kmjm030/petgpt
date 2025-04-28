@@ -429,8 +429,7 @@
                     min-width: 160px;
                     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
                     z-index: 1000;
-                    border: 1px solid #eee;
-                    border-radius: 10px;
+                    border-radius: 7px;
                     margin-top: 25px;
                     opacity: 0;
                     visibility: hidden;
@@ -557,7 +556,7 @@
                     <div class="row">
                         <div class="col-lg-2 col-md-2">
                             <div class="header__logo">
-                                <a href="/"><img id="main-logo" src=<c:url value="/img/logo.png" /> alt=""></a>
+                                <a href="/"><img id="main-logo" src=<c:url value="/img/logo/logo.png" /> alt=""></a>
                             </div>
                         </div>
 
@@ -889,20 +888,63 @@
                 document.addEventListener("DOMContentLoaded", function () {
                     const toggleBtn = document.getElementById("modeToggleBtn");
                     const modeOptions = document.getElementById("modeOptions");
+                    const mainLogo = document.getElementById("main-logo"); // 로고 요소 가져오기
+                    const lightLogoSrc = '<c:url value="/img/logo/logo.png"/>'; // 라이트 모드 로고 경로
+                    const darkLogoSrc = '<c:url value="/img/logo/logo-dark.png"/>'; // 다크 모드 로고 경로 (준비 필요)
 
+                    function applyThemeBackgrounds() {
+                        const isDarkMode = document.body.classList.contains('dark-mode');
+                        // console.log("Applying theme backgrounds. Dark mode:", isDarkMode); // 디버깅 필요시 주석 해제
+
+                        // jQuery가 로드되었는지 확인하고 실행
+                        if (typeof $ === 'function') {
+                            $('.set-bg').each(function () {
+                                const $this = $(this);
+                                const lightBg = $this.data('setbg');
+                                const darkBg = $this.data('setbg-dark'); // 다크 모드용 경로 읽기
+                                let targetBg = lightBg; // 기본값: 라이트 모드
+
+                                // 다크 모드이고, 다크 모드 경로가 있으면 해당 경로 사용
+                                if (isDarkMode && darkBg) {
+                                    targetBg = darkBg;
+                                }
+
+                                // 적용할 경로가 있으면 배경 설정
+                                if (targetBg) {
+                                    const currentBg = $this.css('background-image');
+                                    const targetUrl = 'url("' + targetBg + '")';
+
+                                    // 현재 배경과 다를 경우에만 업데이트 (깜빡임 방지)
+                                    if (currentBg !== targetUrl) {
+                                        $this.css('background-image', 'url(' + targetBg + ')');
+                                    }
+                                }
+                            });
+                        } else {
+                            console.warn("jQuery not loaded when applyThemeBackgrounds was called.");
+                        }
+                    }
+
+                    // 초기 로드 시 테마 적용 및 배경 업데이트
                     const savedMode = localStorage.getItem("darkMode");
                     if (savedMode === "true") {
                         document.body.classList.add("dark-mode");
+                        if (mainLogo && darkLogoSrc) mainLogo.src = darkLogoSrc; // 다크 로고 적용
+                        applyThemeBackgrounds(); // 초기 다크 모드 배경 적용
+                    } else {
+                        // 라이트 모드가 기본값이지만 명시적으로 클래스 제거 및 로고/배경 설정
+                        document.body.classList.remove("dark-mode");
+                        if (mainLogo && lightLogoSrc) mainLogo.src = lightLogoSrc; // 라이트 로고 적용
+                        applyThemeBackgrounds(); // 초기 라이트 모드 배경 적용
                     }
 
+                    // FAB 버튼 클릭 시 드롭다운 토글
                     toggleBtn.addEventListener("click", function (event) {
-                        event.stopPropagation(); // 이벤트 버블링 방지
-                        // modeOptions.style.display = modeOptions.style.display === "block" ? "none" : "block";
-                        // 위 코드 대신 클래스 토글 사용
+                        event.stopPropagation(); // 이벤트 전파 중단
                         modeOptions.classList.toggle("active");
                     });
 
-                    // 드롭다운 옵션 클릭 시 모드 변경 로직 추가
+                    // 드롭다운 옵션(라이트/다크) 클릭 시 모드 변경
                     document.querySelectorAll("#modeOptions div").forEach(option => {
                         option.addEventListener("click", () => {
                             const selectedMode = option.getAttribute("data-mode"); // 'light' 또는 'dark'
@@ -910,22 +952,22 @@
                             if (selectedMode === "dark") {
                                 document.body.classList.add("dark-mode");
                                 localStorage.setItem("darkMode", "true");
-                                // 로고 변경 로직 추가 (필요시)
-                                // document.getElementById('main-logo').src = '<c:url value="/img/logo-dark.png"/>';
+                                if (mainLogo && darkLogoSrc) mainLogo.src = darkLogoSrc; // 다크 로고 적용
+                                applyThemeBackgrounds(); // 다크 모드 배경 적용
                             } else { // selectedMode === "light"
                                 document.body.classList.remove("dark-mode");
                                 localStorage.setItem("darkMode", "false");
-                                // 로고 변경 로직 추가 (필요시)
-                                // document.getElementById('main-logo').src = '<c:url value="/img/logo.png"/>';
+                                if (mainLogo && lightLogoSrc) mainLogo.src = lightLogoSrc; // 라이트 로고 적용
+                                applyThemeBackgrounds(); // 라이트 모드 배경 적용
                             }
-
-                            // 드롭다운 닫기
+                            // 옵션 선택 후 드롭다운 닫기
                             modeOptions.classList.remove("active");
                         });
                     });
 
-                    // 다른 곳 클릭 시 닫기
+                    // 페이지의 다른 영역 클릭 시 드롭다운 닫기
                     document.addEventListener("click", function (e) {
+                        // 클릭된 요소가 드롭다운 메뉴나 토글 버튼이 아니면 닫기
                         if (!modeOptions.contains(e.target) && !toggleBtn.contains(e.target)) {
                             modeOptions.classList.remove("active");
                         }
