@@ -36,7 +36,6 @@ body.dark-mode .text-primary {
 
 /* --- Header & Navigation --- */
 body.dark-mode .header,
-body.dark-mode .header__top,
 body.dark-mode .navbar {
     background-color: #252526;
     color: #e0e0e0;
@@ -48,24 +47,15 @@ body.dark-mode .header__menu {
     background-color: #252526;
     color: #e0e0e0;
     border-bottom: none;
-
-    /* --- 메뉴 수직 위치 조정 --- */
-    /* 기존 padding 값을 확인하고 조정하세요. */
-    /* 예시: 원래 padding: 20px 0; 이었다면 아래처럼 상단 패딩을 늘려봅니다. */
     padding-top: 45px;
-    /* 기존 값 + 원하는 만큼 증가 (예: 5px 증가) */
     padding-bottom: 15px;
-    /* 하단 패딩은 필요에 따라 조절 (예: 5px 감소) */
-    /* 또는 padding: 25px 0 15px 0; 와 같이 한 줄로 작성 */
-    /* --- 메뉴 수직 위치 조정 끝 --- */
-
     transition: background-color 0.3s ease, color 0.3s ease, padding 0.3s ease;
 }
 
 body.dark-mode .header__top__links a,
 body.dark-mode .header__menu ul li a {
     color: #e0e0e0;
-    /* Transition inherited from general 'a' rule */
+    transition: color 0.3s ease;
 }
 
 body.dark-mode .header__top__links a:hover,
@@ -178,6 +168,31 @@ body.dark-mode .product__discount__percent {
     border-radius: 3px;
     transition: background-color 0.3s ease, color 0.3s ease;
     /* Added transition */
+}
+
+/* --- Product Section / Filters --- */
+body.dark-mode .filter__controls li {
+    color: #a0a0a0;
+    /* 기본 필터 항목 글자색 (기존 스타일 확인 필요) */
+    transition: color 0.3s ease, background-color 0.3s ease;
+    /* Add background-color transition */
+}
+
+body.dark-mode .filter__controls li:hover {
+    color: #e0e0e0;
+    /* 호버 시 글자색 */
+    /* background-color: #3a3a3c; */
+    /* 필요시 호버 배경색 추가 */
+}
+
+body.dark-mode .filter__controls li.active {
+    color: #ffffff;
+    /* 활성 항목 글자색 (흰색) */
+    background-color: #4a4a4c;
+    /* 활성 항목 배경색 (선택 사항, 강조 효과) */
+    border-radius: 4px;
+    /* 배경색 추가 시 둥근 모서리 (선택 사항) */
+    /* transition은 기본 li 규칙에서 상속받거나 여기서 재정의 */
 }
 
 /* Countdown Timer */
