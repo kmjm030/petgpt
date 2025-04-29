@@ -5,7 +5,7 @@
 <style>
   body {
     background: linear-gradient(to bottom right, #fff0f5, #ffe4e1);
-    color: #d63384; /* 기본 핑크톤 */
+    color: #d63384;
     font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     padding: 2rem;
     overflow-x: hidden;
@@ -34,9 +34,8 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     transition: transform 0.3s ease;
-    color: #d63384; /* 카드 안 전체 핑크톤으로 */
+    color: #d63384;
   }
 
   body.dark-mode .dashboard-card,
@@ -155,9 +154,6 @@
   }
 </style>
 
-
-
-
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     const petalCount = 20;
@@ -257,13 +253,8 @@
   });
 </script>
 
-
-
-
-
-
 <div class="container-fluid">
-  <div class="dashboard-header">대시보드</div>
+  <div class="dashboard-header">메인화면</div>
 
   <div class="row mb-4">
     <div class="col-lg-3 col-md-6 mb-4">

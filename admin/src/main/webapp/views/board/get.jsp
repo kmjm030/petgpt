@@ -2,6 +2,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+<link rel="stylesheet" href="/css/cherry-blossom.css">
+<link rel="stylesheet" href="/css/board.css">
 <script>
     const board_get = {
         update: function(id) {
@@ -17,81 +19,7 @@
     };
 </script>
 
-<style>
-    body {
-        background-color: #fff;
-        color: #1d1d1f;
-        font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        padding: 2rem;
-    }
-    .card {
-        border-radius: 16px;
-        border: 1px solid #e0e0e0;
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
-        padding: 2rem;
-        background-color: #fff;
-    }
-    h1 {
-        font-size: 1.75rem;
-        font-weight: 700;
-        margin-bottom: 1rem;
-    }
-    table th, table td {
-        text-align: center;
-        vertical-align: middle;
-    }
-    table th {
-        background-color: #f9f9fa;
-        font-size: 0.9rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        color: #6e6e73;
-    }
-    table td {
-        background-color: #fff;
-        font-size: 0.95rem;
-    }
-    .btn-secondary {
-        background-color: #1d1d1f;
-        color: white;
-        font-weight: 600;
-        border-radius: 8px;
-        border: none;
-        padding: 6px 14px;
-        font-size: 0.85rem;
-    }
-    .btn-secondary:hover {
-        background-color: #333;
-    }
-
-    body.dark-mode {
-        background-color: #1d1d1f;
-        color: #f5f5f7;
-    }
-    body.dark-mode .card {
-        background-color: #2c2c2e;
-        border-color: #3a3a3c;
-    }
-    body.dark-mode table th,
-    body.dark-mode table td {
-        background-color: #2c2c2e;
-        color: #f5f5f7;
-        border-color: #3a3a3c;
-    }
-    body.dark-mode table th {
-        background-color: #3a3a3c;
-    }
-    body.dark-mode .btn-secondary {
-        background-color: #3a3a3c;
-        border: 1px solid #4a4a4a;
-        color: #f5f5f7;
-    }
-    body.dark-mode .btn-secondary:hover {
-        background-color: #4a4a4a;
-    }
-</style>
-
-<div class="container-fluid">
+<div class="board-list-container">
     <h1>문의글 게시판 목록</h1>
     <div class="card">
         <div class="table-responsive">

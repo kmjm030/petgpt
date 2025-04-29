@@ -2,6 +2,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+<link rel="stylesheet" href="/css/cherry-blossom.css">
+<link rel="stylesheet" href="/css/board.css">
 <script>
     const board_detail = {
         init() {
@@ -26,100 +28,7 @@
     });
 </script>
 
-<style>
-    body {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        background-color: #f5f5f7;
-        color: #1d1d1f;
-        padding: 2rem;
-    }
-
-    h1 {
-        font-size: 1.6rem;
-        font-weight: 700;
-        margin-bottom: 1.5rem;
-    }
-
-    .card {
-        background-color: #fff;
-        border-radius: 20px;
-        padding: 2rem;
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
-        margin-bottom: 2rem;
-    }
-
-    .card-header {
-        margin-bottom: 1rem;
-    }
-
-    .form-group {
-        margin-bottom: 1.2rem;
-    }
-
-    label {
-        font-weight: 600;
-        display: block;
-        margin-bottom: 0.5rem;
-    }
-
-    .form-control {
-        border-radius: 10px;
-        padding: 0.7rem;
-        border: 1px solid #ccc;
-        font-size: 0.95rem;
-        width: 100%;
-    }
-
-    .form-group img {
-        border-radius: 12px;
-        max-width: 100%;
-    }
-
-    .btn {
-        padding: 0.6rem 1.4rem;
-        border-radius: 10px;
-        font-weight: 600;
-        border: none;
-        margin-right: 0.5rem;
-    }
-
-    .btn-primary {
-        background-color: #1d1d1f;
-        color: #fff;
-    }
-
-    .btn-primary:hover {
-        background-color: #333;
-    }
-
-    body.dark-mode {
-        background-color: #1d1d1f;
-        color: #f5f5f7;
-    }
-
-    body.dark-mode .card {
-        background-color: #2c2c2e;
-        color: #f5f5f7;
-        border: 1px solid #3a3a3c;
-    }
-
-    body.dark-mode .form-control {
-        background-color: #2c2c2e;
-        color: #f5f5f7;
-        border: 1px solid #3a3a3c;
-    }
-
-    body.dark-mode .btn-primary {
-        background-color: #3a3a3c;
-        color: #f5f5f7;
-    }
-
-    body.dark-mode .btn-primary:hover {
-        background-color: #4a4a4a;
-    }
-</style>
-
-<div class="container-fluid">
+<div class="board-detail-container">
     <h1>문의글 상세보기</h1>
 
     <div class="card">

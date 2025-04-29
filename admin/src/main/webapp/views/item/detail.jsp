@@ -5,13 +5,15 @@
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="/css/cherry-blossom.css">
+<link rel="stylesheet" href="/css/item.css">
 
 <script>
     $(function () {
         $('#btn_delete').click(() => {
             const key = $('#itemKey').val();
             if (confirm('정말로 이 상품을 삭제하시겠습니까?')) {
-                location.href = '<c:url value="/item/del"/>' + '?item_key=' + key;
+                location.href = '<c:url value="/item/del"/>?item_key=' + key;
             }
         });
 
@@ -26,126 +28,6 @@
         });
     });
 </script>
-
-<style>
-    body {
-        background-color: #fff;
-        color: #1d1d1f;
-        font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    }
-    h1, label, th, td { color: inherit; }
-    label { font-weight: 500; margin-bottom: 6px; display: block; }
-    .section-title {
-        font-size: 1.2rem;
-        font-weight: 600;
-        margin-bottom: 1rem;
-        border-bottom: 1px solid #e0e0e0;
-        padding-bottom: 0.5rem;
-    }
-    .card-section {
-        background-color: #fafafa;
-        padding: 20px;
-        border-radius: 14px;
-        margin-bottom: 24px;
-    }
-    .img-thumb {
-        width: 100px;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        margin-bottom: 10px;
-        filter: grayscale(10%);
-        transition: transform 0.2s ease;
-    }
-    .img-thumb:hover {
-        transform: scale(1.04);
-        filter: none;
-        border-color: #1d1d1f;
-    }
-    .form-control,
-    select.form-control,
-    input[type="file"] {
-        background-color: #fff;
-        color: #1d1d1f;
-        border: 1px solid #ccc;
-        border-radius: 10px;
-        font-size: 0.95rem;
-        padding: 10px;
-        height: 38px;
-    }
-    .form-control:focus {
-        box-shadow: none;
-        border-color: #1d1d1f;
-    }
-    .btn-dark, .btn-outline-danger {
-        font-weight: 600;
-        border-radius: 12px;
-        padding: 10px 24px;
-        min-width: 120px;
-    }
-    .btn-dark {
-        background-color: #1d1d1f;
-        color: #fff;
-        border: none;
-    }
-    .btn-outline-danger {
-        border: 1px solid #999;
-        background-color: transparent;
-        color: #1d1d1f;
-    }
-    .btn-outline-danger:hover {
-        background-color: #1d1d1f;
-        color: #fff;
-        border-color: #1d1d1f;
-    }
-    .badge-secondary {
-        background-color: #f2f2f2;
-        color: #888;
-        font-size: 13px;
-        padding: 5px 10px;
-        border-radius: 20px;
-    }
-    .btn-group-fixed {
-        display: flex;
-        gap: 12px;
-        margin-top: 30px;
-    }
-    .card {
-        background-color: #fff;
-        border: none;
-        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
-        border-radius: 20px;
-    }
-    .table-bordered th,
-    .table-bordered td {
-        background-color: #fff;
-        border-color: #e0e0e0;
-        color: #1d1d1f;
-    }
-    body.dark-mode {
-        background-color: #1d1d1f;
-        color: #f5f5f7;
-    }
-    body.dark-mode .card,
-    body.dark-mode .card-section,
-    body.dark-mode .form-control,
-    body.dark-mode .table-bordered th,
-    body.dark-mode .table-bordered td {
-        background-color: #2c2c2e;
-        color: #f5f5f7;
-        border-color: #3a3a3c;
-    }
-    body.dark-mode .btn-dark {
-        background-color: #3a3a3c;
-        color: #f5f5f7;
-    }
-    body.dark-mode .btn-outline-danger {
-        color: #f5f5f7;
-        border-color: #4a4a4a;
-    }
-    body.dark-mode .btn-outline-danger:hover {
-        background-color: #4a4a4a;
-    }
-</style>
 
 <div class="container-fluid">
     <h1 class="h3 mb-4 font-weight-bold">상품 상세 정보</h1>
@@ -247,6 +129,7 @@
                 </button>
             </div>
         </form>
+
         <jsp:include page="adminComments.jsp"/>
     </div>
 </div>
