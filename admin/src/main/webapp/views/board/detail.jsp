@@ -1,7 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
+<link rel="stylesheet" href="/css/cherry-blossom.css">
+<link rel="stylesheet" href="/css/board.css">
 <script>
     $(function () {
         $('#btn_update').click(() => {
@@ -20,7 +21,7 @@
     });
 </script>
 
-<div class="container-fluid">
+<div class="board-container">
     <div class="card p-4 mb-4">
         <h2 class="mb-3 font-weight-bold">문의글 상세</h2>
         <form id="detail_form">

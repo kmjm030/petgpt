@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -15,29 +16,30 @@ public class TotalOrderService {
 
     private final TotalOrderRepository totalOrderRepository;
 
+    public int getTotalRevenue() throws Exception {
+        return totalOrderRepository.selectTotalRevenue();
+    }
+
+    public List<Map<String, Object>> getTop10Items() throws Exception {
+        return totalOrderRepository.selectTop10Items();
+    }
+
     public int getOrderCount() throws Exception {
         return totalOrderRepository.selectOrderCount();
     }
 
-    public int getTodayRevenue() throws Exception {
-        return totalOrderRepository.selectTodayRevenue();
-    }
-
-    public int getTotalRevenue() throws Exception {  // ✅ 추가된 메서드
-        return totalOrderRepository.selectTotalRevenue();
-    }
-
     public Map<String, Integer> getOrderStatusCountMap() throws Exception {
         List<Map<String, Object>> rawList = totalOrderRepository.selectOrderStatusCount();
-        Map<String, Integer> result = new HashMap<>();
 
-        for (Map<String, Object> row : rawList) {
-            String status = (String) row.get("order_status");
-            Integer count = ((Number) row.get("count")).intValue();
-            result.put(status, count);
+        if (rawList == null || rawList.isEmpty()) {
+            return new HashMap<>();
         }
 
-        return result;
+        return rawList.stream()
+                .collect(Collectors.toMap(
+                        m -> String.valueOf(m.get("order_status")),
+                        m -> ((Number) m.get("count")).intValue()
+                ));
     }
 
     public int getUnansweredQnaCount() throws Exception {
@@ -49,27 +51,10 @@ public class TotalOrderService {
     }
 
     public List<TotalOrder> getAll() throws Exception {
-        return totalOrderRepository.select();
+        return totalOrderRepository.selectAll();
     }
 
     public TotalOrder getOne(int orderKey) throws Exception {
         return totalOrderRepository.selectOne(orderKey);
     }
-
-    public void add(TotalOrder order) throws Exception {
-        totalOrderRepository.insert(order);
-    }
-
-    public void mod(TotalOrder order) throws Exception {
-        totalOrderRepository.update(order);
-    }
-
-    public void del(int orderKey) throws Exception {
-        totalOrderRepository.delete(orderKey);
-    }
-
-    public List<Map<String, Object>> getTop10Items() throws Exception {
-        return totalOrderRepository.selectTop10Items();
-    }
-
 }
