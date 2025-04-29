@@ -8,56 +8,483 @@
                     background-position: center 30%;
                     background-repeat: no-repeat;
                 }
+
+                .loading-indicator {
+                    text-align: center;
+                    padding: 40px 15px;
+                    font-size: 1.1em;
+                    color: #555;
+                    min-height: 200px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 100%;
+                }
+
+                .loading-indicator::after {
+                    content: ' .';
+                    animation: dots 1.4s linear infinite;
+                    display: inline-block;
+                    width: 1em;
+                    text-align: left;
+                }
+
+                @keyframes dots {
+
+                    0%,
+                    20% {
+                        content: ' .';
+                    }
+
+                    40% {
+                        content: ' ..';
+                    }
+
+                    60% {
+                        content: ' ...';
+                    }
+
+                    80%,
+                    100% {
+                        content: '.';
+                    }
+                }
+
+                .product__item {
+                    margin-bottom: 35px;
+                    /* shop.jsp 기본 간격 */
+                    position: relative;
+                    /* 찜하기 상태 표시용 */
+                    overflow: visible;
+                    /* 호버 시 그림자 보이도록 */
+                }
+
+                .product__item__pic {
+                    height: 260px;
+                    /* shop.jsp 기본 높이 */
+                    position: relative;
+                    overflow: hidden;
+                    /* 내부 요소 넘침 방지 */
+                    margin-bottom: 20px;
+                    /* 이미지와 텍스트 간격 */
+                }
+
+                .product__hover .like-button,
+                .product__hover .detail-button {
+                    display: inline-block;
+                    transition: all 0.3s ease;
+                    background-color: rgba(255, 255, 255, 0.8);
+                    border-radius: 50%;
+                    width: 40px;
+                    height: 40px;
+                    display: flex;
+                    /* 아이콘 중앙 정렬 */
+                    align-items: center;
+                    justify-content: center;
+                    text-decoration: none;
+                }
+
+                .product__hover .like-button:hover,
+                .product__hover .detail-button:hover {
+                    transform: scale(1.2);
+                    background-color: rgba(255, 255, 255, 0.9);
+                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                }
+
+                .product__hover .like-button.liked {
+                    /* shop.jsp의 liked 버튼 스타일 */
+                    background-color: #ff6b6b;
+                }
+
+                .product__hover .like-button.liked .icon {
+                    /* shop.jsp의 liked 아이콘 스타일 */
+                    color: white;
+                }
+
+                .product__hover .icon {
+                    /* shop.jsp의 아이콘 스타일 */
+                    font-size: 18px;
+                    color: #333;
+                    line-height: 1;
+                    /* 아이콘 세로 정렬 */
+                }
+
+                /* 상품 자체에 liked 클래스 적용 시 (shop.jsp 참고) */
+                .product__item.liked .product__hover .like-button {
+                    background-color: #ff6b6b;
+                }
+
+                .product__item.liked .product__hover .like-button .icon {
+                    color: white;
+                }
+
+                /* --- 상품 텍스트 영역 레이아웃 (shop.jsp 구조 및 이미지 참고) --- */
+                .product__item__text {
+                    text-align: left;
+                    /* 왼쪽 정렬 (이미지 참고) */
+                    padding-top: 0;
+                    /* 이미지와 간격은 pic의 margin-bottom으로 조정 */
+                }
+
+                .product__item__text h6 {
+                    /* 상품명 */
+                    font-size: 15px;
+                    color: #252525;
+                    font-weight: 600;
+                    margin-bottom: 5px;
+                    /* 이름과 다음 요소 간격 */
+                    overflow: hidden;
+                    /* shop.jsp에는 없었지만, 길 경우 대비 */
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                }
+
+                .product__item__text .add-cart {
+                    /* 장바구니 버튼 (shop.jsp 스타일) */
+                    font-size: 14px;
+                    color: #ca1515;
+                    /* 빨간색 */
+                    font-weight: 700;
+                    letter-spacing: 1px;
+                    /* 글자 간격 */
+                    border-bottom: 1px solid #ca1515;
+                    /* 밑줄 */
+                    padding-bottom: 2px;
+                    display: inline-block;
+                    /* 밑줄 길이 맞춤 */
+                    margin-bottom: 8px;
+                    /* 버튼과 별점 간격 */
+                    text-decoration: none;
+                }
+
+                .product__item__text .rating {
+                    /* 별점 */
+                    margin-bottom: 5px;
+                    /* 별점과 가격 간격 */
+                    line-height: 1;
+                }
+
+                .product__item__text .rating i {
+                    font-size: 13px;
+                    color: #e3e3e3;
+                    /* 빈 별 색상 */
+                    margin-right: 1px;
+                }
+
+                .product__item__text .rating i.fa-star {
+                    /* 채워진 별 색상 */
+                    color: #f7941d;
+                }
+
+                .product__item__text h5 {
+                    /* 가격 */
+                    color: #0d0d0d;
+                    font-weight: 700;
+                    font-size: 16px;
+                    /* 이미지 참고 크기 */
+                    margin-bottom: 0;
+                }
+
+                .product__item__pic {
+                    /* height: 260px; */
+                    /* 고정 높이 제거 */
+                    aspect-ratio: 1 / 1;
+                    /* 정사각형 비율 */
+                    height: auto;
+                    /* 높이 자동 조정 */
+                    position: relative;
+                    overflow: hidden;
+                    margin-bottom: 20px;
+                    background-position: center;
+                    /* 이미지 중앙 정렬 */
+                    background-size: cover;
+                    /* 이미지 꽉 채우기 */
+                }
+
+                /* Sale 라벨 스타일 (필요시 유지) */
+                .product__item__pic .label {
+                    position: absolute;
+                    top: 10px;
+                    left: 10px;
+                    /* 왼쪽 상단 */
+                    font-size: 12px;
+                    color: #ffffff;
+                    font-weight: 700;
+                    padding: 2px 8px;
+                    text-transform: uppercase;
+                    background: #ca1515;
+                    /* 빨간색 배경 */
+                    z-index: 9;
+                }
             </style>
 
             <script>
+                var contextPath = "${pageContext.request.contextPath}";
 
-                // 장바구니 추가 함수
-                function addToCart(itemKey) {
-                    console.log("Adding item to cart:", itemKey);
+                const shop = {
+                    // shop.jsp의 init 함수는 home.jsp에서는 필터링 기능이 없으므로 제거
+                    // filterDuplicateColors 함수 제거
 
-                    // 옵션 키는 현재 없으므로 null
-                    const requestData = {
-                        itemKey: itemKey,
-                        cartCnt: 1
-                        // optionKey: null
-                    };
-
-                    $.ajax({
-                        url: '<c:url value="/cart/add/ajax"/>',
-                        type: 'POST',
-                        contentType: 'application/json',
-                        data: JSON.stringify(requestData),
-                        success: function (response) {
-                            console.log("Add to cart response:", response);
-                            if (response.success) {
-                                alert('상품이 장바구니에 추가되었습니다.');
-                            } else {
-                                alert(response.message || '장바구니 추가 중 오류가 발생했습니다.');
-
-                                if (response.redirectUrl) {
-                                    window.location.href = response.redirectUrl;
+                    // 장바구니 추가 함수 (shop.jsp와 동일)
+                    addToCart: (itemKey) => {
+                        console.log("Adding item to cart from home page:", itemKey);
+                        const requestData = { itemKey: itemKey, cartCnt: 1 };
+                        $.ajax({
+                            url: contextPath + '/cart/add/ajax', // contextPath 사용 확인
+                            type: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify(requestData),
+                            success: function (response) {
+                                console.log("Add to cart response:", response);
+                                if (response.success) {
+                                    // shop.showToast('상품이 장바구니에 추가되었습니다.'); // 토스트 메시지로 변경 가능
+                                    alert('상품이 장바구니에 추가되었습니다.');
+                                } else {
+                                    alert(response.message || '장바구니 추가 중 오류가 발생했습니다.');
+                                    if (response.redirectUrl) {
+                                        window.location.href = contextPath + response.redirectUrl; // contextPath 추가
+                                    }
                                 }
+                            },
+                            error: function (xhr, status, error) {
+                                console.error("Add to cart Ajax error:", status, error, xhr.responseText);
+                                alert('장바구니 추가 중 서버 통신 오류가 발생했습니다.');
                             }
-                        },
-                        error: function (xhr, status, error) {
-                            console.error("Add to cart Ajax error:", status, error, xhr.responseText);
-                            alert('장바구니 추가 중 서버 통신 오류가 발생했습니다.');
+                        });
+                    },
+
+                    // 찜하기 버튼 초기화 함수 (shop.jsp와 동일)
+                    initializeLikeButtons: () => {
+                        // AJAX로 로드된 상품 포함하여 모든 like-button에 이벤트 리스너 추가
+                        document.querySelectorAll('#product-list-container .product__hover .like-button').forEach(button => {
+                            // 이미 이벤트 리스너가 있는지 확인 (중복 방지)
+                            if (button.dataset.listenerAttached === 'true') return;
+
+                            const itemKey = button.getAttribute('data-item-key');
+                            const productItem = button.closest('.product__item');
+
+                            if (shop.isLoggedIn) {
+                                shop.checkLiked(itemKey, (isLiked) => {
+                                    if (isLiked) {
+                                        button.classList.add('liked');
+                                        if (productItem) productItem.classList.add('liked');
+                                    } else {
+                                        button.classList.remove('liked');
+                                        if (productItem) productItem.classList.remove('liked');
+                                    }
+                                });
+                            }
+
+                            button.addEventListener('click', function (e) {
+                                e.preventDefault();
+                                shop.toggleLike(itemKey, this);
+                            });
+                            button.dataset.listenerAttached = 'true'; // 리스너 추가됨 표시
+                        });
+                    },
+
+                    // 찜하기 토글 함수 (shop.jsp와 동일)
+                    toggleLike: (itemKey, button) => {
+                        if (!shop.isLoggedIn) {
+                            if (confirm('로그인이 필요한 서비스입니다. 로그인 페이지로 이동하시겠습니까?')) {
+                                window.location.href = contextPath + '/login';
+                            }
+                            return;
                         }
-                    });
-                }
 
-                let home = {
-                    init: function () {
+                        $.ajax({
+                            url: contextPath + '/shop/like/toggle',
+                            type: 'POST',
+                            data: { itemKey: itemKey },
+                            success: function (response) {
+                                if (response.success) {
+                                    const productItem = button.closest('.product__item');
 
+                                    if (response.action === 'added') {
+                                        button.classList.add('liked');
+                                        if (productItem) productItem.classList.add('liked');
+                                        shop.showToast('상품이 찜 목록에 추가되었습니다.');
+                                    } else {
+                                        button.classList.remove('liked');
+                                        if (productItem) productItem.classList.remove('liked');
+                                        shop.showToast('상품이 찜 목록에서 제거되었습니다.');
+                                    }
+                                } else {
+                                    alert(response.message || '찜하기 처리 중 오류가 발생했습니다.');
+                                    if (response.redirectUrl) {
+                                        window.location.href = contextPath + response.redirectUrl;
+                                    }
+                                }
+                            },
+                            error: function () {
+                                alert('서버 통신 오류가 발생했습니다.');
+                            }
+                        });
+                    },
+
+                    // 찜 상태 확인 함수 (shop.jsp와 동일)
+                    checkLiked: (itemKey, callback) => {
+                        // 로그인 상태가 아니면 바로 false 반환
+                        if (!shop.isLoggedIn) {
+                            callback(false);
+                            return;
+                        }
+                        $.ajax({
+                            url: contextPath + '/shop/like/check',
+                            type: 'GET',
+                            data: { itemKey: itemKey },
+                            success: function (response) {
+                                if (response.success && response.isLiked) {
+                                    callback(true);
+                                } else {
+                                    callback(false);
+                                }
+                            },
+                            error: function () {
+                                callback(false); // 에러 시에도 false 처리
+                            }
+                        });
+                    },
+
+                    // 토스트 메시지 표시 함수 (shop.jsp와 동일)
+                    showToast: (message) => {
+                        // ... (shop.jsp의 showToast 함수 내용 그대로 복사) ...
+                        if (!document.getElementById('toast-container')) {
+                            const toastContainer = document.createElement('div');
+                            toastContainer.id = 'toast-container';
+                            toastContainer.style.cssText = `
+                  position: fixed;
+                  bottom: 20px;
+                  right: 20px;
+                  z-index: 9999;
+                `;
+                            document.body.appendChild(toastContainer);
+                        }
+
+                        const toast = document.createElement('div');
+                        toast.className = 'toast-message';
+                        toast.innerHTML = message;
+                        toast.style.cssText = `
+                background-color: rgba(0, 0, 0, 0.7);
+                color: white;
+                padding: 15px 25px;
+                margin-top: 10px;
+                border-radius: 4px;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+              `;
+
+                        document.getElementById('toast-container').appendChild(toast);
+
+                        setTimeout(() => {
+                            toast.style.opacity = '1';
+                        }, 10);
+
+                        setTimeout(() => {
+                            toast.style.opacity = '0';
+                            setTimeout(() => {
+                                toast.remove();
+                            }, 300);
+                        }, 3000);
                     }
-                }
-                $(function () {
-                    home.init();
-                });
+                };
 
+                // 로그인 상태 및 사용자 ID 변수 (shop.jsp에서 가져옴, 서버에서 전달된 값 사용)
+                shop.isLoggedIn = ${ isLoggedIn != null && isLoggedIn ? 'true' : 'false' };
+                shop.customerId = '${custId}'; // custId가 서버에서 전달된다고 가정
 
+                // 기존 addToCart 함수 제거
 
+                $(function () { // DOM 로드 후 실행
+
+                    // 초기 로드된 상품들에 대해 찜하기 버튼 초기화
+                    shop.initializeLikeButtons();
+
+                    // 필터 클릭 이벤트 처리
+                    $('.filter__controls li').on('click', function () {
+                        if ($(this).hasClass('active')) { return; }
+                        $('.filter__controls li').removeClass('active');
+                        $(this).addClass('active');
+
+                        const filterType = $(this).data('filter');
+                        const productContainer = $('#product-list-container');
+                        productContainer.html('<div class="col-12 loading-indicator">상품을 불러오는 중...</div>');
+
+                        $.ajax({
+                            url: contextPath + '/api/items/' + filterType,
+                            type: 'GET',
+                            dataType: 'json',
+                            success: function (items) {
+                                productContainer.empty();
+                                if (items && items.length > 0) {
+                                    items.forEach(function (item) {
+                                        const itemHtml = createProductItemHtml(item); // 수정된 함수 사용
+                                        productContainer.append(itemHtml);
+                                    });
+                                    // 배경 이미지 설정
+                                    productContainer.find('.set-bg').each(function () {
+                                        var bg = $(this).data('setbg');
+                                        if (bg) { $(this).css('background-image', 'url(' + bg + ')'); }
+                                    });
+                                    // AJAX 로드 후 찜하기 버튼 초기화
+                                    shop.initializeLikeButtons();
+                                } else {
+                                    productContainer.html('<div class="col-12 text-center">표시할 상품이 없습니다.</div>');
+                                }
+                            },
+                            error: function (xhr, status, error) {
+                                console.error("Error fetching items:", status, error);
+                                productContainer.html('<div class="col-12 text-center text-danger">상품을 불러오는 중 오류가 발생했습니다.</div>');
+                            }
+                        });
+                    });
+
+                    // 상품 아이템 HTML 생성 함수 (shop.jsp 스타일 적용)
+                    function createProductItemHtml(item) {
+                        const priceHtml = '<h5>' + item.itemPrice.toLocaleString() + '원</h5>';
+
+                        const imgUrl = contextPath + '/img/product/' + (item.itemImg1 || 'default-placeholder.png');
+                        const detailUrl = contextPath + '/shop/details?itemKey=' + item.itemKey; // shop.jsp와 동일한 URL 구조
+
+                        const isSale = (item.itemSprice != null && item.itemSprice >= 0 && item.itemSprice < item.itemPrice);
+                        const saleLabelHtml = isSale ? '<span class="label sale">Sale</span>' : '';
+
+                        // shop.jsp와 동일한 HTML 구조 반환
+                        return (
+                            '<div class="col-lg-3 col-md-6 col-sm-6">' +
+                            '    <div class="product__item">' + // 찜 상태 클래스는 JS로 관리
+                            '        <div class="product__item__pic set-bg" data-setbg="' + imgUrl + '">' +
+                            saleLabelHtml + // Sale 라벨
+                            '            <ul class="product__hover">' + // 호버 아이콘
+                            '                <li><a href="#" class="like-button" data-item-key="' + item.itemKey + '"><i class="fa fa-heart icon"></i></a></li>' +
+                            '                <li><a href="' + detailUrl + '" class="detail-button"><i class="fa fa-search icon"></i></a></li>' +
+                            '            </ul>' +
+                            '        </div>' +
+                            '        <div class="product__item__text">' + // 텍스트 영역 (shop.jsp 구조)
+                            '            <h6>' + item.itemName + '</h6>' + // 상품명
+                            // 장바구니 버튼 (shop.jsp와 동일)
+                            '            <a href="#" class="add-cart" onclick="shop.addToCart(' + item.itemKey + '); return false;">+ Add To Cart</a>' +
+                            '            <div class="rating">' + // 별점
+                            '                <i class="fa fa-star-o"></i>' +
+                            '                <i class="fa fa-star-o"></i>' +
+                            '                <i class="fa fa-star-o"></i>' +
+                            '                <i class="fa fa-star-o"></i>' +
+                            '                <i class="fa fa-star-o"></i>' +
+                            '            </div>' +
+                            priceHtml + // 가격
+                            '        </div>' +
+                            '    </div>' +
+                            '</div>'
+                        );
+                    }
+
+                    // 페이지 로드 시 배경 이미지 설정 (초기 로드된 상품들 - 유지)
+                    $('#product-list-container .set-bg').each(function () {
+                        var bg = $(this).data('setbg');
+                        if (bg) { $(this).css('background-image', 'url(' + bg + ')'); }
+                    });
+
+                }); // End of $(function() {})
             </script>
 
             <!-- Hero Section Begin -->
@@ -188,85 +615,61 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <ul class="filter__controls">
-                                <li class="active" data-filter="*">Best Sellers</li>
-                                <li data-filter=".new-arrivals">New Arrivals</li>
-                                <li data-filter=".hot-sales">Hot Sales</li>
+                                <li class="active" data-filter="bestsellers">베스트셀러</li>
+                                <li data-filter="newarrivals">신상품</li>
+                                <li data-filter="hotsales">할인 상품</li>
                             </ul>
                         </div>
                     </div>
-                    <div class="row product__filter">
+                    <div class="row product__filter" id="product-list-container">
 
-                        <c:forEach items="${itemList}" var="item">
-                            <c:set var="isNew" value="true" />
-                            <c:set var="filterClasses" value="" />
-                            <c:if test="${isNew}">
-                                <c:set var="filterClasses" value="${filterClasses} new-arrivals" />
-                            </c:if>
-                            <c:if test="${item.itemSprice > 0 and item.itemSprice < item.itemPrice}">
-                                <c:set var="filterClasses" value="${filterClasses} hot-sales" />
-                            </c:if>
-                            <c:set var="filterClasses" value="${filterClasses} category-${item.categoryKey}" />
-                            <div class="col-lg-3 col-md-6 col-sm-6 mix ${filterClass}">
-                                <div class="product__item">
-                                    <div class="product__item__pic set-bg"
-                                        data-setbg="<c:url value='/img/product/${item.itemImg1}'/>">
-                                        <c:if test="${isNew}">
-                                            <span class="label">New</span>
-                                        </c:if>
-                                        <c:if test="${item.itemSprice > 0 and item.itemSprice < item.itemPrice}">
-                                            <span class="label sale">Sale</span>
-                                        </c:if>
-                                        <ul class="product__hover">
-                                            <li><a href="#"><img src="<c:url value='/img/icon/heart.png'/>" alt="">
-                                                    <span>Wish</span></a></li>
-                                            <li><a href="#"><img src="<c:url value='/img/icon/compare.png'/>" alt="">
-                                                    <span>Compare</span></a></li>
-                                            <li><a href="<c:url value='/shop-details?itemKey=${item.itemKey}'/>"><img
-                                                        src="<c:url value='/img/icon/search.png'/>" alt="">
-                                                    <span>Search</span></a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="product__item__text">
-                                        <h6>${item.itemName}</h6>
-                                        <a href="#" class="add-cart"
-                                            onclick="addToCart(${item.itemKey}); return false;">+ Add To
-                                            Cart</a>
-                                        <div class="rating">
-                                            <i class="fa fa-star-o"></i>
-                                            <i class="fa fa-star-o"></i>
-                                            <i class="fa fa-star-o"></i>
-                                            <i class="fa fa-star-o"></i>
-                                            <i class="fa fa-star-o"></i>
+                        <%-- 초기 로드 시 베스트셀러 목록 표시 --%>
+                            <c:choose>
+                                <c:when test="${not empty bestSellerList}">
+                                    <c:forEach items="${bestSellerList}" var="item">
+                                        <div class="col-lg-3 col-md-6 col-sm-6">
+                                            <div class="product__item">
+                                                <div class="product__item__pic set-bg"
+                                                    data-setbg="<c:url value='/img/product/${item.itemImg1}'/>">
+                                                    <c:if
+                                                        test="${item.itemSprice > 0 and item.itemSprice < item.itemPrice}">
+                                                        <span class="label sale">Sale</span>
+                                                    </c:if>
+                                                    <ul class="product__hover">
+                                                        <li><a href="#" class="like-button"
+                                                                data-item-key="${item.itemKey}">
+                                                                <i class="fa fa-heart icon"></i>
+                                                            </a></li>
+                                                        <li><a href="<c:url value='/shop/details?itemKey=${item.itemKey}'/>"
+                                                                class="detail-button">
+                                                                <i class="fa fa-search icon"></i>
+                                                            </a></li>
+                                                    </ul>
+                                                </div>
+                                                <div class="product__item__text"> <%-- 텍스트 영역 (shop.jsp 구조) --%>
+                                                        <h6>${item.itemName}</h6> <%-- 상품명 --%>
+                                                            <%-- 장바구니 버튼 (shop.jsp와 동일) --%>
+                                                                <a href="#" class="add-cart"
+                                                                    onclick="shop.addToCart(${item.itemKey}); return false;">+
+                                                                    Add To Cart</a>
+                                                                <div class="rating"> <%-- 별점 --%>
+                                                                        <i class="fa fa-star-o"></i>
+                                                                        <i class="fa fa-star-o"></i>
+                                                                        <i class="fa fa-star-o"></i>
+                                                                        <i class="fa fa-star-o"></i>
+                                                                        <i class="fa fa-star-o"></i>
+                                                                </div>
+                                                                <%-- 가격 (shop.jsp와 동일하게 표시) --%>
+                                                                    <h5>${item.itemPrice}원</h5>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <c:choose>
-                                            <c:when test="${item.itemSprice > 0 and item.itemSprice < item.itemPrice}">
-                                                <h5>
-                                                    <span style="text-decoration: line-through; color: #b2b2b2;">
-                                                        <fmt:formatNumber value="${item.itemPrice}" type="currency"
-                                                            currencySymbol="₩" groupingUsed="true"
-                                                            maxFractionDigits="0" />
-                                                    </span>
-                                                    <fmt:formatNumber value="${item.itemSprice}" type="currency"
-                                                        currencySymbol="$" groupingUsed="true" maxFractionDigits="0" />
-                                                </h5>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <h5>
-                                                    <fmt:formatNumber value="${item.itemPrice}" type="currency"
-                                                        currencySymbol="$" groupingUsed="true" maxFractionDigits="0" />
-                                                </h5>
-                                            </c:otherwise>
-                                        </c:choose>
-                                        <%-- <div class="product__color__select">--%>
-                                            <%-- <c:if test="${item.optionKey > 0 and not empty item.optionName}">--%>
-                                                <%-- <span style="font-size: 12px; color: #888;">옵션:
-                                                    ${item.optionName}</span>--%>
-                                                    <%-- </c:if>--%>
-                                                        <%-- </div>--%>
-                                    </div>
-                                </div>
-                            </div>
-                        </c:forEach>
+                                    </c:forEach>
+                                </c:when>
+                                <c:otherwise>
+                                    <div class="col-12 text-center">표시할 상품이 없습니다.</div>
+                                </c:otherwise>
+                            </c:choose>
 
                     </div>
                 </div>
