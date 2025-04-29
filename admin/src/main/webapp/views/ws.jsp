@@ -11,7 +11,7 @@
     <div class="input-group mb-3">
         <input type="text" id="alltext" class="form-control" placeholder="메시지 입력">
         <div class="input-group-append">
-            <button id="sendall" class="btn btn-outline-primary">Send</button>
+            <button id="sendall" class="btn-send">Send</button>
         </div>
     </div>
     <div id="me" class="chat-box"></div>
@@ -20,7 +20,7 @@
         <input type="text" id="target" class="form-control col-3" placeholder="대상 ID">
         <input type="text" id="totext" class="form-control col-6" placeholder="메시지 입력">
         <div class="input-group-append">
-            <button id="sendto" class="btn btn-outline-success">Send</button>
+            <button id="sendto" class="btn-send">Send</button>
         </div>
     </div>
     <div id="to" class="chat-box"></div>
