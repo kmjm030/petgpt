@@ -19,6 +19,7 @@
     <update id="update" parameterType="Customer">
         UPDATE customer SET
                             cust_pwd = #{custPwd},
+                            cust_name = #{custName},
                             cust_email = #{custEmail},
                             cust_phone = #{custPhone},
                             cust_point = #{custPoint},

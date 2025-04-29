@@ -105,4 +105,33 @@
         DELETE FROM item WHERE item_key=#{itemKey}
     </delete>
 
+    <!-- 홈 화면 필터링을 위한 쿼리 추가 -->
+    <select id="selectWithOrderAndLimit" resultType="item">
+        SELECT i.*,
+               CASE
+                   WHEN i.item_price > 0 AND i.item_sprice > 0 AND i.item_sprice &lt; i.item_price
+                   THEN ((i.item_price - i.item_sprice) / i.item_price) * 100
+                   ELSE 0
+               END AS discount_rate
+        FROM item i
+        <if test="orderBy != null and orderBy != ''">
+            ORDER BY ${orderBy}
+        </if>
+        <if test="orderBy == null or orderBy == ''">
+            ORDER BY i.item_key ASC
+        </if>
+        LIMIT #{limit}
+    </select>
+
+    <!-- 베스트셀러 조회를 위한 새로운 쿼리 (total_order 집계) -->
+    <select id="selectBestSellingItemsFromOrders" resultType="item">
+        SELECT i.*, COUNT(o.order_key) as sales_count <!-- 판매량 집계 -->
+        FROM item i
+        JOIN total_order o ON i.item_key = o.item_key
+        WHERE o.order_status = #{orderStatus} <!-- 완료된 주문만 필터링 -->
+        GROUP BY i.item_key <!-- 상품별로 그룹화 -->
+        ORDER BY sales_count DESC <!-- 집계된 판매량으로 정렬 -->
+        LIMIT #{limit} <!-- 개수 제한 -->
+    </select>
+
 </mapper>
