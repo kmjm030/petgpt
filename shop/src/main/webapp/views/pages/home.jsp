@@ -109,6 +109,33 @@
                             </div>
                         </div>
                     </div>
+                    <div class="hero__items set-bg" data-setbg="<c:url value='/img/hero/hero-3.png'/>"
+                        data-setbg-dark="<c:url value='/img/hero/dark-hero-3.png'/>">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-xl-5 col-lg-7 col-md-8">
+                                    <div class="hero__text">
+                                        <h6 style="font-size: 24px; font-weight: bold; margin-bottom: 15px;">
+                                            <span style="font-size: 40px; vertical-align: top; line-height: 1;">“</span>
+                                            음! 맛있다~ 꿀잠꿀잠
+                                        </h6>
+                                        <h2>내새꾸<br> 꿀잠맛집 방석<span style="color: #007bff; font-weight: bold;">zzz</span>
+                                        </h2>
+                                        <p>하루의 피로를 싹 풀어주는 마약 방석!<br>
+                                            포근함에 한번 누우면 헤어나올 수 없어요.</p>
+                                        <a href="<c:url value='/shop'/>" class="primary-btn">Shop now <span
+                                                class="arrow_right"></span></a>
+                                        <div class="hero__social">
+                                            <a href="#"><i class="fa fa-facebook"></i></a>
+                                            <a href="#"><i class="fa fa-twitter"></i></a>
+                                            <a href="#"><i class="fa fa-pinterest"></i></a>
+                                            <a href="#"><i class="fa fa-instagram"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
             <!-- Hero Section End -->
