@@ -2,49 +2,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/css/cherry-blossom.css">
 <link rel="stylesheet" href="/css/item.css">
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<script>
-    $(function() {
-        const form = $('#item_add_form');
-        const today = new Date().toISOString().slice(0, 10);
-        $('#regDate').val(today);
-
-        $('#btn_add').click(function() {
-            $('#errorMsg').hide();
-            const requiredFields = [
-                'select[name="categoryKey"]',
-                'input[name="itemName"]',
-                'input[name="itemPrice"]',
-                'select[name="size"]',
-                'input[name="color"]',
-                'input[name="additionalPrice"]',
-                'input[name="stock"]'
-            ];
-            for (const field of requiredFields) {
-                if (!$(field).val()?.trim()) {
-                    $('#errorMsg').show();
-                    return;
-                }
-            }
-            if (confirm('등록하시겠습니까?')) {
-                form.attr({
-                    method: 'post',
-                    enctype: 'multipart/form-data',
-                    action: '<c:url value="/item/addimpl"/>'
-                }).submit();
-            }
-        });
-
-        $('#btn_reset').click(function() {
-            form[0].reset();
-            $('#regDate').val(today);
-            $('#errorMsg').hide();
-        });
-    });
-</script>
 
 <div class="container-fluid">
     <h1>상품 등록</h1>
@@ -139,3 +99,6 @@
         </form>
     </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="<c:url value='/js/item.js'/>"></script>

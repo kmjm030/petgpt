@@ -4,21 +4,7 @@
 <link rel="stylesheet" href="/css/cherry-blossom.css">
 <link rel="stylesheet" href="/css/cust.css">
 
-<script>
-    $(function () {
-        $('#btn_update').click(function () {
-            $('#detail_form').attr({ method: 'post', action: '<c:url value="/cust/update"/>' }).submit();
-        });
-        $('#btn_delete').click(function () {
-            if (confirm('삭제하시겠습니까?')) {
-                location.href = '<c:url value="/cust/delete"/>?id=' + $('#id').val();
-            }
-        });
-        $('#btn_showlist').click(function () {
-            location.href = '<c:url value="/cust/get"/>';
-        });
-    });
-</script>
+<script src="/js/cust.js"></script>
 
 <div class="container-fluid">
     <h1>${cust.custName}님, 회원정보 수정</h1>

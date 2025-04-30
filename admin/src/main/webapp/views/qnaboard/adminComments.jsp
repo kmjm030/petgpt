@@ -2,20 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<script>
-  const admincomments_detail = {
-    update(id) {
-      if (confirm('수정하시겠습니까?')) {
-        location.href = '<c:url value="/board/detail"/>?id=' + id;
-      }
-    },
-    delete(id, boardKey) {
-      if (confirm('삭제하시겠습니까?')) {
-        location.href = '<c:url value="/admincomments/delete"/>?adcommentsKey=' + id + '&boardKey=' + boardKey;
-      }
-    }
-  };
-</script>
+<script src="/js/board.js"></script>
 
 <div class="admin-comment-card">
   <div class="admin-comment-header">🛠 관리자 답변</div>
