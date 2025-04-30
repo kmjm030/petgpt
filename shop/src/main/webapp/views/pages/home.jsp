@@ -172,65 +172,20 @@
                     margin-bottom: 0;
                 }
 
+                .col-lg-4.offset-lg-1 {
+                    margin-left: 3% !important;
+                }
+
                 .categories__deal__countdown .deal-title {
                     font-size: 1.5em;
                     font-weight: bold;
                     display: block;
-                    margin-bottom: 20px;
-                }
-
-                .categories__deal__countdown h2#hotdeal-name {
-                    font-size: 2.2em;
-                    font-weight: bold;
-                    margin-bottom: 30px;
-                    color: #333;
-                    white-space: nowrap;
-                    max-width: 100%;
-                }
-
-                .categories__deal__timer {
-                    display: flex;
-                    justify-content: left;
-                    align-items: baseline;
-                    gap: 10px;
-                    margin-top: 15px;
-                    margin-bottom: 30px;
+                    margin-bottom: 15px;
                 }
 
                 .categories__deal__timer .cd-item span {
-                    font-size: 35px;
-                    font-weight: 700;
-                    color: #ffffff;
-                    background-color: #ca1515;
-                    padding: 5px 10px;
-                    border-radius: 10px;
-                    display: inline-block;
-                    text-align: center;
-                    line-height: 1.4;
-                }
-
-                .categories__deal__timer .cd-item p {
-                    font-size: 20px;
-                    color: #555;
-                    display: inline-block;
-                    text-transform: uppercase;
-                    font-weight: 500;
-                }
-
-                #hotdeal-link.primary-btn {
-                    padding: 12px 30px;
                     font-size: 25px;
-                    border-radius: 10px;
-                    transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
-                    display: inline-block;
-                }
-
-                #hotdeal-link.primary-btn:hover {
-                    transform: scale(1.05);
-                }
-
-                #hotdeal-link.primary-btn:active {
-                    transform: scale(0.98);
+                    font-weight: 700;
                 }
 
                 .hot__deal__sticker {
@@ -810,7 +765,7 @@
                                 </h2>
                             </div>
                         </div>
-                        <div class="col-lg-4 offset-lg-1">
+                        <div class="col-lg-4">
                             <div class="categories__hot__deal">
                                 <img id="hotdeal-img" src="<c:url value='/img/product-sale.png'/>"
                                     alt="Hot Deal Product">
@@ -821,7 +776,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-3 offset-lg-1">
+                        <div class="col-lg-4 offset-lg-1">
                             <div class="categories__deal__countdown">
                                 <span class="deal-title">⏰ 1분 타임딜 ⏰</span>
                                 <h2 id="hotdeal-name">상품 로딩 중...</h2>
