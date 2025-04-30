@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -168,5 +170,17 @@ public class MainController {
         model.addAttribute("totalorder", totalOrderService.getOne(orderKey));
         model.addAttribute("center", "totalorder_detail");
         return "index";
+    }
+
+    @PostMapping("/totalorder/delete/{orderKey}")
+    public String deleteOrder(@PathVariable int orderKey, RedirectAttributes redirectAttributes) {
+        try {
+            totalOrderService.del(orderKey);
+            redirectAttributes.addFlashAttribute("msg", "주문이 성공적으로 삭제되었습니다.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("msg", "삭제 중 오류가 발생했습니다.");
+            e.printStackTrace();
+        }
+        return "redirect:/totalorder";
     }
 }
