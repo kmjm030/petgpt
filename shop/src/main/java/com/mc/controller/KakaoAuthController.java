@@ -30,7 +30,7 @@ public class KakaoAuthController {
     @Autowired
     private CustomerService customerService; // 회원 정보 처리를 위한 서비스 주입
 
-    // kakao.properties 파일에서 값 주입
+    // signup.properties 파일에서 값 주입
     @Value("${kakao.client.id}")
     private String clientId;
 

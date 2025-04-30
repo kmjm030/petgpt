@@ -6,7 +6,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.client.RestTemplate;
 
 @Configuration
-@PropertySource("classpath:/properties/kakao.properties")
+@PropertySource("classpath:/properties/signup.properties")
 public class AppConfig {
 
     @Bean
