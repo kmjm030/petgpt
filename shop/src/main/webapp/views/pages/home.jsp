@@ -50,23 +50,22 @@
                     }
                 }
 
-                .product__item {
+                /* .product__item {
                     margin-bottom: 35px;
                     /* shop.jsp 기본 간격 */
-                    position: relative;
-                    /* 찜하기 상태 표시용 */
-                    overflow: visible;
-                    /* 호버 시 그림자 보이도록 */
+                position: relative;
+                /* 찜하기 상태 표시용 */
+                overflow: visible;
+                /* 호버 시 그림자 보이도록 */
                 }
 
-                .product__item__pic {
+                */ .product__item__pic {
                     height: 260px;
                     /* shop.jsp 기본 높이 */
                     position: relative;
                     overflow: hidden;
                     /* 내부 요소 넘침 방지 */
-                    margin-bottom: 20px;
-                    /* 이미지와 텍스트 간격 */
+
                 }
 
                 .product__hover .like-button,
@@ -118,14 +117,6 @@
                     color: white;
                 }
 
-                /* --- 상품 텍스트 영역 레이아웃 (shop.jsp 구조 및 이미지 참고) --- */
-                .product__item__text {
-                    text-align: left;
-                    /* 왼쪽 정렬 (이미지 참고) */
-                    padding-top: 0;
-                    /* 이미지와 간격은 pic의 margin-bottom으로 조정 */
-                }
-
                 .product__item__text h6 {
                     /* 상품명 */
                     font-size: 15px;
@@ -137,24 +128,6 @@
                     /* shop.jsp에는 없었지만, 길 경우 대비 */
                     white-space: nowrap;
                     text-overflow: ellipsis;
-                }
-
-                .product__item__text .add-cart {
-                    /* 장바구니 버튼 (shop.jsp 스타일) */
-                    font-size: 14px;
-                    color: #ca1515;
-                    /* 빨간색 */
-                    font-weight: 700;
-                    letter-spacing: 1px;
-                    /* 글자 간격 */
-                    border-bottom: 1px solid #ca1515;
-                    /* 밑줄 */
-                    padding-bottom: 2px;
-                    display: inline-block;
-                    /* 밑줄 길이 맞춤 */
-                    margin-bottom: 8px;
-                    /* 버튼과 별점 간격 */
-                    text-decoration: none;
                 }
 
                 .product__item__text .rating {
@@ -451,7 +424,7 @@
 
                         // shop.jsp와 동일한 HTML 구조 반환
                         return (
-                            '<div class="col-lg-3 col-md-6 col-sm-6">' +
+                            '<div class="col-lg-4 col-md-6 col-sm-6">' +
                             '    <div class="product__item">' + // 찜 상태 클래스는 JS로 관리
                             '        <div class="product__item__pic set-bg" data-setbg="' + imgUrl + '">' +
                             saleLabelHtml + // Sale 라벨
@@ -627,7 +600,7 @@
                             <c:choose>
                                 <c:when test="${not empty bestSellerList}">
                                     <c:forEach items="${bestSellerList}" var="item">
-                                        <div class="col-lg-3 col-md-6 col-sm-6">
+                                        <div class="col-lg-4 col-md-6 col-sm-6">
                                             <div class="product__item">
                                                 <div class="product__item__pic set-bg"
                                                     data-setbg="<c:url value='/img/product/${item.itemImg1}'/>">
