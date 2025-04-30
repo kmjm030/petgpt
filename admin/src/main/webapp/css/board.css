@@ -1,232 +1,184 @@
-.container-fluid {
-    margin-top: 2rem;
-}
-
-#board_form {
-    margin-top: 1.5rem;
-}
-
-.form-group {
-    margin-bottom: 1.5rem;
-}
-
-button#btn_add {
-    margin-top: 1rem;
-}
-
-.notice-form,
-.detail-form,
-.table-container,
-.board-detail-container,
-.qna-board-container {
-    background: linear-gradient(to bottom right, #fff0f5, #ffe4e1);
-    padding: 2.5rem;
-    border-radius: 24px;
-    box-shadow: 0 12px 30px rgba(255, 182, 193, 0.3);
+.container-fluid h2 {
+    font-size: 2rem;
+    font-weight: 700;
     color: #d63384;
-    font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-}
-
-.notice-form h1,
-.detail-form h2,
-.qna-board-container h2,
-.board-detail-container h1 {
-    font-size: 2.4rem;
-    font-weight: 800;
     text-align: center;
-    margin-bottom: 2.5rem;
-    text-shadow: 1px 1px #ffe4ec;
+    margin-bottom: 2rem;
 }
 
 .card {
-    background-color: #fff;
+    background: linear-gradient(to bottom right, #fff0f5, #ffe4e1);
     border: 1px solid #f8c1d0;
-    border-radius: 20px;
-    padding: 2rem;
-    box-shadow: 0 8px 24px rgba(255, 182, 193, 0.2);
-    margin-bottom: 2rem;
-    transition: transform 0.3s ease;
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: 0 6px 18px rgba(255, 182, 193, 0.3);
+    color: #4b2c2c;
+    font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-.card:hover {
-    transform: translateY(-4px);
+body.dark-mode .card {
+    background: #2c2c2e;
+    color: #f5f5f7;
+    border-color: #3a3a3c;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+}
+
+.table {
+    width: 100%;
+    margin-bottom: 1rem;
+    background-color: transparent;
+}
+
+.table-bordered th,
+.table-bordered td {
+    border: 1px solid #f8bbd0;
+    padding: 0.75rem;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #ffeef3;
+    transition: background-color 0.2s ease-in-out;
+}
+
+body.dark-mode .table-hover tbody tr:hover {
+    background-color: #3a3a3c;
+}
+
+.table thead th {
+    background-color: #ffdeeb;
+    color: #c9184a;
+    font-weight: bold;
+    text-align: center;
+}
+
+body.dark-mode .table thead th {
+    background-color: #3a3a3c;
+    color: #ff90c2;
+}
+
+.btn-outline-primary {
+    border-color: #d63384;
+    color: #d63384;
+    font-weight: 600;
+}
+
+.btn-outline-primary:hover {
+    background-color: #d63384;
+    color: white;
+}
+
+.btn-outline-danger {
+    border-color: #c9184a;
+    color: #c9184a;
+    font-weight: 600;
+}
+
+.btn-outline-danger:hover {
+    background-color: #c9184a;
+    color: white;
+}
+.board-detail-container {
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: linear-gradient(to bottom right, #fff0f5, #ffe4e1);
+    border-radius: 20px;
+    box-shadow: 0 6px 18px rgba(255, 182, 193, 0.3);
+    color: #4b2c2c;
+    font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+body.dark-mode .board-detail-container {
+    background-color: #2c2c2e;
+    color: #f5f5f7;
+}
+
+.board-detail-container h1 {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.card {
+    background-color: #fff0f5;
+    border-radius: 20px;
+    padding: 2rem;
+    border: 1px solid #f8c1d0;
+    box-shadow: 0 4px 12px rgba(255, 182, 193, 0.2);
+    margin-bottom: 2rem;
+}
+
+body.dark-mode .card {
+    background-color: #2c2c2e;
+    border-color: #3a3a3c;
 }
 
 .card-header h6 {
-    font-size: 1.2rem;
     font-weight: 700;
     color: #d63384;
 }
 
-.card-body {
-    margin-top: 1rem;
-}
-
-.form-group label,
-label {
-    font-weight: 700;
+.form-group label {
+    font-weight: 600;
     color: #d63384;
-    display: block;
     margin-bottom: 0.5rem;
+    display: block;
 }
 
-.form-control,
-input[type="text"],
-textarea {
-    width: 100%;
-    background: #fff;
-    border: 2px solid #f8c1d0;
-    border-radius: 14px;
-    padding: 12px 16px;
+body.dark-mode .form-group label {
+    color: #f5f5f7;
+}
+
+.form-control {
+    border-radius: 10px;
+    border: 1px solid #f8c1d0;
+    padding: 0.75rem;
     font-size: 1rem;
-    color: #1d1d1f;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 6px rgba(255, 192, 203, 0.1);
+    box-shadow: none;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
 }
 
-.form-control:focus,
-input[type="text"]:focus,
-textarea:focus {
+.form-control:focus {
     border-color: #d63384;
-    background-color: #fff7fa;
-    box-shadow: 0 0 0 0.15rem rgba(214, 51, 132, 0.25);
     outline: none;
 }
 
-.form-group img,
-.table img,
-.board-table img {
-    width: 64px;
-    height: 64px;
-    object-fit: cover;
-    border-radius: 10px;
-    border: 2px solid #f8c1d0;
-    margin-top: 10px;
-}
-
-.btn-primary,
-.submit-btn,
-.add-btn,
-.qna-action-btn,
-.table-container .btn,
-.board-action-btn {
-    background: linear-gradient(135deg, #ff7eb9, #d63384);
-    color: #fff;
-    border: none;
-    border-radius: 12px;
-    padding: 0.6rem 1.2rem;
-    font-size: 1rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: background 0.3s ease, transform 0.2s ease;
-    box-shadow: 0 4px 12px rgba(255, 105, 180, 0.2);
-}
-
-.btn-primary:hover,
-.submit-btn:hover,
-.add-btn:hover,
-.qna-action-btn:hover,
-.table-container .btn:hover,
-.board-action-btn:hover {
-    background: linear-gradient(135deg, #ff4d94, #c2185b);
-    transform: translateY(-2px);
-}
-
-.table,
-.board-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.95rem;
-    background-color: #fff;
-    border-radius: 14px;
-    overflow: hidden;
-    box-shadow: 0 4px 12px rgba(255, 182, 193, 0.1);
-}
-
-.table thead th,
-.board-table thead th {
-    background-color: #ffe4e1;
-    color: #d63384;
-    font-weight: 700;
-    padding: 1rem;
-    text-align: center;
-    border-bottom: 2px solid #f8c1d0;
-    font-size: 0.95rem;
-    letter-spacing: 0.5px;
-}
-
-.table tbody td,
-.board-table tbody td {
-    padding: 1rem;
-    text-align: center;
-    color: #d63384;
-    border-bottom: 1px solid #f8c1d0;
-}
-
-.table tbody tr:hover,
-.board-table tbody tr:hover {
-    background-color: #fff0f5;
-}
-
-body.dark-mode .board-detail-container,
-body.dark-mode .card,
-body.dark-mode .form-control,
-body.dark-mode .notice-form,
-body.dark-mode .detail-form,
-body.dark-mode .qna-board-container,
-body.dark-mode .admin-comment-card,
-body.dark-mode .table-container {
-    background-color: #2c2c2e;
-    color: #f5f5f7;
-    border-color: #3a3a3c;
-}
-
-body.dark-mode .form-control:focus,
-body.dark-mode input[type="text"]:focus,
-body.dark-mode textarea:focus {
+body.dark-mode .form-control {
     background-color: #3a3a3c;
-    border-color: #ff90c2;
+    color: #f5f5f7;
+    border-color: #555;
 }
 
-body.dark-mode .btn-primary,
-body.dark-mode .submit-btn,
-body.dark-mode .add-btn,
-body.dark-mode .qna-action-btn,
-body.dark-mode .table-container .btn,
-body.dark-mode .board-action-btn {
-    background: linear-gradient(135deg, #ff90c2, #ff5ca2);
-    color: #1d1d1f;
+img {
+    max-width: 200px;
+    border-radius: 12px;
+    margin-top: 0.5rem;
+    box-shadow: 0 4px 12px rgba(255, 182, 193, 0.3);
 }
 
-body.dark-mode .btn-primary:hover,
-body.dark-mode .submit-btn:hover,
-body.dark-mode .add-btn:hover,
-body.dark-mode .qna-action-btn:hover,
-body.dark-mode .table-container .btn:hover,
-body.dark-mode .board-action-btn:hover {
-    background: linear-gradient(135deg, #ff6fae, #ff4081);
+button.btn-primary {
+    background-color: #d63384;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    padding: 0.6rem 1.2rem;
+    margin-right: 1rem;
+    color: white;
+    transition: background-color 0.2s ease;
 }
 
-body.dark-mode .table thead th,
-body.dark-mode .board-table thead th,
-body.dark-mode .table tbody td,
-body.dark-mode .board-table tbody td {
-    background-color: #2c2c2e;
-    border-color: #3a3a3c;
+button.btn-primary:hover {
+    background-color: #ad1457;
 }
 
-body.dark-mode .notice-table tbody tr td[colspan="5"] {
-    color: #ccc;
-}
-
-body.dark-mode .btn-outline-primary,
-body.dark-mode .btn-outline-danger {
-    background: transparent;
-    border: 1px solid #888;
-}
-
-body.dark-mode .btn-outline-primary:hover,
-body.dark-mode .btn-outline-danger:hover {
-    background-color: #888;
+body.dark-mode button.btn-primary {
+    background-color: #444;
     color: #fff;
+}
+
+body.dark-mode button.btn-primary:hover {
+    background-color: #555;
 }

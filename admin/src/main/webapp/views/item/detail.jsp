@@ -4,30 +4,11 @@
 
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <link rel="stylesheet" href="/css/cherry-blossom.css">
 <link rel="stylesheet" href="/css/item.css">
 
-<script>
-    $(function () {
-        $('#btn_delete').click(() => {
-            const key = $('#itemKey').val();
-            if (confirm('정말로 이 상품을 삭제하시겠습니까?')) {
-                location.href = '<c:url value="/item/del"/>?item_key=' + key;
-            }
-        });
-
-        $('#btn_update').click(() => {
-            if (confirm('이 상품 정보를 수정하시겠습니까?')) {
-                $('#item_update_form').attr({
-                    method: 'post',
-                    enctype: 'multipart/form-data',
-                    action: '<c:url value="/item/update"/>'
-                }).submit();
-            }
-        });
-    });
-</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="/js/item.js"></script>
 
 <div class="container-fluid">
     <h1 class="h3 mb-4 font-weight-bold">상품 상세 정보</h1>
