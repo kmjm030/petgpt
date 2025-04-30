@@ -3,29 +3,17 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <link rel="stylesheet" href="/css/cherry-blossom.css">
-<link rel="stylesheet" href="/css/board.css">
+<link rel="stylesheet" href="/css/center.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
-<script>
-    const board_get = {
-        update(id) {
-            if (confirm('수정하시겠습니까?')) {
-                location.href = '<c:url value="/qnaboard/detail"/>' + '?id=' + encodeURIComponent(id);
-            }
-        },
-        delete(id) {
-            if (confirm('삭제하시겠습니까?')) {
-                location.href = '<c:url value="/qnaboard/delete"/>' + '?id=' + encodeURIComponent(id);
-            }
-        }
-    };
-</script>
+<script src="/js/board.js"></script>
 
 <div class="container-fluid">
-    <h2>상품 문의게시판</h2>
+    <h2 class="mb-4">상품 문의게시판</h2>
     <div class="card">
         <div class="table-responsive">
-            <table class="table table-bordered table-hover">
-                <thead>
+            <table class="table table-bordered table-hover text-center align-middle">
+                <thead class="table-light">
                 <tr>
                     <th>번호</th>
                     <th>답변</th>
@@ -46,12 +34,20 @@
                         <td>${board.boardRe}</td>
                         <td>${board.itemKey}</td>
                         <td>${board.custId}</td>
-                        <td>${board.boardTitle}</td>
+                        <td class="text-start">${board.boardTitle}</td>
                         <td><fmt:formatDate value="${board.boardRdate}" pattern="yyyy-MM-dd HH:mm" /></td>
-                        <td>${board.boardContent}</td>
+                        <td class="text-start">${board.boardContent}</td>
                         <td>${board.boardOption}</td>
-                        <td><button onclick="board_get.update('${board.boardKey}')" class="btn btn-outline-primary">수정</button></td>
-                        <td><button onclick="board_get.delete('${board.boardKey}')" class="btn btn-outline-danger">삭제</button></td>
+                        <td>
+                            <button onclick="board_get.update('${board.boardKey}')" class="btn btn-outline-primary btn-sm">
+                                <i class="bi bi-pencil-square"></i> 수정
+                            </button>
+                        </td>
+                        <td>
+                            <button onclick="board_get.delete('${board.boardKey}')" class="btn btn-outline-danger btn-sm">
+                                <i class="bi bi-trash"></i> 삭제
+                            </button>
+                        </td>
                     </tr>
                 </c:forEach>
                 </tbody>

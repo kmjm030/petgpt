@@ -3,33 +3,13 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <link rel="stylesheet" href="/css/cherry-blossom.css">
-<link rel="stylesheet" href="/css/board.css">
-<script>
-    const board_detail = {
-        init() {
-            $('#btn_update').click(() => this.send());
-            $('#btn_delete').click(() => {
-                if (confirm('삭제하시겠습니까?')) {
-                    const id = $('#id').val();
-                    location.href = '<c:url value="/board/delete"/>?id=' + id;
-                }
-            });
-        },
-        send() {
-            $('#detail_form').attr({
-                method: 'post',
-                action: '<c:url value="/board/update"/>'
-            }).submit();
-        }
-    };
+<link rel="stylesheet" href="/css/center.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
-    $(function () {
-        board_detail.init();
-    });
-</script>
+<script src="/js/board.js"></script>
 
 <div class="board-detail-container">
-    <h1>문의글 상세보기</h1>
+    <h1 class="mb-4">문의글 상세보기</h1>
 
     <div class="card">
         <div class="card-header">
@@ -51,7 +31,7 @@
                 </div>
                 <div class="form-group">
                     <label>상품 이미지</label><br>
-                    <img src="<c:url value='/img/item/${item.itemImg1}'/>" alt="상품 이미지">
+                    <img src="<c:url value='/img/item/${item.itemImg1}'/>" alt="상품 이미지" class="img-thumbnail" style="max-width: 150px;">
                 </div>
                 <div class="form-group">
                     <label>옵션</label>
@@ -66,8 +46,14 @@
                     <p><fmt:formatDate value="${board.boardUpdate}" pattern="yyyy-MM-dd : HH:mm:ss" /></p>
                 </div>
 
-                <button id="btn_update" type="button" class="btn btn-primary">수정</button>
-                <button id="btn_delete" type="button" class="btn btn-primary">삭제</button>
+                <div class="btn-group mt-3">
+                    <button id="btn_update" type="button" class="btn btn-outline-primary">
+                        <i class="bi bi-pencil-square"></i> 수정
+                    </button>
+                    <button id="btn_delete" type="button" class="btn btn-outline-danger">
+                        <i class="bi bi-trash"></i> 삭제
+                    </button>
+                </div>
             </form>
         </div>
     </div>

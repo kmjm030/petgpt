@@ -11,177 +11,8 @@
     <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600&display=swap" rel="stylesheet">
     <link href="<c:url value='/vendor/fontawesome-free/css/all.min.css'/>" rel="stylesheet">
     <link href="<c:url value='/css/sb-admin-2.min.css'/>" rel="stylesheet">
-    <link href="<c:url value='/css/dark-mode.css'/>" rel="stylesheet">
-
-    <style>
-        body {
-            background: linear-gradient(to bottom right, #fff0f5, #ffe4e1);
-            color: #4b2c2c;
-            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
-            padding-top: 60px !important;
-            overflow-x: hidden;
-        }
-
-        body.dark-mode {
-            background: #1d1d1f;
-            color: #f5f5f7;
-        }
-
-        #admin-info-bar {
-            position: fixed;
-            top: 0;
-            right: 0;
-            padding: 10px 20px;
-            background-color: #fff0f5;
-            box-shadow: 0 2px 12px rgba(255, 182, 193, 0.3);
-            z-index: 9999;
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            border-bottom-left-radius: 14px;
-            height: 60px;
-        }
-
-        body.dark-mode #admin-info-bar {
-            background-color: #2c2c2e;
-            color: #f5f5f7;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
-        }
-
-        #admin-info-bar .admin-name {
-            font-weight: 600;
-            font-size: 0.95rem;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        #admin-info-bar a {
-            background-color: #d63384;
-            color: white;
-            padding: 6px 14px;
-            border-radius: 8px;
-            font-size: 0.85rem;
-            text-decoration: none;
-            font-weight: 500;
-            transition: background-color 0.2s ease;
-        }
-
-        #admin-info-bar a:hover {
-            background-color: #ad1457;
-        }
-
-        body.dark-mode #admin-info-bar a {
-            background-color: #3a3a3c;
-            color: #f5f5f7;
-        }
-
-        body.dark-mode #admin-info-bar a:hover {
-            background-color: #4a4a4a;
-        }
-
-        #welcome-overlay {
-            position: fixed;
-            z-index: 9998;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to bottom right, #fff0f5, #ffe4e1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            animation: fadeOut 1s ease 2.5s forwards;
-        }
-
-        body.dark-mode #welcome-overlay {
-            background-color: #1d1d1f;
-        }
-
-        .welcome-box {
-            text-align: center;
-            font-size: 1.6rem;
-            font-weight: 600;
-            color: #4b2c2c;
-            opacity: 0;
-            animation: fadeIn 1s ease-in-out 0.5s forwards;
-        }
-
-        body.dark-mode .welcome-box {
-            color: #f5f5f7;
-        }
-
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-            }
-        }
-
-        @keyframes fadeOut {
-            to {
-                opacity: 0;
-                visibility: hidden;
-            }
-        }
-
-        .hover-sidebar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 220px;
-            height: 100%;
-            background: linear-gradient(to bottom, #ffe0ea, #ffc9dd);
-            border-right: 1px solid #f8bbd0;
-            transform: translateX(-100%);
-            transition: transform 0.3s ease-in-out;
-            z-index: 9997;
-            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        body.dark-mode .hover-sidebar {
-            background-color: #2c2c2e;
-            border-color: #3a3a3c;
-        }
-
-        .hover-sidebar .sidebar-content {
-            padding: 2rem 1rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        .hover-sidebar a {
-            color: #d63384;
-            text-decoration: none;
-            font-size: 1rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        body.dark-mode .hover-sidebar a {
-            color: #f5f5f7;
-        }
-
-        .hover-sidebar a:hover {
-            color: #ad1457;
-            transform: translateX(5px);
-        }
-
-        .hover-sidebar .logo {
-            margin-bottom: 2rem;
-            text-align: center;
-        }
-
-        .hover-sidebar .logo img {
-            width: 80px;
-        }
-
-        .custom-logo {
-            max-width: 120px;
-            margin-right: 20px;
-        }
-    </style>
-
+    <link href="<c:url value='/css/darkmode.css'/>" rel="stylesheet">
+    <link href="<c:url value='/css/index.css'/>" rel="stylesheet">
 </head>
 
 <body id="page-top">
@@ -214,7 +45,6 @@
         <a href="<c:url value='/cust/get'/>"><i class="fas fa-users"></i> 사용자 관리</a>
         <a href="<c:url value='/item/get'/>"><i class="fas fa-box"></i> 상품 관리</a>
         <a href="<c:url value='/totalorder'/>"><i class="fas fa-shopping-cart"></i> 주문 관리</a>
-        <a href="<c:url value='/qnaboard/get'/>"><i class="fas fa-comment-dots"></i> 문의글 관리</a>
         <a href="<c:url value='/qnaboard/get'/>"><i class="fas fa-comment-dots"></i> 상품 문의글</a>
         <a href="<c:url value='/ws'/>"><i class="fas fa-comments"></i> 채팅</a>
         <a href="<c:url value='/admin/notice/get'/>"><i class="fas fa-bullhorn"></i> 관리자 공지사항</a>
@@ -230,49 +60,7 @@
     </c:otherwise>
 </c:choose>
 
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const sidebar = document.getElementById("hover-sidebar");
-        document.addEventListener("mousemove", (e) => {
-            if (e.clientX < 20) {
-                sidebar.style.transform = "translateX(0)";
-            } else if (!sidebar.matches(":hover")) {
-                sidebar.style.transform = "translateX(-100%)";
-            }
-        });
-        sidebar.addEventListener("mouseleave", () => {
-            sidebar.style.transform = "translateX(-100%)";
-        });
-
-        const overlay = document.getElementById("welcome-overlay");
-        if (overlay) {
-            const hasShown = sessionStorage.getItem("welcomeShown");
-            if (hasShown) {
-                overlay.style.display = "none";
-            } else {
-                sessionStorage.setItem("welcomeShown", "true");
-                setTimeout(() => {
-                    overlay.style.display = "none";
-                }, 7000);
-            }
-        }
-
-        const toggle = document.getElementById("darkModeToggle");
-        const isDark = localStorage.getItem("dark-mode") === "true";
-        if (isDark) {
-            document.body.classList.add("dark-mode");
-            if (toggle) toggle.textContent = "☀️";
-        }
-
-        if (toggle) {
-            toggle.addEventListener("click", () => {
-                const enabled = document.body.classList.toggle("dark-mode");
-                toggle.textContent = enabled ? "☀️" : "🌙";
-                localStorage.setItem("dark-mode", enabled);
-            });
-        }
-    });
-</script>
+<script src="<c:url value='/js/index.js'/>"></script>
 
 </body>
 </html>
