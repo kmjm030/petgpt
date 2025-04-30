@@ -3,9 +3,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap4.min.css">
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
 <link rel="stylesheet" href="/css/cherry-blossom.css">
 <link rel="stylesheet" href="/css/item.css">
 
@@ -64,31 +61,7 @@
     </div>
 </div>
 
-<script>
-    $(function () {
-        $('#dataTable').DataTable({
-            pageLength: 10,
-            lengthMenu: [10, 25, 50, 100],
-            columnDefs: [
-                { orderable: true, targets: 1 },
-                { orderable: false, targets: [0, 2, 3] }
-            ],
-            order: [[1, 'desc']],
-            dom: 't<"d-flex justify-content-between mt-3 px-1"lip>',
-            language: {
-                search: '검색:',
-                lengthMenu: '페이지당 _MENU_개씩 보기',
-                info: '총 _TOTAL_개 중 _START_부터 _END_까지 표시',
-                paginate: {
-                    first: '처음',
-                    last: '마지막',
-                    next: '다음',
-                    previous: '이전'
-                },
-                zeroRecords: '일치하는 결과가 없습니다.',
-                infoEmpty: '데이터가 없습니다.',
-                infoFiltered: '(총 _MAX_개 중 필터링됨)'
-            }
-        });
-    });
-</script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
+<script src="/js/item.js"></script>
