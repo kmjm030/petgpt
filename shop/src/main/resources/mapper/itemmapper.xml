@@ -3,49 +3,93 @@
         PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mc.app.repository.ItemRepository">
-    <select id="select" resultType="item">
+
+    <resultMap id="itemBaseResultMap" type="com.mc.app.dto.Item">
+        <id property="itemKey" column="item_key"/>
+        <result property="categoryKey" column="category_key"/>
+        <result property="itemName" column="item_name"/>
+        <result property="itemContent" column="item_content"/>
+        <result property="itemPrice" column="item_price"/>
+        <result property="itemSprice" column="item_sprice"/>
+        <result property="itemCount" column="item_count"/>
+        <result property="itemRdate" column="item_rdate"/>
+        <result property="itemImg1" column="item_img1"/>
+        <result property="itemImg2" column="item_img2"/>
+        <result property="itemImg3" column="item_img3"/>
+    </resultMap>
+
+    <resultMap id="itemDetailResultMap" type="com.mc.app.dto.Item" extends="itemBaseResultMap">
+        <result property="itemDetail" column="item_detail"/>
+    </resultMap>
+
+    <select id="select" resultMap="itemBaseResultMap">
         SELECT * FROM item
     </select>
-    <select id="selectOne" parameterType="Integer" resultType="item">
-        SELECT * FROM item WHERE item_key=#{itemKey}
+
+    <select id="selectOne" parameterType="Integer" resultMap="itemDetailResultMap">
+        SELECT
+            i.*,
+            id.item_detail
+        FROM
+            item i
+        LEFT JOIN
+            item_details id ON i.item_key = id.item_key
+        WHERE
+            i.item_key=#{itemKey}
     </select>
-    <select id="findByCategory" parameterType="Integer" resultType="item">
+
+    <select id="findItemWithDetailByKey" parameterType="Integer" resultMap="itemDetailResultMap">
+        SELECT
+            i.*,
+            id.item_detail
+        FROM
+            item i
+        LEFT JOIN
+            item_details id ON i.item_key = id.item_key
+        WHERE
+            i.item_key=#{itemKey}
+    </select>
+
+    <select id="findByCategory" parameterType="Integer" resultMap="itemBaseResultMap">
         SELECT * FROM item WHERE category_key=#{categoryKey}
     </select>
-    <select id="findByItemKeys" resultType="item">
-        SELECT * FROM item 
-        WHERE item_key IN 
+
+    <select id="findByItemKeys" resultMap="itemBaseResultMap">
+        SELECT * FROM item
+        WHERE item_key IN
         <foreach item="itemKey" collection="itemKeys" open="(" separator="," close=")">
             #{itemKey}
         </foreach>
     </select>
-    <select id="findByPriceRange" resultType="item">
-        SELECT * FROM item 
+
+    <select id="findByPriceRange" resultMap="itemBaseResultMap">
+        SELECT * FROM item
         WHERE item_price BETWEEN #{minPrice} AND #{maxPrice}
     </select>
-    <select id="findByPriceGreaterThan" resultType="item">
-        SELECT * FROM item 
+
+    <select id="findByPriceGreaterThan" resultMap="itemBaseResultMap">
+        SELECT * FROM item
         WHERE item_price >= #{minPrice}
     </select>
     
-    <select id="selectWithOrder" resultType="item">
+    <select id="selectWithOrder" resultMap="itemBaseResultMap">
         SELECT * FROM item
         <if test="orderBy != null">
             ORDER BY ${orderBy}
         </if>
     </select>
     
-    <select id="findByCategoryWithOrder" resultType="item">
-        SELECT * FROM item 
+    <select id="findByCategoryWithOrder" resultMap="itemBaseResultMap">
+        SELECT * FROM item
         WHERE category_key=#{categoryKey}
         <if test="orderBy != null">
             ORDER BY ${orderBy}
         </if>
     </select>
     
-    <select id="findByItemKeysWithOrder" resultType="item">
-        SELECT * FROM item 
-        WHERE item_key IN 
+    <select id="findByItemKeysWithOrder" resultMap="itemBaseResultMap">
+        SELECT * FROM item
+        WHERE item_key IN
         <foreach item="itemKey" collection="itemKeys" open="(" separator="," close=")">
             #{itemKey}
         </foreach>
@@ -54,59 +98,36 @@
         </if>
     </select>
     
-    <select id="findByPriceRangeWithOrder" resultType="item">
-        SELECT * FROM item 
+    <select id="findByPriceRangeWithOrder" resultMap="itemBaseResultMap">
+        SELECT * FROM item
         WHERE item_price BETWEEN #{minPrice} AND #{maxPrice}
         <if test="orderBy != null">
             ORDER BY ${orderBy}
         </if>
     </select>
     
-    <select id="findByPriceGreaterThanWithOrder" resultType="item">
-        SELECT * FROM item 
+    <select id="findByPriceGreaterThanWithOrder" resultMap="itemBaseResultMap">
+        SELECT * FROM item
         WHERE item_price >= #{minPrice}
         <if test="orderBy != null">
             ORDER BY ${orderBy}
         </if>
     </select>
     
-    <select id="findByNameContaining" resultType="item">
-        SELECT * FROM item 
+    <select id="findByNameContaining" resultMap="itemBaseResultMap">
+        SELECT * FROM item
         WHERE item_name LIKE CONCAT('%', #{keyword}, '%')
     </select>
     
-    <select id="findByNameContainingWithOrder" resultType="item">
-        SELECT * FROM item 
+    <select id="findByNameContainingWithOrder" resultMap="itemBaseResultMap">
+        SELECT * FROM item
         WHERE item_name LIKE CONCAT('%', #{keyword}, '%')
         <if test="orderBy != null">
             ORDER BY ${orderBy}
         </if>
     </select>
-    
-    <insert id="insert" parameterType="item">
-        INSERT INTO item VALUES (null, #{categoryKey}, #{itemName}, #{itemContent},
-                                 #{itemPrice}, #{itemSprice}, #{itemCount}, now(),
-                                 #{itemImg1}, #{itemImg2}, #{itemImg3})
-    </insert>
-    <update id="update" parameterType="item">
-        UPDATE item SET
-                        category_key=#{categoryKey},
-                        item_name=#{itemName},
-                        item_content=#{itemContent},
-                        item_price=#{itemPrice},
-                        item_sprice=#{itemSprice},
-                        item_count=#{itemCount},
-                        item_img1=#{itemImg1},
-                        item_img2=#{itemImg2},
-                        item_img3=#{itemImg3}
-        WHERE item_key=#{itemKey}
-    </update>
-    <delete id="delete" parameterType="Integer">
-        DELETE FROM item WHERE item_key=#{itemKey}
-    </delete>
 
-    <!-- 홈 화면 필터링을 위한 쿼리 추가 -->
-    <select id="selectWithOrderAndLimit" resultType="item">
+    <select id="selectWithOrderAndLimit" resultMap="itemBaseResultMap">
         SELECT i.*,
                CASE
                    WHEN i.item_price > 0 AND i.item_sprice > 0 AND i.item_sprice &lt; i.item_price
@@ -123,15 +144,53 @@
         LIMIT #{limit}
     </select>
 
-    <!-- 베스트셀러 조회를 위한 새로운 쿼리 (total_order 집계) -->
-    <select id="selectBestSellingItemsFromOrders" resultType="item">
-        SELECT i.*, COUNT(o.order_key) as sales_count <!-- 판매량 집계 -->
+    <select id="selectBestSellingItemsFromOrders" resultMap="itemBaseResultMap">
+        SELECT i.*, COUNT(o.order_key) as sales_count
         FROM item i
         JOIN total_order o ON i.item_key = o.item_key
-        WHERE o.order_status = #{orderStatus} <!-- 완료된 주문만 필터링 -->
-        GROUP BY i.item_key <!-- 상품별로 그룹화 -->
-        ORDER BY sales_count DESC <!-- 집계된 판매량으로 정렬 -->
-        LIMIT #{limit} <!-- 개수 제한 -->
+        WHERE o.order_status = #{orderStatus}
+        GROUP BY i.item_key
+        ORDER BY sales_count DESC
+        LIMIT #{limit}
     </select>
+
+    <select id="selectAllItemKeys" resultType="int">
+        SELECT item_key
+        FROM item
+    </select>
+
+    <insert id="insert" parameterType="item" useGeneratedKeys="true" keyProperty="itemKey">
+        INSERT INTO item VALUES (null, #{categoryKey}, #{itemName}, #{itemContent},
+                                 #{itemPrice}, #{itemSprice}, #{itemCount}, now(),
+                                 #{itemImg1}, #{itemImg2}, #{itemImg3})
+    </insert>
+
+    <update id="update" parameterType="item">
+        UPDATE item SET
+                        category_key=#{categoryKey},
+                        item_name=#{itemName},
+                        item_content=#{itemContent},
+                        item_price=#{itemPrice},
+                        item_sprice=#{itemSprice},
+                        item_count=#{itemCount},
+                        item_img1=#{itemImg1},
+                        item_img2=#{itemImg2},
+                        item_img3=#{itemImg3}
+        WHERE item_key=#{itemKey}
+    </update>
+
+    <delete id="delete" parameterType="Integer">
+        DELETE FROM item WHERE item_key=#{itemKey}
+    </delete>
+
+    <insert id="upsertItemDetail" parameterType="com.mc.app.dto.Item">
+        INSERT INTO item_details (item_key, item_detail)
+        VALUES (#{itemKey}, #{itemDetail})
+        ON DUPLICATE KEY UPDATE item_detail = VALUES(item_detail)
+    </insert>
+
+    <delete id="deleteItemDetail" parameterType="Integer">
+        DELETE FROM item_details WHERE item_key=#{itemKey}
+    </delete>
 
 </mapper>

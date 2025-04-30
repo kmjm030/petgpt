@@ -50,23 +50,10 @@
                     }
                 }
 
-                .product__item {
-                    margin-bottom: 35px;
-                    /* shop.jsp 기본 간격 */
-                    position: relative;
-                    /* 찜하기 상태 표시용 */
-                    overflow: visible;
-                    /* 호버 시 그림자 보이도록 */
-                }
-
                 .product__item__pic {
                     height: 260px;
-                    /* shop.jsp 기본 높이 */
                     position: relative;
                     overflow: hidden;
-                    /* 내부 요소 넘침 방지 */
-                    margin-bottom: 20px;
-                    /* 이미지와 텍스트 간격 */
                 }
 
                 .product__hover .like-button,
@@ -78,7 +65,6 @@
                     width: 40px;
                     height: 40px;
                     display: flex;
-                    /* 아이콘 중앙 정렬 */
                     align-items: center;
                     justify-content: center;
                     text-decoration: none;
@@ -92,24 +78,19 @@
                 }
 
                 .product__hover .like-button.liked {
-                    /* shop.jsp의 liked 버튼 스타일 */
                     background-color: #ff6b6b;
                 }
 
                 .product__hover .like-button.liked .icon {
-                    /* shop.jsp의 liked 아이콘 스타일 */
                     color: white;
                 }
 
                 .product__hover .icon {
-                    /* shop.jsp의 아이콘 스타일 */
                     font-size: 18px;
                     color: #333;
                     line-height: 1;
-                    /* 아이콘 세로 정렬 */
                 }
 
-                /* 상품 자체에 liked 클래스 적용 시 (shop.jsp 참고) */
                 .product__item.liked .product__hover .like-button {
                     background-color: #ff6b6b;
                 }
@@ -118,103 +99,134 @@
                     color: white;
                 }
 
-                /* --- 상품 텍스트 영역 레이아웃 (shop.jsp 구조 및 이미지 참고) --- */
-                .product__item__text {
-                    text-align: left;
-                    /* 왼쪽 정렬 (이미지 참고) */
-                    padding-top: 0;
-                    /* 이미지와 간격은 pic의 margin-bottom으로 조정 */
-                }
-
                 .product__item__text h6 {
-                    /* 상품명 */
                     font-size: 15px;
                     color: #252525;
                     font-weight: 600;
                     margin-bottom: 5px;
-                    /* 이름과 다음 요소 간격 */
                     overflow: hidden;
-                    /* shop.jsp에는 없었지만, 길 경우 대비 */
                     white-space: nowrap;
                     text-overflow: ellipsis;
                 }
 
-                .product__item__text .add-cart {
-                    /* 장바구니 버튼 (shop.jsp 스타일) */
-                    font-size: 14px;
-                    color: #ca1515;
-                    /* 빨간색 */
-                    font-weight: 700;
-                    letter-spacing: 1px;
-                    /* 글자 간격 */
-                    border-bottom: 1px solid #ca1515;
-                    /* 밑줄 */
-                    padding-bottom: 2px;
-                    display: inline-block;
-                    /* 밑줄 길이 맞춤 */
-                    margin-bottom: 8px;
-                    /* 버튼과 별점 간격 */
-                    text-decoration: none;
-                }
-
                 .product__item__text .rating {
-                    /* 별점 */
                     margin-bottom: 5px;
-                    /* 별점과 가격 간격 */
                     line-height: 1;
                 }
 
                 .product__item__text .rating i {
                     font-size: 13px;
                     color: #e3e3e3;
-                    /* 빈 별 색상 */
                     margin-right: 1px;
                 }
 
                 .product__item__text .rating i.fa-star {
-                    /* 채워진 별 색상 */
                     color: #f7941d;
                 }
 
                 .product__item__text h5 {
-                    /* 가격 */
                     color: #0d0d0d;
                     font-weight: 700;
                     font-size: 16px;
-                    /* 이미지 참고 크기 */
                     margin-bottom: 0;
                 }
 
                 .product__item__pic {
-                    /* height: 260px; */
-                    /* 고정 높이 제거 */
                     aspect-ratio: 1 / 1;
-                    /* 정사각형 비율 */
                     height: auto;
-                    /* 높이 자동 조정 */
                     position: relative;
                     overflow: hidden;
                     margin-bottom: 20px;
                     background-position: center;
-                    /* 이미지 중앙 정렬 */
                     background-size: cover;
-                    /* 이미지 꽉 채우기 */
                 }
 
-                /* Sale 라벨 스타일 (필요시 유지) */
                 .product__item__pic .label {
                     position: absolute;
                     top: 10px;
                     left: 10px;
-                    /* 왼쪽 상단 */
                     font-size: 12px;
                     color: #ffffff;
                     font-weight: 700;
                     padding: 2px 8px;
                     text-transform: uppercase;
                     background: #ca1515;
-                    /* 빨간색 배경 */
                     z-index: 9;
+                }
+
+                .categories__text:before {
+                    height: 360px;
+                }
+
+                .categories__text h2 {
+                    margin-left: -70px;
+                    margin-top: 5px;
+                    line-height: 1.9;
+                    font-size: 28px;
+                }
+
+                .categories__text .discount {
+                    display: block;
+                    font-weight: bold;
+                    margin-top: 0;
+                    margin-bottom: 0;
+                }
+
+                .col-lg-4.offset-lg-1 {
+                    margin-left: 3% !important;
+                }
+
+                .categories__deal__countdown .deal-title {
+                    font-size: 1.5em;
+                    font-weight: bold;
+                    display: block;
+                    margin-bottom: 15px;
+                }
+
+                .categories__deal__timer .cd-item span {
+                    font-size: 25px;
+                    font-weight: 700;
+                }
+
+                .hot__deal__sticker {
+                    position: absolute;
+                    right: 0;
+                    top: 0;
+                    padding: 10px 15px;
+                    text-align: center;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    min-width: 100px;
+                }
+
+                .hot__deal__sticker span {
+                    color: #ffffff;
+                    font-size: 10px;
+                    font-weight: 700;
+                    letter-spacing: 2px;
+                    text-transform: uppercase;
+                    display: block;
+                    margin-bottom: 5px;
+                }
+
+                .hot__deal__sticker h5 {
+                    color: #ffffff;
+                    font-size: 18px;
+                    font-weight: 700;
+                    line-height: 1.2;
+                    margin-bottom: 2px;
+                    white-space: nowrap;
+                }
+
+                .hot__deal__sticker #hotdeal-original-price {
+                    color: white;
+                    font-size: 0.9em;
+                    text-decoration: line-through;
+                    opacity: 0.8;
+                    display: block;
+                    margin-left: 0;
                 }
             </style>
 
@@ -222,10 +234,7 @@
                 var contextPath = "${pageContext.request.contextPath}";
 
                 const shop = {
-                    // shop.jsp의 init 함수는 home.jsp에서는 필터링 기능이 없으므로 제거
-                    // filterDuplicateColors 함수 제거
 
-                    // 장바구니 추가 함수 (shop.jsp와 동일)
                     addToCart: (itemKey) => {
                         console.log("Adding item to cart from home page:", itemKey);
                         const requestData = { itemKey: itemKey, cartCnt: 1 };
@@ -389,18 +398,126 @@
                     }
                 };
 
-                // 로그인 상태 및 사용자 ID 변수 (shop.jsp에서 가져옴, 서버에서 전달된 값 사용)
                 shop.isLoggedIn = ${ isLoggedIn != null && isLoggedIn ? 'true' : 'false' };
-                shop.customerId = '${custId}'; // custId가 서버에서 전달된다고 가정
+                shop.customerId = '${custId}';
+                let hotDealCountdownInterval = null;
 
-                // 기존 addToCart 함수 제거
+                function loadHotDeal() {
+                    $.ajax({
+                        url: contextPath + '/api/hotdeal/current',
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function (hotDeal) {
+                            console.log("핫딜 데이터:", hotDeal);
+                            if (hotDeal && hotDeal.itemKey && hotDeal.expiryTime) {
+                                updateHotDealSection(hotDeal);
+                                startCountdown(hotDeal.expiryTime);
+                            } else {
+                                displayNoHotDeal();
+                                setTimeout(loadHotDeal, 10000); // 10초 후 재시도
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            console.error("핫딜 정보를 불러오는 중 오류 발생:", status, error);
+                            displayNoHotDeal("핫딜 정보를 불러오는 중 오류 발생");
+                            setTimeout(loadHotDeal, 10000); // 10초 후 재시도
+                        }
+                    });
+                }
 
-                $(function () { // DOM 로드 후 실행
+                function updateHotDealSection(deal) {
+                    const imgUrl = contextPath + '/img/product/' + (deal.itemImg1 || 'default-placeholder.png');
+                    const detailUrl = contextPath + '/shop/details?itemKey=' + deal.itemKey;
 
-                    // 초기 로드된 상품들에 대해 찜하기 버튼 초기화
+                    $('#hotdeal-img').attr('src', imgUrl);
+                    $('#hotdeal-name').text(deal.itemName);
+                    $('#hotdeal-price').text(deal.hotDealPrice.toLocaleString() + '원');
+                    $('#hotdeal-original-price').text(deal.itemPrice.toLocaleString() + '원');
+                    $('#hotdeal-link').attr('href', detailUrl);
+
+                    // 로딩 상태 제거 (만약 있다면)
+                    $('.categories__deal__countdown span:first-child').show(); // 타이머 문구 다시 보이게
+                }
+
+                function displayNoHotDeal(message = "진행 중인 핫딜이 없습니다.") {
+                    $('#hotdeal-img').attr('src', contextPath + '/img/product-sale.png');
+                    $('#hotdeal-name').text(message);
+                    $('#hotdeal-price').text('0원');
+                    $('#hotdeal-original-price').text('0원');
+                    $('#hotdeal-minutes').text('00');
+                    $('#hotdeal-seconds').text('00');
+                    $('#hotdeal-link').attr('href', '#').addClass('disabled'); // 링크 비활성화
+                    $('.categories__deal__countdown span:first-child').hide(); // 타이머 문구 숨김
+                    if (hotDealCountdownInterval) {
+                        clearInterval(hotDealCountdownInterval); // 기존 카운트다운 중지
+                    }
+                }
+
+                function startCountdown(expiryTimeString) {
+                    if (hotDealCountdownInterval) {
+                        clearInterval(hotDealCountdownInterval);
+                    }
+
+                    const expiryTime = new Date(expiryTimeString).getTime(); // 만료 시간을 밀리초로 변환
+
+                    hotDealCountdownInterval = setInterval(function () {
+                        const now = new Date().getTime();
+                        const distance = expiryTime - now;
+
+                        if (distance <= 0) {
+                            clearInterval(hotDealCountdownInterval);
+                            $('#hotdeal-minutes').text('00');
+                            $('#hotdeal-seconds').text('00');
+                            $('#hotdeal-name').text('다음 딜 준비 중...');
+                            setTimeout(loadHotDeal, 3000);
+                        } else {
+                            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                            $('#hotdeal-minutes').text(minutes.toString().padStart(2, '0'));
+                            $('#hotdeal-seconds').text(seconds.toString().padStart(2, '0'));
+                        }
+                    }, 1000);
+                }
+
+                function createProductItemHtml(item) {
+                    const priceHtml = '<h5>' + item.itemPrice.toLocaleString() + '원</h5>';
+
+                    const imgUrl = contextPath + '/img/product/' + (item.itemImg1 || 'default-placeholder.png');
+                    const detailUrl = contextPath + '/shop/details?itemKey=' + item.itemKey;
+
+                    const isSale = (item.itemSprice != null && item.itemSprice >= 0 && item.itemSprice < item.itemPrice);
+                    const saleLabelHtml = isSale ? '<span class="label sale">Sale</span>' : '';
+
+                    return (
+                        '<div class="col-lg-4 col-md-6 col-sm-6">' +
+                        '    <div class="product__item">' +
+                        '        <div class="product__item__pic set-bg" data-setbg="' + imgUrl + '">' +
+                        saleLabelHtml +
+                        '            <ul class="product__hover">' +
+                        '                <li><a href="#" class="like-button" data-item-key="' + item.itemKey + '"><i class="fa fa-heart icon"></i></a></li>' +
+                        '                <li><a href="' + detailUrl + '" class="detail-button"><i class="fa fa-search icon"></i></a></li>' +
+                        '            </ul>' +
+                        '        </div>' +
+                        '        <div class="product__item__text">' +
+                        '            <h6>' + item.itemName + '</h6>' +
+                        '            <a href="#" class="add-cart" onclick="shop.addToCart(' + item.itemKey + '); return false;">+ Add To Cart</a>' +
+                        '            <div class="rating">' +
+                        '                <i class="fa fa-star-o"></i>' +
+                        '                <i class="fa fa-star-o"></i>' +
+                        '                <i class="fa fa-star-o"></i>' +
+                        '                <i class="fa fa-star-o"></i>' +
+                        '                <i class="fa fa-star-o"></i>' +
+                        '            </div>' +
+                        priceHtml +
+                        '        </div>' +
+                        '    </div>' +
+                        '</div>'
+                    );
+                }
+
+                $(function () {
                     shop.initializeLikeButtons();
 
-                    // 필터 클릭 이벤트 처리
                     $('.filter__controls li').on('click', function () {
                         if ($(this).hasClass('active')) { return; }
                         $('.filter__controls li').removeClass('active');
@@ -439,52 +556,13 @@
                         });
                     });
 
-                    // 상품 아이템 HTML 생성 함수 (shop.jsp 스타일 적용)
-                    function createProductItemHtml(item) {
-                        const priceHtml = '<h5>' + item.itemPrice.toLocaleString() + '원</h5>';
-
-                        const imgUrl = contextPath + '/img/product/' + (item.itemImg1 || 'default-placeholder.png');
-                        const detailUrl = contextPath + '/shop/details?itemKey=' + item.itemKey; // shop.jsp와 동일한 URL 구조
-
-                        const isSale = (item.itemSprice != null && item.itemSprice >= 0 && item.itemSprice < item.itemPrice);
-                        const saleLabelHtml = isSale ? '<span class="label sale">Sale</span>' : '';
-
-                        // shop.jsp와 동일한 HTML 구조 반환
-                        return (
-                            '<div class="col-lg-3 col-md-6 col-sm-6">' +
-                            '    <div class="product__item">' + // 찜 상태 클래스는 JS로 관리
-                            '        <div class="product__item__pic set-bg" data-setbg="' + imgUrl + '">' +
-                            saleLabelHtml + // Sale 라벨
-                            '            <ul class="product__hover">' + // 호버 아이콘
-                            '                <li><a href="#" class="like-button" data-item-key="' + item.itemKey + '"><i class="fa fa-heart icon"></i></a></li>' +
-                            '                <li><a href="' + detailUrl + '" class="detail-button"><i class="fa fa-search icon"></i></a></li>' +
-                            '            </ul>' +
-                            '        </div>' +
-                            '        <div class="product__item__text">' + // 텍스트 영역 (shop.jsp 구조)
-                            '            <h6>' + item.itemName + '</h6>' + // 상품명
-                            // 장바구니 버튼 (shop.jsp와 동일)
-                            '            <a href="#" class="add-cart" onclick="shop.addToCart(' + item.itemKey + '); return false;">+ Add To Cart</a>' +
-                            '            <div class="rating">' + // 별점
-                            '                <i class="fa fa-star-o"></i>' +
-                            '                <i class="fa fa-star-o"></i>' +
-                            '                <i class="fa fa-star-o"></i>' +
-                            '                <i class="fa fa-star-o"></i>' +
-                            '                <i class="fa fa-star-o"></i>' +
-                            '            </div>' +
-                            priceHtml + // 가격
-                            '        </div>' +
-                            '    </div>' +
-                            '</div>'
-                        );
-                    }
-
-                    // 페이지 로드 시 배경 이미지 설정 (초기 로드된 상품들 - 유지)
                     $('#product-list-container .set-bg').each(function () {
                         var bg = $(this).data('setbg');
                         if (bg) { $(this).css('background-image', 'url(' + bg + ')'); }
                     });
 
-                }); // End of $(function() {})
+                    loadHotDeal();
+                });
             </script>
 
             <!-- Hero Section Begin -->
@@ -627,7 +705,7 @@
                             <c:choose>
                                 <c:when test="${not empty bestSellerList}">
                                     <c:forEach items="${bestSellerList}" var="item">
-                                        <div class="col-lg-3 col-md-6 col-sm-6">
+                                        <div class="col-lg-4 col-md-6 col-sm-6">
                                             <div class="product__item">
                                                 <div class="product__item__pic set-bg"
                                                     data-setbg="<c:url value='/img/product/${item.itemImg1}'/>">
@@ -646,21 +724,19 @@
                                                             </a></li>
                                                     </ul>
                                                 </div>
-                                                <div class="product__item__text"> <%-- 텍스트 영역 (shop.jsp 구조) --%>
-                                                        <h6>${item.itemName}</h6> <%-- 상품명 --%>
-                                                            <%-- 장바구니 버튼 (shop.jsp와 동일) --%>
-                                                                <a href="#" class="add-cart"
-                                                                    onclick="shop.addToCart(${item.itemKey}); return false;">+
-                                                                    Add To Cart</a>
-                                                                <div class="rating"> <%-- 별점 --%>
-                                                                        <i class="fa fa-star-o"></i>
-                                                                        <i class="fa fa-star-o"></i>
-                                                                        <i class="fa fa-star-o"></i>
-                                                                        <i class="fa fa-star-o"></i>
-                                                                        <i class="fa fa-star-o"></i>
-                                                                </div>
-                                                                <%-- 가격 (shop.jsp와 동일하게 표시) --%>
-                                                                    <h5>${item.itemPrice}원</h5>
+                                                <div class="product__item__text">
+                                                    <h6>${item.itemName}</h6>
+                                                    <a href="#" class="add-cart"
+                                                        onclick="shop.addToCart(${item.itemKey}); return false;">+
+                                                        Add To Cart</a>
+                                                    <div class="rating">
+                                                        <i class="fa fa-star-o"></i>
+                                                        <i class="fa fa-star-o"></i>
+                                                        <i class="fa fa-star-o"></i>
+                                                        <i class="fa fa-star-o"></i>
+                                                        <i class="fa fa-star-o"></i>
+                                                    </div>
+                                                    <h5>${item.itemPrice}원</h5>
                                                 </div>
                                             </div>
                                         </div>
@@ -676,53 +752,51 @@
             </section>
             <!-- Product Section End -->
 
-            <!-- Categories Section Begin -->
+            <!-- Hot Deal Section Begin -->
             <section class="categories spad">
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-3">
                             <div class="categories__text">
-                                <h2>강아지 옷장<br /><span>산책 필수템</span><br />간식&장난감</h2>
+                                <h2>
+                                    오직 펫GPT에서만! <br><br>
+                                    <span class="discount">1분 한정, 특별한 가격!</span> <br>
+                                    지금 바로 행운을 잡으세요!
+                                </h2>
                             </div>
                         </div>
                         <div class="col-lg-4">
                             <div class="categories__hot__deal">
-                                <img src="<c:url value='/img/product-sale.png'/>" alt="핫딜상품">
+                                <img id="hotdeal-img" src="<c:url value='/img/product-sale.png'/>"
+                                    alt="Hot Deal Product">
                                 <div class="hot__deal__sticker">
-                                    <span>지금 특가</span>
-                                    <h5>₩15,900</h5>
+                                    <span>Sale Of</span>
+                                    <h5 id="hotdeal-price">0원</h5>
+                                    <del id="hotdeal-original-price">0원</del>
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-4 offset-lg-1">
                             <div class="categories__deal__countdown">
-                                <span>이번 주 펫딜 🐾</span>
-                                <h2>강아지 이동식 포근백</h2>
-                                <div class="categories__deal__countdown__timer" id="countdown">
+                                <span class="deal-title">⏰ 1분 타임딜 ⏰</span>
+                                <h2 id="hotdeal-name">상품 로딩 중...</h2>
+                                <div class="categories__deal__timer">
                                     <div class="cd-item">
-                                        <span>3</span>
-                                        <p>일</p>
+                                        <span id="hotdeal-minutes">00</span>
+                                        <p>Minutes</p>
                                     </div>
                                     <div class="cd-item">
-                                        <span>1</span>
-                                        <p>시간</p>
-                                    </div>
-                                    <div class="cd-item">
-                                        <span>50</span>
-                                        <p>분</p>
-                                    </div>
-                                    <div class="cd-item">
-                                        <span>18</span>
-                                        <p>초</p>
+                                        <span id="hotdeal-seconds">00</span>
+                                        <p>Seconds</p>
                                     </div>
                                 </div>
-                                <a href="<c:url value='/shop'/>" class="primary-btn">지금 담으러 가기</a>
+                                <a id="hotdeal-link" href="#" class="primary-btn">지금 보러 가기</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
-            <!-- Categories Section End -->
+            <!-- Hot Deal Section End -->
 
             <!-- Instagram Section Begin -->
             <section class="instagram spad">
