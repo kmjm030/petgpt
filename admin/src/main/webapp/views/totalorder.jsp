@@ -193,19 +193,60 @@
                 +'</div>'
             ).show();$tr.addClass('shown');}
         });
-        $('#totalOrderTable tbody').on('click','.toggle-delete',function(){
-            var $tr=$(this).closest('tr'),row=table.row($tr);
-            if($tr.hasClass('deleting')){row.child.hide();$tr.removeClass('deleting');}
-            else{var url=$tr.data('delete-url');row.child(
-                '<div class="confirm-panel p-3">'
-                +'<p>정말 삭제하시겠습니까?</p>'
-                +'<button type="button" class="btn btn-light btn-sm btn-confirm-delete me-2" data-url="'+url+'">확인</button>'
-                +'<button type="button" class="btn btn-secondary btn-sm btn-cancel-delete">취소</button>'
-                +'</div>'
-            ).show();$tr.addClass('deleting');}
+        // 삭제 확인 패널 토글
+        $('#totalOrderTable tbody').on('click', '.toggle-delete', function() {
+            var $tr = $(this).closest('tr'),
+                row = table.row($tr);
+
+            if ($tr.hasClass('deleting')) {
+                row.child.hide();
+                $tr.removeClass('deleting');
+            } else {
+                var url = $tr.data('delete-url');
+                row.child(
+                    '<div class="confirm-panel p-3">'
+                    + '<p>정말 삭제하시겠습니까?</p>'
+                    + '<button type="button" class="btn btn-danger btn-sm btn-confirm-delete me-2" data-url="' + url + '">확인</button>'
+                    + '<button type="button" class="btn btn-secondary btn-sm btn-cancel-delete">취소</button>'
+                    + '</div>'
+                ).show();
+                $tr.addClass('deleting');
+            }
         });
-        $('#totalOrderTable tbody').on('click','.btn-cancel-delete',function(){var $tr=$(this).closest('tr'),row=table.row($tr);row.child.hide();$tr.removeClass('deleting');});
-        $('#totalOrderTable tbody').on('click','.btn-confirm-delete',function(){window.location.href=$(this).data('url');});
+
+// 삭제 취소 버튼 클릭 시 이벤트 처리
+        $('#totalOrderTable tbody').on('click', '.btn-cancel-delete', function() {
+            var $tr = $(this).closest('tr').prev('tr');
+            table.row($tr).child.hide();
+            $tr.removeClass('deleting');
+        });
+
+// 삭제 확인 버튼 클릭 시 AJAX로 삭제 요청 처리
+        $('#totalOrderTable tbody').on('click', '.btn-confirm-delete', function() {
+            var url = $(this).data('url');
+
+            if (!url) {
+                alert("삭제할 URL이 설정되지 않았습니다.");
+                return;
+            }
+
+            if (!confirm("정말 삭제하시겠습니까?")) {
+                return;
+            }
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                success: function(response) {
+                    alert('주문이 성공적으로 삭제되었습니다.');
+                    location.reload();  // 삭제 후 새로고침
+                },
+                error: function(xhr, status, error) {
+                    alert('삭제 중 오류가 발생했습니다.');
+                    console.error(error);
+                }
+            });
+        });
     });
 </script>
 </body>
