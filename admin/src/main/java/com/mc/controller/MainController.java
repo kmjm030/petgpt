@@ -93,7 +93,7 @@ public class MainController {
         } catch (Exception e) {
             log.warn("[MainController] 알림 생성 중 오류 (재고): {}", e.getMessage());
         }
-
+// g
         try {
             int unansweredQna = totalOrderService.getUnansweredQnaCount();
             if (unansweredQna > 0) {
