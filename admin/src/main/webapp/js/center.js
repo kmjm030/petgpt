@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // 🌸 벚꽃 애니메이션
     const petalCount = 20;
     for (let i = 0; i < petalCount; i++) {
         const petal = document.createElement('div');
@@ -10,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.appendChild(petal);
     }
 
+    // 📊 오늘 시간대별 매출 차트
     const chart = Highcharts.chart('hourlySalesChart', {
         chart: {
             type: 'areaspline',
@@ -66,4 +68,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
     updateChartData();
     setInterval(updateChartData, 5000);
+
+    // 📈 최근 7일 가입자 추이 차트
+    $.ajax({
+        url: '/cust/joinstats',   // ✅ 수정: 기존 '/cust/weeklyJoin' → 실제 매핑된 '/cust/joinstats'
+        method: 'GET',
+        success: function (data) {
+            console.log("가입자 데이터:", data);  // 테스트용 로그
+            const categories = data.map(e => e.day);
+            const counts = data.map(e => e.count);
+
+            Highcharts.chart('weeklyJoinChart', {
+                chart: { type: 'line' },
+                title: { text: '' },
+                xAxis: { categories },
+                yAxis: { title: { text: '가입자 수' } },
+                series: [{
+                    name: '가입자 수',
+                    data: counts,
+                    color: '#d63384'
+                }]
+            });
+        },
+        error: function () {
+            $('#weeklyJoinChart').html('<p class="text-muted">데이터를 불러오지 못했습니다.</p>');
+        }
+    });
+
 });

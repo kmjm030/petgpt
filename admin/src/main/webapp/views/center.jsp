@@ -103,6 +103,12 @@
       </div>
     </div>
     <div class="col-lg-6 mb-4">
+      <div class="chart-card">
+        <h6 class="card-title">최근 7일 가입자 추이</h6>
+        <div id="weeklyJoinChart" style="width:100%; height:300px;"></div>
+      </div>
+    </div>
+    <div class="col-lg-6 mb-4">
       <div class="dashboard-card">
         <div class="card-title">관리자 공지사항</div>
         <ul class="list-group list-group-flush">
