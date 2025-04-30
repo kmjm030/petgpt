@@ -16,5 +16,6 @@ public class Cart {
     private String custId;
     private int cartCnt;
     private Date cartRdate;
-    private Integer optionKey; // 선택된 옵션 키 필드 추가 (Integer 사용: 옵션 없는 상품은 null 가능)
+    private Integer optionKey;
+    private boolean isHotDeal;
 }

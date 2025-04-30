@@ -179,4 +179,11 @@ public interface ItemRepository extends MCRepository<Item, Integer> {
          */
         int deleteItemDetail(int itemKey) throws Exception;
 
+        /**
+         * 모든 상품의 기본 키 목록을 조회
+         * 
+         * @return 모든 상품의 itemKey 리스트
+         */
+        List<Integer> selectAllItemKeys();
+
 }

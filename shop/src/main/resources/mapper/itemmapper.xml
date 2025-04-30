@@ -154,6 +154,11 @@
         LIMIT #{limit}
     </select>
 
+    <select id="selectAllItemKeys" resultType="int">
+        SELECT item_key
+        FROM item
+    </select>
+
     <insert id="insert" parameterType="item" useGeneratedKeys="true" keyProperty="itemKey">
         INSERT INTO item VALUES (null, #{categoryKey}, #{itemName}, #{itemContent},
                                  #{itemPrice}, #{itemSprice}, #{itemCount}, now(),
