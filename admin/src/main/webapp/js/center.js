@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // 🌸 벚꽃 애니메이션
     const petalCount = 20;
     for (let i = 0; i < petalCount; i++) {
         const petal = document.createElement('div');
@@ -11,7 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.appendChild(petal);
     }
 
-    // 📊 오늘 시간대별 매출 차트
     const chart = Highcharts.chart('hourlySalesChart', {
         chart: {
             type: 'areaspline',
