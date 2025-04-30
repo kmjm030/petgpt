@@ -154,13 +154,26 @@
                     z-index: 9;
                 }
 
+                .categories__text:before {
+                    height: 360px;
+                }
+
                 .categories__text h2 {
-                    margin-bottom: 5px;
+                    margin-left: -70px;
+                    margin-top: 5px;
+                    line-height: 1.9;
+                    font-size: 28px;
                 }
 
                 .categories__text .discount {
                     display: block;
                     font-weight: bold;
+                    margin-top: 0;
+                    margin-bottom: 0;
+                }
+
+                .col-lg-4.offset-lg-1 {
+                    margin-left: 3% !important;
                 }
 
                 .categories__deal__countdown .deal-title {
@@ -173,6 +186,47 @@
                 .categories__deal__timer .cd-item span {
                     font-size: 25px;
                     font-weight: 700;
+                }
+
+                .hot__deal__sticker {
+                    position: absolute;
+                    right: 0;
+                    top: 0;
+                    padding: 10px 15px;
+                    text-align: center;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    min-width: 100px;
+                }
+
+                .hot__deal__sticker span {
+                    color: #ffffff;
+                    font-size: 10px;
+                    font-weight: 700;
+                    letter-spacing: 2px;
+                    text-transform: uppercase;
+                    display: block;
+                    margin-bottom: 5px;
+                }
+
+                .hot__deal__sticker h5 {
+                    color: #ffffff;
+                    font-size: 18px;
+                    font-weight: 700;
+                    line-height: 1.2;
+                    margin-bottom: 2px;
+                    white-space: nowrap;
+                }
+
+                .hot__deal__sticker #hotdeal-original-price {
+                    color: white;
+                    font-size: 0.9em;
+                    text-decoration: line-through;
+                    opacity: 0.8;
+                    display: block;
+                    margin-left: 0;
                 }
             </style>
 
@@ -704,7 +758,11 @@
                     <div class="row">
                         <div class="col-lg-3">
                             <div class="categories__text">
-                                <h2>Hot Deal <br><span class="discount">1분 특가!</span></h2>
+                                <h2>
+                                    오직 펫GPT에서만! <br><br>
+                                    <span class="discount">1분 한정, 특별한 가격!</span> <br>
+                                    지금 바로 행운을 잡으세요!
+                                </h2>
                             </div>
                         </div>
                         <div class="col-lg-4">
