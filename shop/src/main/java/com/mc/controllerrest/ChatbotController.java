@@ -25,13 +25,10 @@ public class ChatbotController {
 
     /**
      * 프론트엔드로부터 채팅 메시지를 받아 AI 서비스에 전달하고 응답을 반환
-     * 
-     * @param request
-     * @return AI의 응답이 담긴 응답 객체 Mono
      */
     @PostMapping("/ask")
     public Mono<ChatResponse> handleChatMessage(@RequestBody ChatRequest request) {
         return chatbotService.getChatbotReply(request.message())
-                .map(ChatResponse::new); // Mono<String> -> Mono<ChatResponse>
+                .map(ChatResponse::new);
     }
 }

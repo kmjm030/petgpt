@@ -6,28 +6,6 @@
                 color: darkred;
             }
         </style>
-        <script>
-            const login = {
-                init: function () {
-
-                },
-                send: function () {
-                    $('#login_form').attr('method', 'post');
-                    $('#login_form').attr('action', '<c:url value="/loginimpl"/>');
-                    $('#login_form').submit();
-                },
-                // 카카오 로그인 요청 함수 추가
-                kakaoLogin: function () {
-                    const REST_API_KEY = '0404d3d84de08ad89ff1804757d2047a'; // 발급받은 REST API 키 입력
-                    const REDIRECT_URI = 'http://localhost/auth/kakao/callback'; // 등록한 Redirect URI 입력
-                    const kakaoAuthUrl = 'https://kauth.kakao.com/oauth/authorize?client_id=' + REST_API_KEY + '&redirect_uri=' + REDIRECT_URI + '&response_type=code';
-                    window.location.href = kakaoAuthUrl; // 카카오 인증 페이지로 이동
-                }
-            }
-            $(function () {
-                login.init();
-            })
-        </script>
 
         <!-- Breadcrumb Section Begin -->
         <section class="breadcrumb-option">
@@ -55,7 +33,7 @@
                 <div class="checkout__form">
                     <div class="row">
                         <div class="col-lg-6">
-                            <form id="login_form">
+                            <form id="login_form" data-action-url="<c:url value='/loginimpl'/>">
                                 <div class="form-group">
                                     <div class="checkout__input">
                                         <label for="id">ID</label>
@@ -85,7 +63,8 @@
                                 <a href="javascript:login.kakaoLogin()" style="flex: 1; display: block;">
                                     <img src="<c:url value='/img/kakao/kakao_login_large_narrow.png'/>" alt="카카오 로그인"
                                         style="cursor: pointer; width: 100%; height: 100%; object-fit: contain; vertical-align: middle;">
-                                    <a href="https://accounts.google.com/o/oauth2/v2/auth?client_id=1234567890-abc123.apps.googleusercontent.com&redirect_uri=http://localhost:8080/auth/google/callback&response_type=code&scope=email%20profile&access_type=offline">
+                                    <a
+                                        href="https://accounts.google.com/o/oauth2/v2/auth?client_id=1234567890-abc123.apps.googleusercontent.com&redirect_uri=http://localhost:8080/auth/google/callback&response_type=code&scope=email%20profile&access_type=offline">
                                         Google 로그인
                                     </a>
 
