@@ -50,3 +50,8 @@ file:
     directory: C:/petshop/uploads/images
     url:
       prefix: /uploads/images
+
+# AI 서비스
+chatbot:
+  api:
+    url: http://127.0.0.1:8000/generate # AI 서비스 API 엔드포인트

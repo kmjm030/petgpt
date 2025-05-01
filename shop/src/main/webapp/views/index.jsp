@@ -166,8 +166,8 @@
                     position: absolute;
                     bottom: 80px;
                     right: 0;
-                    width: 350px;
-                    max-height: 500px;
+                    width: 500px;
+                    max-height: 600px;
                     background-color: white;
                     border-radius: 15px;
                     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
@@ -247,15 +247,75 @@
                     overflow-y: auto;
                     border: 1px solid #eee;
                     margin-bottom: 10px;
-                    padding: 10px;
+                    padding: 15px;
                     background-color: #f9f9f9;
                     border-radius: 5px;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
                 }
 
-                #chat-messages p.initial-message {
-                    color: #888;
+                .message-bubble {
+                    padding: 8px 12px;
+                    border-radius: 18px;
+                    max-width: 75%;
+                    line-height: 1.4;
+                    word-wrap: break-word;
+                    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+                    margin-bottom: 0 !important;
+                    text-align: left !important;
+                }
+
+                .user-message {
+                    background-color: #FFEB33;
+                    color: #3C1E1E;
+                    margin-left: auto;
+                    border-bottom-right-radius: 5px;
+                }
+
+                .user-message strong {
+                    display: none;
+                }
+
+                .bot-message {
+                    background-color: #FFFFFF;
+                    color: #333;
+                    margin-right: auto;
+                    border: 1px solid #E0E0E0;
+                    border-bottom-left-radius: 5px;
+                }
+
+                .bot-message strong {
+                    font-weight: 600;
+                    margin-right: 5px;
+                    color: #555;
+                    display: block;
+                    margin-bottom: 3px;
+                    font-size: 0.9em;
+                }
+
+                .loading-message {
+                    text-align: center !important;
+                    color: #888 !important;
+                    font-style: italic;
+                    width: 100%;
+                    padding: 5px 0;
+                    background: none !important;
+                    box-shadow: none !important;
+                    border-radius: 0 !important;
+                }
+
+                .loading-message strong {
+                    display: none;
+                }
+
+                #chat-messages div.initial-message {
+                    color: #888 !important;
                     text-align: center;
                     margin-top: 10px;
+                    width: 100%;
+                    background: none !important;
+                    box-shadow: none !important;
                 }
 
                 .chat-input-area {
@@ -752,6 +812,8 @@
                     let stompClient = null;
                     let subscription = null;
                     let username = "User_${sessionScope.cust != null ? sessionScope.cust.custId : 'Guest'}";
+                    let currentChatMode = 'livechat';
+                    let chatbotHistory = [];
 
                     function connectChat() {
 
@@ -765,7 +827,8 @@
 
                         stompClient.connect({}, function (frame) {
                             console.log('Connected: ' + frame);
-                            chatMessages.html('<p style="color: green; text-align: center;">연결되었습니다.</p>');
+                            updateChatHeader('실시간 상담');
+                            chatMessages.html('<div style="color: green; text-align: center;">실시간 상담에 연결되었습니다.</div>');
 
                             subscription = stompClient.subscribe('/livechat/public', function (messageOutput) {
                                 showMessageOutput(JSON.parse(messageOutput.body));
@@ -782,7 +845,7 @@
 
                         }, function (error) {
                             console.error('STOMP connection error: ' + error);
-                            chatMessages.html('<p style="color: red; text-align: center;">연결에 실패했습니다. 새로고침 후 다시 시도해주세요.</p>');
+                            chatMessages.html('<div style="color: red; text-align: center;">연결에 실패했습니다. 새로고침 후 다시 시도해주세요.</div>');
                         });
                     }
 
@@ -797,13 +860,14 @@
                             }
                             stompClient.disconnect(function () {
                                 console.log("Disconnected");
-                                chatMessages.html('<p style="color: #888; text-align: center;">연결이 종료되었습니다.</p>');
+                                updateChatHeader('PetGPT 실시간 상담');
+                                chatMessages.html('<div style="color: #888; text-align: center;">실시간 상담 연결이 종료되었습니다.</div>');
                             });
                             stompClient = null;
                         }
                     }
 
-                    function sendMessage() {
+                    function sendLiveChatMessage() {
                         const messageContent = chatInput.val().trim();
                         if (messageContent && stompClient && stompClient.connected) {
                             const chatMessage = {
@@ -811,6 +875,7 @@
                                 content1: messageContent
                             };
 
+                            showMessageOutput({ sendid: username, content1: messageContent });
                             stompClient.send("/app/livechat.sendMessage", {}, JSON.stringify(chatMessage));
                             chatInput.val('');
                         } else if (!stompClient || !stompClient.connected) {
@@ -818,23 +883,70 @@
                         }
                     }
 
+                    function sendChatbotMessage() {
+                        const messageContent = chatInput.val().trim();
+                        if (messageContent) {
+                            showMessageOutput({ sendid: username, content1: messageContent });
+                            chatInput.val('');
+                            showMessageOutput({ sendid: 'PetGPT', content1: '답변 생성 중...', isLoading: true });
+
+                            $.ajax({
+                                url: '/api/chatbot/ask',
+                                type: 'POST',
+                                contentType: 'application/json',
+                                data: JSON.stringify({ message: messageContent }),
+                                success: function (response) {
+                                    chatMessages.find('.loading-message').remove();
+                                    showMessageOutput({ sendid: 'PetGPT', content1: response.reply });
+                                },
+                                error: function (xhr, status, error) {
+                                    console.error("Chatbot API error:", status, error);
+                                    chatMessages.find('.loading-message').remove();
+                                    showMessageOutput({ sendid: 'PetGPT', content1: '죄송합니다. 답변을 가져오는 중 오류가 발생했습니다.' });
+                                }
+                            });
+                        }
+                    }
+
                     function showMessageOutput(messageOutput) {
-                        const messageElement = $('<p></p>');
+                        const messageElement = $('<div></div>');
 
-                        if (messageOutput.sendid === username) {
-                            messageElement.css({ 'text-align': 'right', 'margin-bottom': '5px' });
-                            messageElement.html('<strong>나:</strong> ' + messageOutput.content1);
+                        if (messageOutput.isLoading) {
+                            messageElement.addClass('loading-message');
+                            messageElement.text(messageOutput.content1);
                         } else {
-                            messageElement.css({ 'text-align': 'left', 'margin-bottom': '5px' });
-                            messageElement.html('<strong>' + (messageOutput.sendid || '상담원') + ':</strong> ' + messageOutput.content1);
+                            messageElement.addClass('message-bubble');
+
+                            if (messageOutput.sendid === username) {
+                                messageElement.addClass('user-message');
+                                messageElement.text(messageOutput.content1);
+                            } else {
+                                messageElement.addClass('bot-message');
+                                const senderName = messageOutput.sendid || 'PetGPT';
+                                const nameElement = $('<strong></strong>').text(senderName + ':');
+                                const contentElement = $('<span></span>').text(messageOutput.content1);
+                                messageElement.append(nameElement).append(contentElement);
+                            }
                         }
 
-                        if (chatMessages.find('p.initial-message').length > 0 || chatMessages.find('p:contains("연결되었습니다.")').length > 0) {
-                            chatMessages.empty();
+                        if (chatMessages.find('div.initial-message').length > 0) {
+                            if (!messageOutput.isLoading) {
+                                chatMessages.find('div.initial-message').remove();
+                            }
+                        } else if (chatMessages.find('div:contains("연결되었습니다"), div:contains("종료되었습니다"), div:contains("챗봇 모드입니다")').length > 0) {
+                            if (!messageOutput.isLoading) {
+                                chatMessages.empty();
+                            }
                         }
+
                         chatMessages.append(messageElement);
+                        setTimeout(() => {
+                            chatMessages.scrollTop(chatMessages[0].scrollHeight);
+                        }, 50);
+                    }
 
-                        chatMessages.scrollTop(chatMessages[0].scrollHeight);
+                    function updateChatHeader(title) {
+                        $('#chat-modal .modal-title').text(title);
                     }
 
                     fabOpenBtn.on('click', function () {
@@ -844,13 +956,15 @@
                         }, 200);
 
                         chatModal.show().addClass('active');
-                        connectChat();
+                        switchToChatbotMode();
                     });
 
                     fabCloseBtn.on('click', function () {
                         chatModal.removeClass('active');
                         fabCloseBtn.addClass('fab-hidden').removeClass('fab-visible');
-                        disconnectChat();
+                        if (currentChatMode === 'livechat') {
+                            disconnectChat();
+                        }
 
                         setTimeout(function () {
                             chatModal.hide();
@@ -860,58 +974,86 @@
                     });
 
                     sendButton.on('click', function () {
-                        sendMessage();
+                        if (currentChatMode === 'livechat') {
+                            sendLiveChatMessage();
+                        } else {
+                            sendChatbotMessage();
+                        }
                     });
 
                     chatInput.on('keypress', function (e) {
                         if (e.key === 'Enter' || e.keyCode === 13) {
-                            sendMessage();
+                            if (currentChatMode === 'livechat') {
+                                sendLiveChatMessage();
+                            } else {
+                                sendChatbotMessage();
+                            }
                         }
                     });
 
                     $('#modal-chatbot-btn').on('click', function () {
-                        alert('챗봇 기능은 준비 중입니다.');
+                        switchToChatbotMode();
                     });
 
                     $('#modal-livechat-btn').on('click', function () {
-
+                        switchToLiveChatMode();
                     });
 
-                    fabOpenBtn.addClass('fab-visible').removeClass('fab-hidden');
+                    function switchToChatbotMode() {
+                        if (currentChatMode === 'chatbot') return;
 
+                        console.log("Switching to Chatbot mode");
+                        currentChatMode = 'chatbot';
+                        updateChatHeader('PetGPT 챗봇 상담');
+
+                        if (stompClient && stompClient.connected) {
+                            disconnectChat();
+                        }
+
+                        chatMessages.html('<div class="initial-message">챗봇 모드입니다. 무엇이든 물어보세요!</div>');
+                        chatInput.focus();
+                    }
+
+                    function switchToLiveChatMode() {
+                        if (currentChatMode === 'livechat' && stompClient && stompClient.connected) return;
+
+                        console.log("Switching to Live Chat mode");
+                        currentChatMode = 'livechat';
+                        updateChatHeader('PetGPT 실시간 상담');
+                        chatMessages.html('<div class="initial-message">실시간 상담 연결 중...</div>');
+                        connectChat();
+                        chatInput.focus();
+                    }
+
+                    fabOpenBtn.addClass('fab-visible').removeClass('fab-hidden');
                 });
             </script>
             <script>
                 document.addEventListener("DOMContentLoaded", function () {
                     const toggleBtn = document.getElementById("modeToggleBtn");
                     const modeOptions = document.getElementById("modeOptions");
-                    const mainLogo = document.getElementById("main-logo"); // 로고 요소 가져오기
-                    const lightLogoSrc = '<c:url value="/img/logo/logo.png"/>'; // 라이트 모드 로고 경로
-                    const darkLogoSrc = '<c:url value="/img/logo/logo-dark.png"/>'; // 다크 모드 로고 경로 (준비 필요)
+                    const mainLogo = document.getElementById("main-logo");
+                    const lightLogoSrc = '<c:url value="/img/logo/logo.png"/>';
+                    const darkLogoSrc = '<c:url value="/img/logo/logo-dark.png"/>';
 
                     function applyThemeBackgrounds() {
                         const isDarkMode = document.body.classList.contains('dark-mode');
-                        // console.log("Applying theme backgrounds. Dark mode:", isDarkMode); // 디버깅 필요시 주석 해제
 
-                        // jQuery가 로드되었는지 확인하고 실행
                         if (typeof $ === 'function') {
                             $('.set-bg').each(function () {
                                 const $this = $(this);
                                 const lightBg = $this.data('setbg');
-                                const darkBg = $this.data('setbg-dark'); // 다크 모드용 경로 읽기
-                                let targetBg = lightBg; // 기본값: 라이트 모드
+                                const darkBg = $this.data('setbg-dark');
+                                let targetBg = lightBg;
 
-                                // 다크 모드이고, 다크 모드 경로가 있으면 해당 경로 사용
                                 if (isDarkMode && darkBg) {
                                     targetBg = darkBg;
                                 }
 
-                                // 적용할 경로가 있으면 배경 설정
                                 if (targetBg) {
                                     const currentBg = $this.css('background-image');
                                     const targetUrl = 'url("' + targetBg + '")';
 
-                                    // 현재 배경과 다를 경우에만 업데이트 (깜빡임 방지)
                                     if (currentBg !== targetUrl) {
                                         $this.css('background-image', 'url(' + targetBg + ')');
                                     }
@@ -922,49 +1064,43 @@
                         }
                     }
 
-                    // 초기 로드 시 테마 적용 및 배경 업데이트
                     const savedMode = localStorage.getItem("darkMode");
                     if (savedMode === "true") {
                         document.body.classList.add("dark-mode");
-                        if (mainLogo && darkLogoSrc) mainLogo.src = darkLogoSrc; // 다크 로고 적용
-                        applyThemeBackgrounds(); // 초기 다크 모드 배경 적용
+                        if (mainLogo && darkLogoSrc) mainLogo.src = darkLogoSrc;
+                        applyThemeBackgrounds();
                     } else {
-                        // 라이트 모드가 기본값이지만 명시적으로 클래스 제거 및 로고/배경 설정
                         document.body.classList.remove("dark-mode");
-                        if (mainLogo && lightLogoSrc) mainLogo.src = lightLogoSrc; // 라이트 로고 적용
-                        applyThemeBackgrounds(); // 초기 라이트 모드 배경 적용
+                        if (mainLogo && lightLogoSrc) mainLogo.src = lightLogoSrc;
+                        applyThemeBackgrounds();
                     }
 
-                    // FAB 버튼 클릭 시 드롭다운 토글
                     toggleBtn.addEventListener("click", function (event) {
-                        event.stopPropagation(); // 이벤트 전파 중단
+                        event.stopPropagation();
                         modeOptions.classList.toggle("active");
                     });
 
-                    // 드롭다운 옵션(라이트/다크) 클릭 시 모드 변경
                     document.querySelectorAll("#modeOptions div").forEach(option => {
                         option.addEventListener("click", () => {
-                            const selectedMode = option.getAttribute("data-mode"); // 'light' 또는 'dark'
+                            const selectedMode = option.getAttribute("data-mode");
 
                             if (selectedMode === "dark") {
                                 document.body.classList.add("dark-mode");
                                 localStorage.setItem("darkMode", "true");
-                                if (mainLogo && darkLogoSrc) mainLogo.src = darkLogoSrc; // 다크 로고 적용
-                                applyThemeBackgrounds(); // 다크 모드 배경 적용
-                            } else { // selectedMode === "light"
+                                if (mainLogo && darkLogoSrc) mainLogo.src = darkLogoSrc;
+                                applyThemeBackgrounds();
+                            } else {
                                 document.body.classList.remove("dark-mode");
                                 localStorage.setItem("darkMode", "false");
-                                if (mainLogo && lightLogoSrc) mainLogo.src = lightLogoSrc; // 라이트 로고 적용
-                                applyThemeBackgrounds(); // 라이트 모드 배경 적용
+                                if (mainLogo && lightLogoSrc) mainLogo.src = lightLogoSrc;
+                                applyThemeBackgrounds();
                             }
-                            // 옵션 선택 후 드롭다운 닫기
+
                             modeOptions.classList.remove("active");
                         });
                     });
 
-                    // 페이지의 다른 영역 클릭 시 드롭다운 닫기
                     document.addEventListener("click", function (e) {
-                        // 클릭된 요소가 드롭다운 메뉴나 토글 버튼이 아니면 닫기
                         if (!modeOptions.contains(e.target) && !toggleBtn.contains(e.target)) {
                             modeOptions.classList.remove("active");
                         }
