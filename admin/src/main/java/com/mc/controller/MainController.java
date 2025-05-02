@@ -171,4 +171,17 @@ public class MainController {
         model.addAttribute("center", "totalorder_detail");
         return "index";
     }
+
+    @GetMapping("/totalorder/delete/{orderKey}")
+    public String deleteOrder(@PathVariable int orderKey,
+                              RedirectAttributes redirectAttrs) {
+        try {
+            totalOrderService.deleteOne(orderKey);
+            redirectAttrs.addFlashAttribute("msgSuccess", "주문 " + orderKey + "번이 삭제되었습니다.");
+        } catch (Exception e) {
+            log.error("[MainController] 주문 삭제 실패: {}", e.getMessage());
+            redirectAttrs.addFlashAttribute("msgError", "주문 삭제에 실패했습니다.");
+        }
+        return "redirect:/totalorder";
+    }
 }

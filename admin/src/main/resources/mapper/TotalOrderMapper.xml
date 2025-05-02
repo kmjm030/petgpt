@@ -58,4 +58,8 @@
         WHERE order_key = #{orderKey}
     </select>
 
+    <delete id="deleteOne" parameterType="int">
+        DELETE FROM total_order
+        WHERE order_key = #{orderKey}
+    </delete>
 </mapper>

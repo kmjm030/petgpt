@@ -57,4 +57,8 @@ public class TotalOrderService {
     public TotalOrder getOne(int orderKey) throws Exception {
         return totalOrderRepository.selectOne(orderKey);
     }
+
+    public void deleteOne(int orderKey) throws Exception {
+        totalOrderRepository.deleteOne(orderKey);
+    }
 }
