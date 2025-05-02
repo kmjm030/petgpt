@@ -361,9 +361,33 @@
                     <script src="<c:url value='/js/community.js'/>"></script>
                 </c:when>
                 <c:when test="${viewName == 'community_write'}">
+                    <!-- Summernote CSS -->
+                    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css"
+                        rel="stylesheet">
+                    <!-- Popper.js -->
+                    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+                    <!-- Bootstrap JS -->
+                    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+                    <!-- Summernote JS -->
+                    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+                    <script
+                        src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/lang/summernote-ko-KR.min.js"></script>
+                    <!-- 페이지별 JS -->
                     <script src="<c:url value='/js/community_write.js'/>"></script>
                 </c:when>
                 <c:when test="${viewName == 'community_edit'}">
+                    <!-- Summernote CSS -->
+                    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css"
+                        rel="stylesheet">
+                    <!-- Popper.js -->
+                    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+                    <!-- Bootstrap JS -->
+                    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+                    <!-- Summernote JS -->
+                    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+                    <script
+                        src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/lang/summernote-ko-KR.min.js"></script>
+                    <!-- 페이지별 JS -->
                     <script src="<c:url value='/js/community_edit.js'/>"></script>
                 </c:when>
                 <c:when test="${viewName == 'checkout'}">
