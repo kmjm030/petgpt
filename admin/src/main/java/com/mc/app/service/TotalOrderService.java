@@ -62,4 +62,8 @@ public class TotalOrderService {
         return totalOrderRepository.selectRecentOrders();
     }
 
+
+    public void deleteOne(int orderKey) throws Exception {
+        totalOrderRepository.deleteOne(orderKey);
+    }
 }

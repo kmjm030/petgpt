@@ -20,4 +20,5 @@ public interface TotalOrderRepository {
     List<TotalOrder> selectAll() throws Exception;
     TotalOrder selectOne(Integer orderKey) throws Exception;
     List<TotalOrder> selectRecentOrders() throws Exception;
+    int deleteOne(Integer orderKey) throws Exception;
 }

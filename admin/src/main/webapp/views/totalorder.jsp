@@ -136,7 +136,7 @@
                         <th class="d-lg-table-cell d-md-none d-sm-none">주문일시</th>
                         <th class="d-lg-table-cell d-md-none d-sm-none">수신자</th>
                         <th class="d-lg-table-cell d-md-none d-sm-none">전화번호</th>
-                        <th>액션</th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
