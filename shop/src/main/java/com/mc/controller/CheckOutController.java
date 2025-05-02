@@ -170,6 +170,7 @@ public class CheckOutController {
         model.addAttribute("orderList", orderList);
         model.addAttribute("currentPage", "pages");
         model.addAttribute("pageTitle", "Order List");
+        model.addAttribute("viewName", "order");
         model.addAttribute("centerPage", "pages/mypage/order.jsp");
         return "index";
     }
@@ -193,6 +194,7 @@ public class CheckOutController {
         model.addAttribute("itemMap", itemMap);
         model.addAttribute("currentPage", "pages");
         model.addAttribute("pageTitle", "Order Detail");
+        model.addAttribute("viewName", "order_detail");
         model.addAttribute("centerPage", "pages/mypage/order_detail.jsp");
         return "index";
     }

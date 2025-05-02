@@ -183,6 +183,7 @@ public class CommunityController {
 
         model.addAttribute("currentPage", "community");
         model.addAttribute("pageTitle", "게시글 작성");
+        model.addAttribute("viewName", "community_write");
         model.addAttribute("centerPage", "pages/community_write.jsp");
         return "index";
     }
@@ -225,6 +226,7 @@ public class CommunityController {
             model.addAttribute("boardKey", boardKey);
             model.addAttribute("currentPage", "community");
             model.addAttribute("pageTitle", "게시글 수정");
+            model.addAttribute("viewName", "community_edit");
             model.addAttribute("centerPage", "pages/community_edit.jsp");
             return "index";
 

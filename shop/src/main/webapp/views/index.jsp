@@ -360,8 +360,59 @@
                 <c:when test="${viewName == 'community'}">
                     <script src="<c:url value='/js/community.js'/>"></script>
                 </c:when>
+                <c:when test="${viewName == 'community_write'}">
+                    <script src="<c:url value='/js/community_write.js'/>"></script>
+                </c:when>
+                <c:when test="${viewName == 'community_edit'}">
+                    <script src="<c:url value='/js/community_edit.js'/>"></script>
+                </c:when>
                 <c:when test="${viewName == 'checkout'}">
                     <script src="<c:url value='/js/checkout.js'/>"></script>
+                </c:when>
+                <c:when test="${viewName == 'mypage'}">
+                    <script src="<c:url value='/js/mypage.js'/>"></script>
+                </c:when>
+                <c:when test="${viewName == 'address'}">
+                    <script src="<c:url value='/js/address.js'/>"></script>
+                </c:when>
+                <c:when test="${viewName == 'address_add'}">
+                    <script src="<c:url value='/js/address_add.js'/>"></script>
+                </c:when>
+                <c:when test="${viewName == 'address_detail'}">
+                    <script src="<c:url value='/js/address_detail.js'/>"></script>
+                </c:when>
+                <c:when test="${viewName == 'coupon'}">
+                    <script src="<c:url value='/js/coupon.js'/>"></script>
+                </c:when>
+                <c:when test="${viewName == 'like'}">
+                    <script src="<c:url value='/js/like.js'/>"></script>
+                </c:when>
+                <c:when test="${viewName == 'order_detail'}">
+                    <script src="<c:url value='/js/order_detail.js'/>"></script>
+                </c:when>
+                <c:when test="${viewName == 'order'}">
+                    <script src="<c:url value='/js/order.js'/>"></script>
+                </c:when>
+                <c:when test="${viewName == 'pet'}">
+                    <script src="<c:url value='/js/pet.js'/>"></script>
+                </c:when>
+                <c:when test="${viewName == 'qnaboard'}">
+                    <script src="<c:url value='/js/qnaboard.js'/>"></script>
+                </c:when>
+                <c:when test="${viewName == 'qnaboard_add'}">
+                    <script src="<c:url value='/js/qnaboard_add.js'/>"></script>
+                </c:when>
+                <c:when test="${viewName == 'qnaboard_detail'}">
+                    <script src="<c:url value='/js/qnaboard_detail.js'/>"></script>
+                </c:when>
+                <c:when test="${viewName == 'review'}">
+                    <script src="<c:url value='/js/review.js'/>"></script>
+                </c:when>
+                <c:when test="${viewName == 'review_add'}">
+                    <script src="<c:url value='/js/review_add.js'/>"></script>
+                </c:when>
+                <c:when test="${viewName == 'review_detail'}">
+                    <script src="<c:url value='/js/review_detail.js'/>"></script>
                 </c:when>
             </c:choose>
 

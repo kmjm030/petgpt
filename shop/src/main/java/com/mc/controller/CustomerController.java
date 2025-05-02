@@ -65,6 +65,7 @@ public class CustomerController {
         model.addAttribute("cust", cust);
         model.addAttribute("currentPage", "pages");
         model.addAttribute("pageTitle", "MyPage");
+        model.addAttribute("viewName", "mypage");
         model.addAttribute("centerPage", "pages/mypage/mypage.jsp");
         return "index";
     }
@@ -194,6 +195,7 @@ public class CustomerController {
         model.addAttribute("items", items);
         model.addAttribute("currentPage", "pages");
         model.addAttribute("pageTitle", "Like Page");
+        model.addAttribute("viewName", "like");
         model.addAttribute("centerPage", "pages/mypage/like.jsp");
         return "index";
     }
