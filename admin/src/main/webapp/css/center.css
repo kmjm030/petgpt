@@ -353,3 +353,42 @@ body.dark-mode .btn-outline-danger:hover {
     background-color: #888;
     color: #fff;
 }
+.recent-order-item {
+    border-radius: 12px;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(90deg, #fff0f5, #ffe4e1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+}
+
+.recent-order-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 182, 193, 0.3);
+}
+#orderDetailModal .modal-content {
+    background: linear-gradient(to bottom right, #fff0f5, #ffe4e1);
+    border: 2px solid #f8c1d0;
+    border-radius: 20px;
+    color: #d63384;
+}
+
+#orderDetailModal .modal-header {
+    border-bottom: none;
+}
+
+#orderDetailModal .modal-title {
+    font-weight: 700;
+    color: #d63384;
+}
+
+#orderDetailModal .modal-body p {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+}
+.badge-info {
+    background: linear-gradient(135deg, #ffb6c1, #ff69b4);
+    color: #fff;
+    padding: 0.4rem 0.8rem;
+    border-radius: 14px;
+    font-weight: 600;
+}

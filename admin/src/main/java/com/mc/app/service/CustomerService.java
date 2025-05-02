@@ -52,7 +52,4 @@ public class CustomerService implements MCService<Customer, String> {
         return custRepository.selectTodayJoinedCustomers();
     }
 
-    public List<Map<String, Object>> getWeeklyJoinStats() throws Exception {
-        return custRepository.selectWeeklyJoinStats();
-    }
 }

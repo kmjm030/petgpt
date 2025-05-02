@@ -85,6 +85,14 @@ public class MainController {
             model.addAttribute("topItemList", new ArrayList<>());
         }
 
+        try {
+            List<TotalOrder> recentOrders = totalOrderService.getRecentOrders();
+            model.addAttribute("recentOrders", recentOrders);
+        } catch (Exception e) {
+            log.warn("[MainController] 최근 주문 로드 실패: {}", e.getMessage());
+            model.addAttribute("recentOrders", new ArrayList<>());
+        }
+
         List<String> alerts = new ArrayList<>();
 
         try {
@@ -154,7 +162,7 @@ public class MainController {
         List<TotalOrder> orders = totalOrderService.getAll();
         model.addAttribute("totalorderList", orders);
 
-        Map<Integer,String> itemNameMap = itemService.get()
+        Map<Integer, String> itemNameMap = itemService.get()
                 .stream()
                 .collect(Collectors.toMap(
                         Item::getItemKey,
