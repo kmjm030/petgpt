@@ -85,10 +85,8 @@
                                 <a href="javascript:login.kakaoLogin()" style="flex: 1; display: block;">
                                     <img src="<c:url value='/img/kakao/kakao_login_large_narrow.png'/>" alt="카카오 로그인"
                                         style="cursor: pointer; width: 100%; height: 100%; object-fit: contain; vertical-align: middle;">
-                                    <a href="https://accounts.google.com/o/oauth2/v2/auth?client_id=1234567890-abc123.apps.googleusercontent.com&redirect_uri=http://localhost:8080/auth/google/callback&response_type=code&scope=email%20profile&access_type=offline">
-                                        Google 로그인
-                                    </a>
-
+                                <a href="<c:url value='/auth/google'/>" class="btn google">
+                                    Google 로그인</a>
                             </div>
 
 
