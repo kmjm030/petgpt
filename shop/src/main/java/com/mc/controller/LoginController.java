@@ -44,33 +44,35 @@ public class LoginController {
 
     // 로그인 페이지 보여주기 (GET 요청 처리)
     @GetMapping("/gologin")
-    public String showLoginPage(Model model, HttpSession session, @RequestParam(name = "redirectURL", required = false) String redirectURL) { // Explicitly name the parameter
+    public String showLoginPage(Model model, HttpSession session,
+            @RequestParam(name = "redirectURL", required = false) String redirectURL) { // Explicitly name the parameter
         if (redirectURL != null && !redirectURL.isEmpty()) {
             session.setAttribute("redirectURL", redirectURL);
         } else {
             session.removeAttribute("redirectURL");
         }
+        model.addAttribute("viewName", "login");
         model.addAttribute("centerPage", "pages/login.jsp");
         return "index";
     }
 
     // 로그인 처리 (POST 요청 처리)
-    @PostMapping("/loginimpl") 
+    @PostMapping("/loginimpl")
     public String loginProcess(Model model, @RequestParam("id") String id,
-                               @RequestParam("pwd") String pwd,
-                               HttpSession httpSession) throws Exception { 
+            @RequestParam("pwd") String pwd,
+            HttpSession httpSession) throws Exception {
 
         Customer dbCust = custService.get(id);
-        if(dbCust != null && pwd.equals(dbCust.getCustPwd())){ 
-            httpSession.setAttribute("cust", dbCust); 
+        if (dbCust != null && pwd.equals(dbCust.getCustPwd())) {
+            httpSession.setAttribute("cust", dbCust);
 
-            String redirectURL = (String) httpSession.getAttribute("redirectURL"); 
-            httpSession.removeAttribute("redirectURL"); 
+            String redirectURL = (String) httpSession.getAttribute("redirectURL");
+            httpSession.removeAttribute("redirectURL");
 
             if (redirectURL != null && !redirectURL.isEmpty()) {
-                 return "redirect:" + redirectURL;
+                return "redirect:" + redirectURL;
             } else {
-                 return "redirect:/"; 
+                return "redirect:/";
             }
         }
         model.addAttribute("centerPage", "pages/login.jsp");
@@ -80,11 +82,10 @@ public class LoginController {
 
     @RequestMapping("/logout")
     public String logout(Model model, HttpSession httpSession) throws Exception {
-        if(httpSession != null){
-            httpSession.invalidate();       // 로그인해서 깃발 꽂아놨던 것을 없앰
+        if (httpSession != null) {
+            httpSession.invalidate(); // 로그인해서 깃발 꽂아놨던 것을 없앰
         }
         return "redirect:/";
     }
-
 
 }

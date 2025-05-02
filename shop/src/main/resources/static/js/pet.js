@@ -1,0 +1,146 @@
+function openModal() {
+    document.getElementById("petModal").style.display = "block";
+    pet.info();
+}
+
+function closeModal() {
+    document.getElementById("petModal").style.display = "none";
+}
+
+const pet = {
+    contextPath: '',       // contextPath 저장 변수 추가
+    defaultProfileImg: '',
+
+    init: function () {
+        const petData = $('#pet-data');
+        this.contextPath = petData.data('context-path') || '';
+        this.defaultProfileImg = petData.data('default-profile-img') || '';
+        console.log("Pet JS initialized. Context Path:", this.contextPath, "Default Img:", this.defaultProfileImg);
+
+        $('#uploadFile').change(function (e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#profile-img').attr('src', e.target.result);  // 이미지 미리보기 변경
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        $('#modal_pet_add_btn').click(() => {
+            this.check();
+        });
+    },
+
+    info: function () {
+        $('#petName').on('input', function () {
+            const name = $(this).val();
+            $('#modal-pet-name').text(name || '');
+        });
+        $('#petType').on('change', function () {
+            let type = $(this).val();
+            if (type == 'dog') {
+                type = "🐶"
+            } else if (type == 'cat') {
+                type = "🐱"
+            }
+            $('#modal-pet-type').text(type);
+        });
+        $('#petGender').on('change', function () {
+            let type = $(this).val();
+            if (type == 'M') {
+                type = "남자"
+            } else if (type == 'F') {
+                type = "여자"
+            }
+            $('#modal-pet-gender').text('▪ 성별: ' + type);
+        });
+        $('#petBreed').on('input', function () {
+            const breed = $(this).val();
+            $('#modal-pet-breed').text('▪ 종: ' + breed || '');
+        });
+        $('#petGender').on('input', function () {
+            let gender = $(this).val();
+            if (gender == 'F') {
+                gender = "여자"
+            } else if (gender == 'M') {
+                gender = "남자"
+            }
+            $('#modal-pet-gender').text('▪ 성별: ' + gender || '');
+        });
+
+        $('#petBirthdate').on('input', function () {
+            const birth = $(this).val();
+            if (birth) {
+                $('#modal-pet-birthdate').text('▪ 생년월일: ' + birth);
+            } else {
+                $('#modal-pet-birthdate').text('▪ 생년월일: ');
+            }
+        });
+    },
+
+    check: function () {
+        let name = $('#petName').val();
+        let type = $('#petType').val();
+        let gender = $('#petGender').val();
+        let birth = $('#petBirthdate').val();
+        let breed = $('#petBreed').val();
+        let imgFile = $('#uploadFile')[0].files[0];
+
+        $('#msg').text('');
+
+        if (!imgFile) {
+            $('#msg').text('❗ 반려동물의 사진을 등록해주세요.');
+            return;
+        }
+        if (name == '' || name == null) {
+            $('#msg').text('❗ 반려동물의 이름을 입력해주세요.');
+            $('#petName').focus();
+            return;
+        }
+        if (type == '' || type == null) {
+            $('#msg').text('❗ 강아지인가요, 고양이인가요? 선택해주세요!');
+            $('#petType').focus();
+            return;
+        }
+        if (gender == '' || gender == null) {
+            $('#msg').text('❗ 성별을 입력해주세요.');
+            $('#petGender').focus();
+            return;
+        }
+        if (breed == '' || breed == null) {
+            $('#msg').text('❗ 종을 입력해주세요.');
+            $('#petBreed').focus();
+            return;
+        }
+        if (!birth) {
+            $('#msg').text('❗ 생일을 입력해주세요.');
+            $('#petBirthdate').focus();
+            return;
+        }
+        this.send();
+    },
+
+    submitForm: function () {
+        document.getElementById('pet_update_form').submit();
+    },
+
+    send: function () {
+        $('#pet_add_form').attr('method', 'post');
+        $('#pet_add_form').attr('action', this.contextPath + '/pet/addimpl');
+        $('#pet_add_form').submit();
+    },
+
+    del: function (petKey) {
+        console.log("Deleting pet with key:", petKey);
+        let c = confirm('삭제하시겠습니까?');
+        if (c == true) {
+            location.href = this.contextPath + '/pet/delimpl?petKey=' + petKey;
+        }
+    }
+}
+
+$(function () {
+    pet.init();
+});

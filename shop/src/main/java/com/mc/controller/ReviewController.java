@@ -44,7 +44,6 @@ public class ReviewController {
     @Value("${file.upload.url.prefix}")
     private String uploadUrlPrefix;
 
-
     @GetMapping("")
     public String review(Model model, @RequestParam("id") String id, HttpSession session) throws Exception {
 
@@ -53,12 +52,12 @@ public class ReviewController {
 
         // 로그인하지 않았다면 로그인 페이지로 리다이렉트
         if (loggedInCustomer == null) {
-            return "redirect:/login";  // 로그인 페이지로 리다이렉트
+            return "redirect:/login"; // 로그인 페이지로 리다이렉트
         }
 
         // 로그인된 사용자만 자신의 QnA목록를 볼 수 있도록 처리
         if (!loggedInCustomer.getCustId().equals(id)) {
-            return "redirect:/review?id=" + loggedInCustomer.getCustId();  // 자신의 마이페이지만 보여줌
+            return "redirect:/review?id=" + loggedInCustomer.getCustId(); // 자신의 마이페이지만 보여줌
         }
 
         List<QnaBoard> reviews = boardService.findReviewByCust(id);
@@ -77,11 +76,10 @@ public class ReviewController {
 
     @RequestMapping("/add")
     public String add(Model model, HttpSession session,
-                      @RequestParam("itemKey") int itemKey,
-                      @RequestParam("orderDetailKey") int orderDetailKey,
-                      @RequestParam("orderKey") int orderKey,
-                      RedirectAttributes redirectAttributes) throws Exception {
-
+            @RequestParam("itemKey") int itemKey,
+            @RequestParam("orderDetailKey") int orderDetailKey,
+            @RequestParam("orderKey") int orderKey,
+            RedirectAttributes redirectAttributes) throws Exception {
 
         Item item = itemService.get(itemKey);
         OrderDetail orderDetail = orderDetailService.get(orderDetailKey);
@@ -93,7 +91,7 @@ public class ReviewController {
 
         List<QnaBoard> boards = boardService.findReviewByItem(itemKey);
         for (QnaBoard board : boards) {
-            if(board.getOrderKey() == orderKey) {
+            if (board.getOrderKey() == orderKey) {
                 redirectAttributes.addFlashAttribute("msg", "해당 상품에 대해 이미 리뷰를 작성했습니다.");
                 return "redirect:/checkout/detail?orderKey=" + orderDetail.getOrderKey();
             }
@@ -104,24 +102,25 @@ public class ReviewController {
         model.addAttribute("orderDetail", orderDetail);
         model.addAttribute("currentPage", "pages");
         model.addAttribute("pageTitle", "Review Add");
+        model.addAttribute("viewName", "review_add");
         model.addAttribute("centerPage", "pages/mypage/review_add.jsp");
         return "index";
     }
 
     @PostMapping("/addimpl")
     public String addimpl(Model model, @RequestParam("custId") String custId,
-                          @RequestParam("img") MultipartFile img, QnaBoard board,
-                          @RequestParam("itemKey") int itemKey,
-                          @RequestParam("orderKey") int orderKey) throws Exception {
+            @RequestParam("img") MultipartFile img, QnaBoard board,
+            @RequestParam("itemKey") int itemKey,
+            @RequestParam("orderKey") int orderKey) throws Exception {
 
         try {
             board.setCustId(custId);
             // 썸네일 이미지 처리
             if (img != null && !img.isEmpty()) {
                 String dateFolder = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
-                String originalFilename = img.getOriginalFilename();    // 원래 파일 이름
+                String originalFilename = img.getOriginalFilename(); // 원래 파일 이름
                 String fileExtension = extractExtension(originalFilename); // 확장자만 추출
-                String storedFileName = UUID.randomUUID().toString() + fileExtension;     // 랜덤한 이름을 붙여서 충돌을 방지함
+                String storedFileName = UUID.randomUUID().toString() + fileExtension; // 랜덤한 이름을 붙여서 충돌을 방지함
 
                 // 실제 저장될 전체 경로 계산 (설정값 + 날짜 폴더 + 고유 파일명)
                 Path targetDirectory = Paths.get(uploadDirectory, dateFolder);
@@ -169,13 +168,14 @@ public class ReviewController {
         model.addAttribute("board", board);
         model.addAttribute("currentPage", "pages");
         model.addAttribute("pageTitle", "Review Detail");
+        model.addAttribute("viewName", "review_detail");
         model.addAttribute("centerPage", "pages/mypage/review_detail.jsp");
         return "index";
     }
 
     @PostMapping("/updateimpl")
     public String updateimpl(Model model, @RequestParam("custId") String custId,
-                             @RequestParam("img") MultipartFile img, QnaBoard board) throws Exception {
+            @RequestParam("img") MultipartFile img, QnaBoard board) throws Exception {
         try {
             // 기존 게시글을 불러와서 기존 이미지 경로를 알아냄
             QnaBoard exBoard = boardService.get(board.getBoardKey());
@@ -238,8 +238,6 @@ public class ReviewController {
 
         return "redirect:/review?id=" + custId;
     }
-
-
 
     private String extractExtension(String fileName) {
         if (fileName == null || fileName.lastIndexOf(".") == -1) {

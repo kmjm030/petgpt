@@ -39,6 +39,7 @@ public class MainController {
 
         model.addAttribute("currentPage", "home");
         model.addAttribute("pageTitle", "Home");
+        model.addAttribute("viewName", "home");
         model.addAttribute("centerPage", "pages/home.jsp");
         return "index";
     }
@@ -47,6 +48,7 @@ public class MainController {
     public String about(Model model) {
         model.addAttribute("currentPage", "pages");
         model.addAttribute("pageTitle", "About Us");
+        model.addAttribute("viewName", "about");
         model.addAttribute("centerPage", "pages/about.jsp");
         return "index";
     }
@@ -55,6 +57,7 @@ public class MainController {
     public String signup(Model model) {
         model.addAttribute("currentPage", "pages");
         model.addAttribute("pageTitle", "Sign up");
+        model.addAttribute("viewName", "signup");
         model.addAttribute("centerPage", "pages/signup.jsp");
         return "index";
     }
@@ -63,6 +66,7 @@ public class MainController {
     public String login(Model model) {
         model.addAttribute("currentPage", "pages");
         model.addAttribute("pageTitle", "Log In");
+        model.addAttribute("viewName", "login");
         model.addAttribute("centerPage", "pages/login.jsp");
         return "index";
     }
@@ -71,6 +75,7 @@ public class MainController {
     public String shopDetails(Model model) {
         model.addAttribute("currentPage", "pages");
         model.addAttribute("pageTitle", "Shop Details");
+        model.addAttribute("viewName", "shop-details");
         model.addAttribute("centerPage", "pages/shop_details.jsp");
         return "index";
     }
@@ -79,6 +84,7 @@ public class MainController {
     public String shoppingCart(Model model) {
         model.addAttribute("currentPage", "pages");
         model.addAttribute("pageTitle", "Shopping Cart");
+        model.addAttribute("viewName", "shopping-cart");
         model.addAttribute("centerPage", "pages/shopping_cart.jsp");
         return "index";
     }

@@ -171,7 +171,7 @@ public class ShopController {
             } else {
                 model.addAttribute("optionsJson", "[]");
             }
-
+            model.addAttribute("viewName", "shop-details");
             model.addAttribute("centerPage", "pages/shop_details.jsp");
         } catch (Exception e) {
             log.error("상품 상세 정보 조회 중 오류 발생 (itemKey: {})", itemKey, e);
