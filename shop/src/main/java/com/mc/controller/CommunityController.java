@@ -55,18 +55,13 @@ public class CommunityController {
             @RequestParam(name = "sort", required = false) String sort,
             Model model) {
 
-        if (category != null && !category.isEmpty()) {
-            model.addAttribute("selectedCategory", category);
-        }
-
-        if (sort != null && !sort.isEmpty()) {
-            model.addAttribute("selectedSort", sort);
-        }
-
-        model.addAttribute("totalPages", 5); // TODO: 실제 페이지 수로 변경 필요
+        model.addAttribute("selectedCategory", category);
+        model.addAttribute("selectedSort", sort);
         model.addAttribute("currentPage", page);
+
         model.addAttribute("pageTitle", "커뮤니티");
         model.addAttribute("centerPage", "pages/community.jsp");
+        model.addAttribute("viewName", "community");
         return "index";
     }
 
@@ -152,24 +147,25 @@ public class CommunityController {
      */
     @GetMapping("/search")
     public String communitySearch(
-            @RequestParam(name = "keyword", required = false) String keyword,
+            @RequestParam(name = "keyword") String keyword, // 검색어는 필수로 가정
             @RequestParam(name = "page", defaultValue = "1") int page,
-            @RequestParam(name = "sort", required = false) String sort,
+            @RequestParam(name = "sort", required = false, defaultValue = "newest") String sort,
             Model model) {
 
-        if (keyword != null && !keyword.isEmpty()) {
-            model.addAttribute("keyword", keyword);
-            model.addAttribute("resultCount", 0); // TODO: 실제 검색 결과 수로 변경 필요
-        }
+        // JSP에서 사용할 초기값들을 모델에 추가
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("selectedSort", sort);
+        model.addAttribute("currentPage", page); // 초기 페이지 번호
 
-        if (sort != null && !sort.isEmpty()) {
-            model.addAttribute("selectedSort", sort);
-        }
+        // TODO: 실제 검색 결과 수 및 총 페이지 수 조회 로직 필요 (AJAX 응답에서 처리하므로 여기서는 불필요할 수 있음)
+        // long resultCount = communityBoardService.getSearchResultCount(keyword);
+        // int totalPages = communityBoardService.getSearchTotalPages(keyword);
+        // model.addAttribute("resultCount", resultCount);
+        // model.addAttribute("totalPages", totalPages);
 
-        model.addAttribute("totalPages", 0); // TODO: 실제 페이지 수로 변경 필요
-        model.addAttribute("currentPage", page);
         model.addAttribute("pageTitle", "커뮤니티 검색");
-        model.addAttribute("centerPage", "pages/community.jsp");
+        model.addAttribute("centerPage", "pages/community.jsp"); // 목록/검색 결과는 같은 JSP 사용
+        model.addAttribute("viewName", "community"); // viewName 추가
         return "index";
     }
 

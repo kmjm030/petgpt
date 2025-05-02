@@ -45,7 +45,7 @@ public class CheckOutController {
         Address defAddress = null;
         List<Address> addrList = addrService.findAllByCustomer(custId);
         for (Address address : addrList) {
-            if(address.getAddrDef().equals("Y")){
+            if (address.getAddrDef().equals("Y")) {
                 defAddress = address;
             }
         }
@@ -59,16 +59,17 @@ public class CheckOutController {
         model.addAttribute("cust", cust);
         model.addAttribute("cartItems", cartItems);
         model.addAttribute("totalCartPrice", totalCartPrice);
+        model.addAttribute("viewName", "checkout");
         model.addAttribute("centerPage", "pages/checkout.jsp");
         return "index";
     }
 
     @RequestMapping("/orderimpl")
     public String orderimpl(Model model, Address address, TotalOrder totalOrder, HttpSession session,
-                            @RequestParam("custId") String custId,
-                            @RequestParam(value = "addrSave", required = false) String addrSave,
-                            @RequestParam("orderTotalPrice") int orderTotalPrice,
-                            @RequestParam(value = "couponId", required = false) Integer couponId) throws Exception {
+            @RequestParam("custId") String custId,
+            @RequestParam(value = "addrSave", required = false) String addrSave,
+            @RequestParam("orderTotalPrice") int orderTotalPrice,
+            @RequestParam(value = "couponId", required = false) Integer couponId) throws Exception {
 
         // 세션에서 cartItems 꺼내기
         List<Map<String, Object>> cartItems = (List<Map<String, Object>>) session.getAttribute("cartItems");
@@ -94,7 +95,7 @@ public class CheckOutController {
         order.setOrderAddrRef(address.getAddrRef());
         order.setOrderHomecode(address.getAddrHomecode());
         order.setOrderTotalPrice(orderTotalPrice);
-        order.setItemKey((int)cartItems.get(0).get("item_key"));
+        order.setItemKey((int) cartItems.get(0).get("item_key"));
         totalOrderService.add(order);
 
         int orderKey = order.getOrderKey();
@@ -121,7 +122,7 @@ public class CheckOutController {
         }
 
         // 배송지 저장하기
-        if(addrSave != null && addrSave.equals("Y")){
+        if (addrSave != null && addrSave.equals("Y")) {
             Address addr = address;
             addr.setCustId(custId);
             addr.setAddrName(order.getRecipientName());
@@ -129,8 +130,6 @@ public class CheckOutController {
             addr.setAddrDef("N");
             addressService.add(addr);
         }
-
-
 
         session.removeAttribute("cartItems"); // 사용 후 정리!
         return "redirect:/checkout/success";
@@ -150,11 +149,11 @@ public class CheckOutController {
 
         // 로그인하지 않았다면 로그인 페이지로 리다이렉트
         if (loggedInCustomer == null) {
-            return "redirect:/login";  // 로그인 페이지로 리다이렉트
+            return "redirect:/login"; // 로그인 페이지로 리다이렉트
         }
 
         if (!loggedInCustomer.getCustId().equals(id)) {
-            return "redirect:/orderlist?id=" + loggedInCustomer.getCustId();  // 자신의 마이페이지만 보여줌
+            return "redirect:/orderlist?id=" + loggedInCustomer.getCustId(); // 자신의 마이페이지만 보여줌
         }
 
         List<TotalOrder> orderList = totalOrderService.findAllByCust(id);
@@ -211,7 +210,6 @@ public class CheckOutController {
         Customer loggedInCustomer = (Customer) session.getAttribute("cust");
         return "redirect:/checkout/orderlist?id=" + loggedInCustomer.getCustId();
     }
-
 
     private long calculateTotal(List<Map<String, Object>> cartItems) {
         long total = 0;

@@ -317,23 +317,53 @@
             <script src="<c:url value=" /webjars/sockjs-client/sockjs.min.js" /> "></script>
             <script src="<c:url value=" /webjars/stomp-websocket/stomp.min.js" /> "></script>
 
+            <!-- Global Variables & Config -->
             <script>
-                var chatUsername = "User_${sessionScope.cust != null ? sessionScope.cust.custId : 'Guest'}";
-                var websocketUrl = 'http://127.0.0.1:8088/ws';
-                var chatbotApiUrl = '/api/chatbot/ask';
+                // 전역 변수 선언 (모든 페이지 JS에서 접근 가능)
                 const contextPath = document.body.dataset.contextPath || '';
                 const isLoggedIn = document.body.dataset.isLoggedIn === 'true';
                 const custId = document.body.dataset.custId || '';
+                const globalCartAddUrl = document.body.dataset.cartAddUrl || '';
+                const globalLoginUrl = document.body.dataset.loginUrl || '';
+
+                // 채팅 관련 설정 (chat.js에서 사용)
+                var chatUsername = "User_${sessionScope.cust != null ? sessionScope.cust.custId : 'Guest'}";
+                var websocketUrl = 'http://127.0.0.1:8088/ws';
+                var chatbotApiUrl = contextPath + '/api/chatbot/ask';
+
+                // 디버깅 로그
+                console.log("Global data from index.jsp:", { contextPath, isLoggedIn, custId, globalCartAddUrl, globalLoginUrl });
             </script>
 
-            <script src="<c:url value='/js/login.js'/>"></script>
+            <!-- 공통 로직 JS -->
             <script src="<c:url value='/js/chat.js'/>"></script>
             <script src="<c:url value='/js/dark-mode.js'/>"></script>
-            <script src="<c:url value='/js/home.js'/>"></script>
-            <script src="<c:url value='/js/shop_details.js'/>"></script>
-            <script src="<c:url value='/js/shopping_cart.js'/>"></script>
             <script src="<c:url value='/js/shop.js'/>"></script>
+            <script src="<c:url value='/js/home.js'/>"></script>
 
+            <p style="color: red; font-weight: bold;">Current viewName: ${viewName}</p>
+
+            <!-- 페이지별 JS 로드 (jQuery 및 공통 스크립트 로드 후) -->
+            <c:choose>
+                <c:when test="${viewName == 'login'}">
+                    <script src="<c:url value='/js/login.js'/>"></script>
+                </c:when>
+                <c:when test="${viewName == 'shop-details'}">
+                    <script src="<c:url value='/js/shop_details.js'/>"></script>
+                </c:when>
+                <c:when test="${viewName == 'shopping-cart'}">
+                    <script src="<c:url value='/js/shopping_cart.js'/>"></script>
+                </c:when>
+                <c:when test="${viewName == 'signup'}">
+                    <script src="<c:url value='/js/signup.js'/>"></script>
+                </c:when>
+                <c:when test="${viewName == 'community'}">
+                    <script src="<c:url value='/js/community.js'/>"></script>
+                </c:when>
+                <c:when test="${viewName == 'checkout'}">
+                    <script src="<c:url value='/js/checkout.js'/>"></script>
+                </c:when>
+            </c:choose>
 
         </body>
 
