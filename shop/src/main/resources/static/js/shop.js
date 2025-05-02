@@ -287,7 +287,7 @@ $(function () {
         });
 
     } else {
-        console.error("Shop page data element (#shop-page-data) not found!");
+        console.log("Not on the shop page, skipping shop-specific setup (#shop-page-data not found).");
     }
 
     $('.set-bg').each(function () {

@@ -24,22 +24,26 @@ public class CartController {
     final ItemService itemService;
 
     @RequestMapping("")
-    public String cart(Model model, HttpSession session) throws Exception { 
+    public String cart(Model model, HttpSession session) throws Exception {
         Customer loggedInCustomer = (Customer) session.getAttribute("cust");
         if (loggedInCustomer == null) {
             return "redirect:/gologin";
         }
-        String custId = loggedInCustomer.getCustId(); 
-        List<Map<String, Object>> cartItems = cartService.getCartWithItems(custId); 
+        String custId = loggedInCustomer.getCustId();
+        List<Map<String, Object>> cartItems = cartService.getCartWithItems(custId);
         // 총액 계산 로직
         long totalCartPrice = calculateTotal(cartItems);
         model.addAttribute("cartItems", cartItems);
         model.addAttribute("totalCartPrice", totalCartPrice);
+        model.addAttribute("viewName", "shopping-cart");
         model.addAttribute("centerPage", "pages/shopping_cart.jsp");
         return "index";
     }
+
     @RequestMapping("/del")
-    public String del(Model model, @RequestParam("itemKey") int itemKey, @RequestParam(value = "optionKey", required = false) Integer optionKey, HttpSession session) throws Exception {
+    public String del(Model model, @RequestParam("itemKey") int itemKey,
+            @RequestParam(value = "optionKey", required = false) Integer optionKey, HttpSession session)
+            throws Exception {
         Customer loggedInCustomer = (Customer) session.getAttribute("cust");
         if (loggedInCustomer == null) {
             return "redirect:/gologin";
@@ -50,8 +54,8 @@ public class CartController {
     }
 
     @RequestMapping("/add")
-    public String add(Model model, Cart cart, HttpSession session) throws Exception { 
-        Customer loggedInCustomer = (Customer) session.getAttribute("cust"); 
+    public String add(Model model, Cart cart, HttpSession session) throws Exception {
+        Customer loggedInCustomer = (Customer) session.getAttribute("cust");
 
         if (loggedInCustomer == null) {
             return "redirect:/gologin";
@@ -60,20 +64,20 @@ public class CartController {
         String custId = loggedInCustomer.getCustId();
         cart.setCustId(custId);
         cartService.add(cart);
-        return "redirect:/cart"; 
+        return "redirect:/cart";
     }
 
     // Ajax 요청을 위한 별도의 add 메소드
-    @RequestMapping(value = "/add/ajax", method = RequestMethod.POST) 
-    @ResponseBody 
-    public Map<String, Object> addCartItemAjax(@RequestBody Cart cart, HttpSession session) { 
+    @RequestMapping(value = "/add/ajax", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> addCartItemAjax(@RequestBody Cart cart, HttpSession session) {
         Map<String, Object> response = new HashMap<>();
         Customer loggedInCustomer = (Customer) session.getAttribute("cust");
 
         if (loggedInCustomer == null) {
             response.put("success", false);
             response.put("message", "로그인이 필요합니다.");
-            response.put("redirectUrl", "/gologin"); 
+            response.put("redirectUrl", "/gologin");
             return response;
         }
 
@@ -81,7 +85,7 @@ public class CartController {
         cart.setCustId(custId);
 
         try {
-            cartService.add(cart); 
+            cartService.add(cart);
             response.put("success", true);
         } catch (Exception e) {
             log.error("장바구니 추가 오류", e);
@@ -89,11 +93,11 @@ public class CartController {
             response.put("message", "장바구니 추가 중 오류가 발생했습니다.");
         }
 
-        return response; 
+        return response;
     }
- 
-    @PostMapping("/add/batch/ajax") 
-    @ResponseBody                  
+
+    @PostMapping("/add/batch/ajax")
+    @ResponseBody
     public Map<String, Object> addCartItemsBatchAjax(@RequestBody List<Cart> cartItems, HttpSession session) {
         Map<String, Object> response = new HashMap<>();
         Customer loggedInCustomer = (Customer) session.getAttribute("cust");
@@ -101,7 +105,7 @@ public class CartController {
         if (loggedInCustomer == null) {
             response.put("success", false);
             response.put("message", "로그인이 필요합니다.");
-            response.put("redirectUrl", "/gologin"); 
+            response.put("redirectUrl", "/gologin");
             return response;
         }
 
@@ -116,9 +120,9 @@ public class CartController {
         try {
             int addedCount = 0;
             for (Cart cart : cartItems) {
-                if (cart.getCartCnt() > 0) { 
-                    cart.setCustId(custId); 
-                    cartService.add(cart); 
+                if (cart.getCartCnt() > 0) {
+                    cart.setCustId(custId);
+                    cartService.add(cart);
                     addedCount++;
                 } else {
                     log.warn("장바구니 추가 요청 건너뜀 (수량 0 이하): {}", cart);
@@ -129,7 +133,7 @@ public class CartController {
                 response.put("success", true);
                 response.put("message", "선택하신 " + addedCount + "개 상품 옵션을 장바구니에 담았습니다.");
             } else {
-                response.put("success", false); 
+                response.put("success", false);
                 response.put("message", "장바구니에 담을 유효한 상품이 없습니다.");
             }
 
@@ -141,13 +145,13 @@ public class CartController {
 
         return response;
     }
- 
+
     @RequestMapping("/updateQuantity")
     @ResponseBody
-    public Map<String, Object> updateQuantity(@RequestBody Cart cart, HttpSession session) { 
+    public Map<String, Object> updateQuantity(@RequestBody Cart cart, HttpSession session) {
         Map<String, Object> response = new HashMap<>();
         Customer loggedInCustomer = (Customer) session.getAttribute("cust");
-        
+
         if (loggedInCustomer == null) {
             response.put("success", false);
             response.put("message", "로그인이 필요합니다.");

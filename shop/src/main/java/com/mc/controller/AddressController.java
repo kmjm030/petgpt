@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-
 @Controller
 @Slf4j
 @RequiredArgsConstructor
@@ -25,16 +24,16 @@ public class AddressController {
     @RequestMapping("")
     public String address(Model model, @RequestParam("id") String id, HttpSession session) throws Exception {
         // 세션에서 로그인된 사용자 확인
-        Customer loggedInCustomer = (Customer)session.getAttribute("cust");
+        Customer loggedInCustomer = (Customer) session.getAttribute("cust");
 
         // 로그인하지 않았다면 로그인 페이지로 리다이렉트
         if (loggedInCustomer == null) {
-            return "redirect:/login";  // 로그인 페이지로 리다이렉트
+            return "redirect:/login"; // 로그인 페이지로 리다이렉트
         }
 
         // 로그인된 사용자만 자신의 마이페이지를 볼 수 있도록 처리
         if (!loggedInCustomer.getCustId().equals(id)) {
-            return "redirect:/address?id=" + loggedInCustomer.getCustId();  // 자신의 마이페이지만 보여줌
+            return "redirect:/address?id=" + loggedInCustomer.getCustId(); // 자신의 마이페이지만 보여줌
         }
         log.info("hi" + loggedInCustomer.getCustId());
 
@@ -43,6 +42,7 @@ public class AddressController {
         model.addAttribute("address", address);
         model.addAttribute("currentPage", "pages");
         model.addAttribute("pageTitle", "Address");
+        model.addAttribute("viewName", "address");
         model.addAttribute("centerPage", "pages/mypage/address.jsp");
         return "index";
     }
@@ -51,6 +51,7 @@ public class AddressController {
     public String add(Model model, HttpSession session) throws Exception {
         model.addAttribute("currentPage", "pages");
         model.addAttribute("pageTitle", "Address Add");
+        model.addAttribute("viewName", "address_add");
         model.addAttribute("centerPage", "pages/mypage/address_add.jsp");
         return "index";
     }
@@ -63,6 +64,7 @@ public class AddressController {
         model.addAttribute("address", address);
         model.addAttribute("currentPage", "pages");
         model.addAttribute("pageTitle", "Address Detail");
+        model.addAttribute("viewName", "address_detail");
         model.addAttribute("centerPage", "pages/mypage/address_detail.jsp");
         return "index";
     }
@@ -70,13 +72,13 @@ public class AddressController {
     @RequestMapping("/addimpl")
     public String addimpl(Model model, @RequestParam("custId") String custId, Address address) throws Exception {
 
-        if("Y".equals(address.getAddrDef())){
+        if ("Y".equals(address.getAddrDef())) {
             List<Address> addrList = addrService.findAllByCustomer(custId);
             for (Address addr : addrList) {
                 addr.setAddrDef("N");
                 addrService.mod(addr);
             }
-        }else {
+        } else {
             address.setAddrDef("N");
         }
 
@@ -88,13 +90,13 @@ public class AddressController {
     @RequestMapping("/updateimpl")
     public String updateimpl(Model model, @RequestParam("custId") String custId, Address address) throws Exception {
 
-        if("Y".equals(address.getAddrDef())){
+        if ("Y".equals(address.getAddrDef())) {
             List<Address> addrList = addrService.findAllByCustomer(custId);
             for (Address addr : addrList) {
                 addr.setAddrDef("N");
                 addrService.mod(addr);
             }
-        }else {
+        } else {
             address.setAddrDef("N");
         }
         addrService.mod(address);
@@ -108,5 +110,3 @@ public class AddressController {
         return "redirect:/address?id=" + custId;
     }
 }
-
-

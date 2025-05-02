@@ -317,23 +317,128 @@
             <script src="<c:url value=" /webjars/sockjs-client/sockjs.min.js" /> "></script>
             <script src="<c:url value=" /webjars/stomp-websocket/stomp.min.js" /> "></script>
 
+            <!-- Global Variables & Config -->
             <script>
-                var chatUsername = "User_${sessionScope.cust != null ? sessionScope.cust.custId : 'Guest'}";
-                var websocketUrl = 'http://127.0.0.1:8088/ws';
-                var chatbotApiUrl = '/api/chatbot/ask';
+                // 전역 변수 선언 (모든 페이지 JS에서 접근 가능)
                 const contextPath = document.body.dataset.contextPath || '';
                 const isLoggedIn = document.body.dataset.isLoggedIn === 'true';
                 const custId = document.body.dataset.custId || '';
+                const globalCartAddUrl = document.body.dataset.cartAddUrl || '';
+                const globalLoginUrl = document.body.dataset.loginUrl || '';
+
+                // 채팅 관련 설정 (chat.js에서 사용)
+                var chatUsername = "User_${sessionScope.cust != null ? sessionScope.cust.custId : 'Guest'}";
+                var websocketUrl = 'http://127.0.0.1:8088/ws';
+                var chatbotApiUrl = contextPath + '/api/chatbot/ask';
+
+                // 디버깅 로그
+                console.log("Global data from index.jsp:", { contextPath, isLoggedIn, custId, globalCartAddUrl, globalLoginUrl });
             </script>
 
-            <script src="<c:url value='/js/login.js'/>"></script>
+            <!-- 공통 로직 JS -->
             <script src="<c:url value='/js/chat.js'/>"></script>
             <script src="<c:url value='/js/dark-mode.js'/>"></script>
-            <script src="<c:url value='/js/home.js'/>"></script>
-            <script src="<c:url value='/js/shop_details.js'/>"></script>
-            <script src="<c:url value='/js/shopping_cart.js'/>"></script>
             <script src="<c:url value='/js/shop.js'/>"></script>
+            <script src="<c:url value='/js/home.js'/>"></script>
 
+            <p style="color: red; font-weight: bold;">Current viewName: ${viewName}</p>
+
+            <!-- 페이지별 JS 로드 (jQuery 및 공통 스크립트 로드 후) -->
+            <c:choose>
+                <c:when test="${viewName == 'login'}">
+                    <script src="<c:url value='/js/login.js'/>"></script>
+                </c:when>
+                <c:when test="${viewName == 'shop-details'}">
+                    <script src="<c:url value='/js/shop_details.js'/>"></script>
+                </c:when>
+                <c:when test="${viewName == 'shopping-cart'}">
+                    <script src="<c:url value='/js/shopping_cart.js'/>"></script>
+                </c:when>
+                <c:when test="${viewName == 'signup'}">
+                    <script src="<c:url value='/js/signup.js'/>"></script>
+                </c:when>
+                <c:when test="${viewName == 'community'}">
+                    <script src="<c:url value='/js/community.js'/>"></script>
+                </c:when>
+                <c:when test="${viewName == 'community_write'}">
+                    <!-- Summernote CSS -->
+                    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css"
+                        rel="stylesheet">
+                    <!-- Popper.js -->
+                    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+                    <!-- Bootstrap JS -->
+                    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+                    <!-- Summernote JS -->
+                    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+                    <script
+                        src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/lang/summernote-ko-KR.min.js"></script>
+                    <!-- 페이지별 JS -->
+                    <script src="<c:url value='/js/community_write.js'/>"></script>
+                </c:when>
+                <c:when test="${viewName == 'community_edit'}">
+                    <!-- Summernote CSS -->
+                    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css"
+                        rel="stylesheet">
+                    <!-- Popper.js -->
+                    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+                    <!-- Bootstrap JS -->
+                    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+                    <!-- Summernote JS -->
+                    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+                    <script
+                        src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/lang/summernote-ko-KR.min.js"></script>
+                    <!-- 페이지별 JS -->
+                    <script src="<c:url value='/js/community_edit.js'/>"></script>
+                </c:when>
+                <c:when test="${viewName == 'checkout'}">
+                    <script src="<c:url value='/js/checkout.js'/>"></script>
+                </c:when>
+                <c:when test="${viewName == 'mypage'}">
+                    <script src="<c:url value='/js/mypage.js'/>"></script>
+                </c:when>
+                <c:when test="${viewName == 'address'}">
+                    <script src="<c:url value='/js/address.js'/>"></script>
+                </c:when>
+                <c:when test="${viewName == 'address_add'}">
+                    <script src="<c:url value='/js/address_add.js'/>"></script>
+                </c:when>
+                <c:when test="${viewName == 'address_detail'}">
+                    <script src="<c:url value='/js/address_detail.js'/>"></script>
+                </c:when>
+                <c:when test="${viewName == 'coupon'}">
+                    <script src="<c:url value='/js/coupon.js'/>"></script>
+                </c:when>
+                <c:when test="${viewName == 'like'}">
+                    <script src="<c:url value='/js/like.js'/>"></script>
+                </c:when>
+                <c:when test="${viewName == 'order_detail'}">
+                    <script src="<c:url value='/js/order_detail.js'/>"></script>
+                </c:when>
+                <c:when test="${viewName == 'order'}">
+                    <script src="<c:url value='/js/order.js'/>"></script>
+                </c:when>
+                <c:when test="${viewName == 'pet'}">
+                    <script src="<c:url value='/js/pet.js'/>"></script>
+                </c:when>
+                <c:when test="${viewName == 'qnaboard'}">
+                    <script src="<c:url value='/js/qnaboard.js'/>"></script>
+                </c:when>
+                <c:when test="${viewName == 'qnaboard_add'}">
+                    <script src="<c:url value='/js/qnaboard_add.js'/>"></script>
+                </c:when>
+                <c:when test="${viewName == 'qnaboard_detail'}">
+                    <script src="<c:url value='/js/qnaboard_detail.js'/>"></script>
+                </c:when>
+                <c:when test="${viewName == 'review'}">
+                    <script src="<c:url value='/js/review.js'/>"></script>
+                </c:when>
+                <c:when test="${viewName == 'review_add'}">
+                    <script src="<c:url value='/js/review_add.js'/>"></script>
+                </c:when>
+                <c:when test="${viewName == 'review_detail'}">
+                    <script src="<c:url value='/js/review_detail.js'/>"></script>
+                </c:when>
+            </c:choose>
 
         </body>
 
