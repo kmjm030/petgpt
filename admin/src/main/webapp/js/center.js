@@ -69,8 +69,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const orderItems = document.querySelectorAll('.recent-order-item');
     orderItems.forEach(item => {
-        item.addEventListener('click', () => {
+        item.addEventListener('click', (e) => {
             console.log('클릭됨!');
+            e.stopPropagation();
             document.getElementById('modalOrderKey').innerText = item.dataset.orderkey;
             document.getElementById('modalCustId').innerText = item.dataset.custid;
             document.getElementById('modalStatus').innerText = item.dataset.status;
