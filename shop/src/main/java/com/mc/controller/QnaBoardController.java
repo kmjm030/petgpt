@@ -41,7 +41,6 @@ public class QnaBoardController {
     @Value("${file.upload.url.prefix}")
     private String uploadUrlPrefix;
 
-
     @GetMapping("")
     public String qnaboard(Model model, @RequestParam("id") String id, HttpSession session) throws Exception {
 
@@ -50,12 +49,12 @@ public class QnaBoardController {
 
         // 로그인하지 않았다면 로그인 페이지로 리다이렉트
         if (loggedInCustomer == null) {
-            return "redirect:/login";  // 로그인 페이지로 리다이렉트
+            return "redirect:/login"; // 로그인 페이지로 리다이렉트
         }
 
         // 로그인된 사용자만 자신의 QnA목록를 볼 수 있도록 처리
         if (!loggedInCustomer.getCustId().equals(id)) {
-            return "redirect:/qnaboard?id=" + loggedInCustomer.getCustId();  // 자신의 마이페이지만 보여줌
+            return "redirect:/qnaboard?id=" + loggedInCustomer.getCustId(); // 자신의 마이페이지만 보여줌
         }
 
         List<QnaBoard> qnaBoards = qnaService.findQnaByCust(id);
@@ -63,6 +62,7 @@ public class QnaBoardController {
         model.addAttribute("qnaBoards", qnaBoards);
         model.addAttribute("currentPage", "pages");
         model.addAttribute("pageTitle", "QnA Board");
+        model.addAttribute("viewName", "qnaboard");
         model.addAttribute("centerPage", "pages/mypage/qnaboard.jsp");
         return "index";
     }
@@ -84,12 +84,12 @@ public class QnaBoardController {
 
         // 로그인하지 않았다면 로그인 페이지로 리다이렉트
         if (loggedInCustomer == null) {
-            return "redirect:/login";  // 로그인 페이지로 리다이렉트
+            return "redirect:/login"; // 로그인 페이지로 리다이렉트
         }
 
         // 로그인된 사용자만 자신의 QnA목록를 볼 수 있도록 처리
         if (!loggedInCustomer.getCustId().equals(id)) {
-            return "redirect:/qnaboard?id=" + loggedInCustomer.getCustId();  // 자신의 마이페이지만 보여줌
+            return "redirect:/qnaboard?id=" + loggedInCustomer.getCustId(); // 자신의 마이페이지만 보여줌
         }
 
         model.addAttribute("items", items);
@@ -97,6 +97,7 @@ public class QnaBoardController {
         model.addAttribute("itemNames", itemNames);
         model.addAttribute("currentPage", "pages");
         model.addAttribute("pageTitle", "QnA Add");
+        model.addAttribute("viewName", "qnaboard_add");
         model.addAttribute("centerPage", "pages/mypage/qnaboard_add.jsp");
         return "index";
     }
@@ -109,13 +110,14 @@ public class QnaBoardController {
         model.addAttribute("board", board);
         model.addAttribute("currentPage", "pages");
         model.addAttribute("pageTitle", "QnA Detail");
+        model.addAttribute("viewName", "qnaboard_detail");
         model.addAttribute("centerPage", "pages/mypage/qnaboard_detail.jsp");
         return "index";
     }
 
     @PostMapping("/addimpl")
     public String addimpl(Model model, @RequestParam("custId") String custId,
-                          @RequestParam("img") MultipartFile img, QnaBoard board) throws Exception {
+            @RequestParam("img") MultipartFile img, QnaBoard board) throws Exception {
 
         try {
 
@@ -124,9 +126,9 @@ public class QnaBoardController {
             // 썸네일 이미지 처리
             if (img != null && !img.isEmpty()) {
                 String dateFolder = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
-                String originalFilename = img.getOriginalFilename();    // 원래 파일 이름
+                String originalFilename = img.getOriginalFilename(); // 원래 파일 이름
                 String fileExtension = extractExtension(originalFilename); // 확장자만 추출
-                String storedFileName = UUID.randomUUID().toString() + fileExtension;     // 랜덤한 이름을 붙여서 충돌을 방지함
+                String storedFileName = UUID.randomUUID().toString() + fileExtension; // 랜덤한 이름을 붙여서 충돌을 방지함
 
                 // 실제 저장될 전체 경로 계산 (설정값 + 날짜 폴더 + 고유 파일명)
                 Path targetDirectory = Paths.get(uploadDirectory, dateFolder);
@@ -152,7 +154,8 @@ public class QnaBoardController {
             }
 
             // 서비스 호출 직전 로그 추가: 전달되는 custId 값 확인
-            log.info("CommunityBoardService.createBoard 호출 직전 - custId: '{}', title: '{}'", board.getCustId(), board.getBoardTitle());
+            log.info("CommunityBoardService.createBoard 호출 직전 - custId: '{}', title: '{}'", board.getCustId(),
+                    board.getBoardTitle());
             board.setBoardType(1);
             board.setBoardRe("답변대기");
             qnaService.add(board);
@@ -166,7 +169,7 @@ public class QnaBoardController {
 
     @PostMapping("/updateimpl")
     public String updateimpl(Model model, @RequestParam("custId") String custId,
-                             @RequestParam("img") MultipartFile img, QnaBoard board) throws Exception {
+            @RequestParam("img") MultipartFile img, QnaBoard board) throws Exception {
         try {
             // 기존 게시글을 불러와서 기존 이미지 경로를 알아냄
             QnaBoard exBoard = qnaService.get(board.getBoardKey());
@@ -233,6 +236,5 @@ public class QnaBoardController {
         }
         return fileName.substring(fileName.lastIndexOf("."));
     }
-
 
 }

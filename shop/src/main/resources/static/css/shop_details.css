@@ -1,0 +1,546 @@
+.quantity-controls .btn:hover {
+    background-color: #000 !important;
+    border-color: #000 !important;
+    color: #fff !important;
+}
+
+.quantity-controls>* {
+    vertical-align: middle;
+}
+
+.option-group {
+    margin-bottom: 20px;
+}
+
+.option-group span {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.option-group label {
+    display: inline-block;
+    padding: 8px 15px;
+    border: 1px solid #e1e1e1;
+    border-radius: 4px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    background-color: #fff;
+    color: #666;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    vertical-align: top;
+}
+
+.option-group label:not(.disabled):hover {
+    border-color: #111;
+    color: #111;
+}
+
+.option-group label.active {
+    border-color: #ca1515;
+    background-color: #ca1515;
+    color: #fff;
+    font-weight: bold;
+}
+
+.option-group label.disabled {
+    background-color: #f5f5f5;
+    color: #aaa;
+    cursor: not-allowed;
+    border-color: #e1e1e1;
+    text-decoration: line-through;
+}
+
+.option-group label.disabled:hover {
+    border-color: #e1e1e1;
+}
+
+.option-group input[type="radio"] {
+    display: none;
+}
+
+.product__details__option select {
+    width: calc(50% - 10px);
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #e1e1e1;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #666;
+    background-color: #fff;
+    margin-right: 15px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.product__details__option select:last-child {
+    margin-right: 0;
+}
+
+.option-info {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    font-size: 14px;
+    min-height: 50px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.option-info .price-change {
+    font-weight: bold;
+    color: #ca1515;
+    margin-right: 15px;
+}
+
+.option-info .stock-status {
+    font-weight: bold;
+}
+
+.option-info .stock-status.out-of-stock {
+    color: #dc3545;
+}
+
+.option-info .stock-status.in-stock {
+    color: #28a745;
+}
+
+.shop-detail-board {
+    padding: 50px;
+}
+
+#boardRe {
+    color: rosybrown;
+}
+
+/* --- Sticky Footer --- */
+.sticky-footer-buttons {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    display: flex;
+    padding: 15px;
+    background-color: #fff;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    gap: 10px;
+}
+
+.sticky-footer-buttons button {
+    flex-grow: 1;
+    padding: 5px 15px;
+    /* 위아래 padding 더 줄임 */
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#add-to-wishlist-btn {
+    background-color: #eee;
+    border: 1px solid #ddd;
+    color: #333;
+    flex-grow: 0;
+    padding: 5px 20px;
+    /* 위아래 padding 더 줄임 */
+}
+
+#open-main-modal-btn {
+    background-color: #000;
+    border: none;
+    color: #fff;
+    font-weight: bold;
+}
+
+/* --- Modal Overlay --- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1010;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.modal-overlay.active {
+    display: block;
+    opacity: 1;
+}
+
+/* --- Bottom Sheet Modal --- */
+#options-bottom-sheet {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    max-height: 70vh;
+    background-color: #fff;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.15);
+    z-index: 1020;
+    transform: translateY(100%);
+    transition: transform 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    padding-bottom: 90px;
+    box-sizing: border-box;
+}
+
+#options-bottom-sheet.active {
+    transform: translateY(0);
+}
+
+.modal-handle {
+    width: 50px;
+    height: 5px;
+    background-color: #ccc;
+    border-radius: 3px;
+    margin: -10px auto 15px;
+    cursor: grab;
+}
+
+#selected-options-container {
+    overflow-y: auto;
+    margin-bottom: 15px;
+    flex-grow: 1;
+    min-height: 50px;
+}
+
+.option-trigger-buttons button {
+    display: block;
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 10px;
+    border: 1px solid #eee;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    text-align: left;
+    font-size: 15px;
+    color: #555;
+    cursor: pointer;
+    position: relative;
+}
+
+.option-trigger-buttons button:disabled {
+    background-color: #f0f0f0;
+    color: #aaa;
+    cursor: not-allowed;
+}
+
+.option-trigger-buttons button .arrow {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+}
+
+.total-summary {
+    border-top: 1px solid #eee;
+    padding-top: 15px;
+    margin-top: auto;
+    text-align: right;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.total-summary span {
+    color: #ca1515;
+}
+
+#final-add-all-to-cart-btn {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    margin-top: 15px;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#final-add-all-to-cart-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+
+/* --- Center Modals (Color/Size) --- */
+.center-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.8);
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    z-index: 1030;
+    padding: 25px;
+    width: 50%;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s 0.3s;
+    box-sizing: border-box;
+}
+
+.center-modal.active {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    visibility: visible;
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s 0s;
+}
+
+.center-modal h5 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 18px;
+    text-align: center;
+    position: relative;
+}
+
+.center-modal .close-modal-btn {
+    position: absolute;
+    top: -10px;
+    right: -5px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #888;
+    cursor: pointer;
+    padding: 5px;
+    line-height: 1;
+}
+
+.modal-options-list {
+    max-height: 40vh;
+    overflow-y: auto;
+    margin-top: 15px;
+}
+
+.modal-options-list button {
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+    margin-bottom: 8px;
+    border: 1px solid #eee;
+    background-color: #fff;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+.modal-options-list button:hover:not(:disabled) {
+    background-color: #f5f5f5;
+    border-color: #ddd;
+}
+
+.modal-options-list button:disabled {
+    background-color: #f8f8f8;
+    color: #aaa;
+    cursor: not-allowed;
+    text-decoration: line-through;
+}
+
+#size-select-modal .selected-color-info {
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 14px;
+    color: #777;
+}
+
+/* --- Selected Option Item --- */
+.selected-option-item {
+    background-color: #f9f9f9;
+    border: 1px solid #eee;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.selected-option-item .option-name {
+    font-size: 15px;
+    margin-bottom: 10px;
+    display: block;
+    padding-right: 25px;
+}
+
+.selected-option-item .option-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.selected-option-item .quantity-control {
+    display: flex;
+    align-items: center;
+}
+
+.selected-option-item .quantity-control button {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    color: #555;
+    width: 30px;
+    height: 30px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 3px;
+    line-height: 28px;
+    padding: 0;
+}
+
+.selected-option-item .quantity-control input {
+    width: 40px;
+    height: 30px;
+    text-align: center;
+    border: 1px solid #ccc;
+    margin: 0 5px;
+    font-size: 14px;
+    border-radius: 3px;
+    -moz-appearance: textfield;
+}
+
+.selected-option-item .quantity-control input::-webkit-outer-spin-button,
+.selected-option-item .quantity-control input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.selected-option-item .stock-info {
+    font-size: 12px;
+    color: #888;
+    margin-left: 10px;
+}
+
+.selected-option-item .item-price {
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.selected-option-item .remove-item-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 18px;
+    color: #aaa;
+    cursor: pointer;
+    padding: 5px;
+    line-height: 1;
+}
+
+.selected-option-item .remove-item-btn:hover {
+    color: #555;
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.product__details__tab__content a {
+    color: black;
+}
+
+/* 상세설명 탭 내용 스타일링 */
+#tabs-5 .product__details__tab__content {
+    max-width: 1050px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    background-color: #f9f9f9;
+    font-size: 20px;
+    line-height: 2.5;
+    color: #333;
+    overflow: hidden;
+}
+
+/* 상세설명 내 애니메이션 대상 요소 (span.desc-line) 초기 상태 */
+#tabs-5 .product__details__tab__content span.desc-line {
+    display: block;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 1.3s ease-out, transform 1.3s ease-out;
+    margin-bottom: 0.5em;
+}
+
+/* 애니메이션 활성화 클래스 */
+#tabs-5 .product__details__tab__content span.desc-line.reveal-line {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+#tabs-5 .product__details__tab__content span.desc-line strong {
+    font-weight: bold;
+}
+
+#tabs-5 .product__details__tab__content p {
+    text-align: left;
+    margin-bottom: 1.5em;
+}
+
+.product__details__price {
+    margin-bottom: 15px;
+}
+
+.hot-deal-price {
+    color: #ca1515;
+    font-size: 28px;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.discount-badge {
+    background-color: #ffc107;
+    color: #333;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: normal;
+    margin-left: 5px;
+    vertical-align: middle;
+}
+
+.product__details__price del {
+    font-size: 18px;
+    color: #b7b7b7;
+}
+
+.product__details__price h3 {
+    font-size: 28px;
+    color: #111111;
+    font-weight: 600;
+    margin-bottom: 0;
+}

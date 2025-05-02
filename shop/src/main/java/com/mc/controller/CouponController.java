@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-
 @Controller
 @Slf4j
 @RequiredArgsConstructor
@@ -26,14 +25,14 @@ public class CouponController {
     public String coupon(Model model, @RequestParam("id") String id, HttpSession session) throws Exception {
 
         // 세션에서 로그인된 사용자 확인
-        Customer loggedInCustomer = (Customer)session.getAttribute("cust");
+        Customer loggedInCustomer = (Customer) session.getAttribute("cust");
         // 로그인하지 않았다면 로그인 페이지로 리다이렉트
         if (loggedInCustomer == null) {
-            return "redirect:/login";  // 로그인 페이지로 리다이렉트
+            return "redirect:/login"; // 로그인 페이지로 리다이렉트
         }
         // 로그인된 사용자만 자신의 마이페이지를 볼 수 있도록 처리
         if (!loggedInCustomer.getCustId().equals(id)) {
-            return "redirect:/mypage?id=" + loggedInCustomer.getCustId();  // 자신의 마이페이지만 보여줌
+            return "redirect:/mypage?id=" + loggedInCustomer.getCustId(); // 자신의 마이페이지만 보여줌
         }
 
         List<Coupon> coupons = couponService.findUsableByCustId(id);
@@ -41,6 +40,7 @@ public class CouponController {
         model.addAttribute("coupons", coupons);
         model.addAttribute("currentPage", "pages");
         model.addAttribute("pageTitle", "Coupon Page");
+        model.addAttribute("viewName", "coupon");
         model.addAttribute("centerPage", "pages/mypage/coupon.jsp");
         return "index";
     }
