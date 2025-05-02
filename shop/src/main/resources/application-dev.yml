@@ -19,9 +19,9 @@ spring:
       prefix: /views/
       suffix: .jsp
   datasource:
-    url: jdbc:mysql://118.67.143.55:3306/petgpt?characterEncoding=utf8
-    username: mcuser
-    password: 111111
+    url: jdbc:mysql://127.0.0.1:3306/petgpt?characterEncoding=utf8
+    username: root
+    password: 1234
   web:
     resources:
       static-locations: file:///C:/petshop/uploads/

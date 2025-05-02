@@ -5,6 +5,10 @@ const qna_add = {
         this.contextPath = $('#qna-add-data').data('context-path') || '';
         console.log("QnA Add JS initialized. Context Path:", this.contextPath);
 
+        // jQuery와 Select2가 제대로 로드되었는지 확인
+        console.log(typeof $.fn.select2);  // "function"이어야 함
+        console.log(typeof jQuery);         // "function"이어야 함
+
         // Select2 초기화
         $('#itemSelect').addClass('select2');
         $('#itemSelect').select2({
