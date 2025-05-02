@@ -1,7 +1,6 @@
 package com.mc.controller;
 
 import com.mc.app.dto.Item;
-import com.mc.app.service.CustomerService;
 import com.mc.app.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -9,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -16,29 +16,28 @@ import java.util.List;
 public class MainController {
 
     private final ItemService itemService;
-    private final CustomerService custService;
-
-    private List<Item> getItemList() {
-        List<Item> itemList = new ArrayList<>();
-        try {
-            itemList.add(itemService.get(10));
-            itemList.add(itemService.get(11));
-            itemList.add(itemService.get(12));
-            itemList.add(itemService.get(13));
-            itemList.add(itemService.get(14));
-            itemList.add(itemService.get(20));
-            itemList.add(itemService.get(21));
-        } catch (Exception e) {
-            System.out.println("아이템 목록 조회 중 오류 발생: " + e.getMessage());
-        }
-        return itemList;
-    }
 
     @GetMapping("/")
     public String home(Model model) {
+
+        int limit = 8; // 가져올 상품 개수
+        List<Item> bestSellerList; // try 블록 밖에서 선언
+
+        try {
+            // 초기 로드 시 기본 목록 (예: 베스트셀러) 조회
+            bestSellerList = itemService.getBestSellingItems(limit); // 예외 발생 가능성 있음
+        } catch (Exception e) {
+            // 예외 처리: 로그를 남기거나 사용자에게 오류 메시지 전달
+            System.err.println("Error fetching best selling items: " + e.getMessage()); // 또는 로거 사용
+            e.printStackTrace(); // 개발 중 상세 오류 확인
+            model.addAttribute("errorMessage", "베스트셀러 상품 목록을 불러오는 중 오류가 발생했습니다.");
+            bestSellerList = Collections.emptyList(); // 빈 목록으로 초기화하여 JSP 오류 방지
+            // 또는 bestSellerList = new ArrayList<>();
+        }
+
+        model.addAttribute("bestSellerList", bestSellerList);
+
         model.addAttribute("currentPage", "home");
-        List<Item> itemList = getItemList();
-        model.addAttribute("itemList", itemList);
         model.addAttribute("pageTitle", "Home");
         model.addAttribute("centerPage", "pages/home.jsp");
         return "index";

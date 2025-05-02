@@ -1,0 +1,184 @@
+:root {
+    --primary-color: #e91e63;
+    --secondary-color: #ffd6e8;
+    --bg-color: #ffeaf0;
+    --text-color: #4a4a4a;
+    --card-bg: #ffffff;
+    --card-border: #f8c1d0;
+    --hover-bg: #fff0f6;
+    --shadow-color: rgba(233, 30, 99, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: var(--bg-color);
+    font-family: 'Noto Sans KR', sans-serif;
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+h1 {
+    font-size: 2rem;
+    color: var(--primary-color);
+    text-align: center;
+    margin: 1.5rem 0;
+}
+
+.card-table {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px var(--shadow-color);
+    margin: 0 auto 2rem;
+    padding: 1rem;
+    max-width: 1200px;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table thead {
+    background: var(--secondary-color);
+}
+
+.table thead th {
+    color: var(--primary-color);
+    font-weight: 600;
+    border-bottom: 2px solid var(--card-border);
+    padding: 0.75rem;
+    text-align: left;
+}
+
+.table tbody td {
+    padding: 0.75rem;
+    vertical-align: middle;
+}
+
+.table tbody tr:hover {
+    background: var(--hover-bg);
+}
+
+.action-btns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.btn {
+    border-radius: 20px;
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+}
+
+.btn-primary {
+    background: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background: #d81b60;
+    border-color: #d81b60;
+}
+
+.btn-danger {
+    background: #ff80ab;
+    border: 1px solid #ff80ab;
+    color: #fff;
+}
+
+.btn-danger:hover {
+    background: #ff4081;
+    border-color: #ff4081;
+}
+
+.detail-panel,
+.confirm-panel {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px var(--shadow-color);
+    margin-top: 0.5rem;
+    padding: 1rem;
+}
+
+.dataTables_wrapper .pagination .page-link {
+    background-color: #fff !important;
+    color: var(--primary-color) !important;
+    border: 1px solid var(--card-border) !important;
+    border-radius: 8px !important;
+    font-weight: bold !important;
+    padding: 0.4rem 0.75rem !important;
+    margin: 0 4px !important;
+}
+
+.dataTables_wrapper .pagination .page-item.active .page-link {
+    background-color: var(--primary-color) !important;
+    color: #fff !important;
+    border-color: var(--primary-color) !important;
+}
+
+.dataTables_wrapper .pagination .page-link:hover {
+    background-color: var(--hover-bg) !important;
+    color: var(--primary-color) !important;
+    border-color: var(--card-border) !important;
+}
+
+@media (max-width: 992px) {
+    .d-lg-table-cell {
+        display: none !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .d-md-table-cell {
+        display: none !important;
+    }
+}
+
+@media (max-width: 576px) {
+    table, thead, tbody, th, td, tr {
+        display: block;
+    }
+    thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+    tr {
+        margin: 0 0 1rem 0;
+    }
+    td {
+        border: none;
+        position: relative;
+        padding-left: 50%;
+        text-align: left;
+    }
+    td:before {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 45%;
+        padding-left: 1rem;
+        white-space: nowrap;
+        font-weight: 600;
+    }
+    td:nth-of-type(1):before { content: "주문번호"; }
+    td:nth-of-type(2):before { content: "고객 ID"; }
+    td:nth-of-type(3):before { content: "상품명"; }
+    td:nth-of-type(4):before { content: "주문일시"; }
+    td:nth-of-type(5):before { content: "수신자"; }
+    td:nth-of-type(6):before { content: "전화번호"; }
+    td:nth-of-type(7):before { content: "액션"; }
+}
+
+.text-primary {
+    color: var(--primary-color) !important;
+}

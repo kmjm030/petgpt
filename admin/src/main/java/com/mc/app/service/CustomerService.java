@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -46,14 +47,12 @@ public class CustomerService implements MCService<Customer, String> {
     public int getTodayJoinCount() throws Exception {
         return custRepository.selectTodayJoinCount();
     }
+
     public List<Customer> getTodayJoinedCustomers() throws Exception {
         return custRepository.selectTodayJoinedCustomers();
     }
 
+    public List<Map<String, Object>> getWeeklyJoinStats() throws Exception {
+        return custRepository.selectWeeklyJoinStats();
+    }
 }
-
-
-//    public Page<Customer> getPage(int pageNo) throws Exception {
-//        PageHelper.startPage(pageNo, 3); // pageSize: 한화면에 출력되는 개수
-//        return custRepository.getpage();
-//    }

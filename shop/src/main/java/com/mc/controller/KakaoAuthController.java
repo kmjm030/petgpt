@@ -30,7 +30,7 @@ public class KakaoAuthController {
     @Autowired
     private CustomerService customerService; // 회원 정보 처리를 위한 서비스 주입
 
-    // kakao.properties 파일에서 값 주입
+    // signup.properties 파일에서 값 주입
     @Value("${kakao.client.id}")
     private String clientId;
 
@@ -71,9 +71,59 @@ public class KakaoAuthController {
             Customer customer = customerService.get(generatedCustId); // cust_id로 회원 조회
 
             if (customer != null) {
-                // 기존 회원: 로그인 처리
-                log.info("기존 회원 로그인 처리: {}", customer.getCustNick());
-                session.setAttribute("cust", customer); // 세션에 'cust' 이름으로 저장
+                // 기존 회원: 로그인 처리 + 정보 업데이트 확인
+                log.info("기존 회원 로그인 처리 시도: {}", generatedCustId);
+
+                // --- 추가: 카카오 정보로 DB 업데이트 ---
+                boolean needsUpdate = false;
+                String nicknameFromKakao = userInfo.getProperties() != null
+                        ? (String) userInfo.getProperties().get("nickname")
+                        : null;
+                String emailFromKakao = userInfo.getKakaoAccount() != null ? userInfo.getKakaoAccount().getEmail()
+                        : null;
+                String profileImageUrlFromKakao = null;
+                if (userInfo.getKakaoAccount() != null && userInfo.getKakaoAccount().getProfile() != null) {
+                    profileImageUrlFromKakao = (String) userInfo.getKakaoAccount().getProfile()
+                            .get("profile_image_url");
+                }
+
+                // DB의 닉네임이 없거나 카카오 닉네임과 다르면 업데이트 준비
+                if (nicknameFromKakao != null && !nicknameFromKakao.equals(customer.getCustNick())) {
+                    customer.setCustNick(nicknameFromKakao);
+                    // custName도 닉네임으로 업데이트 (정책에 따라 변경 가능)
+                    customer.setCustName(nicknameFromKakao);
+                    needsUpdate = true;
+                    log.info("회원 닉네임 업데이트 예정: {}", nicknameFromKakao);
+                }
+
+                // DB의 이메일이 없거나 카카오 이메일과 다르면 업데이트 준비
+                if (emailFromKakao != null && !emailFromKakao.equals(customer.getCustEmail())) {
+                    customer.setCustEmail(emailFromKakao);
+                    needsUpdate = true;
+                    log.info("회원 이메일 업데이트 예정: {}", emailFromKakao);
+                }
+
+                // DB의 프로필 이미지가 없거나 카카오 프로필 이미지와 다르면 업데이트 준비
+                if (profileImageUrlFromKakao != null && !profileImageUrlFromKakao.equals(customer.getCustImg())) {
+                    customer.setCustImg(profileImageUrlFromKakao);
+                    needsUpdate = true;
+                    log.info("회원 프로필 이미지 업데이트 예정");
+                }
+
+                // 업데이트가 필요한 경우 DB 수정 요청
+                if (needsUpdate) {
+                    try {
+                        customerService.mod(customer); // customerService에 update 메서드가 있다고 가정
+                        log.info("기존 회원 정보 업데이트 완료: {}", customer.getCustId());
+                    } catch (Exception e) {
+                        log.error("기존 회원 정보 업데이트 중 오류 발생", e);
+                        // 업데이트 실패 시 에러 처리 (로그만 남기거나, 별도 처리)
+                    }
+                }
+
+                session.setAttribute("cust", customer); // 세션에는 DB에서 가져오거나 업데이트된 customer 객체 저장
+                log.info("기존 회원 로그인 처리 완료: {}", customer.getCustNick()); // 업데이트 후 닉네임 로깅
+
             } else {
                 // 신규 회원: 회원 가입 처리
                 log.info("신규 회원 가입 및 로그인 처리 (카카오 ID: {})", kakaoId);

@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+
 @Builder
 @Data
 @NoArgsConstructor
@@ -22,4 +23,5 @@ public class Item {
     private String itemImg1;
     private String itemImg2;
     private String itemImg3;
+    private String itemDetail;
 }

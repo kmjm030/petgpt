@@ -22,4 +22,5 @@ public class TotalOrder {
     private String orderStatus;
     private String orderCard;
     private String orderShootNum;
+    private int orderTotalPrice;
 }
