@@ -1,4 +1,3 @@
-
 $(function () {
 
     let hotDealCountdownInterval = null;
@@ -81,19 +80,31 @@ $(function () {
     }
 
     function createProductItemHtml(item) {
-        const priceHtml = '<h5>' + item.itemPrice.toLocaleString() + '원</h5>';
+        const isSale = (item.itemSprice != null && item.itemSprice >= 0 && item.itemSprice < item.itemPrice);
+        const discountRate = isSale ? Math.round((1 - item.itemSprice / item.itemPrice) * 100) : 0;
+
+        let priceHtml = '';
+        if (isSale) {
+            priceHtml = '<div class="price-container">' +
+                '<span class="original-price">' + item.itemPrice.toLocaleString() + '원</span>' +
+                '<div class="sale-info">' +
+                '<span class="sale-price">' + item.itemSprice.toLocaleString() + '원</span>' +
+                '<span class="discount-badge">' + discountRate + '%</span>' +
+                '</div>' +
+                '</div>';
+        } else {
+            priceHtml = '<div class="price-container">' +
+                '<span class="sale-price">' + item.itemPrice.toLocaleString() + '원</span>' +
+                '</div>';
+        }
 
         const imgUrl = contextPath + '/img/product/' + (item.itemImg1 || 'default-placeholder.png');
         const detailUrl = contextPath + '/shop/details?itemKey=' + item.itemKey;
-
-        const isSale = (item.itemSprice != null && item.itemSprice >= 0 && item.itemSprice < item.itemPrice);
-        const saleLabelHtml = isSale ? '<span class="label sale">Sale</span>' : '';
 
         return (
             '<div class="col-lg-4 col-md-6 col-sm-6">' +
             '    <div class="product__item">' +
             '        <div class="product__item__pic set-bg" data-setbg="' + imgUrl + '">' +
-            saleLabelHtml +
             '            <ul class="product__hover">' +
             '                <li><a href="#" class="like-button" data-item-key="' + item.itemKey + '"><i class="fa fa-heart icon"></i></a></li>' +
             '                <li><a href="' + detailUrl + '" class="detail-button"><i class="fa fa-search icon"></i></a></li>' +
