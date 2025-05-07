@@ -463,8 +463,13 @@ public class ItemService implements MCService<Item, Integer> {
      * @return 판매량 순 상품 목록
      */
     public List<Item> getBestSellingItems(int limit) throws Exception {
-        String completedOrderStatus = "배송완료";
-        return itemRepository.selectBestSellingItemsFromOrders(completedOrderStatus, limit);
+        // 리뷰 수 기준으로 베스트셀러 조회하도록 변경
+        return itemRepository.selectItemsByReviewCount(limit);
+
+        // 기존 배송완료 기준 코드는 주석 처리
+        // String completedOrderStatus = "배송완료";
+        // return itemRepository.selectBestSellingItemsFromOrders(completedOrderStatus,
+        // limit);
     }
 
     /**

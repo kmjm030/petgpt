@@ -50,7 +50,7 @@ public class ItemRestController {
         }
     }
 
-    // 베스트셀러 8개 조회 (판매량 순)
+    // 베스트셀러 8개 조회 (리뷰 수 순)
     @GetMapping("/bestsellers")
     public List<Item> getBestSellers() {
         int limit = 8;
