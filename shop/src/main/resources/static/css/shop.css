@@ -273,3 +273,27 @@
     left: 10px;
     z-index: 1;
 }
+
+/* 리뷰 개수 스타일 */
+.review-count {
+    color: #999;
+    font-size: 14px;
+    margin-left: 5px;
+}
+
+/* 별점 스타일 보완 */
+.rating {
+    margin-bottom: 10px;
+}
+
+.rating .fa-star {
+    color: #ffc107;
+}
+
+.rating .fa-star-half-o {
+    color: #ffc107;
+}
+
+.rating .fa-star-o {
+    color: #e0e0e0;
+}

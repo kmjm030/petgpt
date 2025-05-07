@@ -101,6 +101,24 @@ $(function () {
         const imgUrl = contextPath + '/img/product/' + (item.itemImg1 || 'default-placeholder.png');
         const detailUrl = contextPath + '/shop/details?itemKey=' + item.itemKey;
 
+        // 별점 HTML 생성
+        const avgScore = item.avgScore || 0;
+        const reviewCount = item.reviewCount || 0;
+        let ratingHtml = '<div class="rating">';
+
+        // 별점 표시 (1-5)
+        for (let i = 1; i <= 5; i++) {
+            if (i <= avgScore) {
+                ratingHtml += '<i class="fa fa-star"></i>';
+            } else if (i <= avgScore + 0.5 && i > avgScore) {
+                ratingHtml += '<i class="fa fa-star-half-o"></i>';
+            } else {
+                ratingHtml += '<i class="fa fa-star-o"></i>';
+            }
+        }
+
+        ratingHtml += '<span class="review-count">(' + reviewCount + ')</span></div>';
+
         return (
             '<div class="col-lg-4 col-md-6 col-sm-6">' +
             '    <div class="product__item">' +
@@ -113,13 +131,7 @@ $(function () {
             '        <div class="product__item__text">' +
             '            <h6>' + item.itemName + '</h6>' +
             '            <a href="#" class="add-cart" onclick="shop.addToCart(' + item.itemKey + '); return false;">+ Add To Cart</a>' +
-            '            <div class="rating">' +
-            '                <i class="fa fa-star-o"></i>' +
-            '                <i class="fa fa-star-o"></i>' +
-            '                <i class="fa fa-star-o"></i>' +
-            '                <i class="fa fa-star-o"></i>' +
-            '                <i class="fa fa-star-o"></i>' +
-            '            </div>' +
+            ratingHtml +
             priceHtml +
             '        </div>' +
             '    </div>' +
