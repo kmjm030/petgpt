@@ -96,7 +96,8 @@
                                 width="200">
                             </c:when>
                             <c:otherwise>
-                              <img id="profile-img" src="<c:url value='/img/clients/profile.png'/>" />
+                              <img id="profile-img" src="<c:url value='/img/user/${cust.custName}.png'/>"
+                                onerror="this.onerror=null; this.src='<c:url value='/img/clients/profile.png'/>'" />
                             </c:otherwise>
                           </c:choose>
                           <br /><br />

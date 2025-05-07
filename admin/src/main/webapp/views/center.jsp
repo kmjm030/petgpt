@@ -103,12 +103,6 @@
       </div>
     </div>
     <div class="col-lg-6 mb-4">
-      <div class="chart-card">
-        <h6 class="card-title">최근 7일 가입자 추이</h6>
-        <div id="weeklyJoinChart" style="width:100%; height:300px;"></div>
-      </div>
-    </div>
-    <div class="col-lg-6 mb-4">
       <div class="dashboard-card">
         <div class="card-title">관리자 공지사항</div>
         <ul class="list-group list-group-flush">
@@ -123,6 +117,44 @@
             <li class="list-group-item text-muted">현재 등록된 공지사항이 없습니다.</li>
           </c:if>
         </ul>
+      </div>
+    </div>
+    <div class="col-lg-12 mb-4">
+      <div class="dashboard-card">
+        <div class="card-title">최근 주문 내역</div>
+        <ul class="list-group list-group-flush">
+          <c:forEach var="order" items="${recentOrders}">
+            <li class="list-group-item d-flex justify-content-between align-items-center recent-order-item"
+                data-orderkey="${order.orderKey}"
+                data-custid="${order.custId}"
+                data-status="${order.orderStatus}"
+                data-date="${order.orderDate}"
+                data-totalprice="${order.orderTotalPrice}">
+              <span>주문번호: ${order.orderKey} / 주문자: ${order.custId}</span>
+              <span class="badge badge-info">${order.orderStatus}</span>
+            </li>
+          </c:forEach>
+          <c:if test="${empty recentOrders}">
+            <li class="list-group-item text-muted">최근 주문이 없습니다.</li>
+          </c:if>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="orderDetailModal" tabindex="-1" role="dialog" aria-labelledby="orderDetailModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="orderDetailModalLabel">주문 상세 정보</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p><strong>주문번호:</strong> <span id="modalOrderKey"></span></p>
+        <p><strong>주문자 ID:</strong> <span id="modalCustId"></span></p>
+        <p><strong>상태:</strong> <span id="modalStatus"></span></p>
+        <p><strong>주문일:</strong> <span id="modalDate"></span></p>
+        <p><strong>총 금액:</strong> <span id="modalTotalPrice"></span> 원</p>
       </div>
     </div>
   </div>

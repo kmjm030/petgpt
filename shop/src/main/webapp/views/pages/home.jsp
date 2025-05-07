@@ -146,10 +146,6 @@
                                             <div class="product__item">
                                                 <div class="product__item__pic set-bg"
                                                     data-setbg="<c:url value='/img/product/${item.itemImg1}'/>">
-                                                    <c:if
-                                                        test="${item.itemSprice > 0 and item.itemSprice < item.itemPrice}">
-                                                        <span class="label sale">Sale</span>
-                                                    </c:if>
                                                     <ul class="product__hover">
                                                         <li><a href="#" class="like-button"
                                                                 data-item-key="${item.itemKey}">
@@ -166,13 +162,58 @@
                                                     <a href="#" class="add-cart add-to-cart-button"
                                                         data-item-key="${item.itemKey}">+ Add To Cart</a>
                                                     <div class="rating">
-                                                        <i class="fa fa-star-o"></i>
-                                                        <i class="fa fa-star-o"></i>
-                                                        <i class="fa fa-star-o"></i>
-                                                        <i class="fa fa-star-o"></i>
-                                                        <i class="fa fa-star-o"></i>
+                                                        <c:set var="avgScore"
+                                                            value="${item.avgScore != null ? item.avgScore : 0}" />
+                                                        <c:set var="reviewCount"
+                                                            value="${item.reviewCount != null ? item.reviewCount : 0}" />
+
+                                                        <c:forEach var="i" begin="1" end="5">
+                                                            <c:choose>
+                                                                <c:when test="${i <= avgScore}">
+                                                                    <i class="fa fa-star"></i>
+                                                                </c:when>
+                                                                <c:when test="${i <= avgScore + 0.5 && i > avgScore}">
+                                                                    <i class="fa fa-star-half-o"></i>
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    <i class="fa fa-star-o"></i>
+                                                                </c:otherwise>
+                                                            </c:choose>
+                                                        </c:forEach>
+                                                        <span class="review-count">(${reviewCount})</span>
                                                     </div>
-                                                    <h5>${item.itemPrice}원</h5>
+                                                    <div class="product__price">
+                                                        <c:if
+                                                            test="${item.itemSprice > 0 and item.itemSprice < item.itemPrice}">
+                                                            <c:set var="discountRate"
+                                                                value="${100 - (item.itemSprice * 100 / item.itemPrice)}" />
+                                                            <div class="price-container">
+                                                                <span class="original-price">
+                                                                    <fmt:formatNumber value="${item.itemPrice}"
+                                                                        pattern="#,###" />원
+                                                                </span>
+                                                                <div class="sale-info">
+                                                                    <span class="sale-price">
+                                                                        <fmt:formatNumber value="${item.itemSprice}"
+                                                                            pattern="#,###" />원
+                                                                    </span>
+                                                                    <span class="discount-badge">
+                                                                        <fmt:formatNumber value="${discountRate}"
+                                                                            pattern="#" />%
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </c:if>
+                                                        <c:if
+                                                            test="${!(item.itemSprice > 0 and item.itemSprice < item.itemPrice)}">
+                                                            <div class="price-container">
+                                                                <span class="sale-price">
+                                                                    <fmt:formatNumber value="${item.itemPrice}"
+                                                                        pattern="#,###" />원
+                                                                </span>
+                                                            </div>
+                                                        </c:if>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

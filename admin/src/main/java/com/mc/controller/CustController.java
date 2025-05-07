@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -108,13 +109,5 @@ public class CustController {
         }
         return "index";
     }
-    @RequestMapping("/joinstats")
-    @ResponseBody
-    public List<java.util.Map<String, Object>> getWeeklyJoinStats() {
-        try {
-            return custService.getWeeklyJoinStats();
-        } catch (Exception e) {
-            throw new RuntimeException("가입 통계 조회 실패", e);
-        }
-    }
+
 }

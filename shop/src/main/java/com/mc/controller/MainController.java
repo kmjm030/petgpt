@@ -1,21 +1,25 @@
 package com.mc.controller;
 
 import com.mc.app.dto.Item;
+import com.mc.app.dto.QnaBoard;
 import com.mc.app.service.ItemService;
+import com.mc.app.service.QnaBoardService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
+@Slf4j
 public class MainController {
 
     private final ItemService itemService;
+    private final QnaBoardService qnaBoardService;
 
     @GetMapping("/")
     public String home(Model model) {
@@ -26,13 +30,37 @@ public class MainController {
         try {
             // 초기 로드 시 기본 목록 (예: 베스트셀러) 조회
             bestSellerList = itemService.getBestSellingItems(limit); // 예외 발생 가능성 있음
+
+            // 각 상품의 평균 별점과 리뷰 개수 계산
+            for (Item item : bestSellerList) {
+                try {
+                    List<QnaBoard> reviews = qnaBoardService.findReviewByItem(item.getItemKey());
+                    int reviewCount = reviews.size();
+
+                    // 평균 별점 계산
+                    double totalScore = 0;
+                    for (QnaBoard review : reviews) {
+                        totalScore += review.getBoardScore();
+                    }
+
+                    double avgScore = reviewCount > 0 ? Math.round((totalScore / reviewCount) * 10) / 10.0 : 0;
+
+                    // Item 객체에 평균 별점과 리뷰 개수 저장
+                    item.setAvgScore(avgScore);
+                    item.setReviewCount(reviewCount);
+                } catch (Exception e) {
+                    log.error("상품 평점 및 리뷰 개수 계산 중 오류 발생: {}", e.getMessage());
+                    item.setAvgScore(0.0);
+                    item.setReviewCount(0);
+                }
+            }
+
         } catch (Exception e) {
             // 예외 처리: 로그를 남기거나 사용자에게 오류 메시지 전달
-            System.err.println("Error fetching best selling items: " + e.getMessage()); // 또는 로거 사용
+            log.error("Error fetching best selling items: {}", e.getMessage());
             e.printStackTrace(); // 개발 중 상세 오류 확인
             model.addAttribute("errorMessage", "베스트셀러 상품 목록을 불러오는 중 오류가 발생했습니다.");
             bestSellerList = Collections.emptyList(); // 빈 목록으로 초기화하여 JSP 오류 방지
-            // 또는 bestSellerList = new ArrayList<>();
         }
 
         model.addAttribute("bestSellerList", bestSellerList);

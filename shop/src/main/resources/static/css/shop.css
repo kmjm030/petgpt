@@ -182,3 +182,118 @@
 .product__item.liked .product__hover .like-button {
     background-color: #ff6b6b;
 }
+
+/* 할인율 및 원가격 표시 스타일 */
+.product__price {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.discount-rate {
+    color: #e53637;
+    font-size: 14px;
+    font-weight: bold;
+    display: inline-block;
+    margin-bottom: 3px;
+}
+
+.original-price {
+    font-size: 12px;
+    color: #b7b7b7;
+    margin-bottom: 2px;
+    line-height: 1;
+}
+
+.original-price del {
+    text-decoration: line-through;
+}
+
+/* 모바일 화면에서의 스타일 조정 */
+@media (max-width: 767px) {
+    .product__price {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+.product__item__text .sale-price {
+    color: #333;
+    font-weight: bold;
+    font-size: 16px;
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.product__item__text .original-price {
+    color: #999;
+    text-decoration: line-through;
+    font-size: 12px;
+    margin-bottom: 3px;
+    display: block;
+}
+
+.product__item__text .discount-badge {
+    color: #ca1515;
+    font-size: 16px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.product__item__text .price-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.product__item__text .sale-info {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.product__item__text .discount-badge {
+    background-color: #ca1515;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: bold;
+    margin-left: 5px;
+}
+
+.product__item__pic .label.sale {
+    background: #ca1515;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 5px 10px;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 1;
+}
+
+/* 리뷰 개수 스타일 */
+.review-count {
+    color: #999;
+    font-size: 14px;
+    margin-left: 5px;
+}
+
+/* 별점 스타일 보완 */
+.rating {
+    margin-bottom: 10px;
+}
+
+.rating .fa-star {
+    color: #ffc107;
+}
+
+.rating .fa-star-half-o {
+    color: #ffc107;
+}
+
+.rating .fa-star-o {
+    color: #e0e0e0;
+}

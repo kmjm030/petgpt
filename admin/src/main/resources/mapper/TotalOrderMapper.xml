@@ -58,4 +58,20 @@
         WHERE order_key = #{orderKey}
     </select>
 
+    <select id="selectRecentOrders" resultType="com.mc.app.dto.TotalOrder">
+        SELECT
+            order_key,
+            cust_id,
+            order_status,
+            order_date,
+            order_totalprice
+        FROM total_order
+        ORDER BY order_date DESC
+            LIMIT 5
+    </select>
+
+    <delete id="deleteOne" parameterType="int">
+        DELETE FROM total_order
+        WHERE order_key = #{orderKey}
+    </delete>
 </mapper>

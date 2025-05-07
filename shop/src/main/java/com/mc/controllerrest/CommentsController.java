@@ -63,6 +63,7 @@ public class CommentsController {
         try {
             comment.setPboardKey(postId);
             comment.setCustId(loggedInUser.getCustId());
+            comment.setCustName(loggedInUser.getCustName());
             commentsService.addComment(comment);
 
             // 등록 후 생성된 댓글 정보 다시 조회 (좋아요 정보 포함된 최신 상태 반환 위해)

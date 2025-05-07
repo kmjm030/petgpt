@@ -159,6 +159,19 @@
         FROM item
     </select>
 
+    <select id="selectItemsByReviewCount" resultMap="itemBaseResultMap">
+        SELECT i.*
+        FROM item i
+        LEFT JOIN (
+            SELECT item_key, COUNT(*) as review_count
+            FROM qnaboard
+            WHERE board_type = 2
+            GROUP BY item_key
+        ) r ON i.item_key = r.item_key
+        ORDER BY r.review_count DESC, i.item_key ASC
+        LIMIT #{limit}
+    </select>
+
     <insert id="insert" parameterType="item" useGeneratedKeys="true" keyProperty="itemKey">
         INSERT INTO item VALUES (null, #{categoryKey}, #{itemName}, #{itemContent},
                                  #{itemPrice}, #{itemSprice}, #{itemCount}, now(),

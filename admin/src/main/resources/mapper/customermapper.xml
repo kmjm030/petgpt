@@ -49,14 +49,5 @@
         WHERE DATE_FORMAT(cust_rdate, '%Y-%m-%d') = CURDATE()
     </select>
 
-    <select id="selectWeeklyJoinStats" resultType="map">
-        SELECT
-            DAYNAME(cust_rdate) AS joinDay,
-            COUNT(*) AS joinCount
-        FROM customer
-        WHERE cust_rdate >= DATE_SUB(CURDATE(), INTERVAL 6 DAY)
-        GROUP BY joinDay
-    </select>
-
 </mapper>
 

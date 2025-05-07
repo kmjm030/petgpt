@@ -393,17 +393,18 @@
                                             <div class="comment-item ${depthClass}"
                                                 data-comment-key="${comment.commentsKey}">
                                                 <div class="comment-author-img">
-                                                    <c:set var="profileImageUrl">
+                                                    <c:set var="profileImgUrl">
                                                         <c:choose>
                                                             <c:when test="${not empty comment.custProfileImgUrl}">
                                                                 ${comment.custProfileImgUrl}
                                                             </c:when>
                                                             <c:otherwise>
-                                                                <c:url value="/img/default-profile.png" />
+                                                                <c:url value="/img/user/${comment.custName}.png" />
                                                             </c:otherwise>
                                                         </c:choose>
                                                     </c:set>
-                                                    <img src="${profileImageUrl}" alt="프로필 이미지">
+                                                    <img src="${profileImgUrl}" alt="프로필 이미지"
+                                                        onerror="this.onerror=null; this.src='<c:url value='/img/default-profile.png'/>'">
                                                 </div>
                                                 <div class="comment-content-wrap">
                                                     <div class="comment-author-name">
@@ -425,8 +426,10 @@
                                                         <span class="comment-timestamp">
                                                             ${comment.formattedCommentsRdate}
                                                         </span>
-                                                        <a href="#" class="reply-link"
-                                                            data-comment-key="${comment.commentsKey}">답글쓰기</a>
+                                                        <c:if test="${comment.custId ne 'deleted'}">
+                                                            <a href="#" class="reply-link"
+                                                                data-comment-key="${comment.commentsKey}">답글쓰기</a>
+                                                        </c:if>
                                                         <c:if
                                                             test="${not empty loggedInUser && loggedInUser.custId eq comment.custId}">
                                                             <a href="#" class="edit-comment-btn"
@@ -434,13 +437,15 @@
                                                             <a href="#" class="delete-comment-btn"
                                                                 data-comment-key="${comment.commentsKey}">삭제</a>
                                                         </c:if>
-                                                        <span
-                                                            class="comment-like-button ${comment.likedByCurrentUser ? 'liked' : ''}"
-                                                            data-comment-key="${comment.commentsKey}">
-                                                            <i
-                                                                class="fa ${comment.likedByCurrentUser ? 'fa-heart' : 'fa-heart-o'}"></i>
-                                                            <span class="count">${comment.likeCount}</span>
-                                                        </span>
+                                                        <c:if test="${comment.custId ne 'deleted'}">
+                                                            <span
+                                                                class="comment-like-button ${comment.likedByCurrentUser ? 'liked' : ''}"
+                                                                data-comment-key="${comment.commentsKey}">
+                                                                <i
+                                                                    class="fa ${comment.likedByCurrentUser ? 'fa-heart' : 'fa-heart-o'}"></i>
+                                                                <span class="count">${comment.likeCount}</span>
+                                                            </span>
+                                                        </c:if>
                                                     </div>
                                                     <!-- 답글 폼이 삽입될 위치 -->
                                                     <div class="reply-form-container"></div>
@@ -458,8 +463,9 @@
                                     <!-- 댓글 입력 폼 -->
                                     <div class="comment-form">
                                         <div class="author-img">
-                                            <%-- 프로필 이미지 (항상 기본 이미지 표시) --%>
-                                                <img src="<c:url value='/img/default-profile.png'/>" alt="프로필">
+                                            <%-- 프로필 이미지 (사용자 이름 기반 이미지 또는 기본 이미지 표시) --%>
+                                                <img src="<c:url value='/img/user/${cust.custName}.png'/>" alt="프로필"
+                                                    onerror="this.onerror=null; this.src='<c:url value='/img/default-profile.png'/>'">
                                         </div>
                                         <div class="form-content">
                                             <textarea placeholder="댓글을 남겨보세요..."></textarea>
@@ -559,11 +565,19 @@
                         const commentSection = document.querySelector('.comment-section');
                         if (!commentSection) return;
 
-                        const profileImgUrl = comment.custProfileImgUrl || '<c:url value="/img/default-profile.png"/>';
+                        let profileImgUrl = comment.custProfileImgUrl;
+                        if (!profileImgUrl) {
+                            if (comment.custName) {
+                                profileImgUrl = '<c:url value="/img/user/"/>' + comment.custName + '.png';
+                            } else {
+                                profileImgUrl = '<c:url value="/img/default-profile.png"/>';
+                            }
+                        }
                         const formattedDate = formatDateTime(comment.commentsRdate);
                         const commentId = comment.commentsKey || '';
                         const commentAuthorId = comment.custId || '';
                         const isAuthor = postAuthorId && postAuthorId === commentAuthorId;
+                        const isDeleted = commentAuthorId === 'deleted';
 
                         let editButtonHTML = '';
                         let deleteButtonHTML = '';
@@ -572,23 +586,30 @@
                             deleteButtonHTML = ' <a href="#" class="delete-comment-btn" data-comment-key="' + commentId + '">삭제</a>';
                         }
 
+                        // 삭제된 댓글에는 답글 링크와 좋아요 버튼 추가하지 않음
+                        const replyLinkHTML = !isDeleted ?
+                            ' <a href="#" class="reply-link" data-comment-key="' + commentId + '">답글쓰기</a> ' : '';
+
+                        const likeBtnHTML = !isDeleted ?
+                            ' <span class="comment-like-button" data-comment-key="' + commentId + '">' +
+                            ' <i class="fa fa-heart-o"></i>' +
+                            ' <span class="count">' + (comment.likeCount || 0) + '</span>' +
+                            '</span>' : '';
+
                         const commentItemHTML =
                             '<div class="comment-item" data-comment-key="' + commentId + '">' +
                             '<div class="comment-author-img">' +
-                            '<img src="' + profileImgUrl + '" alt="프로필 이미지">' +
+                            '<img src="' + profileImgUrl + '" alt="프로필 이미지" onerror="this.onerror=null; this.src=\'<c:url value="/img/default-profile.png"/>\'">' +
                             '</div>' +
                             '<div class="comment-content-wrap">' +
                             '<div class="comment-author-name">' + (comment.custId || '익명') + (isAuthor ? ' <span class="author-badge">작성자</span>' : '') + '</div>' +
                             '<div class="comment-text">' + (comment.commentsContent || '') + '</div>' +
                             '<div class="comment-meta">' +
                             '<span class="comment-timestamp">' + formattedDate + '</span>' +
-                            ' <a href="#" class="reply-link" data-comment-key="' + commentId + '">답글쓰기</a> ' +
+                            replyLinkHTML +
                             editButtonHTML +
                             deleteButtonHTML +
-                            ' <span class="comment-like-button" data-comment-key="' + commentId + '">' +
-                            ' <i class="fa fa-heart-o"></i>' +
-                            ' <span class="count">' + (comment.likeCount || 0) + '</span>' +
-                            '</span>' +
+                            likeBtnHTML +
                             '</div>' +
                             '<div class="reply-form-container"></div>' +
                             '</div>' +
@@ -853,41 +874,48 @@
 
                     // --- 답글 화면 추가 함수 ---
                     function appendReplyComment(replyData, parentCommentItem) {
-                        const profileImgUrl = replyData.custProfileImgUrl || '<c:url value="/img/default-profile.png"/>';
+                        let profileImgUrl = replyData.custProfileImgUrl;
+                        if (!profileImgUrl && replyData.custName) {
+                            profileImgUrl = '<c:url value="/img/user/"/>' + replyData.custName + '.png';
+                        } else {
+                            profileImgUrl = '<c:url value="/img/default-profile.png"/>';
+                        }
+
                         const formattedDate = formatDateTime(replyData.commentsRdate);
                         const commentId = replyData.commentsKey || '';
                         const commentAuthorId = replyData.custId || '';
                         const isAuthor = postAuthorId && postAuthorId === commentAuthorId;
+                        const isDeleted = commentAuthorId === 'deleted';
+                        const parentCustId = replyData.parentCustId;
                         const depth = replyData.depth || 0;
-                        // depth가 1 이상이면 항상 'depth-1', 0이면 'depth-0'
-                        const depthClass = depth >= 1 ? 'depth-1' : 'depth-0';
-
-                        const parentAuthorNameElement = parentCommentItem.querySelector('.comment-author-name');
-                        let parentCustId = '';
-                        if (parentAuthorNameElement) {
-                            for (let node of parentAuthorNameElement.childNodes) {
-                                if (node.nodeType === Node.TEXT_NODE && node.textContent.trim()) {
-                                    parentCustId = node.textContent.trim();
-                                    break;
-                                }
-                            }
-                        }
+                        const depthClass = 'depth-' + depth;
 
                         let editButtonHTML = '';
                         let deleteButtonHTML = '';
+
                         if (loggedInCustId && loggedInCustId === commentAuthorId) {
-                            editButtonHTML = ' <a href="#" class="edit-comment-btn" data-comment-key="' + commentId + '">수정</a>';
-                            deleteButtonHTML = ' <a href="#" class="delete-comment-btn" data-comment-key="' + commentId + '">삭제</a>';
+                            editButtonHTML = ' <a href="#" class="edit-comment-btn" data-comment-key="' + commentId + '">수정</a> ';
+                            deleteButtonHTML = ' <a href="#" class="delete-comment-btn" data-comment-key="' + commentId + '">삭제</a> ';
                         }
+
+                        // 삭제된 댓글인 경우 답글 링크와 좋아요 버튼 추가하지 않음
+                        const replyLinkHTML = !isDeleted ?
+                            ' <a href="#" class="reply-link" data-comment-key="' + commentId + '">답글쓰기</a> ' : '';
 
                         const isLiked = replyData.likedByCurrentUser || false;
                         const likeIconClass = isLiked ? 'fa-heart' : 'fa-heart-o';
                         const likeCount = replyData.likeCount || 0;
 
+                        const likeBtnHTML = !isDeleted ?
+                            ' <span class="comment-like-button ' + (isLiked ? 'liked' : '') + '" data-comment-key="' + commentId + '">' +
+                            ' <i class="fa ' + likeIconClass + '"></i>' +
+                            ' <span class="count">' + likeCount + '</span>' +
+                            '</span>' : '';
+
                         const replyHTML =
                             '<div class="comment-item ' + depthClass + '" data-comment-key="' + commentId + '">' +
                             '<div class="comment-author-img">' +
-                            '<img src="' + profileImgUrl + '" alt="프로필 이미지">' +
+                            '<img src="' + profileImgUrl + '" alt="프로필 이미지" onerror="this.onerror=null; this.src=\'<c:url value="/img/default-profile.png"/>\'">' +
                             '</div>' +
                             '<div class="comment-content-wrap">' +
                             '<div class="comment-author-name">' + (commentAuthorId || '익명') + (isAuthor ? ' <span class="author-badge">작성자</span>' : '') + '</div>' +
@@ -899,18 +927,14 @@
                             '</div>' +
                             '<div class="comment-meta">' +
                             '<span class="comment-timestamp">' + formattedDate + '</span>' +
-                            ' <a href="#" class="reply-link" data-comment-key="' + commentId + '">답글쓰기</a> ' +
+                            replyLinkHTML +
                             editButtonHTML +
                             deleteButtonHTML +
-                            ' <span class="comment-like-button ' + (isLiked ? 'liked' : '') + '" data-comment-key="' + commentId + '">' +
-                            ' <i class="fa ' + likeIconClass + '"></i>' +
-                            ' <span class="count">' + likeCount + '</span>' +
-                            '</span>' +
+                            likeBtnHTML +
                             '</div>' +
                             '<div class="reply-form-container"></div>' +
                             '</div>' +
                             '</div>';
-
 
                         let insertAfterElement = parentCommentItem;
                         let nextSibling = parentCommentItem.nextElementSibling;
@@ -930,31 +954,6 @@
                         insertAfterElement.insertAdjacentHTML('afterend', replyHTML);
 
                     }
-
-                    // const commentLikeButtons = document.querySelectorAll('.comment-like-button');
-
-                    // commentLikeButtons.forEach(button => {
-                    //     const icon = button.querySelector('i');
-                    //     const countSpan = button.querySelector('.count');
-
-                    //     if (icon && countSpan) {
-                    //         button.addEventListener('click', () => {
-                    //             const isLiked = button.classList.toggle('liked');
-                    //             let currentCount = parseInt(countSpan.textContent || '0', 10);
-
-                    //             if (isLiked) {
-                    //                 icon.classList.remove('fa-heart-o');
-                    //                 icon.classList.add('fa-heart');
-                    //                 currentCount++;
-                    //             } else {
-                    //                 icon.classList.remove('fa-heart');
-                    //                 icon.classList.add('fa-heart-o');
-                    //                 currentCount--;
-                    //             }
-                    //             countSpan.textContent = currentCount;
-                    //         });
-                    //     }
-                    // });
 
                     const commentForm = document.querySelector('.comment-form');
                     const commentTextarea = commentForm?.querySelector('textarea');
