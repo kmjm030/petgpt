@@ -11,9 +11,12 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Like {
-    private int likeKey;
+public class RecentView {
+
+    private int viewKey;
     private String custId;
     private int itemKey;
-    private Date likeRdate;
+    private Date viewDate;
+
+    private Item item;
 }

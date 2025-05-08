@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mc.app.repository.RecentViewRepository">
+
+    <select id="findAllByCustomer" parameterType="String" resultType="RecentView">
+        SELECT * FROM recent_view WHERE cust_id = #{custId}
+    </select>
+
+    <select id="findByCustAndItem" parameterType="map" resultType="RecentView">
+        SELECT * FROM recent_view WHERE cust_id = #{custId} AND item_key = #{itemKey}
+    </select>
+
+    <select id="selectOne" parameterType="int" resultType="RecentView">
+        SELECT * FROM recent_view WHERE view_key = #{viewKey}
+    </select>
+
+    <select id="select" resultType="RecentView">
+        SELECT * FROM recent_view
+    </select>
+
+    <insert id="insert" parameterType="com.mc.app.dto.RecentView">
+        INSERT INTO recent_view (
+            cust_id, item_key, view_date
+        ) VALUES (
+                     #{custId}, #{itemKey}, now()
+                 )
+    </insert>
+
+    <select id="update" parameterType="int">
+        UPDATE recent_view SET view_date = now()
+        WHERE view_key = #{viewKey}
+    </select>
+
+    <delete id="delete" parameterType="int">
+        DELETE FROM recent_view
+        WHERE view_key = #{viewKey}
+    </delete>
+
+</mapper>

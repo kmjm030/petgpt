@@ -13,11 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @Slf4j
@@ -31,6 +27,7 @@ public class ShopController {
     private final CustomerService custService;
     private final AdminCommentsService adminCommentsService;
     private final HotDealService hotDealService;
+    private final RecentViewService viewService;
 
     @GetMapping("")
     public String shop(
@@ -136,6 +133,7 @@ public class ShopController {
 
     @GetMapping("/details")
     public String shopDetails(@RequestParam("itemKey") int itemKey, Model model, HttpSession session) throws Exception {
+
         try {
 
             Customer customer = (Customer) session.getAttribute("cust");
@@ -143,6 +141,22 @@ public class ShopController {
             if (customer != null) {
                 model.addAttribute("isLoggedIn", true);
                 model.addAttribute("custId", customer.getCustId());
+
+                RecentView existingView = viewService.findByCustAndItem(customer.getCustId(), itemKey);
+                if (existingView != null) {
+                    viewService.del(existingView.getViewKey());
+                }
+                RecentView view = RecentView.builder().custId(customer.getCustId()).itemKey(itemKey).build();
+                viewService.add(view);
+
+                // 최대 50개까지만 저장하도록
+                List<RecentView> allViews = viewService.findAllByCustomer(customer.getCustId());
+                if (allViews.size() > 50) {
+                    allViews.sort(Comparator.comparing(RecentView::getViewDate));
+                    for (int i = 50; i < allViews.size(); i++) {
+                        viewService.del(allViews.get(i).getViewKey());
+                    }
+                }
 
                 boolean isLiked = likeService.isLiked(customer.getCustId(), itemKey);
                 model.addAttribute("isLiked", isLiked);

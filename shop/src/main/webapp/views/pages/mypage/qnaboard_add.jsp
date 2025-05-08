@@ -5,9 +5,6 @@
       <!-- Select2 CSS -->
       <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
-      <!-- jQuery + Select2 JS -->
-      <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
       <style>
         .site-btn>a {
           color: white;
@@ -84,25 +81,52 @@
                     <div class="accordion" id="accordionExample">
                       <div class="card">
                         <div class="card-heading">
-                          <a data-toggle="collapse" data-target="#collapseOne">마이페이지</a>
+                          <a data-toggle="collapse">나의 정보</a>
                         </div>
                         <div id="collapseOne" class="collapse show" data-parent="#accordionExample">
                           <div class="card-body">
                             <div class="shop__sidebar__categories">
-                              <ul>
+                              <ul style="height:auto;">
                                 <li><a href="<c:url value='/mypage?id=${cust.custId}'/>">회원정보</a></li>
                                 <li><a href="<c:url value='/pet?id=#${cust.custId}'/>">나의 펫 정보</a></li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="card">
+                        <div class="card-heading">
+                          <a data-toggle="collapse">나의 쇼핑 정보</a>
+                        </div>
+                        <div id="collapseTwo" class="collapse show" data-parent="#accordionExample">
+                          <div class="card-body">
+                            <div class="shop__sidebar__categories">
+                              <ul style="height: auto;">
                                 <li><a href="<c:url value='/checkout/orderlist?id=${cust.custId}'/>">주문내역</a></li>
                                 <li><a href="<c:url value='/address?id=${cust.custId}'/>">배송지 목록</a></li>
-                                <li><a href="<c:url value='/mypage/like?id=${cust.custId}'/>">찜 목록</a></li>
                                 <li><a href="<c:url value='/coupon?id=${cust.custId}'/>">보유 쿠폰</a></li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="card">
+                        <div class="card-heading">
+                          <a data-toggle="collapse">나의 활동</a>
+                        </div>
+                        <div id="collapseThree" class="collapse show" data-parent="#accordionExample">
+                          <div class="card-body">
+                            <div class="shop__sidebar__categories">
+                              <ul style="height:auto;">
+                                <li><a href="<c:url value='/mypage/view?id=${cust.custId}'/>">최근 본 상품</a></li>
+                                <li><a href="<c:url value='/mypage/like?id=${cust.custId}'/>">찜 목록</a></li>
                                 <li><a href="<c:url value='/qnaboard?id=${cust.custId}'/>"><strong
-                                      id="category">1:1문의</strong></a></li>
+                                        id="category">1:1문의</strong></a></li>
                                 <li><a href="<c:url value='/review?id=${cust.custId}'/>">내가 작성한 리뷰</a></li>
                               </ul>
                               <br /><br />
                               <button class="site-btn" id="logout_btn"><a href="<c:url value="
-                                  /logout" />">로그아웃</a></button>
+                                    /logout" />">로그아웃</a></button>
                             </div>
                           </div>
                         </div>
@@ -110,10 +134,12 @@
                     </div>
                   </div>
                 </div>
+
               </div>
               <%-- 회원 정보 --%>
                 <div class="col-lg-9">
-                  <h6 class="checkout__title">❓ 1:1 문의 등록하기</h6>
+                  <h4><strong>❓ 1:1 문의 등록하기</strong></h4>
+                  <h6 class="checkout__title"></h6>
                   <form id="qna_add_form" enctype="multipart/form-data">
                     <%-- 문의종류 --%>
                       <div class="row">
