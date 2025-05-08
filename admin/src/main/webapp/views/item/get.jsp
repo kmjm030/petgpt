@@ -19,7 +19,7 @@
     <div class="card-body">
       <div class="table-responsive">
         <table class="table table-hover table-bordered" id="dataTable">
-          <thead>
+          <thead class="thead-light">
           <tr>
             <th>이미지</th>
             <th>상품 번호</th>
@@ -34,12 +34,12 @@
                 <c:choose>
                   <c:when test="${not empty item.itemImg1}">
                     <a href="<c:url value='/item/detail'/>?item_key=${item.itemKey}">
-                      <img src="<c:url value='/img/item/${item.itemImg1}'/>" alt="상품 이미지">
+                      <img src="<c:url value='/img/item/${item.itemImg1}'/>" alt="상품 이미지" class="img-thumbnail" style="max-height: 60px;">
                     </a>
                   </c:when>
                   <c:otherwise>
-                    <div class="img-thumb">
-                      <i class="bi bi-image"></i>
+                    <div class="img-thumb text-center">
+                      <i class="bi bi-image" style="font-size: 1.5rem;"></i>
                     </div>
                   </c:otherwise>
                 </c:choose>
@@ -73,4 +73,5 @@
 <script src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.print.min.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="/js/item.js"></script>
+<script src="/js/item/get.js"></script>
+
