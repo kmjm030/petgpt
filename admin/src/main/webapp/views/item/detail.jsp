@@ -92,15 +92,28 @@
                 </div>
             </div>
 
-            <div class="card-section">
-                <div class="section-title">옵션 정보</div>
-                <table class="table table-bordered">
-                    <tr><th>사이즈</th><td>${option.size}</td></tr>
-                    <tr><th>색상</th><td>${option.color}</td></tr>
-                    <tr><th>옵션 재고</th><td>${option.stock}</td></tr>
-                    <tr><th>추가금액</th><td><fmt:formatNumber value="${option.additionalPrice}" pattern="#,##0"/> 원</td></tr>
-                </table>
+          <div class="card-section">
+            <div class="section-title">옵션 정보 수정</div>
+            <div class="form-row">
+              <div class="form-group col-md-3">
+                <label>사이즈</label>
+                <input type="text" class="form-control" name="size" value="${option.size}">
+              </div>
+              <div class="form-group col-md-3">
+                <label>색상</label>
+                <input type="text" class="form-control" name="color" value="${option.color}">
+              </div>
+              <div class="form-group col-md-3">
+                <label>옵션 재고</label>
+                <input type="number" class="form-control" name="stock" value="${option.stock}">
+              </div>
+              <div class="form-group col-md-3">
+                <label>추가금액</label>
+                <input type="number" class="form-control" name="additionalPrice" value="${option.additionalPrice}">
+              </div>
             </div>
+          </div>
+
           <div class="card-section">
             <div class="section-title">관리 정보</div>
             <table class="table table-bordered">

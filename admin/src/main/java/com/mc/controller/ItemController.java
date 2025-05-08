@@ -96,35 +96,49 @@ public class ItemController {
         return "redirect:/item/get";
     }
 
-    @RequestMapping("/update")
-    public String update(Model model, Item item,
-                         @RequestParam("img1") MultipartFile img1,
-                         @RequestParam("img2") MultipartFile img2,
-                         @RequestParam("img3") MultipartFile img3) throws Exception {
+  @RequestMapping("/update")
+  public String update(Model model, Item item,
+                       @RequestParam("size") String size,
+                       @RequestParam("color") String color,
+                       @RequestParam("stock") int stock,
+                       @RequestParam("additionalPrice") int additionalPrice,
+                       @RequestParam("img1") MultipartFile img1,
+                       @RequestParam("img2") MultipartFile img2,
+                       @RequestParam("img3") MultipartFile img3) throws Exception {
 
-        String uploadPath = new File("src/main/resources/static/img/item").getAbsolutePath();
+    String uploadPath = new File("src/main/resources/static/img/item").getAbsolutePath();
 
-        if (!img1.isEmpty()) {
-            String name1 = img1.getOriginalFilename();
-            img1.transferTo(new File(uploadPath, name1));
-            item.setItemImg1(name1);
-        }
-
-        if (!img2.isEmpty()) {
-            String name2 = img2.getOriginalFilename();
-            img2.transferTo(new File(uploadPath, name2));
-            item.setItemImg2(name2);
-        }
-
-        if (!img3.isEmpty()) {
-            String name3 = img3.getOriginalFilename();
-            img3.transferTo(new File(uploadPath, name3));
-            item.setItemImg3(name3);
-        }
-
-        itemService.mod(item);
-        return "redirect:/item/detail?item_key=" + item.getItemKey();
+    if (!img1.isEmpty()) {
+      String name1 = img1.getOriginalFilename();
+      img1.transferTo(new File(uploadPath, name1));
+      item.setItemImg1(name1);
     }
+
+    if (!img2.isEmpty()) {
+      String name2 = img2.getOriginalFilename();
+      img2.transferTo(new File(uploadPath, name2));
+      item.setItemImg2(name2);
+    }
+
+    if (!img3.isEmpty()) {
+      String name3 = img3.getOriginalFilename();
+      img3.transferTo(new File(uploadPath, name3));
+      item.setItemImg3(name3);
+    }
+
+    itemService.mod(item);
+    Option option = Option.builder()
+      .itemKey(item.getItemKey())
+      .size(size)
+      .color(color)
+      .stock(stock)
+      .additionalPrice(additionalPrice)
+      .build();
+    optionService.updateOption(option);
+
+    return "redirect:/item/detail?item_key=" + item.getItemKey();
+  }
+
 
   @RequestMapping("/detail")
   public String detail(Model model, @RequestParam("item_key") int itemKey) throws Exception {
