@@ -8,6 +8,8 @@
 
 <div class="container chat-container">
     <h2 class="text-center">관리자 실시간 채팅</h2>
+
+    <!-- 1) 모두에게 전송 -->
     <div class="chat-header">모두에게 전송</div>
     <div class="input-group mb-3">
         <input type="text" id="alltext" class="form-control" placeholder="메시지 입력">
@@ -15,7 +17,10 @@
             <button id="sendall" class="btn-send">Send</button>
         </div>
     </div>
-    <div id="me" class="chat-box"></div>
+
+    <div id="all" class="chat-box"></div>
+
+    <!-- 특정 대상에게 보내기 -->
     <div class="chat-header">특정 대상에게</div>
     <div class="input-group mb-3">
         <input type="text" id="target" class="form-control col-3" placeholder="대상 ID">
@@ -26,6 +31,7 @@
     </div>
     <div id="to" class="chat-box"></div>
 </div>
+
 <span id="adm_id" style="display: none;">${admin.adminId}</span>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
