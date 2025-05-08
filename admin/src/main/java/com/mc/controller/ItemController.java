@@ -174,4 +174,13 @@ public class ItemController {
         model.addAttribute("center", "item/top10");
         return "index";
     }
+
+  @RequestMapping("/toggleStatus")
+  public String toggleStatus(@RequestParam("item_key") int itemKey) throws Exception {
+    Item item = itemService.get(itemKey);
+    item.setIsActive(item.getIsActive() == 1 ? 0 : 1);
+    itemService.updateStatus(item);
+    return "redirect:/item/detail?item_key=" + itemKey;
+  }
+
 }

@@ -21,13 +21,24 @@ $(function () {
       }
     }
 
-    if (confirm('등록하시겠습니까?')) {
-      form.attr({
-        method: 'post',
-        enctype: 'multipart/form-data',
-        action: '/item/addimpl'
-      }).submit();
-    }
+    Swal.fire({
+      title: '등록하시겠습니까?',
+      text: '입력하신 내용으로 상품을 등록합니다.',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#aaa',
+      confirmButtonText: '등록',
+      cancelButtonText: '취소'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        form.attr({
+          method: 'post',
+          enctype: 'multipart/form-data',
+          action: '/item/addimpl'
+        }).submit();
+      }
+    });
   });
 
   $('#btn_reset').click(function () {
@@ -86,7 +97,6 @@ $(function () {
       }
     });
   });
-
 });
 
 $('#dataTable').DataTable({
@@ -122,7 +132,6 @@ $('#dataTable').DataTable({
     infoFiltered: '(총 _MAX_개 중 필터링됨)'
   }
 });
-
 
 $('#dataTable tbody').on('click', 'tr', function () {
   const key = $(this).find('td:nth-child(2)').text().trim();

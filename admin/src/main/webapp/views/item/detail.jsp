@@ -12,8 +12,13 @@
 <script src="/js/item.js"></script>
 
 <div class="container-fluid">
-    <h1 class="h3 mb-4 font-weight-bold">상품 상세 정보</h1>
-    <div class="card shadow-sm p-4 mb-4">
+  <h1 class="h3 mb-4 font-weight-bold">
+    상품 상세 정보
+    <span class="badge ${item.isActive == 1 ? 'badge-success' : 'badge-secondary'} ml-2">
+      ${item.isActive == 1 ? '활성화됨' : '비활성화됨'}
+    </span>
+  </h1>
+  <div class="card shadow-sm p-4 mb-4">
         <form id="item_update_form">
             <div class="card-section">
                 <div class="section-title">기본 정보</div>
@@ -143,13 +148,21 @@
           </div>
 
           <div class="btn-group-fixed">
-                <button id="btn_update" type="button" class="btn btn-dark">
-                    <i class="bi bi-pencil-square me-1"></i> 수정하기
-                </button>
-                <button id="btn_delete" type="button" class="btn btn-outline-danger">
-                    <i class="bi bi-trash me-1"></i> 삭제하기
-                </button>
-            </div>
+            <!-- ✅ 활성/비활성 토글 버튼 추가 -->
+            <button type="button" class="btn ${item.isActive == 1 ? 'btn-success' : 'btn-secondary'}"
+                    onclick="window.location.href='/item/toggleStatus?item_key=${item.itemKey}'">
+              ${item.isActive == 1 ? '활성화됨' : '비활성화됨'}
+            </button>
+
+            <button id="btn_update" type="button" class="btn btn-dark">
+              <i class="bi bi-pencil-square me-1"></i> 수정하기
+            </button>
+
+            <button id="btn_delete" type="button" class="btn btn-outline-danger">
+              <i class="bi bi-trash me-1"></i> 삭제하기
+            </button>
+          </div>
+
         </form>
 
         <jsp:include page="adminComments.jsp"/>

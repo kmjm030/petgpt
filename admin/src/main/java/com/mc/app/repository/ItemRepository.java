@@ -13,18 +13,20 @@ import java.util.List;
 @Mapper
 public interface ItemRepository extends MCRepository<Item, Integer> {
 
-    @Select("""
-        SELECT COUNT(*) 
+  @Select("""
+        SELECT COUNT(*)
         FROM item
     """)
-    int count();
+  int count();
 
-    List<Item> selectTopSellingItems(@Param("limit") int limit);
+  List<Item> selectTopSellingItems(@Param("limit") int limit);
 
-    @Select("""
-        SELECT * 
-        FROM item 
+  @Select("""
+        SELECT *
+        FROM item
         WHERE item_count <= #{threshold}
     """)
-    List<Item> selectItemsWithLowStock(@Param("threshold") int threshold);
+  List<Item> selectItemsWithLowStock(@Param("threshold") int threshold);
+
+  void updateStatus(Item item) throws Exception;
 }

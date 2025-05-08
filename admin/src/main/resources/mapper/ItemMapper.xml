@@ -1,60 +1,71 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
-        PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.mc.app.repository.ItemRepository">
 
-    <select id="selectOne" parameterType="int" resultType="com.mc.app.dto.Item">
-        SELECT * FROM item WHERE item_key = #{itemKey}
-    </select>
+  <select id="selectOne" parameterType="int" resultType="com.mc.app.dto.Item">
+    SELECT item_key, category_key, item_name, item_content, item_price,
+           item_sprice, item_count, item_rdate, item_udate, item_img1,
+           item_img2, item_img3, sales_count, is_active AS isActive
+    FROM item
+    WHERE item_key = #{itemKey}
+  </select>
 
-    <select id="select" resultType="com.mc.app.dto.Item">
-        SELECT * FROM item ORDER BY item_key ASC
-    </select>
+  <select id="select" resultType="com.mc.app.dto.Item">
+    SELECT item_key, category_key, item_name, item_content, item_price,
+           item_sprice, item_count, item_rdate, item_udate, item_img1,
+           item_img2, item_img3, sales_count, is_active AS isActive
+    FROM item
+    ORDER BY item_key ASC
+  </select>
 
-    <insert id="insert" parameterType="com.mc.app.dto.Item">
-        INSERT INTO item (
-        category_key, item_name, item_content, item_price,
-        item_sprice, item_count, item_rdate,
-        item_img1, item_img2, item_img3
-        )
-        VALUES (
-        #{categoryKey}, #{itemName}, #{itemContent}, #{itemPrice},
-        #{itemSprice}, #{itemCount}, now(),
-        #{itemImg1}, #{itemImg2}, #{itemImg3}
-        )
-        <selectKey keyProperty="itemKey" resultType="int" order="AFTER">
-            SELECT LAST_INSERT_ID()
-        </selectKey>
-    </insert>
+  <insert id="insert" parameterType="com.mc.app.dto.Item">
+    INSERT INTO item (
+    category_key, item_name, item_content, item_price,
+    item_sprice, item_count, item_rdate,
+    item_img1, item_img2, item_img3
+    )
+    VALUES (
+    #{categoryKey}, #{itemName}, #{itemContent}, #{itemPrice},
+    #{itemSprice}, #{itemCount}, now(),
+    #{itemImg1}, #{itemImg2}, #{itemImg3}
+    )
+    <selectKey keyProperty="itemKey" resultType="int" order="AFTER">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+  </insert>
 
-    <update id="update" parameterType="com.mc.app.dto.Item">
-        UPDATE item SET
-                        category_key = #{categoryKey},
-                        item_name = #{itemName},
-                        item_content = #{itemContent},
-                        item_price = #{itemPrice},
-                        item_sprice = #{itemSprice},
-                        item_count = #{itemCount},
-                        item_img1 = #{itemImg1},
-                        item_img2 = #{itemImg2},
-                        item_img3 = #{itemImg3}
-        WHERE item_key = #{itemKey}
-    </update>
+  <update id="updateStatus" parameterType="com.mc.app.dto.Item">
+    UPDATE item SET is_active = #{isActive} WHERE item_key = #{itemKey}
+  </update>
 
-    <delete id="delete" parameterType="int">
-        DELETE FROM item WHERE item_key = #{itemKey}
-    </delete>
+  <update id="update" parameterType="com.mc.app.dto.Item">
+    UPDATE item SET
+                  category_key = #{categoryKey},
+                  item_name = #{itemName},
+                  item_content = #{itemContent},
+                  item_price = #{itemPrice},
+                  item_sprice = #{itemSprice},
+                  item_count = #{itemCount},
+                  item_img1 = #{itemImg1},
+                  item_img2 = #{itemImg2},
+                  item_img3 = #{itemImg3}
+    WHERE item_key = #{itemKey}
+  </update>
 
-    <select id="selectTopSellingItems" resultType="Item">
-        SELECT i.*, COUNT(od.item_key) AS salesCount
-        FROM order_detail od
-                 JOIN item i ON od.item_key = i.item_key
-        GROUP BY od.item_key
-        ORDER BY salesCount DESC
-            LIMIT #{limit}
-    </select>
+  <delete id="delete" parameterType="int">
+    DELETE FROM item WHERE item_key = #{itemKey}
+  </delete>
+
+  <select id="selectTopSellingItems" resultType="Item">
+    SELECT i.*, COUNT(od.item_key) AS salesCount
+    FROM order_detail od
+           JOIN item i ON od.item_key = i.item_key
+    GROUP BY od.item_key
+    ORDER BY salesCount DESC
+      LIMIT #{limit}
+  </select>
 
 </mapper>
-

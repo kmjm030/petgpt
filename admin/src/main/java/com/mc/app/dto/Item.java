@@ -25,6 +25,7 @@ public class Item {
   private String itemImg2;
   private String itemImg3;
   private int salesCount;
+  private int isActive;
 
   public int getStock() {
     return itemCount;
