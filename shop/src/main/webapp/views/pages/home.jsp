@@ -58,7 +58,8 @@
                                 <div class="col-xl-5 col-lg-7 col-md-8">
                                     <div class="hero__text">
                                         <h6 style="font-size: 24px; font-weight: bold; margin-bottom: 15px;">
-                                            <span style="font-size: 40px; vertical-align: top; line-height: 1;">“</span>
+                                            <span style="font-size: 40px; vertical-align: top; line-height: 1;">"
+                                            </span>
                                             음! 맛있다~ 꿀잠꿀잠
                                         </h6>
                                         <h2>내새꾸<br> 꿀잠맛집 방석<span style="color: #007bff; font-weight: bold;">zzz</span>
@@ -281,18 +282,18 @@
                     <div class="row">
                         <div class="col-lg-8">
                             <div class="instagram__pic">
-                                <div class="instagram__pic__item set-bg"
-                                    data-setbg="<c:url value='/img/instagram/instagram-1.jpg'/>"></div>
-                                <div class="instagram__pic__item set-bg"
-                                    data-setbg="<c:url value='/img/instagram/instagram-2.jpg'/>"></div>
-                                <div class="instagram__pic__item set-bg"
-                                    data-setbg="<c:url value='/img/instagram/instagram-3.jpg'/>"></div>
-                                <div class="instagram__pic__item set-bg"
-                                    data-setbg="<c:url value='/img/instagram/instagram-4.jpg'/>"></div>
-                                <div class="instagram__pic__item set-bg"
-                                    data-setbg="<c:url value='/img/instagram/instagram-5.jpg'/>"></div>
-                                <div class="instagram__pic__item set-bg"
-                                    data-setbg="<c:url value='/img/instagram/instagram-6.jpg'/>"></div>
+                                <div class="instagram__pic__item set-bg insta-modal-trigger"
+                                    data-setbg="<c:url value='/img/insta/post-image1.png'/>"></div>
+                                <div class="instagram__pic__item set-bg insta-modal-trigger"
+                                    data-setbg="<c:url value='/img/insta/post-image2.png'/>"></div>
+                                <div class="instagram__pic__item set-bg insta-modal-trigger"
+                                    data-setbg="<c:url value='/img/insta/post-image3.png'/>"></div>
+                                <div class="instagram__pic__item set-bg insta-modal-trigger"
+                                    data-setbg="<c:url value='/img/insta/post-image1.png'/>"></div>
+                                <div class="instagram__pic__item set-bg insta-modal-trigger"
+                                    data-setbg="<c:url value='/img/insta/post-image2.png'/>"></div>
+                                <div class="instagram__pic__item set-bg insta-modal-trigger"
+                                    data-setbg="<c:url value='/img/insta/post-image3.png'/>"></div>
                             </div>
                         </div>
                         <div class="col-lg-4">
@@ -309,6 +310,137 @@
             </section>
             <!-- Instagram Section End -->
 
+            <!-- Instagram Modal -->
+            <div id="instaModal" class="insta-modal">
+                <div class="insta-modal-content">
+                    <span class="insta-modal-close">&times;</span>
+                    <iframe id="instaFrame" src="" width="100%" height="100%" frameborder="0"></iframe>
+                </div>
+            </div>
+
+            <!-- Instagram Modal Style -->
+            <style>
+                /* 인스타그램 썸네일 호버 효과 */
+                .instagram__pic {
+                    position: relative;
+                }
+
+                .instagram__pic::after {
+                    content: "";
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: rgba(0, 0, 0, 0);
+                    pointer-events: none;
+                    transition: background 0.3s ease;
+                }
+
+                .instagram__pic.hover::after {
+                    background: rgba(0, 0, 0, 0.5);
+                }
+
+                .instagram__pic__item {
+                    transition: transform 0.3s ease, filter 0.3s ease;
+                    cursor: pointer;
+                    z-index: 1;
+                }
+
+                .instagram__pic.hover .instagram__pic__item {
+                    filter: blur(2px);
+                }
+
+                .instagram__pic.hover .instagram__pic__item.active {
+                    transform: scale(1.05);
+                    filter: blur(0);
+                    z-index: 2;
+                    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+                }
+
+                /* 모달 스타일 */
+                .insta-modal {
+                    display: none;
+                    position: fixed;
+                    z-index: 9999;
+                    left: 0;
+                    top: 0;
+                    width: 100%;
+                    height: 100%;
+                    overflow: auto;
+                    background-color: rgba(0, 0, 0, 0.9);
+                }
+
+                .insta-modal-content {
+                    position: relative;
+                    margin: 5% auto;
+                    width: 90%;
+                    max-width: 1000px;
+                    height: 80%;
+                    background: white;
+                    border-radius: 8px;
+                    overflow: hidden;
+                }
+
+                .insta-modal-close {
+                    position: absolute;
+                    top: 15px;
+                    right: 20px;
+                    color: white;
+                    font-size: 28px;
+                    font-weight: bold;
+                    cursor: pointer;
+                    z-index: 10001;
+                }
+            </style>
+
+            <!-- Instagram Modal Script -->
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const instaItems = document.querySelectorAll('.insta-modal-trigger');
+                    const instaContainer = document.querySelector('.instagram__pic');
+                    const modal = document.getElementById('instaModal');
+                    const modalFrame = document.getElementById('instaFrame');
+                    const closeBtn = document.querySelector('.insta-modal-close');
+                    
+                    // 마우스 오버 효과
+                    instaItems.forEach(item => {
+                        item.addEventListener('mouseenter', function() {
+                            instaContainer.classList.add('hover');
+                            this.classList.add('active');
+                        });
+                        
+                        item.addEventListener('mouseleave', function() {
+                            instaContainer.classList.remove('hover');
+                            this.classList.remove('active');
+                        });
+                        
+                        // 클릭 이벤트
+                        item.addEventListener('click', function() {
+                            modalFrame.src = '<c:url value="/insta"/>';
+                            modal.style.display = 'block';
+                            document.body.style.overflow = 'hidden'; // 배경 스크롤 방지
+                        });
+                    });
+                    
+                    // 모달 닫기
+                    closeBtn.addEventListener('click', function() {
+                        modal.style.display = 'none';
+                        modalFrame.src = '';
+                        document.body.style.overflow = 'auto'; // 스크롤 복구
+                    });
+                    
+                    // 모달 외부 클릭 시 닫기
+                    window.addEventListener('click', function(event) {
+                        if (event.target == modal) {
+                            modal.style.display = 'none';
+                            modalFrame.src = '';
+                            document.body.style.overflow = 'auto';
+                        }
+                    });
+                });
+            </script>
+            
             <!-- Latest Blog Section Begin -->
             <section class="latest spad">
                 <div class="container">

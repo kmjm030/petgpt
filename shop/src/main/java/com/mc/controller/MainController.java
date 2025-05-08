@@ -131,4 +131,9 @@ public class MainController {
     public String aiAnalysisPage(Model model) {
         return "pages/ai_analysis";
     }
+
+    @GetMapping("/insta")
+    public String instagramPage() {
+        return "pages/insta/insta";
+    }
 }
