@@ -8,6 +8,7 @@
         <id property="commentsKey" column="comments_key"/>
         <result property="pboardKey" column="pboard_key"/>
         <result property="custId" column="cust_id"/> 
+        <result property="custName" column="cust_name"/>
         <result property="commentsContent" column="comments_content"/>
         <result property="commentsRdate" column="comments_rdate"/>
         <result property="commentsUpdate" column="comments_update"/>
@@ -24,6 +25,7 @@
             c.comments_key,
             c.pboard_key,
             c.cust_id,
+            cu.cust_name,
             c.comments_content,
             c.comments_rdate,
             c.comments_update,
@@ -50,7 +52,7 @@
             c.pboard_key = #{pboardKey}
         GROUP BY
             -- SELECT 절의 집계 함수 외 모든 컬럼 포함
-            c.comments_key, c.pboard_key, c.cust_id, c.comments_content, c.comments_rdate, c.comments_update,
+            c.comments_key, c.pboard_key, c.cust_id, cu.cust_name, c.comments_content, c.comments_rdate, c.comments_update,
             c.parent_comment_key, c.depth, cu.cust_img, pc.cust_id
         ORDER BY
             COALESCE(c.parent_comment_key, c.comments_key), c.comments_rdate
@@ -61,6 +63,7 @@
             c.comments_key,
             c.pboard_key,
             c.cust_id,
+            cu.cust_name,
             c.comments_content,
             c.comments_rdate,
             c.comments_update,
@@ -86,7 +89,7 @@
         WHERE
             c.comments_key = #{commentsKey}
         GROUP BY
-            c.comments_key, c.pboard_key, c.cust_id, c.comments_content, c.comments_rdate, c.comments_update,
+            c.comments_key, c.pboard_key, c.cust_id, cu.cust_name, c.comments_content, c.comments_rdate, c.comments_update,
             c.parent_comment_key, c.depth, cu.cust_img, pc.cust_id
     </select>
 
@@ -127,12 +130,12 @@
         SELECT COUNT(*) FROM comment_likes WHERE comments_key = #{commentsKey}
     </select>
 
-    <!-- 댓글 삭제 상태로 업데이트 -->
+    <!-- 댓글 삭제 상태로 업데이트 SQL 수정 -->
     <update id="updateForDeletion" parameterType="com.mc.app.dto.Comments">
         UPDATE comments
         SET
             comments_content = #{commentsContent},
-            cust_id = #{custId}, 
+            cust_id = #{custId},
             comments_update = #{commentsUpdate}
         WHERE
             comments_key = #{commentsKey}

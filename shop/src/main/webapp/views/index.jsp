@@ -46,8 +46,8 @@
             <div class="offcanvas-menu-wrapper">
                 <div class="offcanvas__option">
                     <div class="offcanvas__links">
-                        <a href="#">Sign in</a>
-                        <a href="#">FAQs</a>
+                        <a href="<c:url value=" /login" />">로그인</a>
+                        <a href="<c:url value=" /signup" />">회원가입</a>
                     </div>
                     <div class="offcanvas__top__hover">
                         <span>Usd <i class="arrow_carrot-down"></i></span>
@@ -66,7 +66,7 @@
                 </div>
                 <div id="mobile-menu-wrap"></div>
                 <div class="offcanvas__text">
-                    <p>Free shipping, 30-day return or refund guarantee.</p>
+                    <p>반려동물 용품 전문 쇼핑몰🐶🐱</p>
                 </div>
             </div>
             <!-- Offcanvas Menu End -->

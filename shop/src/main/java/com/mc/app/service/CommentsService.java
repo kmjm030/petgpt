@@ -70,6 +70,13 @@ public class CommentsService {
             if (parentComment == null) {
                 throw new NoSuchElementException("답글을 작성할 원 댓글을 찾을 수 없습니다. ID: " + comments.getParentCommentKey());
             }
+
+            // 삭제된 댓글에는 답글을 달 수 없도록 검사 (예외는 발생시키지 않고 false 반환하도록 수정)
+            if ("deleted".equals(parentComment.getCustId())) {
+                // 클라이언트에서 버튼을 숨기므로 여기서는 단순 검증만 수행
+                return;
+            }
+
             comments.setDepth(parentComment.getDepth() + 1);
         } else {
             comments.setDepth(0);
@@ -137,7 +144,10 @@ public class CommentsService {
         Comments commentToUpdate = new Comments();
         commentToUpdate.setCommentsKey(commentsKey);
         commentToUpdate.setCommentsContent("삭제된 댓글입니다.");
-        commentToUpdate.setCustId(null);
+        // custId를 null 대신 "deleted"로 설정하여 JOIN 문제 해결
+        commentToUpdate.setCustId("deleted");
+        // custName도 설정
+        commentToUpdate.setCustName("삭제된 사용자");
         commentToUpdate.setCommentsUpdate(LocalDateTime.now());
 
         int updatedRows = commentsRepository.updateForDeletion(commentToUpdate);
@@ -161,6 +171,15 @@ public class CommentsService {
         Comments comment = this.getCommentById(commentsKey, null);
         if (comment == null) {
             throw new NoSuchElementException("좋아요를 누를 댓글을 찾을 수 없습니다. ID: " + commentsKey);
+        }
+
+        // 삭제된 댓글에는 좋아요를 누를 수 없음 (예외는 발생시키지 않고 현재 상태 그대로 반환)
+        if ("deleted".equals(comment.getCustId())) {
+            // 클라이언트에서 버튼을 숨기므로 여기서는 단순 검증만 수행
+            Map<String, Object> result = new HashMap<>();
+            result.put("liked", false);
+            result.put("likeCount", commentsRepository.getLikeCount(commentsKey));
+            return result;
         }
 
         Map<String, Object> params = new HashMap<>();

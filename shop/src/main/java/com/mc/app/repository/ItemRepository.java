@@ -153,6 +153,15 @@ public interface ItemRepository extends MCRepository<Item, Integer> {
                         throws Exception;
 
         /**
+         * 리뷰 수를 기준으로 상위 상품 목록 조회
+         * 
+         * @param limit 조회할 개수
+         * @return 리뷰 수 순 상품 목록
+         * @throws Exception DB 조회 오류 발생 시
+         */
+        List<Item> selectItemsByReviewCount(@Param("limit") int limit) throws Exception;
+
+        /**
          * 상품 키로 상품 기본 정보와 상세 설명을 함께 조회
          * 
          * @param itemKey 상품 키
