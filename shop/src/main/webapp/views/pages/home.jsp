@@ -289,11 +289,11 @@
                                 <div class="instagram__pic__item set-bg insta-modal-trigger"
                                     data-setbg="<c:url value='/img/insta/post-image3.png'/>"></div>
                                 <div class="instagram__pic__item set-bg insta-modal-trigger"
-                                    data-setbg="<c:url value='/img/insta/post-image1.png'/>"></div>
+                                    data-setbg="<c:url value='/img/insta/post-image4.png'/>"></div>
                                 <div class="instagram__pic__item set-bg insta-modal-trigger"
-                                    data-setbg="<c:url value='/img/insta/post-image2.png'/>"></div>
+                                    data-setbg="<c:url value='/img/insta/post-image5.png'/>"></div>
                                 <div class="instagram__pic__item set-bg insta-modal-trigger"
-                                    data-setbg="<c:url value='/img/insta/post-image3.png'/>"></div>
+                                    data-setbg="<c:url value='/img/insta/post-image6.png'/>"></div>
                             </div>
                         </div>
                         <div class="col-lg-4">

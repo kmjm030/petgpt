@@ -154,6 +154,105 @@
                             <button>게시</button>
                         </div>
                     </article>
+                    <article class="post">
+                        <div class="post-header">
+                            <img src="<c:url value='/img/insta/post-profile1.png'/>" alt="User Profile" class="post-profile-pic">
+                            <span class="post-username">user_name_official</span>
+                            <button class="options-button">...</button>
+                        </div>
+                        <div class="post-image">
+                            <img src="<c:url value='/img/insta/post-image4.png'/>" alt="Post Image">
+                        </div>
+                        <div class="post-actions">
+                            <button><i class="far fa-heart"></i></button>
+                            <button><i class="far fa-comment"></i></button>
+                            <button><i class="far fa-paper-plane"></i></button>
+                            <button class="bookmark-button"><i class="far fa-bookmark"></i></button>
+                        </div>
+                        <div class="post-likes">
+                            좋아요 <span class="like-count">1,234</span>개
+                        </div>
+                        <div class="post-caption">
+                            <span class="post-username">user_name_official</span>
+                            멋진 하루! #일상 #여행
+                        </div>
+                        <div class="post-comments-link">
+                            댓글 <span class="comment-count">56</span>개 모두 보기
+                        </div>
+                        <div class="post-timestamp">
+                            1시간 전
+                        </div>
+                        <div class="add-comment">
+                            <input type="text" placeholder="댓글 달기...">
+                            <button>게시</button>
+                        </div>
+                    </article>
+                    <article class="post">
+                        <div class="post-header">
+                            <img src="<c:url value='/img/insta/post-profile2.png'/>" alt="User Profile" class="post-profile-pic">
+                            <span class="post-username">user_name_official</span>
+                            <button class="options-button">...</button>
+                        </div>
+                        <div class="post-image">
+                            <img src="<c:url value='/img/insta/post-image5.png'/>" alt="Post Image">
+                        </div>
+                        <div class="post-actions">
+                            <button><i class="far fa-heart"></i></button>
+                            <button><i class="far fa-comment"></i></button>
+                            <button><i class="far fa-paper-plane"></i></button>
+                            <button class="bookmark-button"><i class="far fa-bookmark"></i></button>
+                        </div>
+                        <div class="post-likes">
+                            좋아요 <span class="like-count">1,234</span>개
+                        </div>
+                        <div class="post-caption">
+                            <span class="post-username">user_name_official</span>
+                            멋진 하루! #일상 #여행
+                        </div>
+                        <div class="post-comments-link">
+                            댓글 <span class="comment-count">56</span>개 모두 보기
+                        </div>
+                        <div class="post-timestamp">
+                            1시간 전
+                        </div>
+                        <div class="add-comment">
+                            <input type="text" placeholder="댓글 달기...">
+                            <button>게시</button>
+                        </div>
+                    </article>
+                    <article class="post">
+                        <div class="post-header">
+                            <img src="<c:url value='/img/insta/post-profile3.png'/>" alt="User Profile" class="post-profile-pic">
+                            <span class="post-username">user_name_official</span>
+                            <button class="options-button">...</button>
+                        </div>
+                        <div class="post-image">
+                            <img src="<c:url value='/img/insta/post-image6.png'/>" alt="Post Image">
+                        </div>
+                        <div class="post-actions">
+                            <button><i class="far fa-heart"></i></button>
+                            <button><i class="far fa-comment"></i></button>
+                            <button><i class="far fa-paper-plane"></i></button>
+                            <button class="bookmark-button"><i class="far fa-bookmark"></i></button>
+                        </div>
+                        <div class="post-likes">
+                            좋아요 <span class="like-count">1,234</span>개
+                        </div>
+                        <div class="post-caption">
+                            <span class="post-username">user_name_official</span>
+                            멋진 하루! #일상 #여행
+                        </div>
+                        <div class="post-comments-link">
+                            댓글 <span class="comment-count">56</span>개 모두 보기
+                        </div>
+                        <div class="post-timestamp">
+                            1시간 전
+                        </div>
+                        <div class="add-comment">
+                            <input type="text" placeholder="댓글 달기...">
+                            <button>게시</button>
+                        </div>
+                    </article>
                 </section>
             </div>
 
