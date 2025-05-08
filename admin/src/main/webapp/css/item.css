@@ -260,3 +260,32 @@ table td img {
   border-radius: 12px;
 }
 
+table td img {
+  transition: transform 0.3s ease;
+  max-width: 80px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+table td img:hover {
+  transform: scale(1.5);
+  z-index: 10;
+  position: relative;
+}
+body.dark-mode #dataTable tbody tr:hover {
+  background-color: #3a3a3c;
+  transform: scale(1.01);
+  box-shadow: 0 8px 18px rgba(255, 255, 255, 0.1);
+}
+.dt-button {
+  background-color: #d63384 !important;
+  color: white !important;
+  border-radius: 8px !important;
+  border: none !important;
+  margin-right: 8px;
+}
+
+.dt-button:hover {
+  background-color: #ad1457 !important;
+}
