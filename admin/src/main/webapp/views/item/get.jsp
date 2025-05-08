@@ -4,8 +4,7 @@
 
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.0/css/buttons.bootstrap4.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap4.min.css">
-<link rel="stylesheet" href="/css/cherry-blossom.css">
-<link rel="stylesheet" href="/css/item.css">
+<link rel="stylesheet" href="/css/item/get.css">
 
 <div class="container-fluid">
   <div class="d-flex justify-content-between align-items-center mb-3">

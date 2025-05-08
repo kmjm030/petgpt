@@ -1,0 +1,181 @@
+body {
+  font-family: 'SF Pro Display', 'Noto Sans KR', sans-serif;
+  background-color: #f5f7fa;
+  color: #333;
+}
+
+.container-fluid {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 2rem;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+}
+
+.table thead {
+  background-color: #f0f2f5;
+}
+
+.table th {
+  color: #2c3e50;
+  font-weight: 600;
+  vertical-align: middle;
+}
+
+.table td {
+  vertical-align: middle;
+}
+
+.img-thumbnail,
+.img-thumb {
+  width: auto;
+  max-height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.img-thumb {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60px;
+  height: 60px;
+  background-color: #f0f0f0;
+  border-radius: 8px;
+}
+
+a {
+  color: #2c3e50;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #4b7bec;
+  text-decoration: underline;
+}
+
+.price-cell {
+  font-weight: 500;
+  color: #27ae60;
+}
+
+#dataTable_wrapper .buttons-copy,
+#dataTable_wrapper .buttons-csv,
+#dataTable_wrapper .buttons-excel,
+#dataTable_wrapper .buttons-print {
+  border-radius: 30px;
+  background-color: #2f3640;
+  border: none;
+  color: #fff !important;
+  padding: 0.4rem 1rem;
+  margin-right: 0.5rem;
+  font-weight: 500;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+#dataTable_wrapper .buttons-copy:hover,
+#dataTable_wrapper .buttons-csv:hover,
+#dataTable_wrapper .buttons-excel:hover,
+#dataTable_wrapper .buttons-print:hover {
+  background-color: #353b48;
+  transform: translateY(-2px);
+}
+
+#dataTable_wrapper .dataTables_filter input {
+  border: 1px solid #dcdde1;
+  border-radius: 8px;
+  padding: 0.4rem 0.8rem;
+  margin-left: 0.5rem;
+}
+
+#dataTable_wrapper .dataTables_length select {
+  border: 1px solid #dcdde1;
+  border-radius: 8px;
+  padding: 0.4rem 0.8rem;
+}
+
+#dataTable_wrapper .pagination .page-item .page-link {
+  border-radius: 8px;
+  border: 1px solid #dcdde1;
+  color: #2c3e50 !important;
+  margin: 0 0.2rem;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+#dataTable_wrapper .pagination .page-item.active .page-link {
+  background-color: #4b7bec;
+  color: #fff !important;
+  border-color: #4b7bec;
+}
+
+#dataTable_wrapper .pagination .page-item.disabled .page-link {
+  color: #bbb !important;
+  background-color: #f0f0f0 !important;
+  border-color: #ddd !important;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+#dataTable_wrapper .pagination .page-item:not(.disabled):not(.active) .page-link:hover {
+  background-color: #4b7bec;
+  color: #fff !important;
+  transform: translateY(-2px);
+}
+
+.btn-dark {
+  background: #2f3640;
+  color: #fff;
+  border: none;
+}
+
+.btn-dark:hover {
+  background: #353b48;
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background: #dcdde1;
+  color: #2f3640;
+  border: none;
+}
+
+.btn-secondary:hover {
+  background: #b2bec3;
+  transform: translateY(-2px);
+}
+
+.btn-outline-danger {
+  border: 1px solid #e74c3c;
+  color: #e74c3c;
+}
+
+.btn-outline-danger:hover {
+  background: #e74c3c;
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+.badge-success {
+  background-color: #2ecc71;
+}
+
+.badge-secondary {
+  background-color: #95a5a6;
+}

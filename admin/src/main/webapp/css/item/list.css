@@ -1,0 +1,68 @@
+.card-body {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.inquiry-toggle {
+  background-color: #f5f7fa;
+  border-radius: 12px;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.inquiry-toggle:hover {
+  background-color: #e6ecf3;
+}
+
+.answer-content {
+  background-color: #ffffff;
+  border-left: 4px solid #4b7bec;
+  border-radius: 0 0 12px 12px;
+  padding: 1rem 1.5rem;
+  margin-top: -1px;
+  display: none;
+}
+
+.answer-content hr {
+  margin: 1rem 0;
+  border-color: #ddd;
+}
+
+.toggle-icon {
+  font-size: 1.2rem;
+  color: #4b7bec;
+  transition: transform 0.3s;
+}
+
+.inquiry-toggle strong {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.inquiry-toggle small {
+  color: #7f8c8d;
+  margin-left: 1rem;
+}
+
+.answer-content strong {
+  color: #34495e;
+}
+
+.text-muted {
+  font-size: 0.85rem;
+  color: #7f8c8d;
+  margin-top: 0.5rem;
+}
+
+.text-muted-status {
+  font-size: 0.9rem;
+  color: #e74c3c;
+  margin-top: 0.5rem;
+}

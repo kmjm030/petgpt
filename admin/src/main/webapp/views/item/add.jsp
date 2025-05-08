@@ -3,7 +3,7 @@
 
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/css/item.css">
+<link rel="stylesheet" href="/css/item/add.css">
 
 <div class="container-fluid">
   <h1 class="my-4 font-weight-bold">상품 등록</h1>
