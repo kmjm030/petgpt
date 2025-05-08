@@ -160,6 +160,10 @@ public class CustomerController {
 
             // 파일 저장
             try {
+                Path uploadPath = Paths.get("C:", "petshop", "uploads", "images", "cust");
+                if (!Files.exists(uploadPath)) {
+                    Files.createDirectories(uploadPath);
+                }
                 java.nio.file.Files.copy(img.getInputStream(), java.nio.file.Paths.get(filePath),
                         java.nio.file.StandardCopyOption.REPLACE_EXISTING);
                 cust.setCustImg(fileUrl);
