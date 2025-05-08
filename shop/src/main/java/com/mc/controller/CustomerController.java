@@ -50,12 +50,30 @@ public class CustomerController {
         if (cust.getCustImg() == null || cust.getCustImg().isEmpty()) {
             String defaultImagePath = "/img/user/" + cust.getCustName() + ".png";
 
-            String filePath = request.getSession().getServletContext()
-                    .getRealPath("/resources/static" + defaultImagePath);
+            try {
+                String staticImagePath = request.getServletContext().getRealPath("/static" + defaultImagePath);
+                if (new java.io.File(staticImagePath).exists()) {
+                    cust.setCustImg(defaultImagePath);
+                    return;
+                }
 
-            if (new java.io.File(filePath).exists()) {
-                cust.setCustImg(defaultImagePath);
-            } else {
+                java.net.URL resourceUrl = getClass().getResource("/static" + defaultImagePath);
+                if (resourceUrl != null) {
+                    cust.setCustImg(defaultImagePath);
+                    return;
+                }
+
+                String projectPath = System.getProperty("user.dir");
+                String resourcePath = projectPath + "/shop/src/main/resources/static" + defaultImagePath;
+                if (new java.io.File(resourcePath).exists()) {
+                    cust.setCustImg(defaultImagePath);
+                    return;
+                }
+
+                cust.setCustImg("/img/clients/profile.png");
+
+            } catch (Exception e) {
+                log.debug("기본 이미지 설정 중 오류 발생: {}", e.getMessage());
                 cust.setCustImg("/img/clients/profile.png");
             }
         }
