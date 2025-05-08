@@ -101,8 +101,35 @@
                     <tr><th>추가금액</th><td><fmt:formatNumber value="${option.additionalPrice}" pattern="#,##0"/> 원</td></tr>
                 </table>
             </div>
+          <div class="card-section">
+            <div class="section-title">관리 정보</div>
+            <table class="table table-bordered">
+              <tr>
+                <th>등록일</th>
+                <td>
+                  <c:choose>
+                    <c:when test="${not empty itemRdateDate}">
+                      <fmt:formatDate value="${itemRdateDate}" pattern="yyyy-MM-dd" />
+                    </c:when>
+                    <c:otherwise>-</c:otherwise>
+                  </c:choose>
+                </td>
+              </tr>
+              <tr>
+                <th>수정일</th>
+                <td>
+                  <c:choose>
+                    <c:when test="${not empty itemUdateDate}">
+                      <fmt:formatDate value="${itemUdateDate}" pattern="yyyy-MM-dd" />
+                    </c:when>
+                    <c:otherwise>-</c:otherwise>
+                  </c:choose>
+                </td>
+              </tr>
+            </table>
+          </div>
 
-            <div class="btn-group-fixed">
+          <div class="btn-group-fixed">
                 <button id="btn_update" type="button" class="btn btn-dark">
                     <i class="bi bi-pencil-square me-1"></i> 수정하기
                 </button>
