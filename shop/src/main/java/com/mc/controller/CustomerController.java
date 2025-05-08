@@ -1,13 +1,8 @@
 package com.mc.controller;
 
-import com.mc.app.dto.Customer;
-import com.mc.app.dto.Item;
-import com.mc.app.dto.Like;
-import com.mc.app.dto.QnaBoard;
-import com.mc.app.service.CouponService;
-import com.mc.app.service.CustomerService;
-import com.mc.app.service.ItemService;
-import com.mc.app.service.LikeService;
+import com.google.api.Http;
+import com.mc.app.dto.*;
+import com.mc.app.service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -27,8 +22,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -47,6 +44,7 @@ public class CustomerController {
     private final CustomerService custService;
     private final LikeService likeService;
     private final ItemService itemService;
+    private final RecentViewService viewService;
 
     private void setDefaultProfileImage(Customer cust, HttpServletRequest request) {
         if (cust.getCustImg() == null || cust.getCustImg().isEmpty()) {
@@ -218,6 +216,9 @@ public class CustomerController {
     @RequestMapping("/like")
     public String like(Model model, @RequestParam("id") String id) throws Exception {
 
+        LocalDateTime oneYearAgo = LocalDateTime.now().minusYears(1);
+        Date date = Date.from(oneYearAgo.atZone(ZoneId.systemDefault()).toInstant());
+        likeService.deleteOlderThan(date);
         List<Like> likes = likeService.getLikesByCustomer(id);
         List<Item> items = new ArrayList<>();
         for (Like like : likes) {
@@ -238,6 +239,33 @@ public class CustomerController {
             @RequestParam("id") String custId) throws Exception {
         likeService.deleteForMypage(custId, itemKey);
         return "redirect:/mypage/like?id=" + custId;
+    }
+
+    @RequestMapping("/view")
+    public String view(Model model, @RequestParam("id") String id) throws Exception {
+
+        List<RecentView> views = viewService.findAllByCustomer(id);
+        views.sort((v1, v2) -> v2.getViewDate().compareTo(v1.getViewDate()));
+
+        for (RecentView view : views) {
+            Item item = itemService.get(view.getItemKey());
+            view.setItem(item);
+        }
+
+        model.addAttribute("views", views);
+        model.addAttribute("currentPage", "pages");
+        model.addAttribute("pageTitle", "Recent View Page");
+        model.addAttribute("viewName", "recent_view");
+        model.addAttribute("centerPage", "pages/mypage/recent_view.jsp");
+        return "index";
+    }
+
+    @RequestMapping("/viewdelimpl")
+    public String viewdelimpl(Model model, @RequestParam("viewKey") int viewKey, HttpSession session) throws Exception {
+        viewService.del(viewKey);
+        Customer loggedInCustomer = (Customer) session.getAttribute("cust");
+        String custId = loggedInCustomer.getCustId();
+        return "redirect:/mypage/view?id=" + custId;
     }
 
     private String extractExtension(String fileName) {

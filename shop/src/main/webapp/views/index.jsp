@@ -424,6 +424,9 @@
                 <c:when test="${viewName == 'qnaboard'}">
                     <script src="<c:url value='/js/qnaboard.js'/>"></script>
                 </c:when>
+                <c:when test="${viewName == 'recent_view'}">
+                    <script src="<c:url value='/js/recent_view.js'/>"></script>
+                </c:when>
                 <c:when test="${viewName == 'qnaboard_add'}">
                     <script src="<c:url value='/js/qnaboard_add.js'/>"></script>
                 </c:when>

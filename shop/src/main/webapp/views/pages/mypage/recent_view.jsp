@@ -1,5 +1,6 @@
 <%@ page pageEncoding="UTF-8" %>
   <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+    <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
     <style>
       .site-btn>a {
@@ -19,28 +20,22 @@
         color: black;
       }
 
-      #boardContent {
-        height: 300px;
+      .discount-badge {
+        color: white;
+        background-color: darkred;
+      }
+
+      .img-box img {
+        transition: transform 0.3s ease;
         width: 100%;
-        border: 1px solid #e1e1e1;
-        font-size: 14px;
-        color: gray;
-        padding: 20px;
-        margin-bottom: 20px;
+        height: 100%;
+        border-radius: 5%;
       }
 
-      textarea::placeholder,
-      input::placeholder {
-        color: #b7b7b7;
+      .img-box img:hover {
+        transform: scale(1.05);
       }
 
-      .nice-select.select2 {
-        display: none !important;
-      }
-
-      #msg {
-        color: darkred;
-      }
     </style>
 
     <!-- Breadcrumb Section Begin -->
@@ -52,9 +47,8 @@
               <h4>Mypage</h4>
               <div class="breadcrumb__links">
                 <a href="<c:url value='/'/>">Home</a>
-                <a href="<c:url value='/mypage'/>">마이페이지</a>
-                <a href="<c:url value='/qnaboard?id=${cust.custId}'/>">1:1문의</a>
-                <span>문의 상세정보</span>
+                <a href="<c:url value='#'/>">마이페이지</a>
+                <span>찜 목록</span>
               </div>
             </div>
           </div>
@@ -64,8 +58,9 @@
     <!-- Breadcrumb Section End -->
 
     <!-- Data for JS -->
-    <div id="qna-detail-data" style="display: none;" data-context-path="${pageContext.request.contextPath}">
+    <div id="like-data" style="display: none;" data-context-path="${pageContext.request.contextPath}">
     </div>
+
 
     <section class="shop spad">
       <div class="container">
@@ -114,10 +109,10 @@
                         <div class="card-body">
                           <div class="shop__sidebar__categories">
                             <ul style="height:auto;">
-                              <li><a href="<c:url value='/mypage/view?id=${cust.custId}'/>">최근 본 상품</a></li>
+                              <li><a href="<c:url value='/mypage/view?id=${cust.custId}'/>"><strong
+                                      id="category">최근 본 상품</strong></a></li>
                               <li><a href="<c:url value='/mypage/like?id=${cust.custId}'/>">찜 목록</a></li>
-                              <li><a href="<c:url value='/qnaboard?id=${cust.custId}'/>"><strong
-                                      id="category">1:1문의</strong></a></li>
+                              <li><a href="<c:url value='/qnaboard?id=${cust.custId}'/>">1:1문의</a></li>
                               <li><a href="<c:url value='/review?id=${cust.custId}'/>">내가 작성한 리뷰</a></li>
                             </ul>
                             <br /><br />
@@ -133,52 +128,50 @@
 
             </div>
             <%-- 회원 정보 --%>
-              <div class="col-lg-9">
-                <h4><strong>❓ 1:1 문의 상세정보</strong></h4>
-                <h6 class="checkout__title"></h6>
-                <form id="qna_update_form" enctype="multipart/form-data">
-                  <%-- 문의종류 --%>
+              <div class="col-lg-9 container mt-3">
+                <h4><strong>👀 최근 본 상품 </strong></h4>
+                <p style="color:lightgray"><br>최대 50개까지 저장됩니다.<br><br></p><hr>
+                  <c:forEach var="c" items="${views}">
                     <div class="row">
-                      <div class="form-group col-md-12">
-                        <div class="checkout__input">
-                          <label for="boardTitle">▪ 제목</label>
-                          <input type="text" placeholder="제목을 입력하세요." value="${board.boardTitle}" id="boardTitle"
-                            name="boardTitle">
-                          <input type="hidden" value="${sessionScope.cust.custId}" id="sessionId" name="custId">
-                          <input type="hidden" name="boardKey" value="${board.boardKey}" />
+                      <div class="col-md-2 img-box">
+                        <img src="<c:url value='/img/product/${c.item.itemImg1}'/>"/>
+                      </div>
+                      <div class="col-md-9">
+                        <h6>${c.item.itemName}</h6>
+                        <div class="product__price">
+                          <c:if test="${c.item.itemSprice > 0 and c.item.itemSprice < c.item.itemPrice}">
+                            <c:set var="discountRate" value="${100 - (c.item.itemSprice * 100 / c.item.itemPrice)}" />
+                              <div class="price-container">
+                                <span class="original-price" style="text-decoration: line-through;">
+                                  <fmt:formatNumber value="${c.item.itemPrice}" pattern="#,###" />원
+                                </span>
+                                <div class="sale-info">
+                                  <span class="sale-price">
+                                    <fmt:formatNumber value="${c.item.itemSprice}" pattern="#,###" />원
+                                  </span>
+                                  <span class="discount-badge">
+                                    <fmt:formatNumber value="${discountRate}" pattern="#" />%
+                                  </span>
+                                </div>
+                              </div>
+                          </c:if>
+                          <c:if test="${!(c.item.itemSprice > 0 and c.item.itemSprice < c.item.itemPrice)}">
+                            <div class="price-container">
+                              <span class="sale-price">
+                                <fmt:formatNumber value="${c.item.itemPrice}" pattern="#,###" />원
+                              </span>
+                            </div>
+                          </c:if>
                         </div>
                       </div>
-                    </div>
-                    <div class="row">
-                      <div class="form-group col-md-12">
-                        <div class="checkout__input">
-                          <label for="boardContent">▪ 내용</label><br />
-                          <textarea placeholder="문의내용을 작성하세요." id="boardContent"
-                            name="boardContent">${board.boardContent}</textarea>
-                        </div>
+                      <div class="col-md-1">
+                        <a href="#" onclick="recent_view.del(${c.viewKey})">
+                          <i id="view_del_icon" class="fa fa-close" style="color:black;"></i>
+                        </a>
                       </div>
                     </div>
-                    <c:if test="${not empty board.boardImg}">
-                      <div class="row">
-                        <div class="form-group col-md-6">
-                          <label>▪ 현재 이미지파일 </label>
-                          <img src="<c:url value='${board.boardImg}'/>" alt="현재 첨부파일">
-                        </div>
-                      </div>
-                    </c:if>
-                    <div class="row">
-                      <div class="form-group col-md-6">
-                        <label>▪ 이미지 첨부</label>
-                        <input type="file" class="form-control" name="img">
-                      </div>
-                    </div>
-                    <br />
-                </form>
-                <h6 id="msg"></h6>
-                <br />
-                <div class="checkout__order">
-                  <button class="site-btn" id="qna_update_btn">수정하기</button>
-                </div>
+                    <hr>
+                  </c:forEach>
               </div>
         </div>
       </div>
