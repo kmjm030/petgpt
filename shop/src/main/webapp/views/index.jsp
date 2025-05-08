@@ -46,8 +46,8 @@
             <div class="offcanvas-menu-wrapper">
                 <div class="offcanvas__option">
                     <div class="offcanvas__links">
-                        <a href="#">Sign in</a>
-                        <a href="#">FAQs</a>
+                        <a href="<c:url value=" /login" />">로그인</a>
+                        <a href="<c:url value=" /signup" />">회원가입</a>
                     </div>
                     <div class="offcanvas__top__hover">
                         <span>Usd <i class="arrow_carrot-down"></i></span>
@@ -66,7 +66,7 @@
                 </div>
                 <div id="mobile-menu-wrap"></div>
                 <div class="offcanvas__text">
-                    <p>Free shipping, 30-day return or refund guarantee.</p>
+                    <p>반려동물 용품 전문 쇼핑몰🐶🐱</p>
                 </div>
             </div>
             <!-- Offcanvas Menu End -->
@@ -303,6 +303,7 @@
             <!-- Js Plugins -->
             <script src="<c:url value='/js/jquery-3.3.1.min.js'/>"></script>
 
+            <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
             <script src="<c:url value='/js/bootstrap.min.js'/>"></script>
             <script src="<c:url value='/js/jquery.nice-select.min.js'/>"></script>
@@ -422,6 +423,9 @@
                 </c:when>
                 <c:when test="${viewName == 'qnaboard'}">
                     <script src="<c:url value='/js/qnaboard.js'/>"></script>
+                </c:when>
+                <c:when test="${viewName == 'recent_view'}">
+                    <script src="<c:url value='/js/recent_view.js'/>"></script>
                 </c:when>
                 <c:when test="${viewName == 'qnaboard_add'}">
                     <script src="<c:url value='/js/qnaboard_add.js'/>"></script>

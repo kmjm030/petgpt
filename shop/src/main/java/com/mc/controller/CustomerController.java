@@ -1,20 +1,18 @@
 package com.mc.controller;
 
-import com.mc.app.dto.Customer;
-import com.mc.app.dto.Item;
-import com.mc.app.dto.Like;
-import com.mc.app.dto.QnaBoard;
-import com.mc.app.service.CouponService;
-import com.mc.app.service.CustomerService;
-import com.mc.app.service.ItemService;
-import com.mc.app.service.LikeService;
+import com.google.api.Http;
+import com.mc.app.dto.*;
+import com.mc.app.service.*;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,8 +22,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -44,9 +44,44 @@ public class CustomerController {
     private final CustomerService custService;
     private final LikeService likeService;
     private final ItemService itemService;
+    private final RecentViewService viewService;
+
+    private void setDefaultProfileImage(Customer cust, HttpServletRequest request) {
+        if (cust.getCustImg() == null || cust.getCustImg().isEmpty()) {
+            String defaultImagePath = "/img/user/" + cust.getCustName() + ".png";
+
+            try {
+                String staticImagePath = request.getServletContext().getRealPath("/static" + defaultImagePath);
+                if (new java.io.File(staticImagePath).exists()) {
+                    cust.setCustImg(defaultImagePath);
+                    return;
+                }
+
+                java.net.URL resourceUrl = getClass().getResource("/static" + defaultImagePath);
+                if (resourceUrl != null) {
+                    cust.setCustImg(defaultImagePath);
+                    return;
+                }
+
+                String projectPath = System.getProperty("user.dir");
+                String resourcePath = projectPath + "/shop/src/main/resources/static" + defaultImagePath;
+                if (new java.io.File(resourcePath).exists()) {
+                    cust.setCustImg(defaultImagePath);
+                    return;
+                }
+
+                cust.setCustImg("/img/clients/profile.png");
+
+            } catch (Exception e) {
+                log.debug("기본 이미지 설정 중 오류 발생: {}", e.getMessage());
+                cust.setCustImg("/img/clients/profile.png");
+            }
+        }
+    }
 
     @GetMapping("")
-    public String mypage(Model model, @RequestParam("id") String id, HttpSession session) throws Exception {
+    public String mypage(Model model, @RequestParam("id") String id, HttpSession session, HttpServletRequest request)
+            throws Exception {
 
         // 세션에서 로그인된 사용자 확인
         Customer loggedInCustomer = (Customer) session.getAttribute("cust");
@@ -62,6 +97,10 @@ public class CustomerController {
         }
 
         Customer cust = custService.get(id);
+
+        // 프로필 이미지가 없는 경우 기본 이미지 설정
+        setDefaultProfileImage(cust, request);
+
         model.addAttribute("cust", cust);
         model.addAttribute("currentPage", "pages");
         model.addAttribute("pageTitle", "MyPage");
@@ -70,11 +109,12 @@ public class CustomerController {
         return "index";
     }
 
-    @RequestMapping("/updateimpl")
+    @PostMapping(value = "/updateimpl", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public String updateimpl(Model model, Customer cust,
             @RequestParam(value = "newPwd", required = false) String newPwd,
             @RequestParam("img") MultipartFile img,
-            @RequestParam(value = "imgDelete", required = false) String imgDelete) throws Exception {
+            @RequestParam(value = "imgDelete", required = false) String imgDelete,
+            HttpServletRequest request) throws Exception {
 
         // 1. DB에서 현재 사용자 정보 조회
         Customer dbCust = custService.get(cust.getCustId());
@@ -91,100 +131,94 @@ public class CustomerController {
         if (!isKakaoUser) {
 
             if (cust.getCustPwd() == null || cust.getCustPwd().isEmpty()) {
-
                 model.addAttribute("msg", "수정을 위해서는 현재 비밀번호를 입력해야 합니다.");
-                return "redirect:/mypage?id=" + dbCust.getCustId();
+                model.addAttribute("currentPage", "pages");
+                model.addAttribute("pageTitle", "마이페이지");
+                model.addAttribute("viewName", "mypage");
+                model.addAttribute("centerPage", "pages/mypage/mypage.jsp");
+                return "index";
+            }
 
-            } else if (!dbCust.getCustPwd().equals(cust.getCustPwd())) {
-
+            // 현재 비밀번호 확인
+            if (!dbCust.getCustPwd().equals(cust.getCustPwd())) {
                 model.addAttribute("msg", "현재 비밀번호가 일치하지 않습니다.");
-                return "redirect:/mypage?id=" + dbCust.getCustId();
+                model.addAttribute("currentPage", "pages");
+                model.addAttribute("pageTitle", "마이페이지");
+                model.addAttribute("viewName", "mypage");
+                model.addAttribute("centerPage", "pages/mypage/mypage.jsp");
+                return "index";
             }
 
-            if (newPwd != null && !newPwd.trim().isEmpty()) {
+            // 새 비밀번호 처리
+            if (newPwd != null && !newPwd.isEmpty()) {
+                cust.setCustPwd(newPwd);
+            } else {
+                cust.setCustPwd(dbCust.getCustPwd());
+            }
+        } else {
+            // 카카오 사용자는 기존 비밀번호를 유지
+            cust.setCustPwd(dbCust.getCustPwd());
+        }
 
-                dbCust.setCustPwd(newPwd);
+        // 4. 이미지 처리
+        if ("true".equals(imgDelete)) {
+            // 이미지 삭제 요청이 있는 경우
+            cust.setCustImg(null);
+            // 이미지를 삭제했을 경우 기본 이미지로 사용자 이름 기반 이미지 설정
+            setDefaultProfileImage(cust, request);
+        } else if (!img.isEmpty()) {
+            // 새 이미지 업로드가 있는 경우
+            String originalFilename = img.getOriginalFilename();
+            String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
+            String newFilename = cust.getCustId() + "_" + System.currentTimeMillis() + fileExtension;
+            String filePath = uploadDirectory + "/cust/" + newFilename;
+            String fileUrl = uploadUrlPrefix + "/cust/" + newFilename;
+
+            // 파일 저장
+            try {
+                Path uploadPath = Paths.get("C:", "petshop", "uploads", "images", "cust");
+                if (!Files.exists(uploadPath)) {
+                    Files.createDirectories(uploadPath);
+                }
+                java.nio.file.Files.copy(img.getInputStream(), java.nio.file.Paths.get(filePath),
+                        java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+                cust.setCustImg(fileUrl);
+            } catch (Exception e) {
+                log.error("이미지 저장 중 오류 발생: " + e.getMessage(), e);
+                model.addAttribute("msg", "이미지 저장 중 오류가 발생했습니다.");
+                model.addAttribute("currentPage", "pages");
+                model.addAttribute("pageTitle", "마이페이지");
+                model.addAttribute("viewName", "mypage");
+                model.addAttribute("centerPage", "pages/mypage/mypage.jsp");
+                return "index";
+            }
+        } else {
+            // 이미지 변경이 없는 경우 기존 이미지 유지
+            cust.setCustImg(dbCust.getCustImg());
+            // 만약 기존 이미지가 없다면 기본 이미지 설정
+            if (cust.getCustImg() == null || cust.getCustImg().isEmpty()) {
+                setDefaultProfileImage(cust, request);
             }
         }
 
-        // 4. 이미지 처리 (모든 사용자 공통)
-        try {
-            // 기존 게시글을 불러와서 기존 이미지 경로를 알아냄
-            String oldImgPath = dbCust.getCustImg();
+        // 5. 나머지 필드 처리
+        cust.setCustRdate(dbCust.getCustRdate());
+        cust.setCustPoint(dbCust.getCustPoint());
+        cust.setPointCharge(dbCust.getPointCharge());
+        cust.setPointReason(dbCust.getPointReason());
+        cust.setCustAuth(dbCust.getCustAuth());
 
-            // 4-1. 새 이미지 파일이 업로드된 경우
-            if (img != null && !img.isEmpty()) {
+        custService.mod(cust);
 
-                // 기존 이미지 삭제
-                if (oldImgPath != null && !oldImgPath.isEmpty()) {
-
-                    try {
-                        String relativePath = oldImgPath.replace(uploadUrlPrefix, "");
-                        Path oldFilePath = Paths.get(uploadDirectory, relativePath);
-                        Files.deleteIfExists(oldFilePath);
-                        log.info("기존 이미지 삭제됨: {}", oldFilePath);
-
-                    } catch (Exception e) {
-                        log.error("기존 이미지 파일 삭제 실패: {}", oldImgPath, e);
-                    }
-                }
-
-                // 새 이미지 저장
-                String dateFolder = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
-                String originalFilename = img.getOriginalFilename();
-                String fileExtension = extractExtension(originalFilename);
-                String storedFileName = UUID.randomUUID().toString() + fileExtension;
-                Path targetDirectory = Paths.get(uploadDirectory, dateFolder);
-                Path targetLocation = targetDirectory.resolve(storedFileName);
-
-                Files.createDirectories(targetDirectory);
-                Files.copy(img.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
-
-                String webAccessiblePath = uploadUrlPrefix + "/" + dateFolder + "/" + storedFileName;
-                dbCust.setCustImg(webAccessiblePath);
-
-            }
-            // 4-2. 이미지 삭제 플래그가 true인 경우 (새 이미지 업로드는 없음)
-            else if ("true".equals(imgDelete)) {
-
-                // 기존 이미지 파일 삭제
-                if (oldImgPath != null && !oldImgPath.isEmpty()) {
-
-                    try {
-                        String relativePath = oldImgPath.replace(uploadUrlPrefix, "");
-                        Path oldFilePath = Paths.get(uploadDirectory, relativePath);
-                        Files.deleteIfExists(oldFilePath);
-                        log.info("요청에 의해 기존 이미지 삭제됨: {}", oldFilePath);
-
-                    } catch (Exception e) {
-                        log.error("기존 이미지 파일 삭제 실패 (삭제 요청): {}", oldImgPath, e);
-                    }
-                }
-                dbCust.setCustImg(null);
-            }
-
-            // 5. 기타 정보 업데이트 (Form에서 받은 정보로 DB 객체 업데이트)
-            dbCust.setCustNick(cust.getCustNick());
-            dbCust.setCustPhone(cust.getCustPhone());
-            dbCust.setCustEmail(cust.getCustEmail());
-
-            // 6. DB에 최종 업데이트 수행
-            custService.mod(dbCust);
-
-        } catch (Exception e) {
-            log.error("회원 정보 수정 중 오류 발생 (custId: {}): {}", dbCust.getCustId(), e.getMessage(), e);
-            model.addAttribute("msg", "정보 수정 중 오류가 발생했습니다.");
-            // 에러 발생 시 다시 마이페이지로 리다이렉트 (메시지 전달은 RedirectAttributes 필요)
-            return "redirect:/mypage?id=" + dbCust.getCustId();
-        }
-
-        // 7. 성공 시 마이페이지로 리다이렉트
-        return "redirect:/mypage?id=" + dbCust.getCustId();
+        return "redirect:/mypage?id=" + cust.getCustId();
     }
 
     @RequestMapping("/like")
     public String like(Model model, @RequestParam("id") String id) throws Exception {
 
+        LocalDateTime oneYearAgo = LocalDateTime.now().minusYears(1);
+        Date date = Date.from(oneYearAgo.atZone(ZoneId.systemDefault()).toInstant());
+        likeService.deleteOlderThan(date);
         List<Like> likes = likeService.getLikesByCustomer(id);
         List<Item> items = new ArrayList<>();
         for (Like like : likes) {
@@ -205,6 +239,33 @@ public class CustomerController {
             @RequestParam("id") String custId) throws Exception {
         likeService.deleteForMypage(custId, itemKey);
         return "redirect:/mypage/like?id=" + custId;
+    }
+
+    @RequestMapping("/view")
+    public String view(Model model, @RequestParam("id") String id) throws Exception {
+
+        List<RecentView> views = viewService.findAllByCustomer(id);
+        views.sort((v1, v2) -> v2.getViewDate().compareTo(v1.getViewDate()));
+
+        for (RecentView view : views) {
+            Item item = itemService.get(view.getItemKey());
+            view.setItem(item);
+        }
+
+        model.addAttribute("views", views);
+        model.addAttribute("currentPage", "pages");
+        model.addAttribute("pageTitle", "Recent View Page");
+        model.addAttribute("viewName", "recent_view");
+        model.addAttribute("centerPage", "pages/mypage/recent_view.jsp");
+        return "index";
+    }
+
+    @RequestMapping("/viewdelimpl")
+    public String viewdelimpl(Model model, @RequestParam("viewKey") int viewKey, HttpSession session) throws Exception {
+        viewService.del(viewKey);
+        Customer loggedInCustomer = (Customer) session.getAttribute("cust");
+        String custId = loggedInCustomer.getCustId();
+        return "redirect:/mypage/view?id=" + custId;
     }
 
     private String extractExtension(String fileName) {

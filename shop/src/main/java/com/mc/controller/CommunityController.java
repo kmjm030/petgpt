@@ -106,6 +106,7 @@ public class CommunityController {
                         Map<String, Object> viewMap = new HashMap<>();
                         viewMap.put("commentsKey", comment.getCommentsKey());
                         viewMap.put("custId", comment.getCustId());
+                        viewMap.put("custName", comment.getCustName());
                         viewMap.put("commentsContent", comment.getCommentsContent());
                         viewMap.put("custProfileImgUrl", comment.getCustProfileImgUrl());
                         viewMap.put("likeCount", comment.getLikeCount());

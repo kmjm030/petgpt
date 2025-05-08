@@ -19,6 +19,7 @@ public class Comments {
     private LocalDateTime commentsUpdate;
 
     private String custId;
+    private String custName;
     private String custProfileImgUrl;
     private int likeCount;
     private boolean likedByCurrentUser;

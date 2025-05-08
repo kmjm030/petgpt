@@ -5,8 +5,11 @@ import com.mc.app.frame.MCService;
 import com.mc.app.repository.LikeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -99,6 +102,10 @@ public class LikeService implements MCService<Like, Integer> {
             log.error("찜 목록 조회 중 오류 발생: {}", e.getMessage(), e);
             return List.of();
         }
+    }
+
+    public void deleteOlderThan(Date date) throws Exception {
+        likeRepository.deleteOlderThan(date);
     }
     
     public int getLikeCount(String custId) {

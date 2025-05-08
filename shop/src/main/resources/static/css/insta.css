@@ -1,0 +1,466 @@
+/* 기본 리셋 및 폰트 설정 */
+body,
+h1,
+h2,
+h3,
+p,
+ul,
+li,
+input,
+button {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    color: #262626;
+    /* 기본 텍스트 색상 */
+}
+
+body {
+    background-color: #fafafa;
+    /* 인스타그램 배경색 */
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.container {
+    max-width: 975px;
+    /* 데스크탑 기준 콘텐츠 최대 너비 */
+    margin: 0 auto;
+    padding: 0 20px;
+    /* 좌우 여백 */
+}
+
+/* --- Header --- */
+header {
+    background-color: #fff;
+    border-bottom: 1px solid #dbdbdb;
+    padding: 10px 0;
+    position: sticky;
+    /* 스크롤 시 상단 고정 */
+    top: 0;
+    z-index: 100;
+}
+
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header .logo {
+    height: 29px;
+    /* 인스타그램 로고 높이 */
+}
+
+.search-bar input {
+    background-color: #efefef;
+    border: none;
+    border-radius: 8px;
+    padding: 9px 16px;
+    width: 268px;
+    /* 검색창 너비 */
+    font-size: 16px;
+}
+
+.search-bar input::placeholder {
+    text-align: center;
+    color: #8e8e8e;
+}
+
+.nav-icons a {
+    margin-left: 22px;
+    /* 아이콘 간 간격 */
+    font-size: 22px;
+    /* 아이콘 크기 */
+    color: #262626;
+}
+
+.nav-icons .profile-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    object-fit: cover;
+    vertical-align: middle;
+    /* 아이콘과 정렬 */
+}
+
+
+/* --- Main Content --- */
+main .container {
+    display: flex;
+    /* 피드와 사이드바를 위한 flex 레이아웃 */
+    padding-top: 30px;
+    /* 헤더와의 간격 */
+}
+
+.content-area {
+    flex-grow: 1;
+    /* 남은 공간을 모두 차지 */
+    max-width: 614px;
+    /* 피드 최대 너비 */
+    margin-right: 28px;
+    /* 사이드바와의 간격 (데스크탑) */
+}
+
+/* --- Stories --- */
+.stories {
+    display: flex;
+    background-color: #fff;
+    border: 1px solid #dbdbdb;
+    border-radius: 8px;
+    padding: 16px 0;
+    /* 위아래 패딩 */
+    overflow-x: auto;
+    /* 가로 스크롤 */
+    margin-bottom: 24px;
+    /* 피드와의 간격 */
+}
+
+.stories::-webkit-scrollbar {
+    /* 스크롤바 숨기기 (선택) */
+    display: none;
+}
+
+.story {
+    text-align: center;
+    margin: 0 8px;
+    /* 스토리 간 간격 */
+    width: 80px;
+    /* 스토리 아이템 너비 고정 */
+}
+
+.story img {
+    width: 66px;
+    /* 프로필 이미지 크기 */
+    height: 66px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    /* 그라데이션 테두리 준비 */
+    background-image: linear-gradient(white, white),
+        radial-gradient(circle at top left, #feda75, #fa7e1e, #d62976, #962fbf, #4f5bd5);
+    background-origin: border-box;
+    background-clip: content-box, border-box;
+    padding: 2px;
+    /* 테두리 효과를 위한 패딩 */
+    object-fit: cover;
+    cursor: pointer;
+}
+
+.story span {
+    display: block;
+    font-size: 12px;
+    color: #262626;
+    margin-top: 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+/* --- Feed & Post --- */
+.feed {
+    /* 피드는 게시물들의 컨테이너 역할 */
+}
+
+.post {
+    background-color: #fff;
+    border: 1px solid #dbdbdb;
+    border-radius: 8px;
+    margin-bottom: 24px;
+    /* 게시물 간 간격 */
+}
+
+.post-header {
+    display: flex;
+    align-items: center;
+    padding: 14px 16px;
+}
+
+.post-profile-pic {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    margin-right: 12px;
+    object-fit: cover;
+}
+
+.post-username {
+    font-weight: 600;
+    font-size: 14px;
+    margin-right: auto;
+    /* 옵션 버튼을 오른쪽 끝으로 밀기 */
+}
+
+.options-button {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.post-image img {
+    width: 100%;
+    display: block;
+    /* 이미지 아래 여백 제거 */
+    max-height: 700px;
+    /* 이미지 최대 높이 (선택) */
+    object-fit: cover;
+}
+
+.post-actions {
+    padding: 8px 16px 0;
+}
+
+.post-actions button {
+    font-size: 24px;
+    /* 아이콘 크기 */
+    margin-right: 16px;
+}
+
+.post-actions button:last-child {
+    margin-right: 0;
+}
+
+.post-actions .bookmark-button {
+    float: right;
+    /* 북마크 아이콘 오른쪽으로 */
+}
+
+.post-likes {
+    padding: 0 16px;
+    font-size: 14px;
+    font-weight: 600;
+    margin-top: 8px;
+}
+
+.post-caption {
+    padding: 8px 16px;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.post-caption .post-username {
+    /* 캡션 내 유저이름 재정의 */
+    margin-right: 5px;
+}
+
+
+.post-comments-link {
+    padding: 0 16px 8px;
+    font-size: 14px;
+    color: #8e8e8e;
+    cursor: pointer;
+}
+
+.post-timestamp {
+    padding: 0 16px 10px;
+    font-size: 10px;
+    color: #8e8e8e;
+    text-transform: uppercase;
+}
+
+.add-comment {
+    display: flex;
+    padding: 10px 16px;
+    border-top: 1px solid #efefef;
+    align-items: center;
+}
+
+.add-comment input {
+    flex-grow: 1;
+    border: none;
+    outline: none;
+    font-size: 14px;
+}
+
+.add-comment input::placeholder {
+    color: #8e8e8e;
+}
+
+.add-comment button {
+    color: #0095f6;
+    font-weight: 600;
+    font-size: 14px;
+    opacity: 0.3;
+    /* 내용 없을 때 흐리게 */
+}
+
+/* .add-comment input:not(:placeholder-shown) + button {
+    opacity: 1;
+} 내용 입력 시 진하게 (JS로 제어하는 것이 더 정확) */
+
+
+/* --- Sidebar (데스크탑 뷰) --- */
+.sidebar {
+    width: 293px;
+    /* 사이드바 너비 고정 */
+    font-size: 14px;
+    /* 기본적으로는 숨겨져 있다가 특정 너비 이상에서 보이도록 설정 가능 */
+}
+
+.sidebar-user {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    padding-top: 16px;
+    /* 포스트 헤더와 시각적 정렬 */
+}
+
+.sidebar-user img {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    margin-right: 12px;
+    object-fit: cover;
+}
+
+.sidebar-user .username {
+    font-weight: 600;
+}
+
+.sidebar-user .fullname {
+    color: #8e8e8e;
+    font-size: 14px;
+}
+
+.sidebar-user button {
+    margin-left: auto;
+    color: #0095f6;
+    font-weight: 600;
+    font-size: 12px;
+}
+
+.suggestions-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #8e8e8e;
+    font-weight: 600;
+    margin: 16px 0 8px;
+}
+
+.suggestions-header a {
+    color: #262626;
+    font-weight: 600;
+    font-size: 12px;
+}
+
+.suggestion-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.suggestion-item img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    margin-right: 12px;
+    object-fit: cover;
+}
+
+.suggestion-item .username {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.suggestion-item .subtext {
+    color: #8e8e8e;
+    font-size: 12px;
+}
+
+.suggestion-item button {
+    margin-left: auto;
+    color: #0095f6;
+    font-weight: 600;
+    font-size: 12px;
+}
+
+.sidebar-footer {
+    margin-top: 30px;
+    font-size: 12px;
+    color: #c7c7c7;
+}
+
+.sidebar-footer a {
+    color: #c7c7c7;
+}
+
+.sidebar-footer p {
+    margin-top: 18px;
+}
+
+
+/* --- 반응형 디자인 (Mobile first or Desktop first) --- */
+/* 예시: 화면이 작아지면 사이드바 숨기기 및 레이아웃 변경 */
+@media (max-width: 992px) {
+
+    /* 태블릿 및 모바일 */
+    .sidebar {
+        display: none;
+        /* 사이드바 숨김 */
+    }
+
+    .content-area {
+        margin-right: 0;
+        /* 사이드바 없으니 간격 제거 */
+        max-width: 100%;
+        /* 피드가 전체 너비 사용 */
+    }
+
+    header .search-bar {
+        display: none;
+        /* 모바일에선 검색창 숨김 (보통 아이콘으로 대체) */
+    }
+}
+
+@media (max-width: 650px) {
+
+    /* 더 작은 모바일 */
+    .container {
+        padding: 0;
+        /* 모바일에서 좌우 여백 제거 */
+    }
+
+    .post,
+    .stories {
+        border-radius: 0;
+        /* 모바일에서 카드 테두리 둥글게 안함 */
+        border-left: none;
+        border-right: none;
+    }
+
+    header .nav-icons a:not(:last-child):not(:first-child) {
+        /* 모바일에서 일부 아이콘 숨기기 (실제 인스타는 하단 탭바로 이동) */
+        /* display: none; */
+    }
+
+    main .container {
+        padding-top: 0;
+        /* 헤더와의 간격 조정 (모바일에서는 딱 붙는 경우가 많음) */
+    }
+
+    .stories {
+        margin-bottom: 0;
+        /* 모바일에서는 스토리와 피드 사이 간격 제거 */
+    }
+
+    .post {
+        margin-bottom: 0;
+        /* 마지막 게시물 아래 여백 제거 */
+    }
+
+    .post-actions button i.fas.fa-heart {
+        /* 꽉찬 하트 빨갛게 */
+        color: red;
+    }
+}

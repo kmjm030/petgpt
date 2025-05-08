@@ -57,19 +57,46 @@
                       <div class="accordion" id="accordionExample">
                         <div class="card">
                           <div class="card-heading">
-                            <a data-toggle="collapse" data-target="#collapseOne">마이페이지</a>
+                            <a data-toggle="collapse">나의 정보</a>
                           </div>
                           <div id="collapseOne" class="collapse show" data-parent="#accordionExample">
                             <div class="card-body">
                               <div class="shop__sidebar__categories">
-                                <ul>
+                                <ul style="height:auto;">
                                   <li><a href="<c:url value='/mypage?id=${cust.custId}'/>"><strong
                                         id="category">회원정보</strong></a></li>
                                   <li><a href="<c:url value='/pet?id=#${cust.custId}'/>">나의 펫 정보</a></li>
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="card">
+                          <div class="card-heading">
+                            <a data-toggle="collapse">나의 쇼핑 정보</a>
+                          </div>
+                          <div id="collapseTwo" class="collapse show" data-parent="#accordionExample">
+                            <div class="card-body">
+                              <div class="shop__sidebar__categories">
+                                <ul style="height: auto;">
                                   <li><a href="<c:url value='/checkout/orderlist?id=${cust.custId}'/>">주문내역</a></li>
                                   <li><a href="<c:url value='/address?id=${cust.custId}'/>">배송지 목록</a></li>
-                                  <li><a href="<c:url value='/mypage/like?id=${cust.custId}'/>">찜 목록</a></li>
                                   <li><a href="<c:url value='/coupon?id=${cust.custId}'/>">보유 쿠폰</a></li>
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="card">
+                          <div class="card-heading">
+                            <a data-toggle="collapse">나의 활동</a>
+                          </div>
+                          <div id="collapseThree" class="collapse show" data-parent="#accordionExample">
+                            <div class="card-body">
+                              <div class="shop__sidebar__categories">
+                                <ul style="height:auto;">
+                                  <li><a href="<c:url value='/mypage/view?id=${cust.custId}'/>">최근 본 상품</a></li>
+                                  <li><a href="<c:url value='/mypage/like?id=${cust.custId}'/>">찜 목록</a></li>
                                   <li><a href="<c:url value='/qnaboard?id=${cust.custId}'/>">1:1문의</a></li>
                                   <li><a href="<c:url value='/review?id=${cust.custId}'/>">내가 작성한 리뷰</a></li>
                                 </ul>
@@ -83,10 +110,12 @@
                       </div>
                     </div>
                   </div>
+
                 </div>
                 <%-- 회원 정보 --%>
                   <div class="col-lg-9">
-                    <h6 class="checkout__title">📌 회원 정보 조회</h6>
+                    <h4><strong>📌 회원 정보 조회</strong></h4>
+                    <h6 class="checkout__title"></h6>
                     <form id="cust_update_form" enctype="multipart/form-data">
                       <div class="row">
                         <div class="form-group col-md-12" style="text-align:center; margin:10px;">
@@ -96,7 +125,8 @@
                                 width="200">
                             </c:when>
                             <c:otherwise>
-                              <img id="profile-img" src="<c:url value='/img/clients/profile.png'/>" />
+                              <img id="profile-img" src="<c:url value='/img/user/${cust.custName}.png'/>"
+                                onerror="this.onerror=null; this.src='<c:url value='/img/clients/profile.png'/>'" />
                             </c:otherwise>
                           </c:choose>
                           <br /><br />

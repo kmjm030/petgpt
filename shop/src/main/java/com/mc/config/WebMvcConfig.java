@@ -69,5 +69,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
                 registry.addResourceHandler("/community/vendor/**")
                                 .addResourceLocations("classpath:/static/vendor/");
+
+                // HTML 파일에 대한 리소스 매핑 추가 (views 디렉토리)
+                registry.addResourceHandler("/views/**")
+                                .addResourceLocations("/views/");
         }
 }

@@ -1,4 +1,3 @@
-
 $(function () {
 
     let hotDealCountdownInterval = null;
@@ -81,19 +80,49 @@ $(function () {
     }
 
     function createProductItemHtml(item) {
-        const priceHtml = '<h5>' + item.itemPrice.toLocaleString() + '원</h5>';
+        const isSale = (item.itemSprice != null && item.itemSprice >= 0 && item.itemSprice < item.itemPrice);
+        const discountRate = isSale ? Math.round((1 - item.itemSprice / item.itemPrice) * 100) : 0;
+
+        let priceHtml = '';
+        if (isSale) {
+            priceHtml = '<div class="price-container">' +
+                '<span class="original-price">' + item.itemPrice.toLocaleString() + '원</span>' +
+                '<div class="sale-info">' +
+                '<span class="sale-price">' + item.itemSprice.toLocaleString() + '원</span>' +
+                '<span class="discount-badge">' + discountRate + '%</span>' +
+                '</div>' +
+                '</div>';
+        } else {
+            priceHtml = '<div class="price-container">' +
+                '<span class="sale-price">' + item.itemPrice.toLocaleString() + '원</span>' +
+                '</div>';
+        }
 
         const imgUrl = contextPath + '/img/product/' + (item.itemImg1 || 'default-placeholder.png');
         const detailUrl = contextPath + '/shop/details?itemKey=' + item.itemKey;
 
-        const isSale = (item.itemSprice != null && item.itemSprice >= 0 && item.itemSprice < item.itemPrice);
-        const saleLabelHtml = isSale ? '<span class="label sale">Sale</span>' : '';
+        // 별점 HTML 생성
+        const avgScore = item.avgScore || 0;
+        const reviewCount = item.reviewCount || 0;
+        let ratingHtml = '<div class="rating">';
+
+        // 별점 표시 (1-5)
+        for (let i = 1; i <= 5; i++) {
+            if (i <= avgScore) {
+                ratingHtml += '<i class="fa fa-star"></i>';
+            } else if (i <= avgScore + 0.5 && i > avgScore) {
+                ratingHtml += '<i class="fa fa-star-half-o"></i>';
+            } else {
+                ratingHtml += '<i class="fa fa-star-o"></i>';
+            }
+        }
+
+        ratingHtml += '<span class="review-count">(' + reviewCount + ')</span></div>';
 
         return (
             '<div class="col-lg-4 col-md-6 col-sm-6">' +
             '    <div class="product__item">' +
             '        <div class="product__item__pic set-bg" data-setbg="' + imgUrl + '">' +
-            saleLabelHtml +
             '            <ul class="product__hover">' +
             '                <li><a href="#" class="like-button" data-item-key="' + item.itemKey + '"><i class="fa fa-heart icon"></i></a></li>' +
             '                <li><a href="' + detailUrl + '" class="detail-button"><i class="fa fa-search icon"></i></a></li>' +
@@ -102,13 +131,7 @@ $(function () {
             '        <div class="product__item__text">' +
             '            <h6>' + item.itemName + '</h6>' +
             '            <a href="#" class="add-cart" onclick="shop.addToCart(' + item.itemKey + '); return false;">+ Add To Cart</a>' +
-            '            <div class="rating">' +
-            '                <i class="fa fa-star-o"></i>' +
-            '                <i class="fa fa-star-o"></i>' +
-            '                <i class="fa fa-star-o"></i>' +
-            '                <i class="fa fa-star-o"></i>' +
-            '                <i class="fa fa-star-o"></i>' +
-            '            </div>' +
+            ratingHtml +
             priceHtml +
             '        </div>' +
             '    </div>' +

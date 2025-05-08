@@ -46,6 +46,10 @@ public class SecurityConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**,/chbot", configuration);
 
+        // X-Frame-Options 설정 변경 (iframe 허용)
+        http.headers(headers -> headers
+                .frameOptions(frameOptions -> frameOptions.sameOrigin()));
+
         // 권한 규칙 작성
         http.authorizeHttpRequests(authorize -> authorize
                 // 정적 리소스 경로 명시적 허용
@@ -54,6 +58,7 @@ public class SecurityConfig {
                         new AntPathRequestMatcher("/js/**"),
                         new AntPathRequestMatcher("/img/**"),
                         new AntPathRequestMatcher("/fonts/**"),
+                        new AntPathRequestMatcher("/views/**"),
                         new AntPathRequestMatcher("/favicon.ico"),
                         new AntPathRequestMatcher("/uploads/images/**"))
                 .permitAll()

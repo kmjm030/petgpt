@@ -13,11 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @Slf4j
@@ -31,6 +27,7 @@ public class ShopController {
     private final CustomerService custService;
     private final AdminCommentsService adminCommentsService;
     private final HotDealService hotDealService;
+    private final RecentViewService viewService;
 
     @GetMapping("")
     public String shop(
@@ -75,6 +72,30 @@ public class ShopController {
 
             List<Item> items = shopService.findItemsByFilterWithPagination(filterCriteria, page, itemsPerPage);
 
+            // 각 아이템의 평균 별점과 리뷰 개수 계산
+            for (Item item : items) {
+                try {
+                    List<QnaBoard> reviews = qnaService.findReviewByItem(item.getItemKey());
+                    int reviewCount = reviews.size();
+
+                    // 평균 별점 계산
+                    double totalScore = 0;
+                    for (QnaBoard review : reviews) {
+                        totalScore += review.getBoardScore();
+                    }
+
+                    double avgScore = reviewCount > 0 ? Math.round((totalScore / reviewCount) * 10) / 10.0 : 0;
+
+                    // Item 객체에 평균 별점과 리뷰 개수 저장
+                    item.setAvgScore(avgScore);
+                    item.setReviewCount(reviewCount);
+                } catch (Exception e) {
+                    log.error("상품 평점 및 리뷰 개수 계산 중 오류 발생: {}", e.getMessage());
+                    item.setAvgScore(0.0);
+                    item.setReviewCount(0);
+                }
+            }
+
             model.addAttribute("itemList", items);
             model.addAttribute("currentPage", page);
             model.addAttribute("totalPages", totalPages);
@@ -112,6 +133,7 @@ public class ShopController {
 
     @GetMapping("/details")
     public String shopDetails(@RequestParam("itemKey") int itemKey, Model model, HttpSession session) throws Exception {
+
         try {
 
             Customer customer = (Customer) session.getAttribute("cust");
@@ -119,6 +141,22 @@ public class ShopController {
             if (customer != null) {
                 model.addAttribute("isLoggedIn", true);
                 model.addAttribute("custId", customer.getCustId());
+
+                RecentView existingView = viewService.findByCustAndItem(customer.getCustId(), itemKey);
+                if (existingView != null) {
+                    viewService.del(existingView.getViewKey());
+                }
+                RecentView view = RecentView.builder().custId(customer.getCustId()).itemKey(itemKey).build();
+                viewService.add(view);
+
+                // 최대 50개까지만 저장하도록
+                List<RecentView> allViews = viewService.findAllByCustomer(customer.getCustId());
+                if (allViews.size() > 50) {
+                    allViews.sort(Comparator.comparing(RecentView::getViewDate));
+                    for (int i = 50; i < allViews.size(); i++) {
+                        viewService.del(allViews.get(i).getViewKey());
+                    }
+                }
 
                 boolean isLiked = likeService.isLiked(customer.getCustId(), itemKey);
                 model.addAttribute("isLiked", isLiked);

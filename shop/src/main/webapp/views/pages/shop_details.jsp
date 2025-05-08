@@ -155,7 +155,8 @@
                                                                                 margin-right: 20px;">
                                                                             </c:when>
                                                                             <c:otherwise>
-                                                                                <img src="<c:url value='/img/clients/profile.png'/>"
+                                                                                <img src="<c:url value='/img/user/${c.customer.custName}.png'/>"
+                                                                                    onerror="this.onerror=null; this.src='<c:url value='/img/clients/profile.png'/>'"
                                                                                     class="rounded-circle me-3"
                                                                                     alt="user"
                                                                                     style="width:60px; height:60px; object-fit:cover; margin-right: 20px;" />
