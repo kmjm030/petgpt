@@ -22,6 +22,17 @@
       <textarea id="content" name="content" required>${notice.content}</textarea>
     </div>
 
+    <!-- 비교 버튼 추가 -->
+    <button type="button" class="compare-btn" id="compareBtn">수정 전/후 비교</button>
+
+    <!-- 수정 전/후 비교 영역 -->
+    <div id="compareSection" class="compare-section" style="display:none;">
+      <h3>수정 전 내용</h3>
+      <div class="compare-box" id="originalContent">${notice.content}</div>
+      <h3>수정 후 내용</h3>
+      <div class="compare-box" id="newContent"></div>
+    </div>
+
     <div class="form-actions">
       <button type="submit" class="submit-btn">수정 완료</button>
       <!-- 삭제 버튼 수정 -->
@@ -52,7 +63,7 @@
 <!-- ✅ CKEditor CDN -->
 <script src="https://cdn.ckeditor.com/4.20.1/standard/ckeditor.js"></script>
 
-<!-- ✅ JavaScript (글자수 카운터 및 CKEditor) -->
+<!-- ✅ JavaScript (글자수 카운터, CKEditor, 비교기능) -->
 <script src="/js/admin.js"></script>
 
 <script>
@@ -75,6 +86,19 @@
       titleInput.addEventListener('input', updateCount);
       updateCount(); // 초기 표시
     }
+
+    // 수정 전/후 내용 비교 기능
+    var compareBtn = document.getElementById('compareBtn');
+    var compareSection = document.getElementById('compareSection');
+    var newContentBox = document.getElementById('newContent');
+
+    compareBtn.addEventListener('click', function() {
+      // 수정 후 내용을 비교 영역에 추가 (HTML 내용도 제대로 렌더링)
+      newContentBox.innerHTML = CKEDITOR.instances.content.getData(); // CKEditor로 입력된 HTML 내용 가져오기
+
+      // 비교 영역 토글
+      compareSection.style.display = compareSection.style.display === 'none' ? 'block' : 'none';
+    });
   });
 
   // 삭제 확인 절차
