@@ -76,17 +76,18 @@ public class AdminNoticeController {
         return "redirect:/admin/notice/get";
     }
 
-    @PostMapping("/editimpl")
-    public String editImpl(@ModelAttribute AdminNotice notice, HttpSession session) {
-        try {
-            Admin admin = (Admin) session.getAttribute("admin");
-            if (admin != null) {
-                notice.setAdminId(admin.getAdminId());
-            }
-            adminNoticeService.editNotice(notice);
-        } catch (Exception e) {
-            log.error("공지 수정 실패: {}", e.getMessage());
-        }
-        return "redirect:/admin/notice/detail?id=" + notice.getId();
+  @PostMapping("/editimpl")
+  public String editImpl(@ModelAttribute AdminNotice notice, HttpSession session, RedirectAttributes redirectAttributes) {
+    try {
+      Admin admin = (Admin) session.getAttribute("admin");
+      if (admin != null) {
+        notice.setAdminId(admin.getAdminId());
+      }
+      adminNoticeService.editNotice(notice);
+      redirectAttributes.addFlashAttribute("success", true);  // 수정 성공 플래그 추가
+    } catch (Exception e) {
+      log.error("공지 수정 실패: {}", e.getMessage());
     }
+    return "redirect:/admin/notice/detail?id=" + notice.getId();  // 수정 후 상세 페이지로 리다이렉트
+  }
 }
