@@ -24,11 +24,8 @@
 
     <div class="form-actions">
       <button type="submit" class="submit-btn">수정 완료</button>
-      <a href="<c:url value='/admin/notice/delete?id=${notice.id}'/>"
-         class="delete-btn"
-         onclick="return confirm('정말 삭제하시겠습니까?');">
-        삭제
-      </a>
+      <!-- 삭제 버튼 수정 -->
+      <button type="button" class="delete-btn" onclick="confirmDelete()">삭제</button>
     </div>
 
     <a href="<c:url value='/admin/notice/get'/>" class="back-link">← 목록으로</a>
@@ -79,4 +76,14 @@
       updateCount(); // 초기 표시
     }
   });
+
+  // 삭제 확인 절차
+  function confirmDelete() {
+    var confirmation = prompt("삭제를 진행하려면 '삭제'라고 입력하세요:");
+    if (confirmation === '삭제') {
+      window.location.href = "<c:url value='/admin/notice/delete?id=${notice.id}'/>";
+    } else {
+      alert("삭제가 취소되었습니다.");
+    }
+  }
 </script>
