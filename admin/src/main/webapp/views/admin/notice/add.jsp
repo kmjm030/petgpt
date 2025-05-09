@@ -25,4 +25,7 @@
         <textarea id="content" name="content" required></textarea>
     </div>
 
-    <button type="submit" class="submit-btn">등록</button>
+  <button type="submit" class="submit-btn">등록</button>
+  <button type="button" class="cancel-btn" onclick="window.location.href='/admin/notice/get'">취소</button>
+  <button type="reset" class="reset-btn">초기화</button>
+</form>
