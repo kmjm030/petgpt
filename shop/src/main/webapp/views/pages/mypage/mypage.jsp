@@ -101,8 +101,8 @@
                                   <li><a href="<c:url value='/review?id=${cust.custId}'/>">내가 작성한 리뷰</a></li>
                                 </ul>
                                 <br /><br />
-                                <button class="site-btn" id="logout_btn"><a href="<c:url value="
-                                    /logout" />">로그아웃</a></button>
+                                <a href="<c:url value='/signout'/>" class="site-btn" id="logout_btn"
+                                  style="color:white;">로그아웃</a>
                               </div>
                             </div>
                           </div>

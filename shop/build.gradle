@@ -71,6 +71,8 @@ dependencies {
     // Apache Commons IO (파일 처리 유틸리티)
     implementation 'commons-io:commons-io:2.19.0' // 최신 버전 확인 권장
 
+    // Email
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
 
     testImplementation 'org.projectlombok:lombok'
     testAnnotationProcessor 'org.projectlombok:lombok'

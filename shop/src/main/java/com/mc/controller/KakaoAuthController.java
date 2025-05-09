@@ -43,6 +43,23 @@ public class KakaoAuthController {
     @Value("${kakao.provider.user-info-uri}")
     private String userInfoUri;
 
+    /**
+     * 1) 사용자 클릭 시 카카오 OAuth 로그인 페이지로 리다이렉트
+     *    → GET /auth/kakao
+     */
+    @GetMapping
+    public String loginRedirect() {
+        log.info("카카오 로그인 리다이렉트 시작");
+        
+        String kakaoAuthUrl = "https://kauth.kakao.com/oauth/authorize";
+        String redirectUrl = kakaoAuthUrl + "?client_id=" + clientId
+                + "&redirect_uri=" + redirectUri
+                + "&response_type=code";
+                
+        log.info("카카오 OAuth URL: {}", redirectUrl);
+        return "redirect:" + redirectUrl;
+    }
+
     @GetMapping("/callback") // GET /auth/kakao/callback 요청 처리
     public String kakaoCallback(@RequestParam("code") String code, HttpSession session) {
         log.info("카카오 인증 콜백 수신, 인가 코드: {}", code);
@@ -51,7 +68,7 @@ public class KakaoAuthController {
         KakaoTokenResponse tokenResponse = requestAccessToken(code);
         if (tokenResponse == null || tokenResponse.getAccessToken() == null) {
             log.error("카카오 토큰 발급 실패");
-            return "redirect:/login?error=kakao_token_failed"; // 실패 시 로그인 페이지로
+            return "redirect:/signin?error=kakao_token_failed"; // 실패 시 로그인 페이지로
         }
         log.info("카카오 액세스 토큰: {}", tokenResponse.getAccessToken());
 
@@ -59,7 +76,7 @@ public class KakaoAuthController {
         KakaoUserInfoResponse userInfo = requestUserInfo(tokenResponse.getAccessToken());
         if (userInfo == null || userInfo.getId() == null) {
             log.error("카카오 사용자 정보 조회 실패");
-            return "redirect:/login?error=kakao_userinfo_failed";
+            return "redirect:/signin?error=kakao_userinfo_failed";
         }
         log.info("카카오 사용자 정보: {}", userInfo);
 
@@ -159,8 +176,8 @@ public class KakaoAuthController {
             return "redirect:/"; // 메인 페이지 경로
 
         } catch (Exception e) {
-            log.error("카카오 로그인 처리 중 오류 발생", e);
-            return "redirect:/login?error=kakao_process_failed"; // 오류 시 로그인 페이지로
+            log.error("카카오 로그인 처리 중 오류 발생: {}", e.getMessage());
+            return "redirect:/signin?error=kakao_process_failed"; // 오류 시 로그인 페이지로
         }
     }
 

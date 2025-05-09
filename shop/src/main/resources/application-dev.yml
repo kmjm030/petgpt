@@ -25,6 +25,19 @@ spring:
   web:
     resources:
       static-locations: file:///C:/petshop/uploads/
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: hyeonhokim@khu.ac.kr
+    password: awbk wlzn ykzj zbgy
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+        debug: true
 
 # 3. Mybatis
 mybatis:

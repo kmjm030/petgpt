@@ -86,21 +86,22 @@ public class GoogleAuthController {
         String savedState = (String) session.getAttribute("oauth_state");
         if (!Objects.equals(savedState, state)) {
             log.error("Invalid OAuth state: expected={}, actual={}", savedState, state);
-            return "redirect:/login?error=invalid_state";
+            session.removeAttribute("oauth_state");
+            return "redirect:/signin?error=invalid_state";
         }
 
         // 2-2) 액세스 토큰 발급
         GoogleTokenResponse tokenResponse = requestAccessToken(code);
         if (tokenResponse == null || tokenResponse.getAccess_token() == null) {
             log.error("구글 토큰 발급 실패");
-            return "redirect:/login?error=google_token_failed";
+            return "redirect:/signin?error=google_token_failed";
         }
 
         // 2-3) 사용자 정보 조회
         GoogleUserInfoResponse userInfo = requestUserInfo(tokenResponse.getAccess_token());
         if (userInfo == null || userInfo.getId() == null) {
             log.error("구글 사용자 정보 조회 실패");
-            return "redirect:/login?error=google_userinfo_failed";
+            return "redirect:/signin?error=google_userinfo_failed";
         }
 
         // 2-4) 회원 검색 또는 가입 처리
@@ -127,8 +128,8 @@ public class GoogleAuthController {
             session.setAttribute("cust", customer);
             return "redirect:/";
         } catch (Exception e) {
-            log.error("구글 로그인 처리 중 오류 발생", e);
-            return "redirect:/login?error=google_process_failed";
+            log.error("Google 로그인 프로세스 실패", e);
+            return "redirect:/signin?error=google_process_failed";
         }
     }
 

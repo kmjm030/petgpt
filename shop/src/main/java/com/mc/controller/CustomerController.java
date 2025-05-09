@@ -88,7 +88,7 @@ public class CustomerController {
 
         // 로그인하지 않았다면 로그인 페이지로 리다이렉트
         if (loggedInCustomer == null) {
-            return "redirect:/login"; // 로그인 페이지로 리다이렉트
+            return "redirect:/signin"; // 로그인 페이지로 리다이렉트
         }
 
         // 로그인된 사용자만 자신의 마이페이지를 볼 수 있도록 처리
@@ -119,7 +119,7 @@ public class CustomerController {
         // 1. DB에서 현재 사용자 정보 조회
         Customer dbCust = custService.get(cust.getCustId());
         if (dbCust == null) {
-            return "redirect:/login";
+            return "redirect:/signin";
         }
 
         model.addAttribute("cust", dbCust);

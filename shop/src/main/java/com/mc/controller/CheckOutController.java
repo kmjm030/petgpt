@@ -149,7 +149,7 @@ public class CheckOutController {
 
         // 로그인하지 않았다면 로그인 페이지로 리다이렉트
         if (loggedInCustomer == null) {
-            return "redirect:/login"; // 로그인 페이지로 리다이렉트
+            return "redirect:/signin"; // 로그인 페이지로 리다이렉트
         }
 
         if (!loggedInCustomer.getCustId().equals(id)) {
