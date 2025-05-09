@@ -329,8 +329,6 @@
       <script src="<c:url value='/js/shop.js'/>"></script>
       <script src="<c:url value='/js/home.js'/>"></script>
 
-      <p style="color: red; font-weight: bold;">Current viewName: ${viewName}</p>
-
       <!-- 페이지별 JS 로드 (jQuery 및 공통 스크립트 로드 후) -->
       <c:choose>
         <c:when test="${viewName == 'login'}">
