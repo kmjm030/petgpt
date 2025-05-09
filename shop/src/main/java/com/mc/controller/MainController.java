@@ -92,11 +92,7 @@ public class MainController {
 
     @GetMapping("/login")
     public String login(Model model) {
-        model.addAttribute("currentPage", "pages");
-        model.addAttribute("pageTitle", "Log In");
-        model.addAttribute("viewName", "login");
-        model.addAttribute("centerPage", "pages/login.jsp");
-        return "index";
+        return "redirect:/signin";
     }
 
     @GetMapping("/shopdetails")
@@ -124,7 +120,9 @@ public class MainController {
 
     @GetMapping("/signin")
     public String signin(Model model) {
-        return "redirect:/";
+        // signin.jsp를 독립적인 페이지로 사용
+        model.addAttribute("pageTitle", "로그인");
+        return "pages/signin";
     }
 
     @GetMapping("/ai-analysis")

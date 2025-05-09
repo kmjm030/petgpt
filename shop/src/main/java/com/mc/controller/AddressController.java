@@ -28,7 +28,7 @@ public class AddressController {
 
         // 로그인하지 않았다면 로그인 페이지로 리다이렉트
         if (loggedInCustomer == null) {
-            return "redirect:/login"; // 로그인 페이지로 리다이렉트
+            return "redirect:/signin"; // 로그인 페이지로 리다이렉트
         }
 
         // 로그인된 사용자만 자신의 마이페이지를 볼 수 있도록 처리

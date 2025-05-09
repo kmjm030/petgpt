@@ -7,6 +7,7 @@ import com.mc.app.service.AddressService;
 import com.mc.app.service.CouponService;
 import com.mc.app.service.CustomerService;
 import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 @Slf4j
@@ -51,9 +53,8 @@ public class LoginController {
         } else {
             session.removeAttribute("redirectURL");
         }
-        model.addAttribute("viewName", "login");
-        model.addAttribute("centerPage", "pages/login.jsp");
-        return "index";
+        // 독립적인 로그인 페이지로 리다이렉션
+        return "redirect:/signin";
     }
 
     // 로그인 처리 (POST 요청 처리)
@@ -75,16 +76,25 @@ public class LoginController {
                 return "redirect:/";
             }
         }
-        model.addAttribute("centerPage", "pages/login.jsp");
+        // 로그인 실패 시 signin 페이지로 리다이렉트하고 오류 메시지 전달
         model.addAttribute("msg", "아이디 또는 패스워드가 일치하지 않습니다.");
-        return "index";
+        return "redirect:/signin";
     }
 
-    @RequestMapping("/logout")
-    public String logout(Model model, HttpSession httpSession) throws Exception {
+    @RequestMapping(value = "/signout", method = {RequestMethod.GET, RequestMethod.POST})
+    public String logout(Model model, HttpSession httpSession, HttpServletResponse response) throws Exception {
+        log.info("로그아웃 메서드 호출됨");
         if (httpSession != null) {
+            Customer cust = (Customer) httpSession.getAttribute("cust");
+            if (cust != null) {
+                log.info("로그아웃: 사용자 ID {}", cust.getCustId());
+            }
             httpSession.invalidate(); // 로그인해서 깃발 꽂아놨던 것을 없앰
+            log.info("사용자 로그아웃 처리 완료 - 세션 무효화됨");
+        } else {
+            log.info("로그아웃: 세션이 이미 없음");
         }
+        log.info("로그아웃 후 홈으로 리다이렉트");
         return "redirect:/";
     }
 
