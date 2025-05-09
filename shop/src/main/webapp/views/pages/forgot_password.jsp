@@ -70,7 +70,7 @@
 
         .input-field input {
           width: 100%;
-          padding: 20px 14px 8px;
+          padding: 14px;
           background-color: #ffffff;
           border: 1px solid #dbdbdb;
           border-radius: 8px;
@@ -78,6 +78,12 @@
           font-size: 17px;
           box-sizing: border-box;
           outline: none;
+          line-height: normal;
+        }
+
+        .input-field input::placeholder {
+          color: #999;
+          vertical-align: middle;
         }
 
         .submit-btn {
