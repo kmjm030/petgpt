@@ -164,3 +164,67 @@ textarea.form-control {
   min-height: 200px;
   resize: vertical;
 }
+
+/* 🌙 다크모드 추가 */
+body.dark-mode {
+  background-color: #1d1d1f;
+  color: #f5f5f7;
+}
+
+body.dark-mode h2 {
+  color: #f5f5f7;
+}
+
+body.dark-mode .detail-form {
+  background-color: #2c2c2e;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode .form-group label {
+  color: #f5f5f7;
+}
+
+body.dark-mode .form-control {
+  background-color: #2c2c2e;
+  border: 1px solid #3a3a3c;
+  color: #f5f5f7;
+}
+
+body.dark-mode .form-control:focus {
+  border-color: #0a84ff;
+  box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.4);
+}
+
+body.dark-mode #titleCount {
+  color: #bbbbbb;
+}
+
+body.dark-mode .compare-box {
+  background-color: #2c2c2e;
+  border: 1px solid #3a3a3c;
+  color: #f5f5f7;
+}
+
+body.dark-mode .submit-btn {
+  background: linear-gradient(90deg, #0a84ff, #34ace0);
+}
+
+body.dark-mode .submit-btn:hover {
+  background: linear-gradient(90deg, #34ace0, #0a84ff);
+}
+
+body.dark-mode .delete-btn {
+  background: #e74c3c;
+}
+
+body.dark-mode .delete-btn:hover {
+  background: #c0392b;
+}
+
+body.dark-mode .back-link {
+  color: #0a84ff;
+}
+
+body.dark-mode .toast {
+  background-color: #388e3c;
+}
