@@ -220,11 +220,13 @@ public class CustomerController {
         Date date = Date.from(oneYearAgo.atZone(ZoneId.systemDefault()).toInstant());
         likeService.deleteOlderThan(date);
         List<Like> likes = likeService.getLikesByCustomer(id);
+        likes.sort((v1, v2) -> v2.getLikeRdate().compareTo(v1.getLikeRdate()));
         List<Item> items = new ArrayList<>();
         for (Like like : likes) {
             Item item = itemService.get(like.getItemKey());
             items.add(item);
         }
+
 
         model.addAttribute("items", items);
         model.addAttribute("currentPage", "pages");

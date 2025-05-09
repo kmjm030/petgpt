@@ -198,40 +198,43 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
+                        <div class="col-lg-4 offset-lg-1 col-md-6 col-sm-6" style="color: #b7b7b7;">
+                        <div class="footer__widget">
+                          <h6>Information</h6>
+                          <ul>
+                            <li><strong>상호명</strong>⠀⠀(주)펫지피티</li>
+                            <li><strong>사업장 주소</strong>⠀⠀서울특별시 강남구 테헤란로 213, 501</li>
+                            <li><strong>대표전화</strong>⠀⠀00-987-6543</li>
+                            <li><strong>사업자 등록번호</strong>⠀⠀123-45-67890</li>
+                          </ul>
+                          <div class="footer__newslatter">
+                            <p>⠀⠀</p>
+                            <p> ▼ 전국에 있는 펫지피티 매장을 찾아보세요!</p>
+                            <form action="${pageContext.request.contextPath}/about" method="get">
+                              <input type="text" name="location" placeholder="지역을 입력하세요">
+                              <button type="submit"><span class="icon_search"></span></button>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                        <div class="col-lg-3 offset-lg-1 col-md-3 col-sm-6">
                             <div class="footer__widget">
-                                <h6>Shopping</h6>
+                                <h6>Customer Service</h6>
                                 <ul>
-                                    <li><a href="#">Clothing Store</a></li>
-                                    <li><a href="#">Trending Shoes</a></li>
-                                    <li><a href="#">Accessories</a></li>
-                                    <li><a href="#">Sale</a></li>
+                                  <li><a href="#"><strong>상담/주문전화</strong>⠀⠀02-123-4567</a></li>
+                                    <li><a href="#"><strong>상담/주문 이메일</strong>⠀⠀contact@petgpt.com</a></li>
+                                    <li><a href="#"><strong>CS운영시간</strong>
+                                      <ul>
+                                        <li>⠀⠀평일 10시 ~ 17시</li>
+                                        <li>⠀⠀(점심시간 12 ~ 13시)</li>
+                                      </ul>
+                                    </a></li>
+                                    <li>⠀⠀</li>
+                                    <li><a href="#"><strong>주말 및 공휴일</strong>은 <strong>휴무</strong>입니다.</a></li>
                                 </ul>
                             </div>
                         </div>
-                        <div class="col-lg-2 col-md-3 col-sm-6">
-                            <div class="footer__widget">
-                                <h6>Shopping</h6>
-                                <ul>
-                                    <li><a href="#">Contact Us</a></li>
-                                    <li><a href="#">Payment Methods</a></li>
-                                    <li><a href="#">Delivary</a></li>
-                                    <li><a href="#">Return & Exchanges</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 offset-lg-1 col-md-6 col-sm-6">
-                            <div class="footer__widget">
-                                <h6>NewLetter</h6>
-                                <div class="footer__newslatter">
-                                    <p>Be the first to know about new arrivals, look books, sales & promos!</p>
-                                    <form action="#">
-                                        <input type="text" placeholder="Your email">
-                                        <button type="submit"><span class="icon_mail_alt"></span></button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
+
                     </div>
                     <div class="row">
                         <div class="col-lg-12 text-center">

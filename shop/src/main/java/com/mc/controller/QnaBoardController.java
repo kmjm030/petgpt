@@ -1,6 +1,7 @@
 package com.mc.controller;
 
 import com.mc.app.dto.*;
+import com.mc.app.service.AdminCommentsService;
 import com.mc.app.service.ItemService;
 import com.mc.app.service.QnaBoardService;
 import com.mc.app.service.TotalOrderService;
@@ -34,6 +35,7 @@ public class QnaBoardController {
     private final QnaBoardService qnaService;
     private final ItemService itemService;
     private final TotalOrderService totalOrderService;
+    private final AdminCommentsService adminCommentsService;
 
     @Value("${file.upload.directory}")
     private String uploadDirectory;
@@ -106,6 +108,10 @@ public class QnaBoardController {
     public String detail(Model model, @RequestParam("boardKey") int boardKey, HttpSession session) throws Exception {
 
         QnaBoard board = qnaService.get(boardKey);
+        AdminComments comments = adminCommentsService.get(boardKey);
+        if(comments != null){
+          model.addAttribute("comments", comments);
+        }
 
         model.addAttribute("board", board);
         model.addAttribute("currentPage", "pages");

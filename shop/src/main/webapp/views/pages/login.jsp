@@ -5,6 +5,11 @@
             #msg {
                 color: darkred;
             }
+            #google-login {
+              border: solid lightgray 1px;
+              font-size: 14px;
+              padding: 10px;
+            }
         </style>
 
         <!-- Breadcrumb Section Begin -->
@@ -59,12 +64,13 @@
 
                             <div style="display: flex; align-items: center; gap: 10px; margin-top: 20px;">
                                 <button class="site-btn" id="login_btn" onclick="login.send()"
-                                    style="flex: 1; text-align: center;">로그인</button>
+                                    style="flex: 1; text-align: center; height:40px;">로그인</button>
                                 <a href="javascript:login.kakaoLogin()" style="flex: 1; display: block;">
                                     <img src="<c:url value='/img/kakao/kakao_login_large_narrow.png'/>" alt="카카오 로그인"
                                         style="cursor: pointer; width: 100%; height: 100%; object-fit: contain; vertical-align: middle;">
-                                    <a href="<c:url value='/auth/google'/>" class="btn google">
-                                        Google 로그인</a>
+                                    <a href="<c:url value='/auth/google'/>" class="btn google" id="google-login">
+                                      <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google Logo" style="width: 20px; height: 20px;"/>⠀Google 로그인</a>
+
 
                             </div>
 
