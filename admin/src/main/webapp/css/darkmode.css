@@ -4,6 +4,42 @@ body.dark-mode {
     color: #f5f5f7;
     font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
+/* CKEditor 다크모드 */
+body.dark-mode .cke_top,
+body.dark-mode .cke_bottom,
+body.dark-mode .cke_chrome {
+  background-color: #2c2c2e !important;
+  border-color: #3a3a3c !important;
+  color: #f5f5f7 !important;
+}
+
+body.dark-mode .cke_toolgroup,
+body.dark-mode .cke_combo_button,
+body.dark-mode .cke_button {
+  background-color: #3a3a3c !important;
+  border-color: #4a4a4a !important;
+}
+
+body.dark-mode .cke_toolgroup a.cke_button:hover,
+body.dark-mode .cke_toolgroup a.cke_button.cke_button_on {
+  background-color: #4a4a4a !important;
+}
+
+body.dark-mode .cke_contents {
+  background-color: #1d1d1f !important;
+  color: #f5f5f7 !important;
+}
+
+body.dark-mode .cke_wysiwyg_frame {
+  background-color: #1d1d1f !important;
+}
+
+/* CKEditor 경고창, 팝업, 드롭다운 */
+body.dark-mode .cke_panel,
+body.dark-mode .cke_dialog {
+  background-color: #2c2c2e !important;
+  color: #f5f5f7 !important;
+}
 
 /* 컨테이너, 카드, 박스류 */
 body.dark-mode .container-fluid,
