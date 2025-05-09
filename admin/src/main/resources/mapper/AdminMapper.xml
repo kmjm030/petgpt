@@ -1,46 +1,40 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.mc.app.repository.AdminNoticeRepository">
+<mapper namespace="com.mc.app.repository.AdminRepository">
 
-  <insert id="insert" parameterType="com.mc.app.dto.AdminNotice">
-    INSERT INTO admin_notice (admin_id, title, content, admin_name)
-    VALUES (#{adminId}, #{title}, #{content}, #{adminName})
-  </insert>
+    <insert id="insert" parameterType="com.mc.app.dto.Admin">
+        INSERT INTO admin (admin_id, admin_pwd, admin_name, admin_auth)
+        VALUES (#{adminId}, #{adminPwd}, #{adminName}, #{adminAuth})
+    </insert>
 
-  <update id="update" parameterType="com.mc.app.dto.AdminNotice">
-    UPDATE admin_notice
-    SET title = #{title},
-        content = #{content},
-        admin_name = #{adminName}
-    WHERE id = #{id}
-  </update>
+    <update id="update" parameterType="com.mc.app.dto.Admin">
+        UPDATE admin
+        SET admin_pwd = #{adminPwd},
+            admin_name = #{adminName},
+            admin_auth = #{adminAuth}
+        WHERE admin_id = #{adminId}
+    </update>
 
-  <delete id="delete" parameterType="int">
-    DELETE FROM admin_notice WHERE id = #{id}
-  </delete>
+    <delete id="delete" parameterType="String">
+        DELETE FROM admin WHERE admin_id = #{adminId}
+    </delete>
 
-  <select id="select" parameterType="int" resultMap="adminNoticeResultMap">
-    SELECT id, admin_id, title, content, created_at, admin_name
-    FROM admin_notice
-    WHERE id = #{id}
-  </select>
+    <select id="select" parameterType="String" resultType="com.mc.app.dto.Admin">
+        SELECT * FROM admin WHERE admin_id = #{adminId}
+    </select>
 
-  <select id="selectAll" resultMap="adminNoticeResultMap">
-    SELECT id, admin_id, title, content, created_at, admin_name
-    FROM admin_notice
-    ORDER BY created_at DESC
-  </select>
+    <select id="selectAll" resultType="com.mc.app.dto.Admin">
+        SELECT * FROM admin
+    </select>
 
-  <resultMap id="adminNoticeResultMap" type="com.mc.app.dto.AdminNotice">
-    <id property="id" column="id"/>
-    <result property="adminId" column="admin_id"/>
-    <result property="title" column="title"/>
-    <result property="content" column="content"/>
-    <result property="createdAt" column="created_at"/>
-    <result property="adminName" column="admin_name"/>
-  </resultMap>
+    <select id="selectOrderStatusCount" resultType="map">
+        SELECT order_status, COUNT(*) AS count
+        FROM orders
+        WHERE DATE(regdate) = CURRENT_DATE
+        GROUP BY order_status
+    </select>
 
 </mapper>
