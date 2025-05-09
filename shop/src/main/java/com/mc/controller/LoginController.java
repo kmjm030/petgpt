@@ -40,8 +40,7 @@ public class LoginController {
                 .couponUse("미사용").build();
         couponService.add(coupon);
 
-        model.addAttribute("centerPage", "pages/login.jsp");
-        return "index";
+        return "redirect:/signin";
     }
 
     // 로그인 페이지 보여주기 (GET 요청 처리)
