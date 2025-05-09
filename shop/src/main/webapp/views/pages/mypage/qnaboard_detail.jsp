@@ -41,6 +41,14 @@
       #msg {
         color: darkred;
       }
+
+      .response-box {
+        padding: 20px;
+        margin: 10px;
+        border-radius: 10px;
+        background-color: #f9f9f9;
+        border: solid lightgray 1px;
+      }
     </style>
 
     <!-- Breadcrumb Section Begin -->
@@ -141,7 +149,6 @@
                     <div class="row">
                       <div class="form-group col-md-12">
                         <div class="checkout__input">
-                          <label for="boardTitle">▪ 제목</label>
                           <input type="text" placeholder="제목을 입력하세요." value="${board.boardTitle}" id="boardTitle"
                             name="boardTitle">
                           <input type="hidden" value="${sessionScope.cust.custId}" id="sessionId" name="custId">
@@ -152,7 +159,6 @@
                     <div class="row">
                       <div class="form-group col-md-12">
                         <div class="checkout__input">
-                          <label for="boardContent">▪ 내용</label><br />
                           <textarea placeholder="문의내용을 작성하세요." id="boardContent"
                             name="boardContent">${board.boardContent}</textarea>
                         </div>
@@ -161,17 +167,23 @@
                     <c:if test="${not empty board.boardImg}">
                       <div class="row">
                         <div class="form-group col-md-6">
-                          <label>▪ 현재 이미지파일 </label>
                           <img src="<c:url value='${board.boardImg}'/>" alt="현재 첨부파일">
                         </div>
                       </div>
                     </c:if>
                     <div class="row">
                       <div class="form-group col-md-6">
-                        <label>▪ 이미지 첨부</label>
                         <input type="file" class="form-control" name="img">
                       </div>
                     </div>
+                    <c:if test="${not empty comments}">
+                      <div class="row">
+                        <div class="col-md-12 response-box">
+                          <h5><strong>└ 🗨️ 관리자 답변</strong></h5><hr>
+                          ${comments.adcommentsContent}
+                        </div>
+                      </div>
+                    </c:if>
                     <br />
                 </form>
                 <h6 id="msg"></h6>

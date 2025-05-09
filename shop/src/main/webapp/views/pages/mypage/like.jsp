@@ -24,6 +24,17 @@
         color: white;
         background-color: darkred;
       }
+
+      .img-box img {
+        transition: transform 0.3s ease;
+        width: 100%;
+        height: 100%;
+        border-radius: 5%;
+      }
+
+      .img-box img:hover {
+        transform: scale(1.05);
+      }
     </style>
 
     <!-- Breadcrumb Section Begin -->
@@ -122,7 +133,8 @@
                 <c:forEach var="c" items="${items}">
                   <div class="row">
                     <div class="col-md-2 img-box">
-                      <img src="<c:url value='/img/product/${c.itemImg1}'/>"/>
+                      <a href="<c:url value='/shop/details?itemKey=${c.itemKey}'/>">
+                      <img src="<c:url value='/img/product/${c.itemImg1}'/>"/></a>
                     </div>
                     <div class="col-md-9">
                       <h6>${c.itemName}</h6>

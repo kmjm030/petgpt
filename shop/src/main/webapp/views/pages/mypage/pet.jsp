@@ -157,28 +157,27 @@
                   <h6 class="coupon__code"><span class="icon_tag_alt"></span> 이미지를 클릭하면 수정할 수 있어요!</h6>
                   <div class="row">
                     <c:forEach var="p" items="${pets}">
-                      <div class="col-md-6">
+                      <div class="col-12 col-sm-6 col-md-6">
                         <div class="pet-box">
                           <div style="display: flex; justify-content: space-between; align-items: center;">
                             <h5 style="margin: 10px auto; color:lightgray">반려동물 등록증</h5>
                             <p style="text-align:right; cursor: pointer;" onclick="pet.del(${p.petKey})">&times;</p>
                           </div>
                           <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-sm-6">
                               <form id="pet_update_form" action="${pageContext.request.contextPath}/pet/petimgupdate"
                                 method="post" enctype="multipart/form-data">
                                 <input type="file" id="fileInput" name="petImg" style="display: none;"
                                   onchange="pet.submitForm()" />
                                 <input type="hidden" value="${p.custId}" name="custId">
                                 <input type="hidden" value="${p.petKey}" name="petKey">
-
                               </form>
                               <div class="pet-img-box">
                                 <img src="<c:url value='${p.petImg}'/>" alt="현재 첨부파일"
                                   onclick="document.getElementById('fileInput').click();" style="cursor: pointer;">
                               </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-sm-6">
                               <div class="pet-name-box">
                                 <h5>
                                   <c:choose>
