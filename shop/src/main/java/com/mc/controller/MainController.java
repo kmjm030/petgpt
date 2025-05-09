@@ -24,28 +24,23 @@ public class MainController {
     @GetMapping("/")
     public String home(Model model) {
 
-        int limit = 8; // 가져올 상품 개수
-        List<Item> bestSellerList; // try 블록 밖에서 선언
+        int limit = 8; 
+        List<Item> bestSellerList; 
 
         try {
-            // 초기 로드 시 기본 목록 (예: 베스트셀러) 조회
-            bestSellerList = itemService.getBestSellingItems(limit); // 예외 발생 가능성 있음
+            bestSellerList = itemService.getBestSellingItems(limit); 
 
-            // 각 상품의 평균 별점과 리뷰 개수 계산
             for (Item item : bestSellerList) {
                 try {
                     List<QnaBoard> reviews = qnaBoardService.findReviewByItem(item.getItemKey());
                     int reviewCount = reviews.size();
 
-                    // 평균 별점 계산
                     double totalScore = 0;
                     for (QnaBoard review : reviews) {
                         totalScore += review.getBoardScore();
                     }
-
                     double avgScore = reviewCount > 0 ? Math.round((totalScore / reviewCount) * 10) / 10.0 : 0;
 
-                    // Item 객체에 평균 별점과 리뷰 개수 저장
                     item.setAvgScore(avgScore);
                     item.setReviewCount(reviewCount);
                 } catch (Exception e) {
@@ -56,11 +51,10 @@ public class MainController {
             }
 
         } catch (Exception e) {
-            // 예외 처리: 로그를 남기거나 사용자에게 오류 메시지 전달
             log.error("Error fetching best selling items: {}", e.getMessage());
-            e.printStackTrace(); // 개발 중 상세 오류 확인
+            e.printStackTrace(); 
             model.addAttribute("errorMessage", "베스트셀러 상품 목록을 불러오는 중 오류가 발생했습니다.");
-            bestSellerList = Collections.emptyList(); // 빈 목록으로 초기화하여 JSP 오류 방지
+            bestSellerList = Collections.emptyList(); 
         }
 
         model.addAttribute("bestSellerList", bestSellerList);

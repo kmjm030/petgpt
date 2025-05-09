@@ -1,6 +1,5 @@
 package com.mc.controller;
 
-import com.google.api.Http;
 import com.mc.app.dto.*;
 import com.mc.app.service.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,14 +19,11 @@ import org.springframework.web.multipart.MultipartFile;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 @Controller
 @Slf4j
@@ -83,22 +79,14 @@ public class CustomerController {
     public String mypage(Model model, @RequestParam("id") String id, HttpSession session, HttpServletRequest request)
             throws Exception {
 
-        // 세션에서 로그인된 사용자 확인
         Customer loggedInCustomer = (Customer) session.getAttribute("cust");
-
-        // 로그인하지 않았다면 로그인 페이지로 리다이렉트
         if (loggedInCustomer == null) {
-            return "redirect:/signin"; // 로그인 페이지로 리다이렉트
+            return "redirect:/signin"; 
         }
-
-        // 로그인된 사용자만 자신의 마이페이지를 볼 수 있도록 처리
         if (!loggedInCustomer.getCustId().equals(id)) {
-            return "redirect:/mypage?id=" + loggedInCustomer.getCustId(); // 자신의 마이페이지만 보여줌
+            return "redirect:/mypage?id=" + loggedInCustomer.getCustId();
         }
-
         Customer cust = custService.get(id);
-
-        // 프로필 이미지가 없는 경우 기본 이미지 설정
         setDefaultProfileImage(cust, request);
 
         model.addAttribute("cust", cust);
@@ -116,7 +104,6 @@ public class CustomerController {
             @RequestParam(value = "imgDelete", required = false) String imgDelete,
             HttpServletRequest request) throws Exception {
 
-        // 1. DB에서 현재 사용자 정보 조회
         Customer dbCust = custService.get(cust.getCustId());
         if (dbCust == null) {
             return "redirect:/signin";
@@ -124,12 +111,8 @@ public class CustomerController {
 
         model.addAttribute("cust", dbCust);
 
-        // 2. 카카오 사용자인지 확인
         boolean isKakaoUser = dbCust.getCustId() != null && dbCust.getCustId().startsWith("kakao_");
-
-        // 3. 비밀번호 처리 (카카오 사용자가 아닌 경우에만)
         if (!isKakaoUser) {
-
             if (cust.getCustPwd() == null || cust.getCustPwd().isEmpty()) {
                 model.addAttribute("msg", "수정을 위해서는 현재 비밀번호를 입력해야 합니다.");
                 model.addAttribute("currentPage", "pages");
@@ -138,8 +121,6 @@ public class CustomerController {
                 model.addAttribute("centerPage", "pages/mypage/mypage.jsp");
                 return "index";
             }
-
-            // 현재 비밀번호 확인
             if (!dbCust.getCustPwd().equals(cust.getCustPwd())) {
                 model.addAttribute("msg", "현재 비밀번호가 일치하지 않습니다.");
                 model.addAttribute("currentPage", "pages");
@@ -148,33 +129,26 @@ public class CustomerController {
                 model.addAttribute("centerPage", "pages/mypage/mypage.jsp");
                 return "index";
             }
-
-            // 새 비밀번호 처리
             if (newPwd != null && !newPwd.isEmpty()) {
                 cust.setCustPwd(newPwd);
             } else {
                 cust.setCustPwd(dbCust.getCustPwd());
             }
         } else {
-            // 카카오 사용자는 기존 비밀번호를 유지
             cust.setCustPwd(dbCust.getCustPwd());
         }
 
-        // 4. 이미지 처리
+
         if ("true".equals(imgDelete)) {
-            // 이미지 삭제 요청이 있는 경우
             cust.setCustImg(null);
-            // 이미지를 삭제했을 경우 기본 이미지로 사용자 이름 기반 이미지 설정
             setDefaultProfileImage(cust, request);
         } else if (!img.isEmpty()) {
-            // 새 이미지 업로드가 있는 경우
             String originalFilename = img.getOriginalFilename();
             String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
             String newFilename = cust.getCustId() + "_" + System.currentTimeMillis() + fileExtension;
             String filePath = uploadDirectory + "/cust/" + newFilename;
             String fileUrl = uploadUrlPrefix + "/cust/" + newFilename;
 
-            // 파일 저장
             try {
                 Path uploadPath = Paths.get("C:", "petshop", "uploads", "images", "cust");
                 if (!Files.exists(uploadPath)) {
@@ -193,15 +167,12 @@ public class CustomerController {
                 return "index";
             }
         } else {
-            // 이미지 변경이 없는 경우 기존 이미지 유지
             cust.setCustImg(dbCust.getCustImg());
-            // 만약 기존 이미지가 없다면 기본 이미지 설정
             if (cust.getCustImg() == null || cust.getCustImg().isEmpty()) {
                 setDefaultProfileImage(cust, request);
             }
         }
 
-        // 5. 나머지 필드 처리
         cust.setCustRdate(dbCust.getCustRdate());
         cust.setCustPoint(dbCust.getCustPoint());
         cust.setPointCharge(dbCust.getPointCharge());
@@ -209,7 +180,6 @@ public class CustomerController {
         cust.setCustAuth(dbCust.getCustAuth());
 
         custService.mod(cust);
-
         return "redirect:/mypage?id=" + cust.getCustId();
     }
 
@@ -246,7 +216,7 @@ public class CustomerController {
 
         List<RecentView> views = viewService.findAllByCustomer(id);
         views.sort((v1, v2) -> v2.getViewDate().compareTo(v1.getViewDate()));
-
+        
         for (RecentView view : views) {
             Item item = itemService.get(view.getItemKey());
             view.setItem(item);

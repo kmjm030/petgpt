@@ -20,22 +20,24 @@ public class PapagoUtil {
             String apiURL = "https://papago.apigw.ntruss.com/nmt/v1/translation";
             URL url = new URL(apiURL);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
+
             con.setRequestMethod("POST");
             con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             con.setRequestProperty("X-NCP-APIGW-API-KEY-ID", clientId);
             con.setRequestProperty("X-NCP-APIGW-API-KEY", clientSecret);
-            // post request
             String postParams = "source=auto&target=" + target + "&text=" + text;
             con.setDoOutput(true);
+
             DataOutputStream wr = new DataOutputStream(con.getOutputStream());
             wr.writeBytes(postParams);
             wr.flush();
             wr.close();
+
             int responseCode = con.getResponseCode();
             BufferedReader br;
-            if (responseCode == 200) { // 정상 호출
+            if (responseCode == 200) { 
                 br = new BufferedReader(new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8));
-            } else { // 오류 발생
+            } else { 
                 br = new BufferedReader(new InputStreamReader(con.getErrorStream(), StandardCharsets.UTF_8));
             }
             String inputLine;
@@ -44,6 +46,7 @@ public class PapagoUtil {
                 response.append(inputLine);
             }
             br.close();
+            
             JSONParser jsonparser = new JSONParser();
             try {
                 JSONObject json = (JSONObject) jsonparser.parse(response.toString());

@@ -1,11 +1,7 @@
 package com.mc.app.service;
 
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
-import com.mc.app.dto.Customer;
 import com.mc.app.dto.Pet;
 import com.mc.app.frame.MCService;
-import com.mc.app.repository.CustomerRepository;
 import com.mc.app.repository.PetRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

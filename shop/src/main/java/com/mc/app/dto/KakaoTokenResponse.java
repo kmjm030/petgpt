@@ -24,6 +24,6 @@ public class KakaoTokenResponse {
     @JsonProperty("refresh_token_expires_in")
     private Integer refreshTokenExpiresIn;
 
-    @JsonProperty("scope") // 동의한 항목들 (예: "profile_nickname profile_image account_email")
+    @JsonProperty("scope")
     private String scope;
 }

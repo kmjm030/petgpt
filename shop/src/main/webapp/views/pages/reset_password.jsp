@@ -187,7 +187,6 @@
           const passwordStrength = document.getElementById('passwordStrength');
           const loginLink = document.getElementById('loginLink');
 
-          // 비밀번호 보기/숨기기 토글
           document.getElementById('toggleNewPassword').addEventListener('click', function () {
             togglePasswordVisibility(newPasswordInput, this);
           });
@@ -208,7 +207,6 @@
             }
           }
 
-          // 비밀번호 입력 시 강도 체크 및 버튼 활성화 여부 결정
           newPasswordInput.addEventListener('input', validatePasswords);
           confirmPasswordInput.addEventListener('input', validatePasswords);
 
@@ -216,7 +214,6 @@
             const newPassword = newPasswordInput.value;
             const confirmPassword = confirmPasswordInput.value;
 
-            // 비밀번호 강도 체크
             let strength = 0;
             if (newPassword.length >= 8) strength += 1;
             if (newPassword.length >= 10) strength += 1;
@@ -224,34 +221,30 @@
             if (/[0-9]/.test(newPassword)) strength += 1;
             if (/[^A-Za-z0-9]/.test(newPassword)) strength += 1;
 
-            // 강도에 따른 색상 설정
             let color = '';
             switch (strength) {
               case 0: case 1:
-                color = '#f44336'; // 약함 (빨강)
+                color = '#f44336';
                 break;
               case 2: case 3:
-                color = '#FF9800'; // 중간 (주황)
+                color = '#FF9800';
                 break;
               case 4: case 5:
-                color = '#4CAF50'; // 강함 (녹색)
+                color = '#4CAF50';
                 break;
             }
 
             passwordStrength.style.backgroundColor = color;
             passwordStrength.style.width = (strength * 20) + '%';
 
-            // 버튼 활성화 조건: 비밀번호 8자 이상 + 확인 비밀번호와 일치
             resetPasswordBtn.disabled = !(newPassword.length >= 8 && newPassword === confirmPassword);
           }
 
-          // 비밀번호 재설정 버튼 클릭 이벤트
           resetPasswordBtn.addEventListener('click', function () {
             const token = document.getElementById('token').value;
             const newPassword = newPasswordInput.value;
             const confirmPassword = confirmPasswordInput.value;
 
-            // 유효성 검사 재확인
             if (newPassword.length < 8) {
               showError('비밀번호는 8자 이상이어야 합니다.');
               return;
@@ -262,11 +255,9 @@
               return;
             }
 
-            // 버튼 비활성화 및 로딩 상태 표시
             resetPasswordBtn.disabled = true;
             resetPasswordBtn.textContent = '처리 중...';
 
-            // AJAX 요청
             fetch('/password/reset', {
               method: 'POST',
               headers: {
@@ -280,7 +271,6 @@
               .then(data => {
                 if (data.success) {
                   showSuccess(data.message);
-                  // 입력 폼 숨기기 및 로그인 링크 표시
                   document.getElementById('resetForm').style.display = 'none';
                   loginLink.style.display = 'block';
                 } else {
@@ -292,7 +282,6 @@
                 showError('요청 처리 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
               })
               .finally(() => {
-                // 버튼 상태 복원
                 resetPasswordBtn.disabled = false;
                 resetPasswordBtn.textContent = '비밀번호 변경하기';
               });

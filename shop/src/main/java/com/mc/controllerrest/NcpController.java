@@ -3,19 +3,14 @@ package com.mc.controllerrest;
 import com.mc.util.PapagoUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -40,7 +35,6 @@ public class NcpController {
     // @Value("${app.dir.uploadimgdir}")
     // String uploadImgDir;
 
-    // 커뮤니티 게시글 작성 시 텍스트 번역 API
     @PostMapping("/api/translate")
     @ResponseBody
     public ResponseEntity<Map<String, String>> translateText(@RequestBody Map<String, String> payload) {
@@ -48,18 +42,14 @@ public class NcpController {
             String text = payload.get("text");
             String targetLang = payload.get("targetLang");
 
-            // 기본값은 한국어(ko)
             if (targetLang == null || targetLang.isEmpty()) {
                 targetLang = "ko";
             }
 
             log.info("번역 요청: 텍스트={}, 대상 언어={}", text, targetLang);
-
             String translatedText = PapagoUtil.getMsg(papagoId, papagoKey, text, targetLang);
-
             Map<String, String> response = new HashMap<>();
             response.put("translatedText", translatedText);
-
             log.info("번역 완료: {}", translatedText);
 
             return ResponseEntity.ok(response);
@@ -85,7 +75,7 @@ public class NcpController {
     // return "index";
     // }
 
-    // @MessageMapping("/sendchatbot") // 특정 Id에게 전송
+    // @MessageMapping("/sendchatbot") 
     // public void sendchat(Msg msg, SimpMessageHeaderAccessor headerAccessor)
     // throws Exception {
     // String id = msg.getSendid();

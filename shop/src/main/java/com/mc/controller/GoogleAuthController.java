@@ -48,10 +48,6 @@ public class GoogleAuthController {
     @Value("${google.provider.user-info-uri}")
     private String userInfoUri;
 
-    /**
-     * 1) 사용자 클릭 시 구글 OAuth 로그인 페이지로 리다이렉트
-     *    → GET /auth/google
-     */
     @GetMapping
     public String loginRedirect(HttpSession session) {
         String state = UUID.randomUUID().toString();
@@ -72,17 +68,12 @@ public class GoogleAuthController {
         return "redirect:" + url;
     }
 
-    /**
-     * 2) 구글이 인증 후 돌아오는 콜백
-     *    → GET /auth/google/callback?code=...&state=...
-     */
     @GetMapping("/callback")
     public String handleCallback(
             @RequestParam("code") String code,
             @RequestParam("state") String state,
             HttpSession session) {
 
-        // 2-1) CSRF 보호용 state 검증
         String savedState = (String) session.getAttribute("oauth_state");
         if (!Objects.equals(savedState, state)) {
             log.error("Invalid OAuth state: expected={}, actual={}", savedState, state);
@@ -90,21 +81,18 @@ public class GoogleAuthController {
             return "redirect:/signin?error=invalid_state";
         }
 
-        // 2-2) 액세스 토큰 발급
         GoogleTokenResponse tokenResponse = requestAccessToken(code);
         if (tokenResponse == null || tokenResponse.getAccess_token() == null) {
             log.error("구글 토큰 발급 실패");
             return "redirect:/signin?error=google_token_failed";
         }
 
-        // 2-3) 사용자 정보 조회
         GoogleUserInfoResponse userInfo = requestUserInfo(tokenResponse.getAccess_token());
         if (userInfo == null || userInfo.getId() == null) {
             log.error("구글 사용자 정보 조회 실패");
             return "redirect:/signin?error=google_userinfo_failed";
         }
 
-        // 2-4) 회원 검색 또는 가입 처리
         String generatedCustId = "google_" + userInfo.getId();
         try {
             Customer customer = customerService.get(generatedCustId);
@@ -133,7 +121,6 @@ public class GoogleAuthController {
         }
     }
 
-    /** 토큰 발급 요청 (기존 코드 재사용) */
     private GoogleTokenResponse requestAccessToken(String code) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -156,7 +143,6 @@ public class GoogleAuthController {
         }
     }
 
-    /** 사용자 정보 조회 요청 (기존 코드 재사용) */
     private GoogleUserInfoResponse requestUserInfo(String accessToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(accessToken);

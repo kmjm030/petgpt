@@ -1,7 +1,6 @@
 package com.mc.app.service;
 
 import com.mc.app.dto.RecentView;
-import com.mc.app.dto.RecentView;
 import com.mc.app.frame.MCService;
 import com.mc.app.repository.RecentViewRepository;
 import lombok.RequiredArgsConstructor;

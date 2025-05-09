@@ -19,26 +19,22 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
         @Override
         public void addResourceHandlers(@NonNull ResourceHandlerRegistry registry) {
-                // uploadDirectory에서 경로 끝에 /가 없으면 자동으로 붙여줌
                 String uploadDir = uploadDirectory;
                 if (!uploadDir.endsWith(File.separator)) {
                         uploadDir += File.separator;
                 }
 
-                // uploadUrlPrefix도 경로 끝에 /가 없으면 붙이고, 마지막엔 **을 붙여서 하위 폴더/파일까지 포함
                 String baseUploadUrlPattern = uploadUrlPrefix;
                 if (!baseUploadUrlPattern.endsWith("/")) {
                         baseUploadUrlPattern += "/";
                 }
                 baseUploadUrlPattern += "**";
 
-                // 윈도우 경로 표기법 조정
                 String fileSystemPath = "file:///" + uploadDir.replace("\\", "/");
 
                 registry.addResourceHandler(baseUploadUrlPattern)
                                 .addResourceLocations(fileSystemPath);
 
-                // CSS, JS, 이미지 등의 정적 리소스 매핑 추가
                 registry.addResourceHandler("/css/**")
                                 .addResourceLocations("classpath:/static/css/");
 
@@ -54,7 +50,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 registry.addResourceHandler("/vendor/**")
                                 .addResourceLocations("classpath:/static/vendor/");
 
-                // /community/로 시작하는 경로에 대한 리소스 매핑 추가
                 registry.addResourceHandler("/community/css/**")
                                 .addResourceLocations("classpath:/static/css/");
 
@@ -70,7 +65,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 registry.addResourceHandler("/community/vendor/**")
                                 .addResourceLocations("classpath:/static/vendor/");
 
-                // HTML 파일에 대한 리소스 매핑 추가 (views 디렉토리)
                 registry.addResourceHandler("/views/**")
                                 .addResourceLocations("/views/");
         }

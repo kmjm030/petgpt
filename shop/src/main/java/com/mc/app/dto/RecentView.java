@@ -12,11 +12,9 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RecentView {
-
     private int viewKey;
     private String custId;
     private int itemKey;
     private Date viewDate;
-
     private Item item;
 }

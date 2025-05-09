@@ -20,9 +20,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class PetBreedAnalysisService {
 
-    // 영어 -> 한국어 품종 번역 맵
     private static final Map<String, String> breedTranslationMap = new HashMap<>();
-    // 품종별 특징 정보 맵
     private static final Map<String, Map<String, String>> breedCharacteristicsMap = new HashMap<>();
 
     static {
@@ -98,24 +96,24 @@ public class PetBreedAnalysisService {
         breedTranslationMap.put("australian kelpie", "오스트레일리안 켈피");
 
         breedTranslationMap.put("collie", "콜리");
-        breedTranslationMap.put("border collie", "보더 콜리"); // border 추가
-        breedTranslationMap.put("rough collie", "러프 콜리"); // rough collie 추가
-        breedTranslationMap.put("smooth collie", "스무스 콜리"); // smooth collie 추가
-        breedTranslationMap.put("shetland sheepdog", "셔틀랜드 쉽독"); // shetland, sheepdog, sheltie 추가
+        breedTranslationMap.put("border collie", "보더 콜리"); 
+        breedTranslationMap.put("rough collie", "러프 콜리"); 
+        breedTranslationMap.put("smooth collie", "스무스 콜리"); 
+        breedTranslationMap.put("shetland sheepdog", "셔틀랜드 쉽독"); 
 
         breedTranslationMap.put("spaniel", "스패니얼");
-        breedTranslationMap.put("cocker spaniel", "코커 스패니얼"); // cocker 추가
-        breedTranslationMap.put("english springer spaniel", "잉글리시 스프링어 스패니얼"); // springer, english springer 추가
-        breedTranslationMap.put("welsh springer spaniel", "웰시 스프링어 스패니얼"); // welsh springer 추가
-        breedTranslationMap.put("brittany spaniel", "브리트니 스패니얼"); // brittany 추가
-        breedTranslationMap.put("king charles spaniel", "킹 찰스 스패니얼"); // king charles 추가
-        breedTranslationMap.put("cavalier king charles spaniel", "카발리에 킹 찰스 스패니얼"); // cavalier 추가
+        breedTranslationMap.put("cocker spaniel", "코커 스패니얼"); 
+        breedTranslationMap.put("english springer spaniel", "잉글리시 스프링어 스패니얼"); 
+        breedTranslationMap.put("welsh springer spaniel", "웰시 스프링어 스패니얼"); 
+        breedTranslationMap.put("brittany spaniel", "브리트니 스패니얼"); 
+        breedTranslationMap.put("king charles spaniel", "킹 찰스 스패니얼"); 
+        breedTranslationMap.put("cavalier king charles spaniel", "카발리에 킹 찰스 스패니얼");
 
         breedTranslationMap.put("chihuahua", "치와와");
         breedTranslationMap.put("pug", "퍼그");
-        breedTranslationMap.put("bichon frise", "비숑 프리제"); // bichon, frise 추가
-        breedTranslationMap.put("bichon", "비숑"); // Bichon 키워드 추가 (기존 frise와 별개로)
-        breedTranslationMap.put("bolognese dog", "볼로네즈 도그"); // Bolognese dog 추가
+        breedTranslationMap.put("bichon frise", "비숑 프리제"); 
+        breedTranslationMap.put("bichon", "비숑"); 
+        breedTranslationMap.put("bolognese dog", "볼로네즈 도그");
         breedTranslationMap.put("havanese", "하바네즈");
         breedTranslationMap.put("coton de tulear", "꼬통 드 툴레아");
         breedTranslationMap.put("shih tzu", "시츄");
@@ -150,7 +148,7 @@ public class PetBreedAnalysisService {
 
         breedTranslationMap.put("weimaraner", "바이마라너");
         breedTranslationMap.put("vizsla", "비즐라");
-        breedTranslationMap.put("rhodesian ridgeback", "로디지안 리지백"); // ridgeback 추가
+        breedTranslationMap.put("rhodesian ridgeback", "로디지안 리지백"); 
 
         breedTranslationMap.put("newfoundland", "뉴펀들랜드");
         breedTranslationMap.put("landseer", "랜드시어");
@@ -172,7 +170,7 @@ public class PetBreedAnalysisService {
         breedTranslationMap.put("papillon", "파피용");
         breedTranslationMap.put("phalene", "팔렌");
 
-        breedTranslationMap.put("jindo", "진돗개"); // korean jindo 추가
+        breedTranslationMap.put("jindo", "진돗개"); 
         breedTranslationMap.put("poongsan", "풍산개");
         breedTranslationMap.put("sapsali", "삽살개");
 
@@ -181,9 +179,9 @@ public class PetBreedAnalysisService {
         breedTranslationMap.put("puppy", "강아지");
         breedTranslationMap.put("canine", "개과 동물");
         breedTranslationMap.put("gun dog", "조렵견");
-        breedTranslationMap.put("herding dog", "목축견"); // Herding dog 추가
-        breedTranslationMap.put("sled dog", "썰매견"); // Sled dog 추가
-        breedTranslationMap.put("water dog", "워터 도그"); // Water dog 추가
+        breedTranslationMap.put("herding dog", "목축견"); 
+        breedTranslationMap.put("sled dog", "썰매견"); 
+        breedTranslationMap.put("water dog", "워터 도그"); 
         breedTranslationMap.put("toy dog", "토이 도그 (소형견)");
         breedTranslationMap.put("poodle crossbreed", "푸들 믹스견");
         breedTranslationMap.put("dog collar", "개 목걸이");
@@ -195,19 +193,19 @@ public class PetBreedAnalysisService {
         breedTranslationMap.put("siamese", "샴");
         breedTranslationMap.put("ragdoll", "랙돌");
         breedTranslationMap.put("bengal", "벵갈");
-        breedTranslationMap.put("british shorthair", "브리티시 쇼트헤어"); // british, shorthair 추가
-        breedTranslationMap.put("british longhair", "브리티시 롱헤어"); // longhair 추가
-        breedTranslationMap.put("scottish fold", "스코티시 폴드"); // scottish, fold 추가
-        breedTranslationMap.put("scottish straight", "스코티시 스트레이트"); // straight 추가
-        breedTranslationMap.put("norwegian forest cat", "노르웨이 숲 고양이"); // norwegian, forest 추가
-        breedTranslationMap.put("russian blue", "러시안 블루"); // russian, blue 추가
-        breedTranslationMap.put("russian white", "러시안 화이트"); // white 추가
-        breedTranslationMap.put("russian black", "러시안 블랙"); // black 추가
-        breedTranslationMap.put("bengal cat", "벵갈 고양이"); // Bengal cat 추가 (기존 bengal과 별개)
-        breedTranslationMap.put("siamese cat", "샴 고양이"); // Siamese cat 추가 (기존 siamese와 별개)
-        breedTranslationMap.put("thai cat", "타이 고양이"); // Thai cat 추가
-        breedTranslationMap.put("balinese cat", "발리니즈 고양이"); // Balinese cat 추가 (기존 balinese와 별개)
-        breedTranslationMap.put("asian semi-longhair", "아시안 세미 롱헤어"); // Asian semi-longhair 추가
+        breedTranslationMap.put("british shorthair", "브리티시 쇼트헤어"); 
+        breedTranslationMap.put("british longhair", "브리티시 롱헤어"); 
+        breedTranslationMap.put("scottish fold", "스코티시 폴드"); 
+        breedTranslationMap.put("scottish straight", "스코티시 스트레이트"); 
+        breedTranslationMap.put("norwegian forest cat", "노르웨이 숲 고양이"); 
+        breedTranslationMap.put("russian blue", "러시안 블루"); 
+        breedTranslationMap.put("russian white", "러시안 화이트"); 
+        breedTranslationMap.put("russian black", "러시안 블랙"); 
+        breedTranslationMap.put("bengal cat", "벵갈 고양이"); 
+        breedTranslationMap.put("siamese cat", "샴 고양이"); 
+        breedTranslationMap.put("thai cat", "타이 고양이"); 
+        breedTranslationMap.put("balinese cat", "발리니즈 고양이"); 
+        breedTranslationMap.put("asian semi-longhair", "아시안 세미 롱헤어"); 
         breedTranslationMap.put("munchkin cat", "먼치킨 고양이");
 
         breedTranslationMap.put("maine coon", "메인쿤");
@@ -216,31 +214,31 @@ public class PetBreedAnalysisService {
         breedTranslationMap.put("donskoy", "돈스코이");
 
         breedTranslationMap.put("abyssinian", "아비시니안");
-        breedTranslationMap.put("birman", "버만"); // sacred birman 추가
-        breedTranslationMap.put("oriental shorthair", "오리엔탈 쇼트헤어"); // oriental 추가
+        breedTranslationMap.put("birman", "버만");
+        breedTranslationMap.put("oriental shorthair", "오리엔탈 쇼트헤어"); 
         breedTranslationMap.put("oriental longhair", "오리엔탈 롱헤어");
-        breedTranslationMap.put("exotic shorthair", "엑조틱 쇼트헤어"); // exotic 추가
+        breedTranslationMap.put("exotic shorthair", "엑조틱 쇼트헤어"); 
         breedTranslationMap.put("burmese", "버미즈");
         breedTranslationMap.put("european burmese", "유러피안 버미즈");
 
-        breedTranslationMap.put("american shorthair", "아메리칸 쇼트헤어"); // american 추가
-        breedTranslationMap.put("american wirehair", "아메리칸 와이어헤어"); // wirehair 추가
-        breedTranslationMap.put("american curl", "아메리칸 컬"); // curl 추가
-        breedTranslationMap.put("japanese bobtail", "재패니즈 밥테일"); // bobtail 추가
+        breedTranslationMap.put("american shorthair", "아메리칸 쇼트헤어"); 
+        breedTranslationMap.put("american wirehair", "아메리칸 와이어헤어"); 
+        breedTranslationMap.put("american curl", "아메리칸 컬"); 
+        breedTranslationMap.put("japanese bobtail", "재패니즈 밥테일"); 
         breedTranslationMap.put("kurilian bobtail", "쿠릴리안 밥테일");
 
-        breedTranslationMap.put("devon rex", "데본 렉스"); // rex 추가
+        breedTranslationMap.put("devon rex", "데본 렉스"); 
         breedTranslationMap.put("cornish rex", "코니시 렉스");
         breedTranslationMap.put("selkirk rex", "셀커크 렉스");
         breedTranslationMap.put("german rex", "저먼 렉스");
 
-        breedTranslationMap.put("turkish angora", "터키시 앙고라"); // turkish, angora 추가
-        breedTranslationMap.put("turkish van", "터키시 반"); // van 추가
+        breedTranslationMap.put("turkish angora", "터키시 앙고라"); 
+        breedTranslationMap.put("turkish van", "터키시 반"); 
         breedTranslationMap.put("manx", "맹크스");
         breedTranslationMap.put("cymric", "킴릭");
         breedTranslationMap.put("balinese", "발리니즈");
         breedTranslationMap.put("javanese", "자바니즈");
-        breedTranslationMap.put("colorpoint shorthair", "컬러포인트 쇼트헤어"); // colorpoint 추가
+        breedTranslationMap.put("colorpoint shorthair", "컬러포인트 쇼트헤어"); 
         breedTranslationMap.put("himalayan", "히말라얀");
         breedTranslationMap.put("somali", "소말리");
         breedTranslationMap.put("ocicat", "오시캣");
@@ -263,7 +261,7 @@ public class PetBreedAnalysisService {
         breedTranslationMap.put("savannah", "사바나");
 
         // 일반 고양이 관련 용어
-        breedTranslationMap.put("korean short-hair", "코리안 쇼트헤어"); // 한국 고양이
+        breedTranslationMap.put("korean short-hair", "코리안 쇼트헤어"); 
         breedTranslationMap.put("cat", "고양이");
         breedTranslationMap.put("kitten", "아기 고양이");
         breedTranslationMap.put("feline", "고양이과 동물");
@@ -271,7 +269,7 @@ public class PetBreedAnalysisService {
         breedTranslationMap.put("calico", "칼리코 (삼색 고양이)");
         breedTranslationMap.put("tortoiseshell", "톨토이즈쉘 (카오스 고양이)");
         breedTranslationMap.put("tuxedo", "턱시도 고양이");
-        breedTranslationMap.put("domestic short-haired cat", "도메스틱 쇼트헤어 (집고양이)"); // domestic 추가
+        breedTranslationMap.put("domestic short-haired cat", "도메스틱 쇼트헤어 (집고양이)"); 
         breedTranslationMap.put("domestic long-haired cat", "도메스틱 롱헤어 (집고양이)");
         breedTranslationMap.put("mixed breed", "믹스견/믹스묘");
         breedTranslationMap.put("moggy", "믹스묘 (영국식)");
@@ -304,7 +302,7 @@ public class PetBreedAnalysisService {
         Map<String, String> frenchBulldogChars = Map.of("size", "small", "activityLevel", "low", "groomingNeeds", "low",
                 "temperament", "playful, smart, adaptable, affectionate");
         breedCharacteristicsMap.put("french bulldog", frenchBulldogChars);
-        breedCharacteristicsMap.put("bulldog", frenchBulldogChars); // 대표 (Frenchie가 더 흔하므로)
+        breedCharacteristicsMap.put("bulldog", frenchBulldogChars); 
 
         Map<String, String> englishBulldogChars = Map.of("size", "medium", "activityLevel", "low", "groomingNeeds",
                 "low", "temperament", "docile, willful, friendly, calm");
@@ -344,7 +342,7 @@ public class PetBreedAnalysisService {
         breedCharacteristicsMap.put("american staffordshire terrier", americanStaffordshireTerrierChars);
 
         Map<String, String> pitBullTerrierChars = Map.of("size", "medium", "activityLevel", "high", "groomingNeeds",
-                "low", "temperament", "confident, smart, eager to please, loyal"); // Note: Breed definition varies.
+                "low", "temperament", "confident, smart, eager to please, loyal"); 
         breedCharacteristicsMap.put("pit bull terrier", pitBullTerrierChars);
 
         Map<String, String> scottishTerrierChars = Map.of("size", "small", "activityLevel", "moderate", "groomingNeeds",
@@ -376,7 +374,7 @@ public class PetBreedAnalysisService {
         breedCharacteristicsMap.put("boston terrier", bostonTerrierChars);
 
         Map<String, String> smallTerrierChars = Map.of("size", "small", "activityLevel", "variable", "groomingNeeds",
-                "variable", "temperament", "feisty, energetic, alert"); // General category
+                "variable", "temperament", "feisty, energetic, alert"); 
         breedCharacteristicsMap.put("small terrier", smallTerrierChars);
 
         // --- 강아지 특징 (Poodles, Beagles, Dachshunds, Spitz types etc.) ---
@@ -420,14 +418,14 @@ public class PetBreedAnalysisService {
         Map<String, String> germanShepherdChars = Map.of("size", "large", "activityLevel", "high", "groomingNeeds",
                 "moderate", "temperament", "confident, courageous, smart, loyal");
         breedCharacteristicsMap.put("german shepherd", germanShepherdChars);
-        breedCharacteristicsMap.put("shepherd", germanShepherdChars); // 대표
+        breedCharacteristicsMap.put("shepherd", germanShepherdChars); 
 
         Map<String, String> oldGermanShepherdChars = Map.of("size", "large", "activityLevel", "high", "groomingNeeds",
-                "high", "temperament", "loyal, intelligent, calm, protective"); // Often longer coat
+                "high", "temperament", "loyal, intelligent, calm, protective"); 
         breedCharacteristicsMap.put("old german shepherd dog", oldGermanShepherdChars);
 
         Map<String, String> kingShepherdChars = Map.of("size", "large", "activityLevel", "moderate", "groomingNeeds",
-                "high", "temperament", "intelligent, calm, loyal, protective"); // Larger build
+                "high", "temperament", "intelligent, calm, loyal, protective"); 
         breedCharacteristicsMap.put("king shepherd", kingShepherdChars);
 
         Map<String, String> belgianMalinoisChars = Map.of("size", "large", "activityLevel", "very_high",
@@ -441,7 +439,7 @@ public class PetBreedAnalysisService {
         Map<String, String> siberianHuskyChars = Map.of("size", "large", "activityLevel", "very_high", "groomingNeeds",
                 "moderate", "temperament", "friendly, outgoing, mischievous, energetic");
         breedCharacteristicsMap.put("siberian husky", siberianHuskyChars);
-        breedCharacteristicsMap.put("husky", siberianHuskyChars); // 대표
+        breedCharacteristicsMap.put("husky", siberianHuskyChars); 
 
         Map<String, String> alaskanMalamuteChars = Map.of("size", "large", "activityLevel", "high", "groomingNeeds",
                 "high", "temperament", "affectionate, loyal, playful, dignified");
@@ -452,16 +450,16 @@ public class PetBreedAnalysisService {
         breedCharacteristicsMap.put("alaskan klee kai", alaskanKleeKaiChars);
 
         Map<String, String> northernInuitDogChars = Map.of("size", "large", "activityLevel", "high", "groomingNeeds",
-                "moderate", "temperament", "friendly, intelligent, calm, non-aggressive"); // Wolf-like appearance
+                "moderate", "temperament", "friendly, intelligent, calm, non-aggressive"); 
         breedCharacteristicsMap.put("northern inuit dog", northernInuitDogChars);
 
         Map<String, String> welshCorgiChars = Map.of("size", "small", "activityLevel", "high", "groomingNeeds",
                 "moderate", "temperament", "affectionate, smart, alert, outgoing");
         breedCharacteristicsMap.put("welsh corgi", welshCorgiChars); // 대표
         breedCharacteristicsMap.put("pembroke welsh corgi", Map.of("size", "small", "activityLevel", "high",
-                "groomingNeeds", "moderate", "temperament", "affectionate, smart, alert, tenacious")); // Often tailless
+                "groomingNeeds", "moderate", "temperament", "affectionate, smart, alert, tenacious")); 
         breedCharacteristicsMap.put("cardigan welsh corgi", Map.of("size", "small", "activityLevel", "high",
-                "groomingNeeds", "moderate", "temperament", "affectionate, loyal, smart, steady")); // Has tail
+                "groomingNeeds", "moderate", "temperament", "affectionate, loyal, smart, steady")); 
 
         // --- 강아지 특징 (Boxers, Dobermans, Rottweilers, Mountain Dogs, Australian breeds)
         // ---
@@ -503,7 +501,7 @@ public class PetBreedAnalysisService {
 
         // --- 강아지 특징 (Collies, Spaniels) ---
         Map<String, String> collieChars = Map.of("size", "large", "activityLevel", "moderate", "groomingNeeds", "high",
-                "temperament", "graceful, devoted, proud, intelligent"); // General/Rough Collie
+                "temperament", "graceful, devoted, proud, intelligent");
         breedCharacteristicsMap.put("collie", collieChars);
         breedCharacteristicsMap.put("rough collie", collieChars);
 
@@ -522,7 +520,7 @@ public class PetBreedAnalysisService {
         Map<String, String> cockerSpanielChars = Map.of("size", "medium", "activityLevel", "moderate", "groomingNeeds",
                 "high", "temperament", "gentle, smart, happy, affectionate");
         breedCharacteristicsMap.put("cocker spaniel", cockerSpanielChars);
-        breedCharacteristicsMap.put("spaniel", cockerSpanielChars); // 대표
+        breedCharacteristicsMap.put("spaniel", cockerSpanielChars); 
 
         Map<String, String> englishSpringerSpanielChars = Map.of("size", "medium", "activityLevel", "high",
                 "groomingNeeds", "moderate", "temperament", "friendly, playful, obedient, eager to please");
@@ -590,7 +588,7 @@ public class PetBreedAnalysisService {
         Map<String, String> akitaChars = Map.of("size", "large", "activityLevel", "moderate", "groomingNeeds", "high",
                 "temperament", "courageous, dignified, profoundly loyal, wary (of strangers)");
         breedCharacteristicsMap.put("akita", akitaChars);
-        breedCharacteristicsMap.put("japanese akita", akitaChars); // 유사
+        breedCharacteristicsMap.put("japanese akita", akitaChars); 
         breedCharacteristicsMap.put("american akita", Map.of("size", "large", "activityLevel", "moderate",
                 "groomingNeeds", "high", "temperament", "courageous, dignified, loyal, larger build"));
 
@@ -629,7 +627,7 @@ public class PetBreedAnalysisService {
         Map<String, String> americanFoxhoundChars = Map.of("size", "large", "activityLevel", "high", "groomingNeeds",
                 "low", "temperament", "easygoing, sweet-tempered, independent, vocal");
         breedCharacteristicsMap.put("american foxhound", americanFoxhoundChars);
-        breedCharacteristicsMap.put("foxhound", americanFoxhoundChars); // 대표
+        breedCharacteristicsMap.put("foxhound", americanFoxhoundChars); 
 
         Map<String, String> borzoiChars = Map.of("size", "large", "activityLevel", "moderate", "groomingNeeds",
                 "moderate", "temperament", "regal, calm, affectionate, independent");
@@ -646,7 +644,7 @@ public class PetBreedAnalysisService {
 
         Map<String, String> pointerChars = Map.of("size", "large", "activityLevel", "high", "groomingNeeds", "low",
                 "temperament", "even-tempered, hardworking, loyal, intelligent");
-        breedCharacteristicsMap.put("pointer", pointerChars); // 대표 (English Pointer)
+        breedCharacteristicsMap.put("pointer", pointerChars); 
 
         Map<String, String> germanShorthairedPointerChars = Map.of("size", "large", "activityLevel", "very_high",
                 "groomingNeeds", "low", "temperament", "friendly, smart, willing to please, enthusiastic");
@@ -660,7 +658,7 @@ public class PetBreedAnalysisService {
         Map<String, String> irishSetterChars = Map.of("size", "large", "activityLevel", "high", "groomingNeeds", "high",
                 "temperament", "outgoing, sweet-tempered, active, trainable");
         breedCharacteristicsMap.put("irish setter", irishSetterChars);
-        breedCharacteristicsMap.put("setter", irishSetterChars); // 대표
+        breedCharacteristicsMap.put("setter", irishSetterChars); 
 
         Map<String, String> englishSetterChars = Map.of("size", "large", "activityLevel", "high", "groomingNeeds",
                 "high", "temperament", "friendly, merry, gentle, active");
@@ -689,8 +687,7 @@ public class PetBreedAnalysisService {
         breedCharacteristicsMap.put("newfoundland", newfoundlandChars);
 
         Map<String, String> landseerChars = Map.of("size", "large", "activityLevel", "moderate", "groomingNeeds",
-                "high", "temperament", "gentle, courageous, responsive, good swimmer"); // Similar to Newfoundland,
-                                                                                        // often black & white
+                "high", "temperament", "gentle, courageous, responsive, good swimmer"); 
         breedCharacteristicsMap.put("landseer", landseerChars);
 
         Map<String, String> stBernardChars = Map.of("size", "large", "activityLevel", "low", "groomingNeeds", "high",
@@ -702,7 +699,7 @@ public class PetBreedAnalysisService {
         breedCharacteristicsMap.put("leonberger", leonbergerChars);
 
         Map<String, String> mastiffChars = Map.of("size", "large", "activityLevel", "low", "groomingNeeds", "low",
-                "temperament", "courageous, dignified, good-natured, calm"); // English Mastiff
+                "temperament", "courageous, dignified, good-natured, calm"); 
         breedCharacteristicsMap.put("mastiff", mastiffChars);
 
         Map<String, String> bullmastiffChars = Map.of("size", "large", "activityLevel", "moderate", "groomingNeeds",
@@ -740,7 +737,7 @@ public class PetBreedAnalysisService {
         breedCharacteristicsMap.put("papillon", papillonChars);
 
         Map<String, String> phaleneChars = Map.of("size", "small", "activityLevel", "moderate", "groomingNeeds",
-                "moderate", "temperament", "friendly, alert, happy, intelligent"); // Drop-eared Papillon
+                "moderate", "temperament", "friendly, alert, happy, intelligent"); 
         breedCharacteristicsMap.put("phalene", phaleneChars);
 
         Map<String, String> jindoChars = Map.of("size", "medium", "activityLevel", "high", "groomingNeeds", "moderate",
@@ -763,36 +760,35 @@ public class PetBreedAnalysisService {
         breedCharacteristicsMap.put("canine", dogChars);
 
         Map<String, String> gunDogChars = Map.of("size", "variable", "activityLevel", "high", "groomingNeeds",
-                "variable", "temperament", "trainable, active, intelligent"); // Group
+                "variable", "temperament", "trainable, active, intelligent"); 
         breedCharacteristicsMap.put("gun dog", gunDogChars);
 
         Map<String, String> herdingDogChars = Map.of("size", "variable", "activityLevel", "high", "groomingNeeds",
-                "variable", "temperament", "intelligent, energetic, trainable, loyal"); // Group
+                "variable", "temperament", "intelligent, energetic, trainable, loyal"); 
         breedCharacteristicsMap.put("herding dog", herdingDogChars);
 
         Map<String, String> sledDogChars = Map.of("size", "large", "activityLevel", "very_high", "groomingNeeds",
-                "moderate", "temperament", "energetic, resilient, friendly, pack-oriented"); // Group
+                "moderate", "temperament", "energetic, resilient, friendly, pack-oriented"); 
         breedCharacteristicsMap.put("sled dog", sledDogChars);
 
         Map<String, String> waterDogChars = Map.of("size", "variable", "activityLevel", "high", "groomingNeeds",
-                "variable", "temperament", "intelligent, active, good swimmer"); // Group
+                "variable", "temperament", "intelligent, active, good swimmer"); 
         breedCharacteristicsMap.put("water dog", waterDogChars);
 
         Map<String, String> toyDogChars = Map.of("size", "small", "activityLevel", "variable", "groomingNeeds",
-                "variable", "temperament", "companionable, affectionate, lively"); // Group
+                "variable", "temperament", "companionable, affectionate, lively"); 
         breedCharacteristicsMap.put("toy dog", toyDogChars);
 
         Map<String, String> mixedBreedDogChars = Map.of("size", "variable", "activityLevel", "variable",
-                "groomingNeeds", "variable", "temperament", "variable, unique"); // Mix
-        breedCharacteristicsMap.put("mixed breed", mixedBreedDogChars); // Apply to both dog/cat initially
+                "groomingNeeds", "variable", "temperament", "variable, unique"); 
+        breedCharacteristicsMap.put("mixed breed", mixedBreedDogChars); 
 
-        // 용품 관련 항목은 특징 정보 없음
         breedCharacteristicsMap.put("dog collar", Collections.emptyMap());
         breedCharacteristicsMap.put("dog supply", Collections.emptyMap());
         breedCharacteristicsMap.put("pet supply", Collections.emptyMap());
         breedCharacteristicsMap.put("collar", Collections.emptyMap());
         breedCharacteristicsMap.put("supply", Collections.emptyMap());
-        breedCharacteristicsMap.put("pet", Collections.emptyMap()); // 'pet' 자체는 특징 정의 어려움
+        breedCharacteristicsMap.put("pet", Collections.emptyMap()); 
 
         // --- 고양이 특징 ---
         Map<String, String> persianChars = Map.of("size", "medium", "activityLevel", "low", "groomingNeeds",
@@ -803,7 +799,7 @@ public class PetBreedAnalysisService {
                 "temperament", "affectionate, social, vocal, intelligent");
         breedCharacteristicsMap.put("siamese", siameseChars);
         breedCharacteristicsMap.put("siamese cat", siameseChars);
-        breedCharacteristicsMap.put("thai cat", siameseChars); // Thai is similar to traditional Siamese
+        breedCharacteristicsMap.put("thai cat", siameseChars); 
 
         Map<String, String> ragdollChars = Map.of("size", "large", "activityLevel", "low", "groomingNeeds", "moderate",
                 "temperament", "docile, gentle, affectionate, placid");
@@ -824,7 +820,7 @@ public class PetBreedAnalysisService {
                 "moderate", "temperament", "sweet, charming, undemanding, adaptable");
         breedCharacteristicsMap.put("scottish fold", scottishFoldChars);
         breedCharacteristicsMap.put("scottish straight", Map.of("size", "medium", "activityLevel", "moderate",
-                "groomingNeeds", "low", "temperament", "sweet, charming, adaptable")); // Ears are straight
+                "groomingNeeds", "low", "temperament", "sweet, charming, adaptable")); 
 
         Map<String, String> norwegianForestChars = Map.of("size", "large", "activityLevel", "moderate", "groomingNeeds",
                 "moderate", "temperament", "gentle, friendly, independent, climber");
@@ -833,8 +829,8 @@ public class PetBreedAnalysisService {
         Map<String, String> russianBlueChars = Map.of("size", "medium", "activityLevel", "moderate", "groomingNeeds",
                 "low", "temperament", "gentle, quiet, reserved, loyal");
         breedCharacteristicsMap.put("russian blue", russianBlueChars);
-        breedCharacteristicsMap.put("russian white", russianBlueChars); // Color variation
-        breedCharacteristicsMap.put("russian black", russianBlueChars); // Color variation
+        breedCharacteristicsMap.put("russian white", russianBlueChars); 
+        breedCharacteristicsMap.put("russian black", russianBlueChars); 
 
         Map<String, String> munchkinChars = Map.of("size", "small", "activityLevel", "moderate", "groomingNeeds",
                 "variable", "temperament", "curious, playful, outgoing, short legs");
@@ -846,10 +842,10 @@ public class PetBreedAnalysisService {
         breedCharacteristicsMap.put("maine coon", maineCoonChars);
 
         Map<String, String> sphynxChars = Map.of("size", "medium", "activityLevel", "high", "groomingNeeds", "high",
-                "temperament", "affectionate, curious, energetic, hairless"); // Needs skin care
+                "temperament", "affectionate, curious, energetic, hairless"); 
         breedCharacteristicsMap.put("sphynx", sphynxChars);
-        breedCharacteristicsMap.put("peterbald", sphynxChars); // Similar hairless/fuzzy breed
-        breedCharacteristicsMap.put("donskoy", sphynxChars); // Similar hairless breed
+        breedCharacteristicsMap.put("peterbald", sphynxChars); 
+        breedCharacteristicsMap.put("donskoy", sphynxChars); 
 
         Map<String, String> abyssinianChars = Map.of("size", "medium", "activityLevel", "high", "groomingNeeds", "low",
                 "temperament", "active, playful, curious, intelligent");
@@ -917,22 +913,21 @@ public class PetBreedAnalysisService {
                 "moderate", "temperament", "mellow, playful, intelligent, longhaired Manx"));
 
         Map<String, String> balineseChars = Map.of("size", "medium", "activityLevel", "high", "groomingNeeds",
-                "moderate", "temperament", "affectionate, social, vocal, intelligent"); // Longhaired Siamese
+                "moderate", "temperament", "affectionate, social, vocal, intelligent"); 
         breedCharacteristicsMap.put("balinese", balineseChars);
         breedCharacteristicsMap.put("balinese cat", balineseChars);
-        breedCharacteristicsMap.put("javanese", balineseChars); // Color variation of Balinese
+        breedCharacteristicsMap.put("javanese", balineseChars); 
 
         Map<String, String> colorpointShorthairChars = Map.of("size", "medium", "activityLevel", "high",
-                "groomingNeeds", "low", "temperament", "affectionate, social, vocal, intelligent"); // Siamese with
-                                                                                                    // different colors
+                "groomingNeeds", "low", "temperament", "affectionate, social, vocal, intelligent");                                                                                    
         breedCharacteristicsMap.put("colorpoint shorthair", colorpointShorthairChars);
 
         Map<String, String> himalayanChars = Map.of("size", "medium", "activityLevel", "low", "groomingNeeds",
-                "very_high", "temperament", "sweet, gentle, quiet, affectionate"); // Persian with Siamese points
+                "very_high", "temperament", "sweet, gentle, quiet, affectionate"); 
         breedCharacteristicsMap.put("himalayan", himalayanChars);
 
         Map<String, String> somaliChars = Map.of("size", "medium", "activityLevel", "high", "groomingNeeds", "moderate",
-                "temperament", "active, playful, curious, intelligent"); // Longhaired Abyssinian
+                "temperament", "active, playful, curious, intelligent"); 
         breedCharacteristicsMap.put("somali", somaliChars);
 
         Map<String, String> ocicatChars = Map.of("size", "large", "activityLevel", "high", "groomingNeeds", "low",
@@ -956,7 +951,7 @@ public class PetBreedAnalysisService {
         breedCharacteristicsMap.put("singapura", singapuraChars);
 
         Map<String, String> tonkineseChars = Map.of("size", "medium", "activityLevel", "high", "groomingNeeds", "low",
-                "temperament", "affectionate, playful, social, curious"); // Mix of Siamese and Burmese
+                "temperament", "affectionate, playful, social, curious"); 
         breedCharacteristicsMap.put("tonkinese", tonkineseChars);
 
         Map<String, String> bombayChars = Map.of("size", "medium", "activityLevel", "moderate", "groomingNeeds", "low",
@@ -996,11 +991,11 @@ public class PetBreedAnalysisService {
         breedCharacteristicsMap.put("toyger", toygerChars);
 
         Map<String, String> chausieChars = Map.of("size", "large", "activityLevel", "high", "groomingNeeds", "low",
-                "temperament", "active, intelligent, adventurous, wild look"); // Hybrid
+                "temperament", "active, intelligent, adventurous, wild look"); 
         breedCharacteristicsMap.put("chausie", chausieChars);
 
         Map<String, String> savannahChars = Map.of("size", "large", "activityLevel", "high", "groomingNeeds", "low",
-                "temperament", "confident, curious, assertive, loyal"); // Hybrid
+                "temperament", "confident, curious, assertive, loyal"); 
         breedCharacteristicsMap.put("savannah", savannahChars);
 
         // --- 고양이 일반 용어 특징 ---
@@ -1019,10 +1014,8 @@ public class PetBreedAnalysisService {
 
         Map<String, String> mixedBreedCatChars = Map.of("size", "variable", "activityLevel", "variable",
                 "groomingNeeds", "variable", "temperament", "variable, unique");
-        // 'mixed breed' key already used for dogs, will apply to cats too if needed.
         breedCharacteristicsMap.put("moggy", mixedBreedCatChars);
 
-        // 색상/무늬 관련 항목은 특징 정보 없음
         breedCharacteristicsMap.put("tabby", Collections.emptyMap());
         breedCharacteristicsMap.put("calico", Collections.emptyMap());
         breedCharacteristicsMap.put("tortoiseshell", Collections.emptyMap());
@@ -1041,11 +1034,9 @@ public class PetBreedAnalysisService {
         public BreedAnalysisResult(String breedName, float score, Map<String, String> characteristics) {
             this.breedName = breedName;
             this.score = score;
-            // 특징 정보가 없으면 빈 Map으로 초기화
             this.characteristics = characteristics != null ? characteristics : Collections.emptyMap();
         }
 
-        // 기존 생성자 유지 (특징 정보 없을 경우 대비)
         public BreedAnalysisResult(String breedName, float score) {
             this(breedName, score, null);
         }
@@ -1085,16 +1076,13 @@ public class PetBreedAnalysisService {
                     float score = annotation.getScore();
 
                     if (isRelevantLabel(description) && score > 0.6) {
-                        // 1. 한국어 번역
                         String translatedOrOriginal = translateToKorean(description);
                         String finalLabel = formatLabel(translatedOrOriginal);
 
-                        // 2. 특징 정보 조회 (원본 영어 description 기준)
                         Map<String, String> characteristics = breedCharacteristicsMap.get(description);
 
                         log.info("Relevant label detected: {} -> {} (Score: {})", annotation.getDescription(),
                                 finalLabel, score);
-                        // 3. 결과 객체 생성 시 특징 정보 추가
                         results.add(new BreedAnalysisResult(finalLabel, score, characteristics));
                     } else {
                         log.debug("Ignoring label: {} (Score: {})", annotation.getDescription(), score);
@@ -1122,7 +1110,6 @@ public class PetBreedAnalysisService {
             return true;
         }
         String[] breedKeywords = {
-                // 강아지 (Dog Breeds) - 추가 확장
                 "retriever", "labrador", "golden", "flat-coated", "curly-coated", "chesapeake bay",
                 "bulldog", "french", "english", "american bulldog", "olde english bulldogge", "australian bulldog",
                 "terrier", "yorkshire", "jack russell", "bull terrier", "staffordshire", "pit bull", "scottish terrier",
@@ -1132,8 +1119,8 @@ public class PetBreedAnalysisService {
                 "beagle", "beagle-harrier", "harrier",
                 "dachshund", "shiba", "inu", "maltese", "pomeranian",
                 "german shepherd", "shepherd", "belgian malinois", "malinois", "belgian tervuren", "tervuren",
-                "old german shepherd", "king shepherd", // old german shepherd, king shepherd 추가
-                "siberian", "husky", "alaskan", "malamute", "klee kai", "northern inuit", // northern inuit 추가
+                "old german shepherd", "king shepherd", 
+                "siberian", "husky", "alaskan", "malamute", "klee kai", "northern inuit", 
                 "welsh", "corgi", "pembroke", "cardigan",
                 "boxer", "doberman", "pinscher", "rottweiler", "great dane", "bernese", "mountain", "swiss mountain",
                 "australian", "cattle dog", "kelpie", "collie", "border", "rough collie", "smooth collie", "shetland",
@@ -1141,7 +1128,7 @@ public class PetBreedAnalysisService {
                 "spaniel", "cocker", "springer", "english springer", "welsh springer", "brittany", "king charles",
                 "cavalier",
                 "chihuahua", "pug", "bichon", "frise", "havanese", "coton de tulear", "shih tzu", "lhasa apso",
-                "tibetan terrier", "tibetan spaniel", "bolognese", // bolognese 추가
+                "tibetan terrier", "tibetan spaniel", "bolognese", 
                 "akita", "japanese akita", "american akita", "samoyed", "eurasier", "keeshond",
                 "greyhound", "whippet", "italian greyhound", "saluki", "afghan hound", "borzoi", "basenji", "foxhound",
                 "american foxhound",
@@ -1152,16 +1139,16 @@ public class PetBreedAnalysisService {
                 "mastiff", "bullmastiff", "neapolitan mastiff", "tibetan mastiff", "cane corso", "dogue de bordeaux",
                 "schnauzer", "miniature schnauzer", "standard schnauzer", "giant schnauzer",
                 "papillon", "phalene", "jindo", "korean jindo", "poongsan", "sapsali",
-                "gun dog", "toy dog", "crossbreed", "herding", "sled", "water dog", // herding, sled, water dog 추가
-                "collar", "supply", "pet supply", // pet supply 추가
+                "gun dog", "toy dog", "crossbreed", "herding", "sled", "water dog", 
+                "collar", "supply", "pet supply", 
 
-                // 고양이 (Cat Breeds) - 추가 확장
-                "persian", "siamese", "thai", // thai 추가
+                // Cat Breeds
+                "persian", "siamese", "thai", 
                 "ragdoll", "bengal", "british", "shorthair", "longhair", "scottish", "fold", "straight",
-                "norwegian", "forest", "russian", "blue", "white", "black", // white 추가 (색상)
+                "norwegian", "forest", "russian", "blue", "white", "black", 
                 "maine coon", "sphynx", "peterbald", "donskoy",
                 "abyssinian", "birman", "sacred birman", "oriental", "oriental shorthair", "oriental longhair",
-                "asian semi-longhair", // asian semi-longhair 추가
+                "asian semi-longhair", 
                 "exotic", "exotic shorthair", "burmese", "american", "european burmese",
                 "american shorthair", "american wirehair", "american curl", "bobtail", "japanese bobtail",
                 "kurilian bobtail",

@@ -68,7 +68,6 @@ public class ShopService {
                 sortType = SortType.valueOf(sortName);
                 model.addAttribute("selectedSort", sortName);
             } catch (IllegalArgumentException e) {
-                // 유효하지 않은 정렬 타입이라면 기본값 사용
             }
         }
         

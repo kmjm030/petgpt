@@ -48,38 +48,28 @@ public class FileUploadController {
                 directory.mkdirs();
             }
 
-            // 원본 파일명 가져오기 및 null 체크
             String rawOriginalFilename = file.getOriginalFilename();
             if (rawOriginalFilename == null) {
                 response.put("error", "파일 이름이 유효하지 않습니다.");
                 return ResponseEntity.badRequest().body(response);
             }
 
-            // 경로 정리 및 확장자 추출
             String originalFilename = StringUtils.cleanPath(rawOriginalFilename);
             String extension = "";
             if (originalFilename.contains(".")) {
                 extension = originalFilename.substring(originalFilename.lastIndexOf("."));
             }
             
-            // 날짜 폴더 생성 (YYYY/MM/DD)
             String dateFolder = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
             File dateDirectory = new File(uploadDirectory + "/" + dateFolder);
             if (!dateDirectory.exists()) {
                 dateDirectory.mkdirs();
             }
             
-            // 파일명 수정 (UUID + 확장자)
             String fileName = UUID.randomUUID().toString() + extension;
-            
-            // 최종 파일 경로 -> Path 타입으로 변환
             String filePath = dateFolder + "/" + fileName;
             Path targetLocation = Paths.get(uploadDirectory + "/" + filePath);
-            
-            // 파일 저장
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
-            
-            // 접근 가능한 URL 생성
             String fileUrl = uploadUrlPrefix + "/" + filePath;
             
             response.put("imageUrl", fileUrl);

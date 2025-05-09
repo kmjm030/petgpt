@@ -24,8 +24,6 @@ public class Item {
     private String itemImg2;
     private String itemImg3;
     private String itemDetail;
-
-    // 별점 및 리뷰 관련 필드 추가
     private Double avgScore;
     private Integer reviewCount;
 }

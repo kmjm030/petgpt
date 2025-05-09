@@ -11,7 +11,6 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Base64;
 import java.util.Date;
@@ -23,39 +22,33 @@ public class ChatBotUtil {
         String chatMessage = msg;
         String message =  getReqMessage(chatMessage);
         String encodeBase64String = makeSignature(message, secretKey);
-//        System.out.println(message);
-//        System.out.println(encodeBase64String);
         HttpURLConnection con = (HttpURLConnection)url.openConnection();
+
         con.setRequestMethod("POST");
         con.setRequestProperty("Content-Type", "application/json;UTF-8");
         con.setRequestProperty("X-NCP-CHATBOT_SIGNATURE", encodeBase64String);
-
         con.setDoOutput(true);
-        DataOutputStream wr = new DataOutputStream(con.getOutputStream());
 
+        DataOutputStream wr = new DataOutputStream(con.getOutputStream());
         wr.write(message.getBytes("UTF-8"));
         wr.flush();
         wr.close();
         int responseCode = con.getResponseCode();
-//        System.out.println("responseCode:"+responseCode);
 
-        BufferedReader br;
-
-        if(responseCode==200) { // 정상 호출
+        if(responseCode==200) { 
 
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(
                             con.getInputStream()));
+
             String decodedString;
             String jsonString = "";
             while ((decodedString = in.readLine()) != null) {
                 jsonString = decodedString;
             }
-            //chatbotMessage = decodedString;
 
             JSONParser jsonparser = new JSONParser();
             try {
-
                 JSONObject json = (JSONObject)jsonparser.parse(jsonString);
                 JSONArray bubblesArray = (JSONArray)json.get("bubbles");
                 JSONObject bubbles = (JSONObject)bubblesArray.get(0);
@@ -67,21 +60,16 @@ public class ChatBotUtil {
                 System.out.println("error");
                 e.printStackTrace();
             }
-
             in.close();
-
-        } else {  // 에러 발생
+        } else {  
             System.out.println("Error");
-
             chatMessage = con.getResponseMessage();
         }
         return chatMessage;
     }
 
     public static String getReqMessage(String voiceMessage) {
-
         String requestBody = "";
-
         try {
 
             JSONObject obj = new JSONObject();

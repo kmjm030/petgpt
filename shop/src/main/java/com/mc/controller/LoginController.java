@@ -43,20 +43,17 @@ public class LoginController {
         return "redirect:/signin";
     }
 
-    // 로그인 페이지 보여주기 (GET 요청 처리)
     @GetMapping("/gologin")
     public String showLoginPage(Model model, HttpSession session,
-            @RequestParam(name = "redirectURL", required = false) String redirectURL) { // Explicitly name the parameter
+            @RequestParam(name = "redirectURL", required = false) String redirectURL) { 
         if (redirectURL != null && !redirectURL.isEmpty()) {
             session.setAttribute("redirectURL", redirectURL);
         } else {
             session.removeAttribute("redirectURL");
         }
-        // 독립적인 로그인 페이지로 리다이렉션
         return "redirect:/signin";
     }
 
-    // 로그인 처리 (POST 요청 처리)
     @PostMapping("/loginimpl")
     public String loginProcess(Model model, @RequestParam("id") String id,
             @RequestParam("pwd") String pwd,
@@ -75,7 +72,7 @@ public class LoginController {
                 return "redirect:/";
             }
         }
-        // 로그인 실패 시 signin 페이지로 리다이렉트하고 오류 메시지 전달
+
         model.addAttribute("msg", "아이디 또는 패스워드가 일치하지 않습니다.");
         return "redirect:/signin";
     }
@@ -88,7 +85,7 @@ public class LoginController {
             if (cust != null) {
                 log.info("로그아웃: 사용자 ID {}", cust.getCustId());
             }
-            httpSession.invalidate(); // 로그인해서 깃발 꽂아놨던 것을 없앰
+            httpSession.invalidate(); 
             log.info("사용자 로그아웃 처리 완료 - 세션 무효화됨");
         } else {
             log.info("로그아웃: 세션이 이미 없음");

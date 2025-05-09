@@ -82,7 +82,7 @@
       </div>
 
       <script src="<c:url value='/js/signin.js'/>"></script>
-      <!-- 기존 로그인 로직 스크립트 포함 -->
+
       <script>
         let login = {
           send: function () {
@@ -96,12 +96,10 @@
               return;
             }
 
-            // 폼 데이터 생성
             const formData = new FormData();
             formData.append('id', id);
             formData.append('pwd', pwd);
 
-            // 서버로 데이터 전송
             fetch(actionUrl, {
               method: 'POST',
               body: formData
@@ -131,10 +129,7 @@
               });
           },
 
-          // 카카오 로그인 함수 (기존 코드 재사용)
           kakaoLogin: function () {
-            // 기존의 카카오 로그인 로직
-            // 서버에 구현된 카카오 로그인 URL로 이동
             window.location.href = '/auth/kakao';
           }
         };

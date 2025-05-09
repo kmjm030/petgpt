@@ -18,7 +18,6 @@ public class ChatbotService {
     @Value("${chatbot.api.url}")
     private String chatbotApiUrl;
 
-    // Python API 요청 본문 DTO
     private static class AiApiRequest {
         public String prompt;
 
@@ -31,7 +30,6 @@ public class ChatbotService {
         }
     }
 
-    // Python API 응답 본문 DTO
     private static class AiApiResponse {
         public String generated_text;
 
@@ -47,12 +45,6 @@ public class ChatbotService {
         }
     }
 
-    /**
-     * Python AI 서비스 API를 호출하여 챗봇 응답을 가져옴
-     * 
-     * @param userMessage
-     * @return AI 모델의 응답 문자열을 포함하는 Mono
-     */
     public Mono<String> getChatbotReply(String userMessage) {
         log.info("Sending prompt to AI API: {}", userMessage);
         AiApiRequest requestPayload = new AiApiRequest(userMessage);

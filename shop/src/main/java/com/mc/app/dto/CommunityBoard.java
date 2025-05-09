@@ -24,12 +24,10 @@ public class CommunityBoard {
     private String boardImg;
     private LocalDateTime regDate;
     private LocalDateTime updateDate;
-    
     private Integer viewCount;
     private Integer likeCount;
     private Integer commentCount;
 
-    // JSON 직렬화를 위한 추가 getter 메서드
     @JsonProperty("postId")
     public Integer getPostId() {
         return boardKey;
@@ -68,7 +66,6 @@ public class CommunityBoard {
         return boardTitle;
     }
 
-    // 여러 개의 이미지를 저장할 수 있도록 String[] 배열로 반환
     public String[] getImages() {
         return boardImg != null ? new String[] { boardImg } : new String[0];
     }
@@ -105,7 +102,6 @@ public class CommunityBoard {
             this.commentCount--;
         }
     }
-
 
     @JsonProperty("summary")
     public String getSummary() {

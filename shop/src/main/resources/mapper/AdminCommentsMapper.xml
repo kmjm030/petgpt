@@ -29,11 +29,6 @@
             adcomments_update = now()
         WHERE adcomments_key = #{adcommentsKey}
     </update>
-<!--    <update id="updateBoardReStatus" parameterType="int">-->
-<!--        UPDATE qnaboard-->
-<!--        SET board_re = '답변있음'-->
-<!--        WHERE board_key = #{boardKey}-->
-<!--    </update>-->
 
     <update id="updateBoardReStatus" parameterType="map">
         UPDATE qnaboard

@@ -71,10 +71,7 @@ public class CheckOutController {
             @RequestParam("orderTotalPrice") int orderTotalPrice,
             @RequestParam(value = "couponId", required = false) Integer couponId) throws Exception {
 
-        // 세션에서 cartItems 꺼내기
         List<Map<String, Object>> cartItems = (List<Map<String, Object>>) session.getAttribute("cartItems");
-
-        // 쿠폰 사용완료로 바꾸기
 
         TotalOrder order = totalOrder;
         if (couponId != null) {
@@ -87,7 +84,6 @@ public class CheckOutController {
         } else {
             order.setCouponId(0);
         }
-        // TotalOrder 저장하기
 
         order.setCustId(custId);
         order.setOrderAddr(address.getAddrAddress());
@@ -100,7 +96,6 @@ public class CheckOutController {
 
         int orderKey = order.getOrderKey();
 
-        // OrderDetail 저장하기
         if (cartItems != null && !cartItems.isEmpty()) {
             for (Map<String, Object> item : cartItems) {
                 int itemKey = (int) item.get("item_key");
@@ -121,7 +116,6 @@ public class CheckOutController {
             }
         }
 
-        // 배송지 저장하기
         if (addrSave != null && addrSave.equals("Y")) {
             Address addr = address;
             addr.setCustId(custId);
@@ -131,7 +125,7 @@ public class CheckOutController {
             addressService.add(addr);
         }
 
-        session.removeAttribute("cartItems"); // 사용 후 정리!
+        session.removeAttribute("cartItems"); 
         return "redirect:/checkout/success";
 
     }
@@ -144,16 +138,14 @@ public class CheckOutController {
 
     @RequestMapping("/orderlist")
     public String orderlist(Model model, HttpSession session, @RequestParam("id") String id) throws Exception {
-        // 세션에서 로그인된 사용자 확인
         Customer loggedInCustomer = (Customer) session.getAttribute("cust");
 
-        // 로그인하지 않았다면 로그인 페이지로 리다이렉트
         if (loggedInCustomer == null) {
-            return "redirect:/signin"; // 로그인 페이지로 리다이렉트
+            return "redirect:/signin"; 
         }
 
         if (!loggedInCustomer.getCustId().equals(id)) {
-            return "redirect:/orderlist?id=" + loggedInCustomer.getCustId(); // 자신의 마이페이지만 보여줌
+            return "redirect:/orderlist?id=" + loggedInCustomer.getCustId(); 
         }
 
         List<TotalOrder> orderList = totalOrderService.findAllByCust(id);
@@ -184,7 +176,7 @@ public class CheckOutController {
         for (OrderDetail od : orderDetails) {
             int itemKey = od.getItemKey();
             if (!itemMap.containsKey(itemKey)) {
-                Item item = itemService.get(itemKey); // itemService에서 단건 조회
+                Item item = itemService.get(itemKey); 
                 itemMap.put(itemKey, item);
             }
         }

@@ -125,12 +125,10 @@
         DELETE FROM comments WHERE comments_key = #{commentsKey}
     </delete>
 
-    <!-- 특정 댓글의 좋아요 수 조회 -->
     <select id="getLikeCount" parameterType="int" resultType="int">
         SELECT COUNT(*) FROM comment_likes WHERE comments_key = #{commentsKey}
     </select>
 
-    <!-- 댓글 삭제 상태로 업데이트 SQL 수정 -->
     <update id="updateForDeletion" parameterType="com.mc.app.dto.Comments">
         UPDATE comments
         SET
@@ -141,7 +139,6 @@
             comments_key = #{commentsKey}
     </update>
 
-    <!-- 특정 댓글에 대한 특정 사용자의 좋아요 존재 여부 확인 -->
     <select id="countByCommentKeyAndCustId" parameterType="map" resultType="int">
         SELECT COUNT(*)
         FROM comment_likes

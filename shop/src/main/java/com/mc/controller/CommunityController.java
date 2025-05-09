@@ -7,33 +7,19 @@ import com.mc.app.service.CommentsService;
 import com.mc.app.service.CommunityBoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
-import org.springframework.web.multipart.MultipartFile;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 import java.util.Map;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.UUID;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.HashMap;
 
 @Slf4j
@@ -45,9 +31,6 @@ public class CommunityController {
     private final CommunityBoardService communityBoardService;
     private final CommentsService commentsService;
 
-    /**
-     * 커뮤니티 목록 페이지 조회
-     */
     @GetMapping
     public String community(
             @RequestParam(name = "category", required = false) String category,
@@ -65,9 +48,6 @@ public class CommunityController {
         return "index";
     }
 
-    /**
-     * 게시글 상세 페이지 조회
-     */
     @GetMapping("/detail")
     public String communityDetail(@RequestParam("id") int id, Model model, HttpSession session) {
         try {
@@ -143,36 +123,22 @@ public class CommunityController {
         return "index";
     }
 
-    /**
-     * 커뮤니티 검색 결과 페이지 조회
-     */
     @GetMapping("/search")
     public String communitySearch(
-            @RequestParam(name = "keyword") String keyword, // 검색어는 필수로 가정
+            @RequestParam(name = "keyword") String keyword, 
             @RequestParam(name = "page", defaultValue = "1") int page,
             @RequestParam(name = "sort", required = false, defaultValue = "newest") String sort,
             Model model) {
 
-        // JSP에서 사용할 초기값들을 모델에 추가
         model.addAttribute("keyword", keyword);
         model.addAttribute("selectedSort", sort);
-        model.addAttribute("currentPage", page); // 초기 페이지 번호
-
-        // TODO: 실제 검색 결과 수 및 총 페이지 수 조회 로직 필요 (AJAX 응답에서 처리하므로 여기서는 불필요할 수 있음)
-        // long resultCount = communityBoardService.getSearchResultCount(keyword);
-        // int totalPages = communityBoardService.getSearchTotalPages(keyword);
-        // model.addAttribute("resultCount", resultCount);
-        // model.addAttribute("totalPages", totalPages);
-
+        model.addAttribute("currentPage", page); 
         model.addAttribute("pageTitle", "커뮤니티 검색");
-        model.addAttribute("centerPage", "pages/community.jsp"); // 목록/검색 결과는 같은 JSP 사용
-        model.addAttribute("viewName", "community"); // viewName 추가
+        model.addAttribute("centerPage", "pages/community.jsp"); 
+        model.addAttribute("viewName", "community"); 
         return "index";
     }
 
-    /**
-     * 게시글 작성 페이지 로딩
-     */
     @GetMapping("/write")
     public String communityWriteForm(Model model,
             @SessionAttribute(name = "cust", required = false) Customer customer) {
@@ -189,9 +155,6 @@ public class CommunityController {
         return "index";
     }
 
-    /**
-     * 게시글 수정 페이지 로딩
-     */
     @GetMapping("/edit/{boardKey}")
     public String editPostForm(@PathVariable("boardKey") Integer boardKey, Model model,
             @SessionAttribute(name = "cust", required = false) Customer customer) {
@@ -218,10 +181,6 @@ public class CommunityController {
                 model.addAttribute("centerPage", "error.jsp");
                 return "index";
             }
-
-            // *** 로그 추가: board 객체와 boardImg 값 확인 ***
-            log.info("수정 페이지 로딩 - 조회된 board 객체: {}", board);
-            log.info("수정 페이지 로딩 - board.getBoardImg(): {}", board.getBoardImg());
 
             model.addAttribute("board", board);
             model.addAttribute("boardKey", boardKey);

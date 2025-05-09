@@ -26,16 +26,13 @@ public class PasswordController {
     private final CustomerService customerService;
     private final EmailService emailService;
     
-    // 비밀번호 재설정 토큰 저장소 (실제로는 DB에 저장해야 함)
     private static final Map<String, PasswordResetToken> tokenStore = new HashMap<>();
     
-    // 비밀번호 찾기 페이지 표시
     @GetMapping("/forgot")
     public String forgotPassword() {
         return "pages/forgot_password";
     }
     
-    // 비밀번호 재설정 이메일 전송 처리
     @PostMapping("/request-reset")
     @ResponseBody
     public Map<String, Object> requestPasswordReset(
@@ -46,7 +43,6 @@ public class PasswordController {
         Map<String, Object> response = new HashMap<>();
         
         try {
-            // 1. 사용자 ID와 이메일 확인
             Customer customer = customerService.get(custId);
             
             if (customer == null) {
@@ -61,11 +57,9 @@ public class PasswordController {
                 return response;
             }
             
-            // 2. 비밀번호 재설정 토큰 생성
             String token = generateToken();
             String resetLink = generateResetLink(request, token);
             
-            // 3. 토큰 저장 (유효시간 30분)
             PasswordResetToken resetToken = new PasswordResetToken(
                     token, 
                     custId, 
@@ -73,7 +67,6 @@ public class PasswordController {
             );
             tokenStore.put(token, resetToken);
             
-            // 4. 이메일 전송
             String subject = "[PetGPT] 비밀번호 재설정 안내";
             String content = emailService.getPasswordResetEmailTemplate(
                     customer.getCustName() != null ? customer.getCustName() : "고객",
@@ -101,7 +94,6 @@ public class PasswordController {
         return response;
     }
     
-    // 비밀번호 재설정 페이지 표시
     @GetMapping("/reset")
     public String showResetPasswordForm(@RequestParam("token") String token, Model model) {
         PasswordResetToken resetToken = tokenStore.get(token);
@@ -115,7 +107,6 @@ public class PasswordController {
         return "pages/reset_password";
     }
     
-    // 비밀번호 재설정 처리
     @PostMapping("/reset")
     @ResponseBody
     public Map<String, Object> resetPassword(
@@ -126,7 +117,6 @@ public class PasswordController {
         Map<String, Object> response = new HashMap<>();
         
         try {
-            // 1. 토큰 유효성 확인
             PasswordResetToken resetToken = tokenStore.get(token);
             
             if (resetToken == null || resetToken.isExpired()) {
@@ -135,21 +125,18 @@ public class PasswordController {
                 return response;
             }
             
-            // 2. 비밀번호 일치 확인
             if (!newPassword.equals(confirmPassword)) {
                 response.put("success", false);
                 response.put("message", "새 비밀번호와 확인 비밀번호가 일치하지 않습니다.");
                 return response;
             }
             
-            // 3. 비밀번호 유효성 검사 (8자 이상)
             if (newPassword.length() < 8) {
                 response.put("success", false);
                 response.put("message", "비밀번호는 8자 이상이어야 합니다.");
                 return response;
             }
             
-            // 4. 비밀번호 업데이트
             Customer customer = customerService.get(resetToken.getCustId());
             if (customer == null) {
                 response.put("success", false);
@@ -160,7 +147,6 @@ public class PasswordController {
             customer.setCustPwd(newPassword);
             customerService.mod(customer);
             
-            // 5. 사용한 토큰 삭제
             tokenStore.remove(token);
             
             response.put("success", true);
@@ -175,7 +161,6 @@ public class PasswordController {
         return response;
     }
     
-    // 토큰 생성
     private String generateToken() {
         SecureRandom random = new SecureRandom();
         byte[] bytes = new byte[24];
@@ -183,7 +168,6 @@ public class PasswordController {
         return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
     }
     
-    // 비밀번호 재설정 링크 생성
     private String generateResetLink(HttpServletRequest request, String token) {
         String baseUrl = request.getScheme() + "://" + request.getServerName();
         
@@ -194,7 +178,6 @@ public class PasswordController {
         return baseUrl + "/password/reset?token=" + token;
     }
     
-    // 비밀번호 재설정 토큰 클래스 (내부 클래스)
     private static class PasswordResetToken {
         private final String token;
         private final String custId;

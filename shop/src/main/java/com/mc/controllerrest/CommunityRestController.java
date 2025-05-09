@@ -7,10 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.server.ResponseStatusException;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List; // List 임포트 추가 (필요하다면)
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,9 +22,6 @@ public class CommunityRestController {
 
     private final CommunityBoardService communityBoardService;
 
-    /**
-     * 게시글 작성 처리 (POST 요청 - AJAX)
-     */
     @PostMapping("/write/submit")
     public ResponseEntity<?> communityWriteSubmit(
             @ModelAttribute CommunityBoard board,
@@ -75,9 +70,6 @@ public class CommunityRestController {
         }
     }
 
-    /**
-     * 게시글 수정 처리 (PUT 요청 - AJAX)
-     */
     @PutMapping("/post/{boardKey}")
     public ResponseEntity<?> updatePost(
             @PathVariable("boardKey") Integer boardKey,
@@ -152,9 +144,6 @@ public class CommunityRestController {
         }
     }
 
-    /**
-     * 게시글 등록 API
-     */
     @PostMapping("/post")
     public ResponseEntity<Map<String, Object>> createPost(@RequestBody CommunityBoard board) {
         int result = communityBoardService.createBoard(board);
@@ -165,9 +154,6 @@ public class CommunityRestController {
         }
     }
 
-    /**
-     * 게시글 삭제 API
-     */
     @DeleteMapping("/post/{boardKey}")
     public ResponseEntity<Map<String, Object>> deletePost(@PathVariable("boardKey") int boardKey) {
         int result = communityBoardService.deleteBoard(boardKey);
@@ -178,10 +164,6 @@ public class CommunityRestController {
         }
     }
 
-    /**
-     * 게시글 목록 조회 API
-     * 
-     */
     @GetMapping("/posts")
     public ResponseEntity<?> getPosts(
             @RequestParam(value = "page", defaultValue = "1") int page,

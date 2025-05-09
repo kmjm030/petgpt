@@ -14,14 +14,6 @@ public class EmailService {
 
     private final JavaMailSender mailSender;
 
-    /**
-     * 이메일 전송 메서드
-     * 
-     * @param to 수신자 이메일
-     * @param subject 메일 제목
-     * @param content 메일 내용 (HTML 지원)
-     * @return 발송 성공 여부
-     */
     public boolean sendEmail(String to, String subject, String content) {
         try {
             MimeMessage message = mailSender.createMimeMessage();
@@ -30,7 +22,7 @@ public class EmailService {
             helper.setFrom("hyeonhokim@khu.ac.kr");
             helper.setTo(to);
             helper.setSubject(subject);
-            helper.setText(content, true); // true = HTML 메일 지원
+            helper.setText(content, true); 
             
             mailSender.send(message);
             log.info("이메일 발송 성공: {}", to);
@@ -41,13 +33,6 @@ public class EmailService {
         }
     }
     
-    /**
-     * 비밀번호 재설정 링크가 포함된 이메일 템플릿
-     * 
-     * @param customerName 고객 이름
-     * @param resetLink 비밀번호 재설정 링크
-     * @return HTML 형식의 이메일 본문
-     */
     public String getPasswordResetEmailTemplate(String customerName, String resetLink) {
         return "<div style='font-family: Apple SD Gothic Neo, sans-serif; width: 540px; margin: 0 auto;'>"
             + "<h1 style='color: #3f3f3f; text-align: center; padding: 30px 0;'>PetGPT 비밀번호 재설정</h1>"

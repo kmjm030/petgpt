@@ -165,11 +165,9 @@
               return;
             }
 
-            // 버튼 비활성화 및 로딩 상태 표시
             requestResetBtn.disabled = true;
             requestResetBtn.textContent = '처리 중...';
 
-            // AJAX 요청
             fetch('/password/request-reset', {
               method: 'POST',
               headers: {
@@ -192,7 +190,6 @@
                 showError('요청 처리 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
               })
               .finally(() => {
-                // 버튼 상태 복원
                 requestResetBtn.disabled = false;
                 requestResetBtn.textContent = '비밀번호 재설정 링크 받기';
               });
