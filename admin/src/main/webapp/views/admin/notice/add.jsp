@@ -12,7 +12,7 @@
 <form method="post" action="<c:url value='/admin/notice/addimpl'/>">
     <div class="form-group">
         <label for="adminId">작성자 ID</label>
-        <input type="text" id="adminId" name="adminId" required>
+      <input type="text" id="adminId" name="adminId" value="${admin.adminId}" readonly>
     </div>
 
     <div class="form-group">
