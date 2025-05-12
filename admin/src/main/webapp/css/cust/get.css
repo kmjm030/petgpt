@@ -1,0 +1,235 @@
+/* ========== 기본 설정 ========== */
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background-color: #fefae0;
+  color: #3e2723;
+}
+
+.container-fluid {
+  max-width: 95%;
+  margin: 2rem auto;
+  padding: 1rem;
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: #7f5539;
+}
+
+/* ========== 링크 색상(ID 등) ========== */
+table a {
+  color: #7f5539;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+table a:hover {
+  color: #bc6c25;
+  text-decoration: underline;
+}
+
+/* ========== 카드형 테이블 ========== */
+.table-responsive {
+  background-color: #fffaf3;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 8px 20px rgba(139, 69, 19, 0.08);
+  overflow-x: auto;
+}
+
+table.dataTable {
+  width: 100% !important;
+  border-collapse: collapse;
+}
+
+table.dataTable thead {
+  background-color: #f4a261;
+}
+
+table.dataTable thead th {
+  text-align: left;
+  padding: 12px 16px;
+  font-weight: 600;
+  color: #3e2723;
+  border-bottom: 2px solid #e07a5f;
+  white-space: nowrap;
+}
+
+/* ========== 본문 셀 ========== */
+table.dataTable tbody td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #f4e1d2;
+  color: #4e342e;
+  background-color: #fffdf8;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ========== 컬럼 너비 제한 ========== */
+table.dataTable td:nth-child(1),
+table.dataTable th:nth-child(1) {
+  max-width: 180px;
+}
+table.dataTable td:nth-child(4),
+table.dataTable th:nth-child(4) {
+  max-width: 250px;
+}
+table.dataTable td:nth-child(5),
+table.dataTable th:nth-child(5) {
+  max-width: 160px;
+}
+
+/* ========== Hover ========== */
+table.dataTable tbody tr:hover {
+  background-color: #fff0e6;
+  transition: background-color 0.2s ease;
+}
+
+/* ========== 버튼 ========== */
+.btn {
+  border: none;
+  border-radius: 8px;
+  padding: 6px 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-sm {
+  font-size: 0.875rem;
+}
+
+.btn-primary {
+  background-color: #e07a5f;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: #d65a31;
+  transform: translateY(-1px);
+}
+
+.btn-danger {
+  background-color: #bc4749;
+  color: #fff;
+}
+
+.btn-danger:hover {
+  background-color: #9b3234;
+  transform: translateY(-1px);
+}
+
+/* ========== 페이징 (강제 덮어쓰기 포함) ========== */
+.dataTables_wrapper .dataTables_paginate {
+  margin-top: 1rem;
+  text-align: right;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+  background-color: #f4e1d2 !important;
+  color: #3e2723 !important;
+  border: none !important;
+  border-radius: 6px !important;
+  box-shadow: none !important;
+  padding: 6px 12px !important;
+  margin: 0 2px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+  background-color: #fddbb0 !important;
+  color: #3e2723 !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+  background-color: #e07a5f !important;
+  color: white !important;
+  font-weight: 600 !important;
+}
+
+.page-item .page-link {
+  border: none !important;
+  box-shadow: none !important;
+  background: none !important;
+  color: inherit !important;
+}
+
+/* ========== 반응형 대응 ========== */
+@media (max-width: 768px) {
+  table.dataTable th,
+  table.dataTable td {
+    font-size: 0.85rem;
+    padding: 8px 10px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  .btn-sm {
+    padding: 6px 12px;
+  }
+
+  .container-fluid {
+    max-width: 100%;
+  }
+}
+
+/* ========== 다크모드 지원 ========== */
+body.dark-mode {
+  background-color: #2e1a15;
+  color: #fefae0;
+}
+
+body.dark-mode h1 {
+  color: #fefae0;
+}
+
+body.dark-mode .table-responsive {
+  background-color: #3e2723;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+body.dark-mode table.dataTable thead {
+  background-color: #a47148;
+}
+
+body.dark-mode table.dataTable thead th,
+body.dark-mode table.dataTable tbody td {
+  color: #fefae0;
+  border-color: #795548;
+}
+
+body.dark-mode table.dataTable tbody tr:hover {
+  background-color: #5d4037;
+}
+
+body.dark-mode .btn-primary {
+  background-color: #e07a5f;
+}
+
+body.dark-mode .btn-primary:hover {
+  background-color: #f4a261;
+}
+
+body.dark-mode .btn-danger {
+  background-color: #ff6b6b;
+}
+
+body.dark-mode .btn-danger:hover {
+  background-color: #ff4d4d;
+}
+
+body.dark-mode table a {
+  color: #f4a261;
+}
+
+body.dark-mode table a:hover {
+  color: #ffd29d;
+}

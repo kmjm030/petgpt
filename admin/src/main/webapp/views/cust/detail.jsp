@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="/css/cherry-blossom.css">
 <link rel="stylesheet" href="/css/cust.css">
 
-<script src="/js/cust.js"></script>
+<script src="/js/cust/detail.js"></script>
 
 <div class="container-fluid">
     <h1>${cust.custName}님, 회원정보 수정</h1>
