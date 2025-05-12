@@ -46,8 +46,11 @@ $(function () {
 
 const cust_get = {
   delete: function (id) {
-    if (confirm('삭제하시겠습니까?')) {
+    const check = prompt('정말 삭제하시려면 "삭제"를 입력하세요.');
+    if (check === '삭제') {
       location.href = '/cust/delete?id=' + encodeURIComponent(id);
+    } else {
+      alert('삭제가 취소되었습니다.');
     }
   }
 };
