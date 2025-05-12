@@ -2,7 +2,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <link rel="stylesheet" href="/css/cust/detail.css">
-
+<link rel="stylesheet" href="/css/cust/leaf-fall.css">
+<script src="/js/cust/leaf-fall.js"></script>
 <script src="/js/cust/detail.js"></script>
 
 <div class="container-fluid">

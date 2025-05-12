@@ -1,0 +1,30 @@
+.leaf-emoji {
+  position: fixed;
+  top: -40px;
+  font-size: 24px;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.8;
+  animation: fallAndSwayRotate linear infinite;
+}
+
+@keyframes fallAndSwayRotate {
+  0% {
+    transform: translateY(0) translateX(0) rotate(0deg);
+    opacity: 0.9;
+  }
+  25% {
+    transform: translateY(25vh) translateX(20px) rotate(45deg);
+  }
+  50% {
+    transform: translateY(50vh) translateX(-20px) rotate(90deg);
+    opacity: 0.8;
+  }
+  75% {
+    transform: translateY(75vh) translateX(15px) rotate(135deg);
+  }
+  100% {
+    transform: translateY(100vh) translateX(0) rotate(180deg);
+    opacity: 0.6;
+  }
+}

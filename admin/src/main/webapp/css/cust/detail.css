@@ -97,7 +97,6 @@ input.form-control:focus {
   transform: translateY(-1px);
 }
 
-/* 다크모드 */
 body.dark-mode {
   background-color: #2e1a15;
   color: #fefae0;
@@ -146,3 +145,4 @@ body.dark-mode .btn-secondary {
 body.dark-mode .btn-secondary:hover {
   background-color: #8d6e63;
 }
+

@@ -11,7 +11,8 @@
 <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
 
 <script src="/js/cust/get.js"></script>
-
+<link rel="stylesheet" href="/css/cust/leaf-fall.css">
+<script src="/js/cust/leaf-fall.js"></script>
 <div class="container-fluid">
   <h1>고객 정보 테이블</h1>
 
