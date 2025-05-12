@@ -1,5 +1,5 @@
 $(function () {
-  $('#dataTable').DataTable({
+  const table = $('#dataTable').DataTable({
     pageLength: 10,
     lengthMenu: [10, 25, 50, 100],
     ordering: false,
@@ -19,8 +19,30 @@ $(function () {
       infoFiltered: '(총 _MAX_개 중 필터링됨)'
     }
   });
-});
 
+  $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+    const min = parseInt($('#filterMinPoint').val(), 10);
+    const max = parseInt($('#filterMaxPoint').val(), 10);
+    const point = parseInt(data[6]) || 0;
+
+    if ((isNaN(min) || point >= min) && (isNaN(max) || point <= max)) {
+      return true;
+    }
+    return false;
+  });
+
+  $('#filterName').on('keyup', function () {
+    table.column(2).search(this.value).draw();
+  });
+
+  $('#filterEmail').on('keyup', function () {
+    table.column(3).search(this.value).draw();
+  });
+
+  $('#filterMinPoint, #filterMaxPoint').on('input', function () {
+    table.draw();
+  });
+});
 
 const cust_get = {
   delete: function (id) {

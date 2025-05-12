@@ -25,7 +25,15 @@
       <p>${todayCount}명</p>
     </div>
   </div>
+
   <button type="button" class="btn btn-primary btn-sm mb-3" onclick="downloadExcel()">엑셀 다운로드</button>
+
+  <div class="filter-bar mb-3 d-flex gap-2 flex-wrap">
+    <input type="text" id="filterName" class="form-control" placeholder="이름 검색">
+    <input type="text" id="filterEmail" class="form-control" placeholder="이메일 검색">
+    <input type="number" id="filterMinPoint" class="form-control" placeholder="포인트 최소">
+    <input type="number" id="filterMaxPoint" class="form-control" placeholder="포인트 최대">
+  </div>
 
   <div class="table-responsive">
     <table class="table table-hover table-bordered" id="dataTable">
