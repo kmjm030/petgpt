@@ -29,3 +29,9 @@ const cust_get = {
     }
   }
 };
+
+function downloadExcel() {
+  const table = document.getElementById("dataTable");
+  const workbook = XLSX.utils.table_to_book(table, { sheet: "고객목록" });
+  XLSX.writeFile(workbook, "customers.xlsx");
+}

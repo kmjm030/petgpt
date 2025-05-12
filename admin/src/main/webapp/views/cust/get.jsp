@@ -5,6 +5,7 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap4.min.css">
 <link rel="stylesheet" href="/css/cust/get.css">
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
@@ -24,6 +25,7 @@
       <p>${todayCount}명</p>
     </div>
   </div>
+  <button type="button" class="btn btn-primary btn-sm mb-3" onclick="downloadExcel()">엑셀 다운로드</button>
 
   <div class="table-responsive">
     <table class="table table-hover table-bordered" id="dataTable">
