@@ -13,13 +13,13 @@
 </head>
 <body>
 <div class="container py-4">
-  <h1 class="page-title mb-4">오늘 가입한 회원 목록</h1>
-
-  <c:if test="${not empty todayJoinedList}">
-    <div class="d-flex justify-content-end mb-2">
+  <div class="title-bar">
+    <h1 class="page-title mb-0">오늘 가입한 회원 목록</h1>
+    <c:if test="${not empty todayJoinedList}">
       <button type="button" class="btn btn-primary btn-sm" onclick="downloadTodayExcel()">엑셀 다운로드</button>
-    </div>
-  </c:if>
+    </c:if>
+  </div>
+
 
   <div class="card p-4 shadow-sm">
     <c:choose>

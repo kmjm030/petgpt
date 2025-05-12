@@ -146,3 +146,8 @@ body.dark-mode .btn-secondary:hover {
   background-color: #8d6e63;
 }
 
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background: linear-gradient(to bottom, #fefae0 0%, #f6e7cb 40%, #f1dac4 100%);
+  color: #3e2723;
+}
