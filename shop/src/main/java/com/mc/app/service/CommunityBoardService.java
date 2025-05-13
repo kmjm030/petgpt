@@ -158,6 +158,16 @@ public class CommunityBoardService {
         communityBoardRepository.decreaseCommentCount(boardKey);
     }
 
+    @Transactional
+    public int updateCommentCount(int boardKey) {
+        return communityBoardRepository.updateCommentCount(boardKey);
+    }
+
+    @Transactional
+    public int updateAllCommentCounts() {
+        return communityBoardRepository.updateAllCommentCounts();
+    }
+
     public String saveThumbnailFile(MultipartFile thumbnailFile) throws IOException {
         if (thumbnailFile == null || thumbnailFile.isEmpty()) {
             log.warn("저장할 썸네일 파일이 없습니다.");

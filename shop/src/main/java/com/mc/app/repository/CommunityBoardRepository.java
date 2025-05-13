@@ -31,4 +31,6 @@ public interface CommunityBoardRepository {
     int decreaseLikeCount(int boardKey);
     int increaseCommentCount(int boardKey);
     int decreaseCommentCount(int boardKey);
+    int updateCommentCount(int boardKey);
+    int updateAllCommentCounts();
 } 

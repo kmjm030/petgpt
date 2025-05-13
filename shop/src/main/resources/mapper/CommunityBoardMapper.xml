@@ -154,4 +154,23 @@
         SET comment_count = GREATEST(0, comment_count - 1)
         WHERE board_key = #{boardKey}
     </update>
+    
+    <update id="updateCommentCount" parameterType="int">
+        UPDATE communityboard cb
+        SET comment_count = (
+            SELECT COUNT(*)
+            FROM comments c
+            WHERE c.pboard_key = cb.board_key
+        )
+        WHERE board_key = #{boardKey}
+    </update>
+    
+    <update id="updateAllCommentCounts">
+        UPDATE communityboard cb
+        SET comment_count = (
+            SELECT COUNT(*)
+            FROM comments c
+            WHERE c.pboard_key = cb.board_key
+        )
+    </update>
 </mapper>

@@ -181,4 +181,26 @@ public class CommunityRestController {
                     .body(Map.of("message", "게시글 목록 조회 중 오류가 발생했습니다."));
         }
     }
+
+    @PostMapping("/admin/update-comment-counts")
+    public ResponseEntity<?> updateAllCommentCounts() {
+        try {
+            int updatedCount = communityBoardService.updateAllCommentCounts();
+            
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", true);
+            response.put("message", String.format("%d개의 게시글 댓글 수가 업데이트되었습니다.", updatedCount));
+            response.put("updatedCount", updatedCount);
+            
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            log.error("댓글 수 업데이트 중 오류 발생", e);
+            
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", false);
+            response.put("message", "댓글 수 업데이트 중 오류가 발생했습니다: " + e.getMessage());
+            
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
 }
