@@ -1,5 +1,7 @@
 package com.mc.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mc.app.dto.*;
 import com.mc.app.service.*;
 import jakarta.servlet.http.HttpSession;
@@ -31,17 +33,53 @@ public class CheckOutController {
     private final ItemService itemService;
 
     @GetMapping("")
-    public String checkOut(Model model, HttpSession session) throws Exception {
+    public String checkOut(Model model, HttpSession session,
+                           @RequestParam(value = "itemsJson", required = false) String itemsJson) throws Exception {
 
         Customer loggedInCustomer = (Customer) session.getAttribute("cust");
         if (loggedInCustomer == null) {
             return "redirect:/gologin";
         }
+
         String custId = loggedInCustomer.getCustId();
-        List<Map<String, Object>> cartItems = cartService.getCartWithItems(custId);
         Customer cust = custService.get(custId);
 
+
+      if(itemsJson!= null){
+        try {
+          ObjectMapper objectMapper = new ObjectMapper();
+          // JSON 문자열 → List<Map<String, Object>> 로 변환!
+          List<Map<String, Object>> itemsList = objectMapper.readValue(
+            itemsJson,
+            new TypeReference<List<Map<String, Object>>>() {}
+          );
+          long totalCartPrice = 0;
+          for (Map<String, Object> item : itemsList) {
+            int itemKey = (int)item.get("itemKey");
+            int optionKey = (int)item.get("optionKey");
+            int cartCnt = (int)item.get("cartCnt");
+            Item orderItem = itemService.get(itemKey);
+            item.put("itemName", orderItem.getItemName());
+            item.put("itemPrice", orderItem.getItemPrice());
+            totalCartPrice += cartCnt * orderItem.getItemPrice(); // 세일가격반영되게 해야함
+          }
+
+          model.addAttribute("totalCartPrice", totalCartPrice);
+          model.addAttribute("cartItems", itemsList);
+
+        } catch (Exception e) {
+          e.printStackTrace();
+          return "redirect:/cart";
+        }
+      }else {
+        List<Map<String, Object>> cartItems = cartService.getCartWithItems(custId);
         long totalCartPrice = calculateTotal(cartItems);
+        session.setAttribute("cartItems", cartItems);
+        model.addAttribute("cartItems", cartItems);
+        model.addAttribute("totalCartPrice", totalCartPrice);
+      }
+
+
         Address defAddress = null;
         List<Address> addrList = addrService.findAllByCustomer(custId);
         for (Address address : addrList) {
@@ -49,16 +87,12 @@ public class CheckOutController {
                 defAddress = address;
             }
         }
-
-        List<Coupon> coupons = couponService.findUsableByCustId(custId);
-        session.setAttribute("cartItems", cartItems);
+        List<Coupon> coupons = couponService.findUsableByCustId(custId);;
 
         model.addAttribute("coupons", coupons);
         model.addAttribute("defAddress", defAddress);
         model.addAttribute("addrList", addrList);
         model.addAttribute("cust", cust);
-        model.addAttribute("cartItems", cartItems);
-        model.addAttribute("totalCartPrice", totalCartPrice);
         model.addAttribute("viewName", "checkout");
         model.addAttribute("centerPage", "pages/checkout.jsp");
         return "index";
@@ -125,7 +159,7 @@ public class CheckOutController {
             addressService.add(addr);
         }
 
-        session.removeAttribute("cartItems"); 
+        session.removeAttribute("cartItems");
         return "redirect:/checkout/success";
 
     }
@@ -141,11 +175,11 @@ public class CheckOutController {
         Customer loggedInCustomer = (Customer) session.getAttribute("cust");
 
         if (loggedInCustomer == null) {
-            return "redirect:/signin"; 
+            return "redirect:/signin";
         }
 
         if (!loggedInCustomer.getCustId().equals(id)) {
-            return "redirect:/orderlist?id=" + loggedInCustomer.getCustId(); 
+            return "redirect:/orderlist?id=" + loggedInCustomer.getCustId();
         }
 
         List<TotalOrder> orderList = totalOrderService.findAllByCust(id);
@@ -176,7 +210,7 @@ public class CheckOutController {
         for (OrderDetail od : orderDetails) {
             int itemKey = od.getItemKey();
             if (!itemMap.containsKey(itemKey)) {
-                Item item = itemService.get(itemKey); 
+                Item item = itemService.get(itemKey);
                 itemMap.put(itemKey, item);
             }
         }
