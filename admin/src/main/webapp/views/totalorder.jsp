@@ -146,6 +146,7 @@
                             data-orderreq="${o.orderReq}"
                             data-paymethod="${o.orderCard}"
                             data-approvalnum="${o.orderShootNum}"
+                            data-totalprice="<fmt:formatNumber value='${o.orderTotalPrice}' type='number' groupingUsed='true'/>"
                             data-delete-url="${pageContext.request.contextPath}/totalorder/delete/${o.orderKey}">
                             <td class="fw-bold text-primary">${o.orderKey}</td>
                             <td class="d-lg-table-cell d-md-none d-sm-none">${o.custId}</td>
@@ -153,7 +154,7 @@
                             <td class="d-lg-table-cell d-md-none d-sm-none">${fn:replace(o.orderDate, 'T', ' ')}</td>
                             <td class="d-lg-table-cell d-md-none d-sm-none">${o.recipientName}</td>
                             <td class="d-lg-table-cell d-md-none d-sm-none">${o.recipientPhone}</td>
-                            <td>
+                          <td>
                                 <div class="action-btns">
                                     <button type="button" class="btn btn-primary btn-sm toggle-detail">상세</button>
                                     <button type="button" class="btn btn-danger btn-sm toggle-delete">삭제</button>
@@ -186,10 +187,11 @@
             if(row.child.isShown()){row.child.hide();$tr.removeClass('shown');}
             else{var d=$tr.data();row.child(
                 '<div class="detail-panel p-3">'
-                +'<p><strong>배송지:</strong>'+d.addrkey+'</p>'
-                +'<p><strong>요청사항:</strong>'+d.orderreq+'</p>'
-                +'<p><strong>결제수단:</strong>'+d.paymethod+'</p>'
-                +'<p><strong>승인번호:</strong>'+d.approvalnum+'</p>'
+                +'<p><strong>배송지 : </strong>'+d.addrkey+'</p>'
+                +'<p><strong>총금액 : </strong>'+d.totalprice+'원</p>'
+                +'<p><strong>요청사항 : </strong>'+d.orderreq+'</p>'
+                +'<p><strong>결제수단 : </strong>'+d.paymethod+'</p>'
+                +'<p><strong>승인번호 : </strong>'+d.approvalnum+'</p>'
                 +'</div>'
             ).show();$tr.addClass('shown');}
         });
