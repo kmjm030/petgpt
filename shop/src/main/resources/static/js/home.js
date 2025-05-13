@@ -1,6 +1,181 @@
 $(function () {
   let hotDealCountdownInterval = null;
 
+  // 홈 페이지에서 사용할 전역 변수 추가
+  let homeLikeToggleUrl, homeLikeCheckUrl, homeLoginUrl;
+  let homeIsLoggedIn = false;
+
+  // home-page-data에서 데이터 가져오기
+  const homePageData = $("#home-page-data");
+  if (homePageData.length > 0) {
+    homeIsLoggedIn =
+      homePageData.data("is-logged-in") === true ||
+      homePageData.data("is-logged-in") === "true";
+    homeLikeToggleUrl = homePageData.data("like-toggle-url") || "";
+    homeLikeCheckUrl = homePageData.data("like-check-url") || "";
+    homeLoginUrl = homePageData.data("login-url") || "";
+
+    // 찜 버튼 초기화
+    initializeHomeLikeButtons();
+  }
+
+  function initializeHomeLikeButtons() {
+    console.log("home.js: initializeHomeLikeButtons() 호출됨");
+    const likeButtons = document.querySelectorAll(
+      ".product__hover .like-button"
+    );
+    console.log("home.js: 찜 버튼 개수:", likeButtons.length);
+
+    likeButtons.forEach((button) => {
+      const itemKey = button.getAttribute("data-item-key");
+      console.log(`home.js: [${itemKey}] 버튼 처리 중`);
+
+      if (button.dataset.listenerAttached === "true") {
+        console.log(
+          `home.js: [${itemKey}] 이미 리스너가 연결되어 있습니다. 건너뜁니다.`
+        );
+        return;
+      }
+
+      const productItem = button.closest(".product__item");
+
+      if (homeIsLoggedIn) {
+        console.log(
+          `home.js: [${itemKey}] 초기 좋아요 상태 확인 (로그인: ${homeIsLoggedIn})`
+        );
+        checkHomeLiked(itemKey, (isLiked) => {
+          console.log(`home.js: [${itemKey}] checkLiked 콜백 받음: ${isLiked}`);
+          if (isLiked) {
+            button.classList.add("liked");
+            if (productItem) productItem.classList.add("liked");
+          }
+        });
+      } else {
+        console.log(
+          `home.js: [${itemKey}] 초기 좋아요 상태 확인 안함 (로그인: ${homeIsLoggedIn})`
+        );
+      }
+
+      console.log(`home.js: [${itemKey}] 클릭 리스너 추가 시도`);
+      button.addEventListener("click", function (e) {
+        console.log(`home.js: [${itemKey}] 클릭 리스너 실행!`);
+        e.preventDefault();
+        toggleHomeLike(itemKey, this);
+      });
+
+      button.dataset.listenerAttached = "true";
+      console.log(`home.js: [${itemKey}] 클릭 리스너 추가 완료 및 표시됨`);
+    });
+  }
+
+  function toggleHomeLike(itemKey, button) {
+    console.log("home.js: toggleHomeLike 호출됨. 로그인 상태:", homeIsLoggedIn);
+
+    if (!homeIsLoggedIn) {
+      console.log("home.js: 로그인 안됨, 확인 다이얼로그 표시");
+      if (
+        confirm(
+          "로그인이 필요한 서비스입니다. 로그인 페이지로 이동하시겠습니까?"
+        )
+      ) {
+        const currentUrl = encodeURIComponent(
+          location.pathname + location.search
+        );
+        window.location.href = homeLoginUrl + "?redirectURL=" + currentUrl;
+      }
+      return;
+    }
+
+    $.ajax({
+      url: homeLikeToggleUrl,
+      type: "POST",
+      data: { itemKey: itemKey },
+      success: function (response) {
+        if (response.success) {
+          const productItem = button.closest(".product__item");
+
+          if (response.action === "added") {
+            button.classList.add("liked");
+            productItem.classList.add("liked");
+            showHomeToast("상품이 찜 목록에 추가되었습니다.");
+          } else {
+            button.classList.remove("liked");
+            productItem.classList.remove("liked");
+            showHomeToast("상품이 찜 목록에서 제거되었습니다.");
+          }
+        } else {
+          alert(response.message || "찜하기 처리 중 오류가 발생했습니다.");
+        }
+      },
+      error: function () {
+        alert("서버 통신 오류가 발생했습니다.");
+      },
+    });
+  }
+
+  function checkHomeLiked(itemKey, callback) {
+    if (!homeIsLoggedIn) {
+      callback(false);
+      return;
+    }
+
+    $.ajax({
+      url: homeLikeCheckUrl,
+      type: "GET",
+      data: { itemKey: itemKey },
+      success: function (response) {
+        if (response.success && response.isLiked) {
+          callback(true);
+        } else {
+          callback(false);
+        }
+      },
+      error: function () {
+        callback(false);
+      },
+    });
+  }
+
+  function showHomeToast(message) {
+    if (!document.getElementById("toast-container")) {
+      const toastContainer = document.createElement("div");
+      toastContainer.id = "toast-container";
+      toastContainer.style.cssText = `
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 9999;
+    `;
+      document.body.appendChild(toastContainer);
+    }
+
+    const toast = document.createElement("div");
+    toast.className = "toast-message";
+    toast.innerHTML = message;
+    toast.style.cssText = `
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 15px 25px;
+    margin-top: 10px;
+    border-radius: 4px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  `;
+
+    document.getElementById("toast-container").appendChild(toast);
+
+    setTimeout(() => {
+      toast.style.opacity = "1";
+    }, 10);
+
+    setTimeout(() => {
+      toast.style.opacity = "0";
+      setTimeout(() => {
+        toast.remove();
+      }, 300);
+    }, 3000);
+  }
+
   function loadHotDeal() {
     $.ajax({
       url: contextPath + "/api/hotdeal/current",
@@ -159,9 +334,6 @@ $(function () {
       "            <h6>" +
       item.itemName +
       "</h6>" +
-      '            <a href="#" class="add-cart" onclick="shop.addToCart(' +
-      item.itemKey +
-      '); return false;">+ Add To Cart</a>' +
       ratingHtml +
       priceHtml +
       "        </div>" +
@@ -198,13 +370,8 @@ $(function () {
               $(this).css("background-image", "url(" + bg + ")");
             }
           });
-          // AJAX 로드 후 shop.js의 찜하기 버튼 초기화 함수 호출
-          if (typeof shop !== "undefined" && shop.initializeLikeButtons) {
-            console.log(
-              "Calling shop.initializeLikeButtons from home.js AJAX success..."
-            );
-            shop.initializeLikeButtons(); // 전역 shop 객체의 함수 호출
-          }
+          // 새로운 상품 목록이 로드된 후 찜 버튼 초기화
+          initializeHomeLikeButtons();
         } else {
           productContainer.html(
             '<div class="col-12 text-center">표시할 상품이 없습니다.</div>'
