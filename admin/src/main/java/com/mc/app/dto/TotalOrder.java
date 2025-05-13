@@ -23,4 +23,7 @@ public class TotalOrder {
     private String orderCard;
     private String orderShootNum;
     private int orderTotalPrice;
+    private String orderAddr;
+    private String orderAddrdetail;
+    private String orderHomecode;
 }

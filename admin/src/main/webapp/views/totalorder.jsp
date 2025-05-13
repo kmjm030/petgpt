@@ -141,26 +141,32 @@
                     </thead>
                     <tbody>
                     <c:forEach var="o" items="${totalorderList}">
-                        <tr data-orderkey="${o.orderKey}"
-                            data-addrkey="${o.addrKey}"
-                            data-orderreq="${o.orderReq}"
-                            data-paymethod="${o.orderCard}"
-                            data-approvalnum="${o.orderShootNum}"
-                            data-totalprice="<fmt:formatNumber value='${o.orderTotalPrice}' type='number' groupingUsed='true'/>"
-                            data-delete-url="${pageContext.request.contextPath}/totalorder/delete/${o.orderKey}">
-                            <td class="fw-bold text-primary">${o.orderKey}</td>
-                            <td class="d-lg-table-cell d-md-none d-sm-none">${o.custId}</td>
-                            <td>${itemNameMap[o.itemKey]}</td>
-                            <td class="d-lg-table-cell d-md-none d-sm-none">${fn:replace(o.orderDate, 'T', ' ')}</td>
-                            <td class="d-lg-table-cell d-md-none d-sm-none">${o.recipientName}</td>
-                            <td class="d-lg-table-cell d-md-none d-sm-none">${o.recipientPhone}</td>
-                          <td>
-                                <div class="action-btns">
-                                    <button type="button" class="btn btn-primary btn-sm toggle-detail">상세</button>
-                                    <button type="button" class="btn btn-danger btn-sm toggle-delete">삭제</button>
-                                </div>
-                            </td>
-                        </tr>
+                      <tr
+                        data-orderkey="${o.orderKey}"
+                        data-order-addr="${o.orderAddr}"
+                        data-order-addr-detail="${o.orderAddrdetail}"
+                        data-order-homecode="${o.orderHomecode}"
+                        data-orderreq="${o.orderReq}"
+                        data-paymethod="${o.orderCard}"
+                        data-approvalnum="${o.orderShootNum}"
+                        data-totalprice="<fmt:formatNumber value='${o.orderTotalPrice}' type='number' groupingUsed='true'/>"
+                        data-delete-url="${pageContext.request.contextPath}/totalorder/delete/${o.orderKey}"
+                      >
+                        <td class="fw-bold text-primary">${o.orderKey}</td>
+                        <td class="d-lg-table-cell d-md-none d-sm-none">${o.custId}</td>
+                        <td>${itemNameMap[o.itemKey]}</td>
+                        <td class="d-lg-table-cell d-md-none d-sm-none">
+                            ${fn:replace(o.orderDate, 'T', ' ')}
+                        </td>
+                        <td class="d-lg-table-cell d-md-none d-sm-none">${o.recipientName}</td>
+                        <td class="d-lg-table-cell d-md-none d-sm-none">${o.recipientPhone}</td>
+                        <td>
+                          <div class="action-btns">
+                            <button type="button" class="btn btn-primary btn-sm toggle-detail">상세</button>
+                            <button type="button" class="btn btn-danger btn-sm toggle-delete">삭제</button>
+                          </div>
+                        </td>
+                      </tr>
                     </c:forEach>
                     </tbody>
                 </table>
@@ -177,38 +183,79 @@
 <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
 <script src="https://cdn.datatables.net/responsive/2.4.1/js/responsive.bootstrap5.min.js"></script>
 <script>
-    $(document).ready(function() {
-        var table = $('#totalOrderTable').DataTable({
-            order:[[0,'asc']], responsive:true, autoWidth:false,
-            columnDefs:[{orderable:true,targets:0},{orderable:false,targets:[1,2,3,4,5,6]}]
-        });
-        $('#totalOrderTable tbody').on('click','.toggle-detail',function(){
-            var $tr=$(this).closest('tr'),row=table.row($tr);
-            if(row.child.isShown()){row.child.hide();$tr.removeClass('shown');}
-            else{var d=$tr.data();row.child(
-                '<div class="detail-panel p-3">'
-                +'<p><strong>배송지 : </strong>'+d.addrkey+'</p>'
-                +'<p><strong>총금액 : </strong>'+d.totalprice+'원</p>'
-                +'<p><strong>요청사항 : </strong>'+d.orderreq+'</p>'
-                +'<p><strong>결제수단 : </strong>'+d.paymethod+'</p>'
-                +'<p><strong>승인번호 : </strong>'+d.approvalnum+'</p>'
-                +'</div>'
-            ).show();$tr.addClass('shown');}
-        });
-        $('#totalOrderTable tbody').on('click','.toggle-delete',function(){
-            var $tr=$(this).closest('tr'),row=table.row($tr);
-            if($tr.hasClass('deleting')){row.child.hide();$tr.removeClass('deleting');}
-            else{var url=$tr.data('delete-url');row.child(
-                '<div class="confirm-panel p-3">'
-                +'<p>정말 삭제하시겠습니까?</p>'
-                +'<button type="button" class="btn btn-light btn-sm btn-confirm-delete me-2" data-url="'+url+'">확인</button>'
-                +'<button type="button" class="btn btn-secondary btn-sm btn-cancel-delete">취소</button>'
-                +'</div>'
-            ).show();$tr.addClass('deleting');}
-        });
-        $('#totalOrderTable tbody').on('click','.btn-cancel-delete',function(){var $tr=$(this).closest('tr'),row=table.row($tr);row.child.hide();$tr.removeClass('deleting');});
-        $('#totalOrderTable tbody').on('click','.btn-confirm-delete',function(){window.location.href=$(this).data('url');});
+  $(document).ready(function() {
+    var table = $('#totalOrderTable').DataTable({
+      order: [[0, 'asc']],
+      responsive: true,
+      autoWidth: false,
+      columnDefs: [
+        { orderable: true, targets: 0 },
+        { orderable: false, targets: [1, 2, 3, 4, 5, 6] }
+      ]
     });
+
+    // 상세 보기
+    $('#totalOrderTable tbody').on('click', '.toggle-detail', function() {
+      var $tr = $(this).closest('tr'),
+        row = table.row($tr),
+        d   = $tr.data();  // 이제 d.orderAddr, d.orderAddrDetail, d.orderHomecode 사용
+
+      if (row.child.isShown()) {
+        row.child.hide();
+        $tr.removeClass('shown');
+      } else {
+        var fullAddr =
+          (d.orderAddr        ? d.orderAddr        : '') +
+          (d.orderAddrDetail  ? ' ' + d.orderAddrDetail  : '') +
+          (d.orderHomecode    ? ' (' + d.orderHomecode    + ')' : '');
+
+        row.child(
+          '<div class="detail-panel p-3">' +
+          '<p><strong>배송지 : </strong>' + fullAddr              + '</p>' +
+          '<p><strong>총금액 : </strong>' + d.totalprice + '원'   + '</p>' +
+          '<p><strong>요청사항 : </strong>' + d.orderreq          + '</p>' +
+          '<p><strong>결제수단 : </strong>' + d.paymethod         + '</p>' +
+          '<p><strong>승인번호 : </strong>' + d.approvalnum       + '</p>' +
+          '</div>'
+        ).show();
+        $tr.addClass('shown');
+      }
+    });
+
+    // 삭제 확인
+    $('#totalOrderTable tbody').on('click', '.toggle-delete', function() {
+      var $tr = $(this).closest('tr'),
+        row = table.row($tr);
+
+      if ($tr.hasClass('deleting')) {
+        row.child.hide();
+        $tr.removeClass('deleting');
+      } else {
+        var url = $tr.data('delete-url');
+        row.child(
+          '<div class="confirm-panel p-3">' +
+          '<p>정말 삭제하시겠습니까?</p>' +
+          '<button type="button" class="btn btn-light btn-sm btn-confirm-delete me-2" data-url="' + url + '">확인</button>' +
+          '<button type="button" class="btn btn-secondary btn-sm btn-cancel-delete">취소</button>' +
+          '</div>'
+        ).show();
+        $tr.addClass('deleting');
+      }
+    });
+
+    // 삭제 취소
+    $('#totalOrderTable tbody').on('click', '.btn-cancel-delete', function() {
+      var $tr = $(this).closest('tr'),
+        row = table.row($tr);
+      row.child.hide();
+      $tr.removeClass('deleting');
+    });
+
+    // 삭제 확정
+    $('#totalOrderTable tbody').on('click', '.btn-confirm-delete', function() {
+      window.location.href = $(this).data('url');
+    });
+  });
 </script>
 </body>
 </html>
