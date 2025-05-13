@@ -114,3 +114,5 @@ logs/
 # *.dump
 
 gen-lang-client-0283444979-e37cfc993ab4.json
+.cursor/
+
