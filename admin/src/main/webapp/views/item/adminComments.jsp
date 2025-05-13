@@ -6,7 +6,7 @@
 
 <div class="card-body">
   <div class="table-responsive">
-    <h4 class="page-title mb-3">문의 글 목록</h4>
+    <h4 class="page-title mb-3 text-left">문의 글 목록</h4>
     <c:forEach var="qna" items="${qnaList}">
       <div class="qna-card mb-3">
         <div class="inquiry-toggle">

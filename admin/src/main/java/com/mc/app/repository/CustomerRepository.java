@@ -14,4 +14,5 @@ public interface CustomerRepository extends MCRepository<Customer, String> {
     int selectCount();
     int selectTodayJoinCount() throws Exception;
     List<Customer> selectTodayJoinedCustomers() throws Exception;
+    int selectAveragePoint();
 }

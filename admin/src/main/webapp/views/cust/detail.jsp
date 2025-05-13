@@ -1,10 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<link rel="stylesheet" href="/css/cherry-blossom.css">
-<link rel="stylesheet" href="/css/cust.css">
-
-<script src="/js/cust.js"></script>
+<link rel="stylesheet" href="/css/cust/detail.css">
+<link rel="stylesheet" href="/css/cust/leaf-fall.css">
+<script src="/js/cust/leaf-fall.js"></script>
+<script src="/js/cust/detail.js"></script>
 
 <div class="container-fluid">
     <h1>${cust.custName}님, 회원정보 수정</h1>
