@@ -4,6 +4,11 @@
 
 <mapper namespace="com.mc.app.repository.OptionRepository">
 
+    <select id="selectOne" parameterType="int" resultType="com.mc.app.dto.Option">
+      SELECT * FROM `option`
+      WHERE option_key = #{optionKey}
+    </select>
+
     <select id="findAllByItem" parameterType="int" resultType="com.mc.app.dto.Option">
         SELECT
             option_key, item_key, size, color, stock, additional_price
@@ -38,12 +43,12 @@
     </delete>
 
     <select id="findAllSizes" resultType="string">
-        SELECT DISTINCT size 
-        FROM `option` 
+        SELECT DISTINCT size
+        FROM `option`
         WHERE size IS NOT NULL AND size != ''
         ORDER BY FIELD(size, 'XS', 'S', 'M', 'L', 'FREE')
     </select>
-    
+
     <select id="findItemKeysBySize" parameterType="string" resultType="int">
         SELECT DISTINCT item_key
         FROM `option`
@@ -51,12 +56,12 @@
     </select>
 
     <select id="findAllColors" resultType="string">
-        SELECT DISTINCT color 
-        FROM `option` 
+        SELECT DISTINCT color
+        FROM `option`
         WHERE color IS NOT NULL AND color != ''
         ORDER BY color
     </select>
-    
+
     <select id="findItemKeysByColor" parameterType="string" resultType="int">
         SELECT DISTINCT item_key
         FROM `option`

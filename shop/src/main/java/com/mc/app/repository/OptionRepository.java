@@ -1,6 +1,8 @@
 package com.mc.app.repository;
 
+import com.mc.app.dto.Address;
 import com.mc.app.dto.Option;
+import com.mc.app.frame.MCRepository;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -18,6 +20,7 @@ public interface OptionRepository {
     List<String> findAllColors() throws Exception;
     List<Integer> findItemKeysByColor(String color) throws Exception;
     Option findNameByKey(int optionKey) throws Exception;
+    Option selectOne(int optionKey) throws Exception;
 
     List<String> findDistinctAvailableSizesByItem(int itemKey) throws Exception;
     List<String> findDistinctAvailableColorsByItem(int itemKey) throws Exception;

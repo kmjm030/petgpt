@@ -31,6 +31,7 @@ public class CheckOutController {
     private final OrderDetailService orderDetailService;
     private final AddressService addressService;
     private final ItemService itemService;
+    private final OptionService optionService;
 
     @RequestMapping("")
     public String checkOut(Model model, HttpSession session,
@@ -55,17 +56,16 @@ public class CheckOutController {
           );
           long totalCartPrice = 0;
           for (Map<String, Object> item : itemsList) {
-            int itemKey = (int)item.get("itemKey");
-            int optionKey = (int)item.get("optionKey");
-            int cartCnt = (int)item.get("cartCnt");
-            Item orderItem = itemService.get(itemKey);
-            item.put("itemName", orderItem.getItemName());
-            item.put("itemPrice", orderItem.getItemPrice());
-            totalCartPrice += cartCnt * orderItem.getItemPrice();
+            Item orderItem = itemService.get((int)item.get("item_key"));
+            item.put("item_name", orderItem.getItemName());
+            item.put("item_price", orderItem.getItemPrice());
+            item.put("option", optionService.get((int)item.get("option_key")));
+            totalCartPrice += (int)item.get("cart_cnt") * orderItem.getItemPrice();
           }
 
           model.addAttribute("totalCartPrice", totalCartPrice);
           model.addAttribute("cartItems", itemsList);
+          session.setAttribute("cartItems", itemsList);
 
         } catch (Exception e) {
           e.printStackTrace();
@@ -73,6 +73,10 @@ public class CheckOutController {
         }
       }else {
         List<Map<String, Object>> cartItems = cartService.getCartWithItems(custId);
+        for (Map<String, Object> cartItem : cartItems) {
+          int optionKey = (int)cartItem.get("option_key");
+          cartItem.put("option", optionService.findNameByKey(optionKey));
+        }
         long totalCartPrice = calculateTotal(cartItems);
         session.setAttribute("cartItems", cartItems);
         model.addAttribute("cartItems", cartItems);
@@ -206,17 +210,24 @@ public class CheckOutController {
         List<OrderDetail> orderDetails = orderDetailService.findAllByOrder(orderKey);
 
         Map<Integer, Item> itemMap = new HashMap<>();
+        Map<Integer, Option> optionMap = new HashMap<>();
         for (OrderDetail od : orderDetails) {
             int itemKey = od.getItemKey();
             if (!itemMap.containsKey(itemKey)) {
                 Item item = itemService.get(itemKey);
                 itemMap.put(itemKey, item);
             }
+            int optionKey = od.getOptionKey();
+            if(!optionMap.containsKey(optionKey)) {
+              Option option = optionService.get(optionKey);
+              optionMap.put(optionKey, option);
+            }
         }
 
         model.addAttribute("order", order);
         model.addAttribute("orderDetails", orderDetails);
         model.addAttribute("itemMap", itemMap);
+        model.addAttribute("optionMap", optionMap);
         model.addAttribute("currentPage", "pages");
         model.addAttribute("pageTitle", "Order Detail");
         model.addAttribute("viewName", "order_detail");

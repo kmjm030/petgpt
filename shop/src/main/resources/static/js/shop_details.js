@@ -475,9 +475,9 @@ $(function () {
         const quantity = parseInt(item.find('.quantity-control input').val(), 10);
         if (optionKey && quantity > 0) {
           itemsToCart.push({
-            itemKey: itemKey,
-            optionKey: optionKey,
-            cartCnt: quantity
+            item_key: itemKey,
+            option_key: optionKey,
+            cart_cnt: quantity
           });
         }
       });
