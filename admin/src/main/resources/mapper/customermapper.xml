@@ -49,5 +49,9 @@
         WHERE DATE_FORMAT(cust_rdate, '%Y-%m-%d') = CURDATE()
     </select>
 
+    <select id="selectAveragePoint" resultType="int">
+        SELECT COALESCE(AVG(cust_point), 0) FROM customer
+    </select>
+
 </mapper>
 

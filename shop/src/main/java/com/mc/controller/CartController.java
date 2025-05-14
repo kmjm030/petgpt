@@ -87,7 +87,7 @@ public class CartController {
             cartService.add(cart);
             response.put("success", true);
         } catch (Exception e) {
-            log.error("장바구니 추가 오류", e);
+            log.error("장바구니 추가 오류: itemKey={}, custId={}, message={}", cart.getItemKey(), custId, e.getMessage(), e);
             response.put("success", false);
             response.put("message", "장바구니 추가 중 오류가 발생했습니다.");
         }

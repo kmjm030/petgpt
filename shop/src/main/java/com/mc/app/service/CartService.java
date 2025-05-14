@@ -25,7 +25,8 @@ public class CartService implements MCService<Cart, String> {
         LocalDateTime expiryTime = hotDealService.getHotDealExpiryTime();
 
         boolean isCurrentHotDeal = false;
-        if (currentHotDealKey != null && currentHotDealKey.equals(cart.getItemKey()) &&
+        if (currentHotDealKey != null && currentHotDealKey > 0 &&
+                currentHotDealKey.equals(cart.getItemKey()) &&
                 expiryTime != null && expiryTime.isAfter(LocalDateTime.now())) {
 
             isCurrentHotDeal = true;

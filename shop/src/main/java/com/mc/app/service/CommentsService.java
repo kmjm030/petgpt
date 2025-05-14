@@ -22,6 +22,7 @@ public class CommentsService {
 
     private final CommentsRepository commentsRepository;
     private final CommentLikeRepository commentLikeRepository;
+    private final CommunityBoardService communityBoardService;
 
     public List<Comments> getCommentsByPboardKey(Integer pboardKey, String currentCustId) throws Exception {
         Map<String, Object> params = new HashMap<>();
@@ -61,6 +62,7 @@ public class CommentsService {
         comments.setCommentsUpdate(LocalDateTime.now());
 
         commentsRepository.insert(comments);
+        communityBoardService.increaseCommentCount(comments.getPboardKey());
     }
 
     @Transactional
@@ -111,6 +113,9 @@ public class CommentsService {
         if (updatedRows == 0) {
             throw new Exception("댓글 상태 업데이트(삭제 처리)에 실패했습니다. ID: " + commentsKey);
         }
+        
+        // 게시글의 댓글 수 감소
+        communityBoardService.decreaseCommentCount(comment.getPboardKey());
     }
 
     @Transactional

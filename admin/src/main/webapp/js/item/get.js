@@ -8,7 +8,11 @@ $(function () {
       { orderable: false, targets: [0, 2, 3] }
     ],
     order: [[1, 'desc']],
-    dom: 'Bf t<"d-flex justify-content-between mt-3 px-1"lip>',
+    dom:
+      '<"d-flex justify-content-between align-items-center flex-wrap mb-2"lf>' +
+      't' +
+      '<"d-flex justify-content-between align-items-center flex-wrap mt-3 px-1"ip>',
+
     buttons: [
       { extend: 'copy', text: '복사' },
       { extend: 'csv', text: 'CSV 다운로드' },

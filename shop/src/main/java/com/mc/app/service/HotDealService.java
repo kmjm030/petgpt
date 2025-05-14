@@ -20,7 +20,7 @@ public class HotDealService {
     private final ItemRepository itemRepository;
     private final Random random = new Random();
 
-    private Integer currentHotDealItemKey = -1; 
+    private Integer currentHotDealItemKey = null;
     private LocalDateTime hotDealExpiryTime = null;
 
     @Scheduled(fixedRate = 1 * 60 * 1000)
@@ -31,7 +31,7 @@ public class HotDealService {
 
             if (allItemKeys == null || allItemKeys.isEmpty()) {
                 log.warn("아이템을 찾을 수 없습니다.");
-                currentHotDealItemKey = -1;
+                currentHotDealItemKey = null;
                 hotDealExpiryTime = null;
                 return;
             }
@@ -48,7 +48,7 @@ public class HotDealService {
 
         } catch (Exception e) {
             log.error("핫딜 아이템 선정 중 에러 발생", e);
-            currentHotDealItemKey = -1;
+            currentHotDealItemKey = null;
             hotDealExpiryTime = null;
         }
     }

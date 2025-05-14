@@ -135,6 +135,14 @@
             </div>
           </div>
           <div class="row product__filter" id="product-list-container">
+            <!-- 상품 데이터 속성 추가 -->
+            <div id="home-page-data" data-context-path="${pageContext.request.contextPath}"
+              data-is-logged-in="${sessionScope.cust != null ? 'true' : 'false'}"
+              data-cust-id="${sessionScope.cust != null ? sessionScope.cust.custId : ''}"
+              data-like-toggle-url="<c:url value='/shop/like/toggle'/>"
+              data-like-check-url="<c:url value='/shop/like/check'/>" data-login-url="<c:url value='/signin'/>"
+              style="display: none;">
+            </div>
 
             <%-- 초기 로드 시 베스트셀러 목록 표시 --%>
               <c:choose>
@@ -155,8 +163,6 @@
                         </div>
                         <div class="product__item__text">
                           <h6>${item.itemName}</h6>
-                          <a href="#" class="add-cart add-to-cart-button" data-item-key="${item.itemKey}">+ Add To
-                            Cart</a>
                           <div class="rating">
                             <c:set var="avgScore" value="${item.avgScore != null ? item.avgScore : 0}" />
                             <c:set var="reviewCount" value="${item.reviewCount != null ? item.reviewCount : 0}" />

@@ -1,5 +1,6 @@
 package com.mc.controllerrest;
 
+import com.mc.util.LanguageDetectionUtil;
 import com.mc.util.PapagoUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -60,6 +61,57 @@ public class NcpController {
             return ResponseEntity.badRequest().body(error);
         }
     }
+    
+    @PostMapping("/api/chat/detect-language")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> detectLanguage(@RequestBody Map<String, String> payload) {
+        try {
+            String text = payload.get("text");
+            if (text == null || text.isEmpty()) {
+                Map<String, Object> error = new HashMap<>();
+                error.put("error", "텍스트가 제공되지 않았습니다.");
+                return ResponseEntity.badRequest().body(error);
+            }
+            
+            String detectedLang = LanguageDetectionUtil.detectLanguage(text);
+            boolean isEnglish = "en".equals(detectedLang);
+            
+            Map<String, Object> response = new HashMap<>();
+            response.put("language", detectedLang);
+            response.put("isEnglish", isEnglish);
+            response.put("text", text);
+            
+            log.info("언어 감지 결과: 텍스트={}, 언어={}", text, detectedLang);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            log.error("언어 감지 중 오류 발생", e);
+            Map<String, Object> error = new HashMap<>();
+            error.put("error", "언어 감지 중 오류가 발생했습니다: " + e.getMessage());
+            return ResponseEntity.badRequest().body(error);
+        }
+    }
+    
+    @PostMapping("/api/chat/toggle-translation")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> toggleTranslation(@RequestBody Map<String, Object> payload) {
+        try {
+            String userId = (String) payload.get("userId");
+            boolean enabled = (boolean) payload.getOrDefault("enabled", false);
+            
+            Map<String, Object> response = new HashMap<>();
+            response.put("userId", userId);
+            response.put("translationEnabled", enabled);
+            response.put("message", enabled ? "번역 서비스가 활성화되었습니다." : "번역 서비스가 비활성화되었습니다.");
+            
+            log.info("번역 설정 변경: 사용자={}, 활성화={}", userId, enabled);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            log.error("번역 설정 변경 중 오류 발생", e);
+            Map<String, Object> error = new HashMap<>();
+            error.put("error", "번역 설정 변경 중 오류가 발생했습니다: " + e.getMessage());
+            return ResponseEntity.badRequest().body(error);
+        }
+    }
 
     // @RequestMapping("/ocrimpl")
     // public String ocrimpl(Model model, OcrDto ocrDto) throws IOException {
@@ -92,5 +144,4 @@ public class NcpController {
     // template.convertAndSend("/sendto/" + id, msg);
 
     // }
-
 }

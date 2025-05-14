@@ -1,6 +1,8 @@
 package com.mc.app.service;
 
 import com.google.cloud.vision.v1.*;
+import com.google.api.gax.core.FixedCredentialsProvider;
+import com.google.auth.oauth2.GoogleCredentials;
 import com.google.protobuf.ByteString;
 
 import lombok.Getter;
@@ -8,7 +10,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -1050,7 +1055,47 @@ public class PetBreedAnalysisService {
         List<BreedAnalysisResult> results = new ArrayList<>();
         log.info("Starting image analysis for file: {}", imageFile.getOriginalFilename());
 
-        try (ImageAnnotatorClient vision = ImageAnnotatorClient.create()) {
+        // 환경 변수 및 시스템 속성 로깅
+        String envCredentialsPath = System.getenv("GOOGLE_APPLICATION_CREDENTIALS");
+        String sysCredentialsPath = System.getProperty("GOOGLE_APPLICATION_CREDENTIALS");
+        log.info("GOOGLE_APPLICATION_CREDENTIALS 환경 변수: {}", envCredentialsPath);
+        log.info("GOOGLE_APPLICATION_CREDENTIALS 시스템 속성: {}", sysCredentialsPath);
+        
+        // 실제 사용할 자격 증명 파일 경로
+        String credentialsPath = sysCredentialsPath != null && !sysCredentialsPath.isEmpty() 
+                              ? sysCredentialsPath 
+                              : "C:/petshop/credentials/gen-lang-client-0283444979-e37cfc993ab4.json";
+        log.info("사용할 자격 증명 파일 경로: {}", credentialsPath);
+        
+        ImageAnnotatorClient vision = null;
+        
+        try {
+            // 파일 존재 확인
+            boolean credentialsFileExists = false;
+            if (credentialsPath != null && !credentialsPath.isEmpty()) {
+                credentialsFileExists = Files.exists(Paths.get(credentialsPath));
+                log.info("자격 증명 파일 존재 여부: {}", credentialsFileExists);
+            }
+            
+            // ImageAnnotatorClient 생성 시도
+            if (credentialsFileExists) {
+                log.info("명시적 자격 증명 파일로 ImageAnnotatorClient 생성 시도: {}", credentialsPath);
+                try (FileInputStream credentialsStream = new FileInputStream(credentialsPath)) {
+                    GoogleCredentials credentials = GoogleCredentials.fromStream(credentialsStream);
+                    ImageAnnotatorSettings settings = ImageAnnotatorSettings.newBuilder()
+                            .setCredentialsProvider(FixedCredentialsProvider.create(credentials))
+                            .build();
+                    vision = ImageAnnotatorClient.create(settings);
+                    log.info("명시적 자격 증명으로 ImageAnnotatorClient 생성 성공");
+                } catch (Exception e) {
+                    log.error("명시적 자격 증명으로 클라이언트 생성 실패", e);
+                    throw new IOException("Google Vision API 인증에 실패했습니다: " + e.getMessage(), e);
+                }
+            } else {
+                log.error("자격 증명 파일을 찾을 수 없음: {}", credentialsPath);
+                throw new IOException("Google Vision API 자격 증명 파일을 찾을 수 없습니다: " + credentialsPath);
+            }
+
             ByteString imgBytes = ByteString.copyFrom(imageFile.getBytes());
             log.debug("Image converted to ByteString (size: {} bytes)", imgBytes.size());
 
@@ -1092,6 +1137,8 @@ public class PetBreedAnalysisService {
         } catch (Exception e) {
             log.error("Error during Vision API call or processing", e);
             throw new IOException("Failed to analyze image using Vision API.", e);
+        } finally {
+            vision.close();
         }
 
         results.sort((r1, r2) -> Float.compare(r2.getScore(), r1.getScore()));

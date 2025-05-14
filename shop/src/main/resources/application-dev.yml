@@ -80,3 +80,9 @@ ncp:
   papago:
     id: lep3u7pcmn
     key: F70kVB1NZpnSqCgbiaYmqyd0Faw1VqHIqRFg2HKX
+
+# Google Cloud Vision API
+google:
+  vision:
+    credentials:
+      path: C:/petshop/credentials/gen-lang-client-0283444979-e37cfc993ab4.json

@@ -52,4 +52,8 @@ public class CustomerService implements MCService<Customer, String> {
         return custRepository.selectTodayJoinedCustomers();
     }
 
+    public int getAveragePoint() throws Exception {
+    return custRepository.selectAveragePoint();
+    }
+
 }

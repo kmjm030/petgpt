@@ -42,6 +42,18 @@ app:
     imgdir: /img/item/
     uploadimgdir: C:/Users/Administrator/IdeaProjects/petgpt/admin/src/main/webapp/img/item/
 
-# 6. WebSocket 주소
+  # 6. WebSocket 주소
   url:
     websocket-server-url: http://127.0.0.1:8088
+
+# NCP
+ncp:
+  ocr:
+    url: https://tjoxzsvb05.apigw.ntruss.com/custom/v1/41399/bed3fe59b7c73db10170b8b80e05a4cd2ee0b281ddf63f910a1030bd3f76880b/infer
+    key: WVNiQXNTRHVqWFlUdHpQUU1VaWd4dWtFcktKcnp0R1Q=
+  chatbot:
+    url: https://2sw2npiyi7.apigw.ntruss.com/custom/v1/17415/bed3fe59b7c73db10170b8b80e05a4cd2ee0b281ddf63f910a1030bd3f76880b
+    key: WXFOZW9KZ1VJWXlMdFhraFdHSUJSQkRtc0tQS0xXVWM=
+  papago:
+    id: lep3u7pcmn
+    key: F70kVB1NZpnSqCgbiaYmqyd0Faw1VqHIqRFg2HKX
