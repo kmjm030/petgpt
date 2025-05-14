@@ -132,10 +132,14 @@
                         </select>
                       </div><br /><br /><br>
                       <hr>
-                      <div class="checkout__order__products"><strong>상품</strong> <span><strong>총액</strong></span></div>
+                      <div class="checkout__order__products"><strong>상품</strong> <span style="float:right;"><strong>총액</strong></span></div>
                       <ul class="checkout__total__products">
                         <c:forEach var="c" items="${cartItems}">
-                          <li>▪ ${c.item_name}<span>${c.item_price * c.cart_cnt}원</span></li>
+                          <li>
+                            ▪ ${c.item_name}
+                            <em style="font-size: 12px; color: gray;">[${c.option.optionName}]</em>
+                            <span>${c.item_price * c.cart_cnt}원</span>
+                          </li>
                         </c:forEach>
                       </ul>
                       <%-- 소계, 총계 동적 계산 필요 --%>

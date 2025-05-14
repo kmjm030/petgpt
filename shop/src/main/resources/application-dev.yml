@@ -54,6 +54,8 @@ logging:
 # 4. User Define App
 app:
   key:
+    wkey: ENC(GGJSUVp/v6OcnZ9OoAhi/obCJ7UxRK/deVipRtu8PolJrS9ybRY5qvPjLCjdhWLOSLVR+QcHDtjrEQanfKpu9xtR6YYsIVPvVoP+DmotH6Q+u/juLADsaCAQDxPX7uPvwKy/S/xMm2Y=)
+    wkey2: ENC(aKsFhDq4RISU3jDho9hSAyHtwIMRFzKKuUJ55jMfX+1BNEzlomPJ7c6UR01vvIvK)
     algo: PBEWithMD5AndDES # Twoway
     skey: mykey # Twoway
 

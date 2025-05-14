@@ -173,7 +173,10 @@
                           <td>
                             <img src="<c:url value='/img/product/${itemMap[c.itemKey].itemImg1}'/>" width="200" />
                           </td>
-                          <td>${itemMap[c.itemKey].itemName}</td>
+                          <td>
+                            <p>${itemMap[c.itemKey].itemName}</p>
+                            <p style="font-size:12px;">[옵션: ${optionMap[c.optionKey].optionName}]</p>
+                          </td>
                           <td>${c.orderDetailPrice}</td>
                           <td>${c.orderDetailCount}</td>
                           <td><button class="review-btn"
