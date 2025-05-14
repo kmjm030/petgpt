@@ -32,7 +32,6 @@
       <link rel="stylesheet" href="<c:url value='/css/search-form.css'/>" type="text/css">
 
       <style>
-        /* 테마 토글 버튼 스타일 */
         .theme-toggle-button {
           display: inline-flex;
           align-items: center;
@@ -102,6 +101,10 @@
 
         .theme-toggle-button[data-state="on"] {
           background-color: #000000;
+        }
+
+        .header__menu ul li a:after {
+          background: #000000 !important;
         }
       </style>
 
@@ -542,18 +545,15 @@
       </c:choose>
 
       <script src="<c:url value='/js/search.js'/>"></script>
-      <script src="<c:url value='/js/theme-toggle.js'/>"></script>
       <script src="<c:url value='/js/dark-mode.js'/>"></script>
 
       <script>
-        // 테마 토글 버튼 스크립트
         document.addEventListener("DOMContentLoaded", () => {
           const themeToggleButton = document.getElementById("themeToggleButton");
-          if (!themeToggleButton) return; // 버튼이 없으면 실행하지 않음
+          if (!themeToggleButton) return;
 
           const bodyElement = document.body;
 
-          // 초기 테마 설정 (localStorage에서 가져오거나 시스템 설정을 사용)
           function getInitialTheme() {
             const savedTheme = localStorage.getItem("theme");
 
@@ -561,7 +561,6 @@
               return savedTheme;
             }
 
-            // 시스템 설정 확인
             if (
               window.matchMedia &&
               window.matchMedia("(prefers-color-scheme: dark)").matches
@@ -572,11 +571,10 @@
             return "light";
           }
 
-          // 초기 테마 설정
           let currentTheme = getInitialTheme();
 
           function applyTheme(theme) {
-            bodyElement.dataset.theme = theme; // body 태그에 data-theme 속성 설정
+            bodyElement.dataset.theme = theme;
             themeToggleButton.dataset.state = theme === "dark" ? "on" : "off";
             themeToggleButton.setAttribute(
               "aria-pressed",
@@ -587,18 +585,15 @@
               "Switch to " + (theme === "dark" ? "light" : "dark") + " mode"
             );
 
-            // localStorage에 테마 저장
             localStorage.setItem("theme", theme);
             console.log("Theme set to:", theme);
           }
 
-          // 버튼 클릭 이벤트
           themeToggleButton.addEventListener("click", () => {
             currentTheme = currentTheme === "dark" ? "light" : "dark";
             applyTheme(currentTheme);
           });
 
-          // 초기 테마 적용
           applyTheme(currentTheme);
         });
       </script>
