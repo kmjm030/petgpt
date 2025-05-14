@@ -29,6 +29,7 @@
       <link rel="stylesheet" href="<c:url value='/css/home.css'/>" type="text/css">
       <link rel="stylesheet" href="<c:url value='/css/shop_details.css'/>" type="text/css">
       <link rel="stylesheet" href="<c:url value='/css/shop.css'/>" type="text/css">
+      <link rel="stylesheet" href="<c:url value='/css/search-form.css'/>" type="text/css">
 
     </head>
 
@@ -50,11 +51,10 @@
             <a href="<c:url value='/signup'/>">회원가입</a>
           </div>
           <div class="offcanvas__top__hover">
-            <span>Usd <i class="arrow_carrot-down"></i></span>
+            <span>모드 선택 <i class="arrow_carrot-down"></i></span>
             <ul>
-              <li>USD</li>
-              <li>EUR</li>
-              <li>USD</li>
+              <li data-mode="light"><i class="fa fa-sun-o"></i> Light</li>
+              <li data-mode="dark"><i class="fa fa-moon-o"></i> Dark</li>
             </ul>
           </div>
         </div>
@@ -62,9 +62,19 @@
           <a href="#" class="search-switch"><img src="<c:url value='/img/icon/search.png'/>" alt=""></a>
           <a href="#"><img src="<c:url value='/img/icon/heart.png'/>" alt=""></a>
           <a href="#"><img src="<c:url value='/img/icon/cart.png'/>" alt=""> <span>0</span></a>
-          <div class="price">$0.00</div>
+          <div class="price">0원</div>
         </div>
         <div id="mobile-menu-wrap"></div>
+
+        <div class="offcanvas__search">
+          <form action="<c:url value='/shop/search'/>" method="get">
+            <input type="text" name="keyword" placeholder="검색어를 입력하세요..." class="search-input">
+            <button type="submit" class="search-btn">
+              <i class="fa fa-search"></i> 검색
+            </button>
+          </form>
+        </div>
+
         <div class="offcanvas__text">
           <p>반려동물 용품 전문 쇼핑몰🐶🐱</p>
         </div>
@@ -114,8 +124,8 @@
           </div>
         </div>
         <div class="container">
-          <div class="row">
-            <div class="col-lg-2 col-md-2">
+          <div class="row align-items-center">
+            <div class="col-lg-2 col-md-3 col-sm-4">
               <div class="header__logo">
                 <a href="/">
                   <img id="main-logo" src="<c:url value='/img/logo/logo.png'/>"
@@ -125,18 +135,30 @@
               </div>
             </div>
 
-            <div class="col-lg-4 col-md-4">
+            <div class="col-lg-4 col-md-8 col-sm-8">
               <div class="header__search">
-                <form action="<c:url value='/shop/search'/>" method="get">
-                  <input type="text" name="keyword" placeholder="검색어를 입력하세요..." class="form-control search-input">
-                  <button type="submit" class="search-btn">
-                    <i class="fa fa-search"></i>
+                <form id="animatedSearchForm" class="search-form" action="<c:url value='/shop/search'/>" method="get">
+                  <div class="input-wrapper">
+                    <input type="text" id="searchInput" name="keyword" class="search-input" autocomplete="off" />
+                    <div id="placeholderTextContainer" class="placeholder-text-container">
+                      <p id="currentPlaceholder" class="placeholder-text"></p>
+                    </div>
+                  </div>
+                  <button type="submit" id="submitSearchButton" class="submit-button" disabled>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                      class="submit-icon" aria-hidden="true">
+                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                      <path id="arrowLine" d="M5 12l14 0" />
+                      <path d="M13 18l6 -6" />
+                      <path d="M13 6l6 6" />
+                    </svg>
                   </button>
                 </form>
               </div>
             </div>
 
-            <div class="col-lg-6 col-md-6">
+            <div class="col-lg-6 col-md-12 col-sm-12">
               <nav class="header__menu mobile-menu">
                 <ul>
                   <li><a href="/">홈</a></li>
@@ -175,74 +197,73 @@
       </main>
       <!-- ========= Center Content End ========= -->
 
-            <!-- Footer Section Begin -->
-            <footer class="footer">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-3 col-md-6 col-sm-6">
-                            <div class="footer__about">
-                                <div class="footer__logo">
-                                    <a href="#"><img src="<c:url value='/img/logo/logo-dark.png'/>" alt=""></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 offset-lg-1 col-md-6 col-sm-6" style="color: #b7b7b7;">
-                        <div class="footer__widget">
-                          <h6>Information</h6>
-                          <ul>
-                            <li><strong>상호명</strong>⠀⠀(주)펫지피티</li>
-                            <li><strong>사업장 주소</strong>⠀⠀서울특별시 강남구 테헤란로 213, 501</li>
-                            <li><strong>대표전화</strong>⠀⠀00-987-6543</li>
-                            <li><strong>사업자 등록번호</strong>⠀⠀123-45-67890</li>
-                          </ul>
-                          <div class="footer__newslatter">
-                            <p>⠀⠀</p>
-                            <p> ▼ 전국에 있는 펫지피티 매장을 찾아보세요!</p>
-                            <form action="${pageContext.request.contextPath}/about" method="get">
-                              <input type="text" name="location" placeholder="지역을 입력하세요">
-                              <button type="submit"><span class="icon_search"></span></button>
-                            </form>
-                          </div>
-                        </div>
-                      </div>
-                        <div class="col-lg-3 offset-lg-1 col-md-3 col-sm-6">
-                            <div class="footer__widget">
-                                <h6>Customer Service</h6>
-                                <ul>
-                                  <li><a href="#"><strong>상담/주문전화</strong>⠀⠀02-123-4567</a></li>
-                                    <li><a href="#"><strong>상담/주문 이메일</strong>⠀⠀contact@petgpt.com</a></li>
-                                    <li><a href="#"><strong>CS운영시간</strong>
-                                      <ul>
-                                        <li>⠀⠀평일 10시 ~ 17시</li>
-                                        <li>⠀⠀(점심시간 12 ~ 13시)</li>
-                                      </ul>
-                                    </a></li>
-                                    <li>⠀⠀</li>
-                                    <li><a href="#"><strong>주말 및 공휴일</strong>은 <strong>휴무</strong>입니다.</a></li>
-                                </ul>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-12 text-center">
-                            <div class="footer__copyright__text">
-                                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                                <p>Copyright ©
-                                    <script>
-                                        document.write(new Date().getFullYear());
-                                    </script>2020
-                                    All rights reserved | This template is made with <i class="fa fa-heart-o"
-                                        aria-hidden="true"></i> by <a href="https://colorlib.com"
-                                        target="_blank">Colorlib</a>
-                                </p>
-                                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                            </div>
-                        </div>
-                    </div>
+      <!-- Footer Section Begin -->
+      <footer class="footer">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-3 col-md-6 col-sm-6">
+              <div class="footer__about">
+                <div class="footer__logo">
+                  <a href="#"><img src="<c:url value='/img/logo/logo-dark.png'/>" alt=""></a>
                 </div>
-            </footer>
-            <!-- Footer Section End -->
+              </div>
+            </div>
+            <div class="col-lg-4 offset-lg-1 col-md-6 col-sm-6" style="color: #b7b7b7;">
+              <div class="footer__widget">
+                <h6>Information</h6>
+                <ul>
+                  <li><strong>상호명</strong>⠀⠀(주)펫지피티</li>
+                  <li><strong>사업장 주소</strong>⠀⠀서울특별시 강남구 테헤란로 213, 501</li>
+                  <li><strong>대표전화</strong>⠀⠀00-987-6543</li>
+                  <li><strong>사업자 등록번호</strong>⠀⠀123-45-67890</li>
+                </ul>
+                <div class="footer__newslatter">
+                  <p>⠀⠀</p>
+                  <p> ▼ 전국에 있는 펫지피티 매장을 찾아보세요!</p>
+                  <form action="${pageContext.request.contextPath}/about" method="get">
+                    <input type="text" name="location" placeholder="지역을 입력하세요">
+                    <button type="submit"><span class="icon_search"></span></button>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3 offset-lg-1 col-md-3 col-sm-6">
+              <div class="footer__widget">
+                <h6>Customer Service</h6>
+                <ul>
+                  <li><a href="#"><strong>상담/주문전화</strong>⠀⠀02-123-4567</a></li>
+                  <li><a href="#"><strong>상담/주문 이메일</strong>⠀⠀contact@petgpt.com</a></li>
+                  <li><a href="#"><strong>CS운영시간</strong>
+                      <ul>
+                        <li>⠀⠀평일 10시 ~ 17시</li>
+                        <li>⠀⠀(점심시간 12 ~ 13시)</li>
+                      </ul>
+                    </a></li>
+                  <li>⠀⠀</li>
+                  <li><a href="#"><strong>주말 및 공휴일</strong>은 <strong>휴무</strong>입니다.</a></li>
+                </ul>
+              </div>
+            </div>
+
+          </div>
+          <div class="row">
+            <div class="col-lg-12 text-center">
+              <div class="footer__copyright__text">
+                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                <p>Copyright ©
+                  <script>
+                    document.write(new Date().getFullYear());
+                  </script>2020
+                  All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by
+                  <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                </p>
+                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+      <!-- Footer Section End -->
 
       <!-- Search Begin -->
       <div class="search-model">
@@ -332,6 +353,7 @@
       <script src="<c:url value='/js/dark-mode.js'/>"></script>
       <script src="<c:url value='/js/shop.js'/>"></script>
       <script src="<c:url value='/js/home.js'/>"></script>
+      <script src="<c:url value='/js/search-form.js'/>"></script>
 
       <!-- 페이지별 JS 로드 (jQuery 및 공통 스크립트 로드 후) -->
       <c:choose>

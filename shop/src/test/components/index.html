@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Placeholders and Vanish Input Demo</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="demo-container">
+    <h2 class="title">
+      Ask Vanilla JS Anything
+    </h2>
+    <div class="input-component-wrapper">
+      <!-- PlaceholdersAndVanishInput 컴포넌트가 들어갈 자리 -->
+      <form id="vanishForm" class="vanish-form">
+        <canvas id="vanishCanvas" class="vanish-canvas"></canvas>
+        <input type="text" id="vanishInput" class="vanish-input" autocomplete="off" />
+        <button type="submit" id="submitButton" class="submit-button" disabled>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="submit-icon"
+            aria-hidden="true">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path id="arrowLine" d="M5 12l14 0" />
+            <path d="M13 18l6 -6" />
+            <path d="M13 6l6 6" />
+          </svg>
+        </button>
+        <div id="placeholderContainer" class="placeholder-container">
+          <p id="currentPlaceholderText" class="placeholder-text"></p>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>

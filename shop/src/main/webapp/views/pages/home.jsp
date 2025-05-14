@@ -226,7 +226,7 @@
       <section class="categories spad">
         <div class="container">
           <div class="row">
-            <div class="col-lg-3">
+            <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
               <div class="categories__text">
                 <h2>
                   오직 펫GPT에서만! <br><br>
@@ -235,7 +235,7 @@
                 </h2>
               </div>
             </div>
-            <div class="col-lg-4 offset-lg-1">
+            <div class="col-lg-4 col-md-6 col-sm-12 offset-lg-1 offset-md-0 mb-4">
               <div class="categories__hot__deal">
                 <img id="hotdeal-img" src="<c:url value='/img/product-sale.png'/>" alt="Hot Deal Product">
                 <div class="hot__deal__sticker">
@@ -245,7 +245,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-lg-3 offset-lg-1">
+            <div class="col-lg-3 col-md-12 col-sm-12 offset-lg-1 offset-md-0">
               <div class="categories__deal__countdown">
                 <span class="deal-title">⏰ 10분 타임딜 ⏰</span>
                 <h2 id="hotdeal-name">상품 로딩 중...</h2>
@@ -266,6 +266,30 @@
         </div>
       </section>
       <!-- Hot Deal Section End -->
+
+      <!-- 타임딜 반응형 스타일 추가 -->
+      <style>
+        @media (max-width: 767.98px) {
+          .categories__text h2 {
+            font-size: 24px;
+            text-align: center;
+          }
+
+          .categories__hot__deal {
+            max-width: 300px;
+            margin: 0 auto;
+          }
+
+          .categories__deal__countdown {
+            text-align: center;
+            margin-top: 20px;
+          }
+
+          .categories__deal__timer {
+            justify-content: center;
+          }
+        }
+      </style>
 
       <!-- Instagram Section Begin -->
       <section class="instagram spad">

@@ -1,0 +1,243 @@
+/* 기본 & 다크모드 변수 (Tailwind 근사치) */
+:root {
+  --background-light: #ffffff;
+  --text-light: #000000;
+  --placeholder-text-light: #6b7280; /* neutral-500 */
+  --input-bg-light: #ffffff;
+  --input-bg-focus-light: #f9fafb; /* gray-50 */
+  --button-bg-light: #000000;
+  --button-disabled-bg-light: #f3f4f6; /* gray-100 */
+  --icon-color-light: #d1d5db; /* gray-300 */
+  --shadow-light: 0px 2px 3px -1px rgba(0, 0, 0, 0.1),
+    0px 1px 0px 0px rgba(25, 28, 33, 0.02),
+    0px 0px 0px 1px rgba(25, 28, 33, 0.08);
+
+  --background-dark: #18181b; /* zinc-900 (body) or similar */
+  --text-dark: #ffffff;
+  --placeholder-text-dark: #71717a; /* zinc-500 */
+  --input-bg-dark: #27272a; /* zinc-800 */
+  --input-bg-focus-dark: #3f3f46; /* zinc-700 (approx for gray-50) */
+  --button-bg-dark: #18181b; /* zinc-900 */
+  --button-disabled-bg-dark: #3f3f46; /* zinc-800 */
+  --icon-color-dark: #a1a1aa; /* zinc-400 (approx for gray-300 in dark) */
+  --shadow-dark: 0px 2px 3px -1px rgba(0, 0, 0, 0.1),
+    0px 1px 0px 0px rgba(25, 28, 33, 0.02),
+    0px 0px 0px 1px rgba(25, 28, 33, 0.5); /* Adjusted for dark */
+}
+
+/* 다크모드 선호도에 따라 또는 body에 .dark 클래스 추가 시 적용 */
+/* @media (prefers-color-scheme: dark) { */
+body.dark-mode {
+  --background-current: var(--background-dark);
+  --text-current: var(--text-dark);
+  --placeholder-text-current: var(--placeholder-text-dark);
+  --input-bg-current: var(--input-bg-dark);
+  --input-bg-focus-current: var(--input-bg-focus-dark);
+  --button-bg-current: var(--button-bg-dark);
+  --button-disabled-bg-current: var(--button-disabled-bg-dark);
+  --icon-color-current: var(--icon-color-dark);
+  --shadow-current: var(--shadow-dark);
+  --canvas-filter: invert(0);
+  --input-text-color: var(--text-dark);
+}
+/* } */
+
+body {
+  --background-current: var(--background-light);
+  --text-current: var(--text-light);
+  --placeholder-text-current: var(--placeholder-text-light);
+  --input-bg-current: var(--input-bg-light);
+  --input-bg-focus-current: var(--input-bg-focus-light);
+  --button-bg-current: var(--button-bg-light);
+  --button-disabled-bg-current: var(--button-disabled-bg-light);
+  --icon-color-current: var(--icon-color-light);
+  --shadow-current: var(--shadow-light);
+  --canvas-filter: invert(1);
+  --input-text-color: var(--text-light);
+
+  font-family: sans-serif;
+  background-color: var(--background-current); /* For demo page bg */
+  color: var(--text-current);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.demo-container {
+  min-height: 40rem; /* h-[40rem] */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-left: 1rem; /* px-4 */
+  padding-right: 1rem;
+}
+
+.title {
+  margin-bottom: 2.5rem; /* mb-10 */
+  font-size: 1.25rem; /* text-xl */
+  text-align: center;
+  color: var(--text-current);
+}
+@media (min-width: 640px) {
+  /* sm: */
+  .title {
+    margin-bottom: 5rem; /* sm:mb-20 */
+    font-size: 3rem; /* sm:text-5xl */
+    line-height: 1;
+  }
+}
+
+.input-component-wrapper {
+  width: 100%;
+  max-width: 36rem; /* max-w-xl (576px), xl is 36rem not 42rem. Using md:32rem, lg:36rem, xl:42rem. Choose based on context */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.vanish-form {
+  position: relative;
+  width: 100%;
+  max-width: 36rem; /* max-w-xl */
+  margin-left: auto;
+  margin-right: auto;
+  background-color: var(--input-bg-current);
+  height: 3rem; /* h-12 */
+  border-radius: 9999px; /* rounded-full */
+  overflow: hidden;
+  box-shadow: var(--shadow-current);
+  transition: background-color 0.2s;
+}
+
+.vanish-form.has-value {
+  background-color: var(--input-bg-focus-current); /* bg-gray-50 equivalent */
+}
+
+.vanish-canvas {
+  position: absolute;
+  pointer-events: none;
+  transform: scale(0.5);
+  top: 20%;
+  left: 0.5rem; /* left-2 */
+  transform-origin: top left;
+  filter: var(--canvas-filter);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.vanish-canvas.animating {
+  opacity: 1;
+}
+@media (min-width: 640px) {
+  /* sm: */
+  .vanish-canvas {
+    left: 2rem; /* sm:left-8 */
+  }
+}
+
+.vanish-input {
+  width: 100%;
+  position: relative;
+  font-size: 0.875rem; /* text-sm */
+  z-index: 50;
+  border: none;
+  background-color: transparent;
+  color: var(--input-text-color);
+  height: 100%;
+  border-radius: 9999px; /* rounded-full */
+  padding-left: 1rem; /* pl-4 */
+  padding-right: 5rem; /* pr-20 to make space for button */
+  box-sizing: border-box;
+}
+.vanish-input:focus {
+  outline: none;
+  ring: 0;
+}
+.vanish-input.animating {
+  color: transparent !important; /* !important to override specificity if needed */
+}
+@media (min-width: 640px) {
+  /* sm: */
+  .vanish-input {
+    font-size: 1rem; /* sm:text-base */
+    padding-left: 2.5rem; /* sm:pl-10 */
+  }
+}
+
+.submit-button {
+  position: absolute;
+  right: 0.5rem; /* right-2 */
+  top: 50%;
+  z-index: 50;
+  transform: translateY(-50%);
+  height: 2rem; /* h-8 */
+  width: 2rem; /* w-8 */
+  border-radius: 9999px; /* rounded-full */
+  background-color: var(--button-bg-current);
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+}
+.submit-button:disabled {
+  background-color: var(--button-disabled-bg-current);
+  cursor: not-allowed;
+}
+.submit-button .submit-icon {
+  color: var(--icon-color-current);
+  height: 1rem; /* h-4 */
+  width: 1rem; /* w-4 */
+}
+/* SVG arrow line animation */
+.submit-icon #arrowLine {
+  /* pathLength="1" in JS makes this easier if path is complex. For d="M5 12l14 0", length is 14. */
+  stroke-dasharray: 14; /* Total length of the line */
+  stroke-dashoffset: 7; /* Start with half visible or fully hidden depending on effect */
+  transition: stroke-dashoffset 0.3s linear;
+}
+.submit-icon.active #arrowLine {
+  stroke-dashoffset: 0; /* Fully drawn */
+}
+.submit-icon #arrowLine.initial {
+  /* Or simply default to this if not active */
+  stroke-dashoffset: 7;
+}
+
+.placeholder-container {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  border-radius: 9999px; /* rounded-full */
+  pointer-events: none;
+}
+
+.placeholder-text {
+  font-size: 0.875rem; /* text-sm */
+  font-weight: 400; /* font-normal */
+  color: var(--placeholder-text-current);
+  padding-left: 1rem; /* pl-4 */
+  text-align: left;
+  width: calc(100% - 2rem); /* w-[calc(100%-2rem)] */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap; /* truncate */
+  opacity: 0; /* Start hidden */
+  transform: translateY(5px);
+  transition: opacity 0.3s linear, transform 0.3s linear;
+}
+.placeholder-text.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.placeholder-text.exiting {
+  opacity: 0;
+  transform: translateY(-15px);
+}
+
+@media (min-width: 640px) {
+  /* sm: */
+  .placeholder-text {
+    font-size: 1rem; /* sm:text-base */
+    padding-left: 3rem; /* sm:pl-12 */
+  }
+}

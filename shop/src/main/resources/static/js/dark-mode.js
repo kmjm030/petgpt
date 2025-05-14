@@ -78,10 +78,12 @@ document.addEventListener("DOMContentLoaded", function () {
   setTheme(savedMode === "true");
 
   // 테마 토글 버튼 클릭 이벤트
-  toggleBtn.addEventListener("click", function (event) {
-    event.stopPropagation();
-    modeOptions.classList.toggle("active");
-  });
+  if (toggleBtn) {
+    toggleBtn.addEventListener("click", function (event) {
+      event.stopPropagation();
+      modeOptions.classList.toggle("active");
+    });
+  }
 
   // 테마 옵션 선택 이벤트
   document.querySelectorAll("#modeOptions div").forEach((option) => {
@@ -92,9 +94,25 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
+  // 모바일 메뉴의 모드 변경 옵션 이벤트
+  document
+    .querySelectorAll(".offcanvas__top__hover ul li")
+    .forEach((option) => {
+      option.addEventListener("click", () => {
+        const selectedMode = option.getAttribute("data-mode");
+        if (selectedMode) {
+          setTheme(selectedMode === "dark");
+        }
+      });
+    });
+
   // 외부 클릭 시 옵션 메뉴 닫기
   document.addEventListener("click", function (e) {
-    if (!modeOptions.contains(e.target) && !toggleBtn.contains(e.target)) {
+    if (
+      modeOptions &&
+      !modeOptions.contains(e.target) &&
+      !toggleBtn.contains(e.target)
+    ) {
       modeOptions.classList.remove("active");
     }
   });

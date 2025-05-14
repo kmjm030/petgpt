@@ -1057,3 +1057,96 @@ body.dark-mode #send-button {
   background-color: var(--dark-bg-hover);
   color: var(--dark-text-primary);
 }
+
+/* --- Offcanvas Menu --- */
+body.dark-mode .offcanvas-menu-wrapper {
+  background-color: var(--dark-bg-secondary);
+  color: var(--dark-text-primary);
+  transition: background-color var(--dark-transition),
+    color var(--dark-transition);
+}
+
+body.dark-mode .offcanvas-menu-overlay {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+body.dark-mode .offcanvas__option {
+  background-color: var(--dark-bg-secondary);
+  border-bottom: 1px solid var(--dark-border-primary);
+}
+
+body.dark-mode .offcanvas__links a {
+  color: var(--dark-text-primary);
+  transition: color var(--dark-transition);
+}
+
+body.dark-mode .offcanvas__top__hover span {
+  color: var(--dark-text-primary);
+  transition: color var(--dark-transition);
+}
+
+body.dark-mode .offcanvas__top__hover ul {
+  background-color: var(--dark-bg-tertiary);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .offcanvas__top__hover ul li {
+  color: var(--dark-text-primary);
+  transition: color var(--dark-transition);
+}
+
+body.dark-mode .offcanvas__top__hover ul li:hover {
+  background-color: var(--dark-bg-hover);
+}
+
+body.dark-mode .offcanvas__nav__option {
+  background-color: var(--dark-bg-secondary);
+}
+
+body.dark-mode .offcanvas__nav__option .price {
+  color: var(--dark-text-primary);
+}
+
+body.dark-mode #mobile-menu-wrap {
+  background-color: var(--dark-bg-secondary);
+}
+
+body.dark-mode #mobile-menu-wrap .slicknav_menu {
+  background-color: transparent;
+}
+
+body.dark-mode #mobile-menu-wrap .slicknav_nav {
+  background-color: var(--dark-bg-tertiary);
+}
+
+body.dark-mode #mobile-menu-wrap .slicknav_nav a {
+  color: var(--dark-text-primary);
+}
+
+body.dark-mode #mobile-menu-wrap .slicknav_nav a:hover {
+  background-color: var(--dark-bg-hover);
+  color: var(--dark-text-primary);
+}
+
+body.dark-mode #mobile-menu-wrap .slicknav_nav .slicknav_row:hover {
+  background-color: var(--dark-bg-hover);
+  color: var(--dark-text-primary);
+}
+
+body.dark-mode #mobile-menu-wrap .slicknav_btn {
+  background-color: var(--dark-bg-input);
+}
+
+body.dark-mode .offcanvas__text p {
+  color: var(--dark-text-tertiary);
+}
+
+/* 오프캔버스 메뉴의 아이콘에 다크모드 필터 적용 */
+body.dark-mode .offcanvas__nav__option img {
+  filter: brightness(10) invert(1);
+  transition: filter var(--dark-transition);
+}
+
+body.dark-mode .offcanvas__nav__option a span {
+  color: var(--dark-text-primary);
+}
