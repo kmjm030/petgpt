@@ -32,7 +32,7 @@ public class CheckOutController {
     private final AddressService addressService;
     private final ItemService itemService;
 
-    @GetMapping("")
+    @RequestMapping("")
     public String checkOut(Model model, HttpSession session,
                            @RequestParam(value = "itemsJson", required = false) String itemsJson) throws Exception {
 
@@ -61,7 +61,7 @@ public class CheckOutController {
             Item orderItem = itemService.get(itemKey);
             item.put("itemName", orderItem.getItemName());
             item.put("itemPrice", orderItem.getItemPrice());
-            totalCartPrice += cartCnt * orderItem.getItemPrice(); // 세일가격반영되게 해야함
+            totalCartPrice += cartCnt * orderItem.getItemPrice();
           }
 
           model.addAttribute("totalCartPrice", totalCartPrice);
@@ -78,7 +78,6 @@ public class CheckOutController {
         model.addAttribute("cartItems", cartItems);
         model.addAttribute("totalCartPrice", totalCartPrice);
       }
-
 
         Address defAddress = null;
         List<Address> addrList = addrService.findAllByCustomer(custId);

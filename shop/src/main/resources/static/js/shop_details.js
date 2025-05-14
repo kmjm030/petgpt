@@ -347,6 +347,7 @@ $(function () {
 
         // 장바구니 담기 버튼 활성화/비활성화
         finalAddToCartBtn.prop('disabled', totalQuantity <= 0);
+        finalAddToOrderBtn.prop('disabled', totalQuantity <= 0);
     }
 
     // --- 이벤트 리스너 연결 ---
