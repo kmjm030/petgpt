@@ -103,10 +103,6 @@
           background-color: #000000;
         }
 
-        .header__menu ul li a:after {
-          background: #000000 !important;
-        }
-
         .back-to-top {
           position: fixed;
           bottom: 120px;

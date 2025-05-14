@@ -333,11 +333,6 @@ form:valid .login-button {
   font-size: 18px;
 }
 
-.facebook-login {
-  /* 이 클래스는 더 이상 사용하지 않으므로 주석 처리하거나 제거 가능 */
-  display: none;
-}
-
 .forgot-password {
   color: #000000;
   font-size: 16px;
@@ -437,4 +432,144 @@ footer nav a:hover {
 }
 .copyright select:focus {
   outline: 1px solid #555; /* Optional focus style */
+}
+
+body.dark-mode {
+  background-color: var(--dark-bg-primary, #121212);
+  color: var(--dark-text-primary, #e8eaed);
+}
+
+body.dark-mode .main-container {
+  background-color: var(--dark-bg-primary, #121212);
+}
+
+body.dark-mode .login-box,
+body.dark-mode .signup-box {
+  background-color: var(--dark-bg-secondary, #1e1e1e);
+  border-color: var(--dark-border-primary, #3c3c3c);
+}
+
+body.dark-mode .logo-text {
+  color: var(--dark-text-primary, #e8eaed);
+}
+
+body.dark-mode .input-field input {
+  background-color: var(--dark-bg-input, #303030);
+  border-color: var(--dark-border-primary, #3c3c3c);
+  color: var(--dark-text-primary, #e8eaed);
+  min-height: 50px;
+  padding: 20px 12px 6px;
+  box-sizing: border-box;
+  width: 100%;
+  font-size: 16px;
+  outline: none;
+  border-radius: 5px;
+}
+
+body.dark-mode .input-field label {
+  color: #999999 !important;
+}
+
+body.dark-mode .input-field input:valid + label,
+body.dark-mode .input-field input:focus + label,
+body.dark-mode .input-field input:not(:placeholder-shown) + label {
+  top: 4px;
+  font-size: 12px;
+  color: #999999 !important;
+}
+
+body.dark-mode .input-field input::placeholder {
+  color: #999999 !important;
+}
+
+body.dark-mode .password-field #togglePassword {
+  color: #999999 !important;
+  font-weight: 600;
+}
+
+body.dark-mode .password-field #togglePassword:hover {
+  color: #333333 !important;
+}
+
+body.dark-mode .login-button {
+  background-color: var(--dark-bg-tertiary, #2a2a2a);
+  color: var(--dark-text-primary, #e8eaed);
+  border: 1px solid var(--dark-border-secondary, #5f6368);
+}
+
+body.dark-mode .login-button:hover {
+  background-color: var(--dark-bg-hover, #3c3c3c);
+}
+
+body.dark-mode .separator .line {
+  background-color: var(--dark-border-primary, #3c3c3c);
+}
+
+body.dark-mode .separator .or-text {
+  color: var(--dark-text-tertiary, rgba(255, 255, 255, 0.5));
+}
+
+body.dark-mode .google-login-btn {
+  background-color: var(--dark-bg-tertiary, #2a2a2a);
+  color: var(--dark-text-primary, #e8eaed);
+  border: 1px solid var(--dark-border-primary, #3c3c3c);
+}
+
+body.dark-mode .google-login-btn:hover {
+  background-color: var(--dark-bg-hover, #3c3c3c);
+}
+
+body.dark-mode .kakao-login-btn {
+  background-color: #fee500;
+  color: #000000 !important;
+}
+
+body.dark-mode .kakao-login-btn i {
+  color: #000000 !important;
+}
+
+body.dark-mode .kakao-login-btn * {
+  color: #000000 !important;
+}
+
+body.dark-mode .forgot-password {
+  color: var(--dark-text-secondary, rgba(255, 255, 255, 0.7));
+}
+
+body.dark-mode .forgot-password:hover {
+  color: var(--dark-text-primary, #e8eaed);
+}
+
+body.dark-mode .signup-box p {
+  color: var(--dark-text-primary, #e8eaed);
+}
+
+body.dark-mode .signup-box a {
+  color: var(--dark-text-primary, #e8eaed);
+}
+
+body.dark-mode #msg {
+  color: #ff6b6b;
+}
+
+body.dark-mode footer {
+  background-color: var(--dark-bg-secondary, #1e1e1e);
+  border-top: 1px solid var(--dark-border-primary, #3c3c3c);
+}
+
+body.dark-mode footer nav a {
+  color: var(--dark-text-tertiary, rgba(255, 255, 255, 0.5));
+}
+
+body.dark-mode footer nav a:hover {
+  color: var(--dark-text-secondary, rgba(255, 255, 255, 0.7));
+}
+
+body.dark-mode .copyright {
+  color: var(--dark-text-tertiary, rgba(255, 255, 255, 0.5));
+}
+
+body.dark-mode .copyright select {
+  color: var(--dark-text-tertiary, rgba(255, 255, 255, 0.5));
+  background-color: transparent;
 }

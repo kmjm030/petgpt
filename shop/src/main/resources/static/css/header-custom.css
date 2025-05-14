@@ -433,3 +433,24 @@ body.dark-mode .offcanvas__search .search-btn:hover {
     transform: none;
   }
 }
+
+/* 메뉴 항목의 밑줄 호버 효과 */
+.header__menu ul li a {
+  position: relative;
+}
+
+.header__menu ul li a:after {
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 0;
+  height: 2px;
+  background: #000000;
+  content: "";
+  transition: width 0.3s;
+}
+
+.header__menu ul li a:hover:after,
+.header__menu ul li.active a:after {
+  width: 100%;
+}
