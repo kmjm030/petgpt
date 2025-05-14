@@ -5,6 +5,7 @@ $(document).ready(function () {
   const chatMessages = $("#chat-messages");
   const chatInput = $("#chat-input");
   const sendButton = $("#send-button");
+  const backToTopButton = $("#back-to-top");
 
   let stompClient = null;
   let subscription = null;
@@ -313,12 +314,24 @@ $(document).ready(function () {
     }, 200);
 
     chatModal.show().addClass("active");
+
+    if (backToTopButton.length) {
+      setTimeout(function () {
+        backToTopButton.addClass("chat-open");
+      }, 100);
+    }
+
     switchToChatbotMode();
   });
 
   fabCloseBtn.on("click", function () {
     chatModal.removeClass("active");
     fabCloseBtn.addClass("fab-hidden").removeClass("fab-visible");
+
+    if (backToTopButton.length) {
+      backToTopButton.removeClass("chat-open");
+    }
+
     if (currentChatMode === "livechat") {
       disconnectChat();
     }

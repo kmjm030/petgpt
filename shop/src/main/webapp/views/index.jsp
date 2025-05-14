@@ -106,6 +106,45 @@
         .header__menu ul li a:after {
           background: #000000 !important;
         }
+
+        .back-to-top {
+          position: fixed;
+          bottom: 120px;
+          /* 챗봇 버튼 위에 위치하도록 조정 */
+          right: 30px;
+          width: 50px;
+          height: 50px;
+          background-color: #000;
+          color: #fff;
+          border-radius: 50%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          cursor: pointer;
+          opacity: 0;
+          visibility: hidden;
+          transition: 0.3s all ease;
+          z-index: 9999;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-to-top.active {
+          opacity: 1;
+          visibility: visible;
+        }
+
+        .back-to-top.chat-open {
+          bottom: 650px;
+        }
+
+        body[data-theme="dark"] .back-to-top {
+          background-color: #333;
+          color: #fff;
+        }
+
+        body[data-theme="dark"] .back-to-top:hover {
+          background-color: #444;
+        }
       </style>
 
     </head>
@@ -595,6 +634,53 @@
           });
 
           applyTheme(currentTheme);
+        });
+      </script>
+
+      <!-- 맨 위로 버튼 스크립트 -->
+      <div id="back-to-top" class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+      </div>
+
+      <script>
+        // 맨 위로 버튼 스크립트
+        document.addEventListener('DOMContentLoaded', function () {
+          const backToTopButton = document.getElementById('back-to-top');
+          const fabOpen = document.getElementById('fab-open');
+          const fabClose = document.getElementById('fab-close');
+          const chatModal = document.getElementById('chat-modal');
+
+          // 스크롤 이벤트 리스너
+          window.addEventListener('scroll', function () {
+            if (window.pageYOffset > 300) {
+              backToTopButton.classList.add('active');
+            } else {
+              backToTopButton.classList.remove('active');
+            }
+          });
+
+          // 버튼 클릭 이벤트
+          backToTopButton.addEventListener('click', function () {
+            window.scrollTo({
+              top: 0,
+              behavior: 'smooth'
+            });
+          });
+
+          // 챗봇 모달 열기 버튼 클릭 시
+          fabOpen.addEventListener('click', function () {
+            backToTopButton.classList.add('chat-open');
+          });
+
+          // 챗봇 모달 닫기 버튼 클릭 시
+          fabClose.addEventListener('click', function () {
+            backToTopButton.classList.remove('chat-open');
+          });
+
+          // 챗봇 모달 상태 초기화
+          if (chatModal.style.display !== 'none') {
+            backToTopButton.classList.add('chat-open');
+          }
         });
       </script>
 
