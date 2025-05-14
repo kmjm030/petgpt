@@ -31,6 +31,80 @@
       <link rel="stylesheet" href="<c:url value='/css/shop.css'/>" type="text/css">
       <link rel="stylesheet" href="<c:url value='/css/search-form.css'/>" type="text/css">
 
+      <style>
+        /* 테마 토글 버튼 스타일 */
+        .theme-toggle-button {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          position: relative;
+          border-radius: 0;
+          font-size: 0.875rem;
+          font-weight: 500;
+          outline-offset: 0;
+          transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, opacity 0.15s ease-in-out;
+          cursor: pointer;
+          user-select: none;
+          border: none;
+          background-color: #000000;
+          width: 36px;
+          height: 36px;
+          padding-top: 2px;
+          box-shadow: none;
+        }
+
+        .theme-toggle-button:not(:disabled):hover {
+          background-color: #000000;
+          color: #ffffff;
+        }
+
+        .theme-toggle-button .icon {
+          width: 16px;
+          height: 16px;
+          stroke-width: 2;
+          flex-shrink: 0;
+          transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
+          color: #ffffff;
+          border: none;
+        }
+
+        .theme-toggle-button .icon-moon {
+          transform: scale(0);
+          opacity: 0;
+        }
+
+        .theme-toggle-button .icon-sun {
+          position: absolute;
+          transform: scale(1);
+          opacity: 1;
+        }
+
+        .theme-toggle-button[data-state="on"] .icon-moon {
+          transform: scale(1);
+          opacity: 1;
+          color: #ffffff;
+        }
+
+        .theme-toggle-button[data-state="on"] .icon-sun {
+          transform: scale(0);
+          opacity: 0;
+        }
+
+        body[data-theme="dark"] {
+          --color-background: #000000;
+          --color-text: #ffffff;
+        }
+
+        .theme-toggle-button:focus-visible {
+          outline: none;
+          box-shadow: none;
+        }
+
+        .theme-toggle-button[data-state="on"] {
+          background-color: #000000;
+        }
+      </style>
+
     </head>
 
     <body data-context-path="${pageContext.request.contextPath}"
@@ -110,13 +184,29 @@
                     </c:otherwise>
                   </c:choose>
                   <div id="mode-select-wrapper" style="position: relative; margin-left: 20px;">
-                    <span id="modeToggleBtn"
-                      style="cursor: pointer; font-size: 14px; color: #ffffff; white-space: nowrap;">모드
-                      선택 ▾</span>
-                    <div id="modeOptions" class="mode-options">
-                      <div data-mode="light" title="라이트 모드"><i class="fa fa-sun-o"></i></div>
-                      <div data-mode="dark" title="다크 모드"><i class="fa fa-moon-o"></i></div>
-                    </div>
+                    <button type="button" id="themeToggleButton" class="theme-toggle-button" aria-pressed="false"
+                      aria-label="Switch to dark mode">
+                      <!-- Moon Icon (Lucide Moon) -->
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="icon icon-moon" aria-hidden="true">
+                        <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+                      </svg>
+                      <!-- Sun Icon (Lucide Sun) -->
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="icon icon-sun" aria-hidden="true">
+                        <circle cx="12" cy="12" r="4"></circle>
+                        <path d="M12 2v2"></path>
+                        <path d="M12 20v2"></path>
+                        <path d="m4.93 4.93 1.41 1.41"></path>
+                        <path d="m17.66 17.66 1.41 1.41"></path>
+                        <path d="M2 12h2"></path>
+                        <path d="M20 12h2"></path>
+                        <path d="m6.34 17.66-1.41 1.41"></path>
+                        <path d="m19.07 4.93-1.41 1.41"></path>
+                      </svg>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -450,6 +540,68 @@
           <script src="<c:url value='/js/review_detail.js'/>"></script>
         </c:when>
       </c:choose>
+
+      <script src="<c:url value='/js/search.js'/>"></script>
+      <script src="<c:url value='/js/theme-toggle.js'/>"></script>
+      <script src="<c:url value='/js/dark-mode.js'/>"></script>
+
+      <script>
+        // 테마 토글 버튼 스크립트
+        document.addEventListener("DOMContentLoaded", () => {
+          const themeToggleButton = document.getElementById("themeToggleButton");
+          if (!themeToggleButton) return; // 버튼이 없으면 실행하지 않음
+
+          const bodyElement = document.body;
+
+          // 초기 테마 설정 (localStorage에서 가져오거나 시스템 설정을 사용)
+          function getInitialTheme() {
+            const savedTheme = localStorage.getItem("theme");
+
+            if (savedTheme) {
+              return savedTheme;
+            }
+
+            // 시스템 설정 확인
+            if (
+              window.matchMedia &&
+              window.matchMedia("(prefers-color-scheme: dark)").matches
+            ) {
+              return "dark";
+            }
+
+            return "light";
+          }
+
+          // 초기 테마 설정
+          let currentTheme = getInitialTheme();
+
+          function applyTheme(theme) {
+            bodyElement.dataset.theme = theme; // body 태그에 data-theme 속성 설정
+            themeToggleButton.dataset.state = theme === "dark" ? "on" : "off";
+            themeToggleButton.setAttribute(
+              "aria-pressed",
+              (theme === "dark").toString()
+            );
+            themeToggleButton.setAttribute(
+              "aria-label",
+              "Switch to " + (theme === "dark" ? "light" : "dark") + " mode"
+            );
+
+            // localStorage에 테마 저장
+            localStorage.setItem("theme", theme);
+            console.log("Theme set to:", theme);
+          }
+
+          // 버튼 클릭 이벤트
+          themeToggleButton.addEventListener("click", () => {
+            currentTheme = currentTheme === "dark" ? "light" : "dark";
+            applyTheme(currentTheme);
+          });
+
+          // 초기 테마 적용
+          applyTheme(currentTheme);
+        });
+      </script>
 
     </body>
 
