@@ -230,7 +230,7 @@
               <div class="categories__text">
                 <h2>
                   오직 펫GPT에서만! <br><br>
-                  <span class="discount">1분 한정, 특별한 가격!</span> <br>
+                  <span class="discount">10분 한정, 특별한 가격!</span> <br>
                   지금 바로 행운을 잡으세요!
                 </h2>
               </div>
@@ -247,7 +247,7 @@
             </div>
             <div class="col-lg-3 offset-lg-1">
               <div class="categories__deal__countdown">
-                <span class="deal-title">⏰ 1분 타임딜 ⏰</span>
+                <span class="deal-title">⏰ 10분 타임딜 ⏰</span>
                 <h2 id="hotdeal-name">상품 로딩 중...</h2>
                 <div class="categories__deal__timer">
                   <div class="cd-item">
