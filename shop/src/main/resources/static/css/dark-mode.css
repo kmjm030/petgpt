@@ -1141,7 +1141,6 @@ body.dark-mode .offcanvas__text p {
   color: var(--dark-text-tertiary);
 }
 
-/* 오프캔버스 메뉴의 아이콘에 다크모드 필터 적용 */
 body.dark-mode .offcanvas__nav__option img {
   filter: brightness(10) invert(1);
   transition: filter var(--dark-transition);
@@ -1149,4 +1148,117 @@ body.dark-mode .offcanvas__nav__option img {
 
 body.dark-mode .offcanvas__nav__option a span {
   color: var(--dark-text-primary);
+}
+
+body.dark-mode .blog__post {
+  background: #2a2a2a;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+body.dark-mode .blog__post:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .blog__post__header {
+  border-bottom: 1px solid #3a3a3a;
+}
+
+body.dark-mode .blog__post__title a {
+  color: #f0f0f0;
+}
+
+body.dark-mode .blog__post__meta {
+  color: #b0b0b0;
+}
+
+body.dark-mode .blog__post__content {
+  color: #c0c0c0;
+}
+
+body.dark-mode .blog__post__footer {
+  border-top: 1px solid #3a3a3a;
+  background-color: #2a2a2a;
+}
+
+body.dark-mode .blog__post__body {
+  background-color: #2a2a2a;
+  color: #c0c0c0;
+}
+
+body.dark-mode .stats__item {
+  color: #b0b0b0;
+}
+
+body.dark-mode .stats__item i {
+  color: #e0e0e0;
+}
+
+body.dark-mode .blog__post__category span {
+  background-color: #3a3a3a;
+  color: #d0d0d0;
+}
+
+body.dark-mode #more-popular-posts {
+  background-color: #2a2a2a;
+  border-radius: 10px;
+}
+
+body.dark-mode .search-input,
+body.dark-mode #searchInput {
+  background-color: #2a2a2a;
+  color: #f0f0f0;
+  border: 1px solid #3a3a3a;
+}
+
+body.dark-mode .search-input::placeholder,
+body.dark-mode #searchInput::placeholder {
+  color: #a0a0a0;
+}
+
+body.dark-mode .search-input:focus,
+body.dark-mode #searchInput:focus {
+  background-color: #333;
+  border-color: #4a4a4a;
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .search-input::placeholder,
+body.dark-mode #searchInput::placeholder,
+html body.dark-mode .search-input::placeholder,
+html body.dark-mode #searchInput::placeholder {
+  color: #a0a0a0 !important;
+}
+
+body.dark-mode .search-input::-webkit-input-placeholder,
+body.dark-mode #searchInput::-webkit-input-placeholder {
+  color: #a0a0a0 !important;
+}
+
+body.dark-mode .search-input::-moz-placeholder,
+body.dark-mode #searchInput::-moz-placeholder {
+  color: #a0a0a0 !important;
+  opacity: 1;
+}
+
+body.dark-mode .search-input:-ms-input-placeholder,
+body.dark-mode #searchInput:-ms-input-placeholder {
+  color: #a0a0a0 !important;
+}
+
+body.dark-mode .placeholder-text {
+  color: #adb5bd !important;
+  opacity: 0;
+  transform: translateY(0);
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+body.dark-mode .placeholder-text.visible {
+  opacity: 1 !important;
+  transform: translateY(0);
+  visibility: visible !important;
+}
+
+body.dark-mode .placeholder-text.exiting {
+  opacity: 0 !important;
+  transform: translateY(-15px);
 }
