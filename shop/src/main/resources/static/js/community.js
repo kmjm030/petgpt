@@ -2,13 +2,18 @@ let communityKeyword = "";
 let communitySelectedCategory = "";
 let communityCurrentPage = 1;
 let communitySelectedSort = "comments";
+let isLoading = false;
+let noMorePosts = false;
 
 const community = {
   loadPosts: function (
     category = communitySelectedCategory,
     page = 1,
-    sort = communitySelectedSort
+    sort = communitySelectedSort,
+    append = false
   ) {
+    if (isLoading) return;
+
     const postsContainer = $("#posts-container");
     const paginationContainer = $("#pagination-container");
     const loadingSpinner = $("#loading-spinner");
@@ -16,12 +21,19 @@ const community = {
     const searchNoResultMessage = $("#search-no-result-message");
     const resultCountSpan = $("#result-count");
 
-    postsContainer.html("");
-    paginationContainer.html("");
+    if (!append) {
+      postsContainer.html("");
+      paginationContainer.html("");
+    }
+
+    isLoading = true;
     loadingSpinner.show();
     noPostsMessage.hide();
     searchNoResultMessage.text("");
-    resultCountSpan.text("");
+
+    if (!append) {
+      resultCountSpan.text("");
+    }
 
     const baseUrl = contextPath + "/community";
     let apiUrl = baseUrl + "/posts?page=" + page;
@@ -40,6 +52,7 @@ const community = {
       success: (data) => {
         console.log("API 응답 데이터:", data);
         loadingSpinner.hide();
+        isLoading = false;
 
         if (communityKeyword && data.totalElements !== undefined) {
           resultCountSpan.text(data.totalElements);
@@ -47,15 +60,23 @@ const community = {
 
         if (!data || !data.posts || data.posts.length === 0) {
           console.log("No posts found or empty data received.");
-          noPostsMessage.show();
-          if (communityKeyword) {
-            searchNoResultMessage.text(
-              `"${communityKeyword}"에 대한 게시글을 찾을 수 없습니다.`
-            );
+          if (!append) {
+            noPostsMessage.show();
+            if (communityKeyword) {
+              searchNoResultMessage.text(
+                `"${communityKeyword}"에 대한 게시글을 찾을 수 없습니다.`
+              );
+            } else {
+              searchNoResultMessage.text("");
+            }
+            paginationContainer.html("");
           } else {
-            searchNoResultMessage.text("");
+            // 추가 로드 시 더 이상 게시글이 없다면
+            noMorePosts = true;
+            postsContainer.append(
+              '<div class="col-12 text-center my-3 no-more-posts"><p>더 이상 게시글이 없습니다.</p></div>'
+            );
           }
-          paginationContainer.html("");
           return;
         }
 
@@ -135,74 +156,85 @@ const community = {
           postsContainer.append(colDiv);
         });
 
-        let paginationHtml = "";
-        const totalPages = data.totalPages;
-        const currentPage = data.currentPage;
-
-        if (totalPages > 0) {
-          const maxVisiblePages = 5;
-          let startPage = Math.max(
-            1,
-            currentPage - Math.floor(maxVisiblePages / 2)
-          );
-          let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
-
-          if (
-            endPage < totalPages &&
-            endPage - startPage + 1 < maxVisiblePages
-          ) {
-            startPage = Math.max(1, endPage - maxVisiblePages + 1);
+        // 무한 스크롤 사용 시에는 기존 페이지네이션 숨김
+        if (append) {
+          // 다음 페이지가 있는지 확인
+          communityCurrentPage = data.currentPage;
+          if (communityCurrentPage >= data.totalPages) {
+            noMorePosts = true;
           }
+        } else {
+          // 기존 페이지네이션 구현 (단일 페이지 로드 시)
+          let paginationHtml = "";
+          const totalPages = data.totalPages;
+          const currentPage = data.currentPage;
 
-          if (startPage > 1 && endPage - startPage + 1 < maxVisiblePages) {
-            endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
-          }
+          if (totalPages > 0) {
+            const maxVisiblePages = 5;
+            let startPage = Math.max(
+              1,
+              currentPage - Math.floor(maxVisiblePages / 2)
+            );
+            let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
 
-          if (currentPage > 1) {
-            paginationHtml += `<a href="javascript:void(0)" onclick="community.loadPosts('${category}', 1, '${sort}')">&laquo;&laquo;</a>`;
-            paginationHtml += `<a href="javascript:void(0)" onclick="community.loadPosts('${category}', ${
-              currentPage - 1
-            }, '${sort}')">&laquo;</a>`;
-          } else {
-            paginationHtml += `<span class="disabled">&laquo;&laquo;</span>`;
-            paginationHtml += `<span class="disabled">&laquo;</span>`;
-          }
+            if (
+              endPage < totalPages &&
+              endPage - startPage + 1 < maxVisiblePages
+            ) {
+              startPage = Math.max(1, endPage - maxVisiblePages + 1);
+            }
 
-          if (startPage > 1) {
-            paginationHtml += `<a href="javascript:void(0)" onclick="community.loadPosts('${category}', 1, '${sort}')">1</a>`;
-            if (startPage > 2) {
-              paginationHtml += `<span class="disabled">...</span>`; // 클릭 불가능한 ...
+            if (startPage > 1 && endPage - startPage + 1 < maxVisiblePages) {
+              endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+            }
+
+            if (currentPage > 1) {
+              paginationHtml += `<a href="javascript:void(0)" onclick="community.loadPosts('${category}', 1, '${sort}')">&laquo;&laquo;</a>`;
+              paginationHtml += `<a href="javascript:void(0)" onclick="community.loadPosts('${category}', ${
+                currentPage - 1
+              }, '${sort}')">&laquo;</a>`;
+            } else {
+              paginationHtml += `<span class="disabled">&laquo;&laquo;</span>`;
+              paginationHtml += `<span class="disabled">&laquo;</span>`;
+            }
+
+            if (startPage > 1) {
+              paginationHtml += `<a href="javascript:void(0)" onclick="community.loadPosts('${category}', 1, '${sort}')">1</a>`;
+              if (startPage > 2) {
+                paginationHtml += `<span class="disabled">...</span>`; // 클릭 불가능한 ...
+              }
+            }
+
+            for (let i = startPage; i <= endPage; i++) {
+              paginationHtml += `<a href="javascript:void(0)" onclick="community.loadPosts('${category}', ${i}, '${sort}')" class="${
+                i == currentPage ? "active" : ""
+              }">${i}</a>`;
+            }
+
+            if (endPage < totalPages) {
+              if (endPage < totalPages - 1) {
+                paginationHtml += `<span class="disabled">...</span>`; // 클릭 불가능한 ...
+              }
+              paginationHtml += `<a href="javascript:void(0)" onclick="community.loadPosts('${category}', ${totalPages}, '${sort}')">${totalPages}</a>`;
+            }
+
+            if (currentPage < totalPages) {
+              paginationHtml += `<a href="javascript:void(0)" onclick="community.loadPosts('${category}', ${
+                currentPage + 1
+              }, '${sort}')">&raquo;</a>`;
+              paginationHtml += `<a href="javascript:void(0)" onclick="community.loadPosts('${category}', ${totalPages}, '${sort}')">&raquo;&raquo;</a>`;
+            } else {
+              paginationHtml += `<span class="disabled">&raquo;</span>`;
+              paginationHtml += `<span class="disabled">&raquo;&raquo;</span>`;
             }
           }
-
-          for (let i = startPage; i <= endPage; i++) {
-            paginationHtml += `<a href="javascript:void(0)" onclick="community.loadPosts('${category}', ${i}, '${sort}')" class="${
-              i == currentPage ? "active" : ""
-            }">${i}</a>`;
-          }
-
-          if (endPage < totalPages) {
-            if (endPage < totalPages - 1) {
-              paginationHtml += `<span class="disabled">...</span>`; // 클릭 불가능한 ...
-            }
-            paginationHtml += `<a href="javascript:void(0)" onclick="community.loadPosts('${category}', ${totalPages}, '${sort}')">${totalPages}</a>`;
-          }
-
-          if (currentPage < totalPages) {
-            paginationHtml += `<a href="javascript:void(0)" onclick="community.loadPosts('${category}', ${
-              currentPage + 1
-            }, '${sort}')">&raquo;</a>`;
-            paginationHtml += `<a href="javascript:void(0)" onclick="community.loadPosts('${category}', ${totalPages}, '${sort}')">&raquo;&raquo;</a>`;
-          } else {
-            paginationHtml += `<span class="disabled">&raquo;</span>`;
-            paginationHtml += `<span class="disabled">&raquo;&raquo;</span>`;
-          }
+          paginationContainer.html(paginationHtml);
         }
-        paginationContainer.html(paginationHtml);
       },
       error: (xhr, status, error) => {
         console.error("데이터 로드 중 오류 발생:", status, error, xhr);
         loadingSpinner.hide();
+        isLoading = false;
         let errorMsg = `데이터를 불러오는 중 오류가 발생했습니다. (상태: ${
           xhr.status || status
         })`;
@@ -212,15 +244,61 @@ const community = {
           errorMsg += `<br>오류: ${error}`;
         }
 
-        postsContainer.html(`
-                    <div class="col-lg-12 text-center my-5 alert alert-danger">
-                        <p>${errorMsg}</p>
-                        <p>요청 URL: ${apiUrl}</p>
-                        <button onclick="window.location.reload()" class="btn btn-primary mt-2">페이지 새로고침</button>
-                    </div>
-                `);
+        if (!append) {
+          postsContainer.html(`
+            <div class="col-lg-12 text-center my-5 alert alert-danger">
+                <p>${errorMsg}</p>
+                <p>요청 URL: ${apiUrl}</p>
+                <button onclick="window.location.reload()" class="btn btn-primary mt-2">페이지 새로고침</button>
+            </div>
+          `);
+        } else {
+          postsContainer.append(`
+            <div class="col-lg-12 text-center my-3 alert alert-danger">
+                <p>추가 게시글을 불러오는 중 오류가 발생했습니다.</p>
+                <button onclick="community.loadMorePosts()" class="btn btn-primary mt-2">다시 시도</button>
+            </div>
+          `);
+        }
       },
     });
+  },
+
+  loadMorePosts: function () {
+    if (noMorePosts || isLoading) return;
+
+    const nextPage = communityCurrentPage + 1;
+    this.loadPosts(
+      communitySelectedCategory,
+      nextPage,
+      communitySelectedSort,
+      true
+    );
+  },
+
+  initInfiniteScroll: function () {
+    $(window)
+      .off("scroll.infiniteScroll")
+      .on("scroll.infiniteScroll", function () {
+        if (noMorePosts || isLoading) return;
+
+        if (
+          $(window).scrollTop() + $(window).height() >
+          $(document).height() - 300
+        ) {
+          community.loadMorePosts();
+        }
+      });
+  },
+
+  startInfiniteScroll: function (category, sort) {
+    communityCurrentPage = 1;
+    communitySelectedCategory = category || "";
+    communitySelectedSort = sort || "views";
+    noMorePosts = false;
+
+    this.loadPosts(category, 1, sort, false);
+    this.initInfiniteScroll();
   },
 
   init: function () {

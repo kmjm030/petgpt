@@ -635,7 +635,7 @@
             </div>
             <div class="row">
               <div class="col-lg-12 text-center mt-4">
-                <a href="<c:url value='/community?category=popular&sort=views'/>" class="primary-btn">인기글 더보기</a>
+                <a href="javascript:void(0)" id="more-popular-posts" class="primary-btn">인기글 더보기</a>
               </div>
             </div>
           </div>
