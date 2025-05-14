@@ -1,92 +1,87 @@
-const home = {
-  init:function(){
-    let loc = "1835847";
-    this.getData(loc);
-  },
-  getData:function(loc){
-    $.ajax({
-      url:'<c:url value="/getwinfo"/>',
-      data:{loc:loc},
-      success:(result)=>{
-        this.display(result);
-      },
-      error:()=>{}
-    });
-  },
-  display:function(result){
-    let temp = result.main.temp;
-    let desc = result.weather[0].description;
-    let icon = result.weather[0].icon;
-    let txt = '';
-    // txt += '<img width="50px" src="https://openweathermap.org/img/wn/'+result.weather[0].icon+'@2x.png">';
-
-    let message = '';
-
-    if (icon.startsWith('01')) {
-      if (temp < 0) {
-        message = '☀️ 영하 날씨엔 산책 대신 따뜻한 집에서 터그놀이 어떨까요?';
-      } else if (temp >= 0 && temp < 15) {
-        message = '☀️ 쌀쌀한 날이에요. 따뜻한 낮에 산책시켜주세요!';
-      } else if (temp >= 15 && temp < 25) {
-        message = '☀️ 산책하기 딱 좋은 날! 강아지랑 발맞춰 걷기🐕‍';
-      } else {
-        message = '☀️ 너무 더워요! 선선한 아침이나 저녁에 산책시켜주기!';
-      }
-    } else if (icon.startsWith('09') || icon.startsWith('10')) {
-      message = '🌧️ 비가 오니 산책 대신 집에서 터그놀이 한 판 어떨까요?';
-    } else if (icon.startsWith('13')) {
-      message = '❄️ 눈이 와요! 산책 대신 집에서 강아지와 눈구경 어떨까요?';
-    } else if (icon.startsWith('11')) {
-      message = '⚡ 천둥번개! 오늘은 산책을 피해주세요!';
-    } else if (icon.startsWith('50')) {
-      if (temp < 0) {
-        message = '🌫️ 영하 날씨엔 산책 대신 따뜻한 집에서 터그놀이 어떨까요?';
-      } else if (temp >= 0 && temp < 15) {
-        message = '🌫️ 쌀쌀한 날이에요. 따뜻한 낮에 산책시켜주세요!';
-      } else if (temp >= 15 && temp < 25) {
-        message = '🌫️ 안개가 꼈어요. 산책시 조심히 다녀오기!';
-      } else {
-        message = '🌫️ 너무 더워요! 선선한 아침이나 저녁에 산책시켜주기!';
-      }
-
-    } else {
-      if (temp < 0) {
-        message = '🌤️ 영하 날씨엔 산책 대신 따뜻한 집에서 터그놀이 어떨까요?';
-      } else if (temp >= 0 && temp < 15) {
-        message = '🌤️ 쌀쌀한 날이에요. 따뜻한 낮에 산책시켜주세요!';
-      } else if (temp >= 15 && temp < 25) {
-        message = '🌤️ 살짝 흐리지만 강아지와 산책하기 딱 좋은 날씨예요!';
-      } else {
-        message = '🌤️ 너무 더워요! 선선한 아침이나 저녁에 산책시켜주기!';
-      }
-    }
-
-    const weatherText = '<p>' + message + '<span><strong>   [' + temp + '℃]</strong></span></p>';
-    const defaultText = '<p>반려동물 용품 전문 쇼핑몰🐶🐱</p>';
-
-    let showingWeather = false;
-    $('#winfo').html(defaultText);
-
-    setInterval(() => {
-      $('#winfo').fadeOut(500, function() {
-        if (showingWeather) {
-          $(this).html(defaultText).fadeIn(500);
-        } else {
-          $(this).html(weatherText).fadeIn(500);
-        }
-        showingWeather = !showingWeather;
-      });
-    }, 3000);
-  }
-}
-$(function(){
-  home.init();
-});
+// const home = {
+//   init:function(){
+//     let loc = "1835847";
+//     this.getData(loc);
+//   },
+//   getData:function(loc){
+//     $.ajax({
+//       url:'<c:url value="/getwinfo"/>',
+//       data:{loc:loc},
+//       success:(result)=>{
+//         this.display(result);
+//       },
+//       error:()=>{}
+//     });
+//   },
+//   display:function(result){
+//     let temp = result.main.temp;
+//     let desc = result.weather[0].description;
+//     let icon = result.weather[0].icon;
+//     let txt = '';
+//     // txt += '<img width="50px" src="https://openweathermap.org/img/wn/'+result.weather[0].icon+'@2x.png">';
+//
+//     let message = '';
+//
+//     if (icon.startsWith('01')) {
+//       if (temp < 0) {
+//         message = '☀️ 영하 날씨엔 산책 대신 따뜻한 집에서 터그놀이 어떨까요?';
+//       } else if (temp >= 0 && temp < 15) {
+//         message = '☀️ 쌀쌀한 날이에요. 따뜻한 낮에 산책시켜주세요!';
+//       } else if (temp >= 15 && temp < 25) {
+//         message = '☀️ 산책하기 딱 좋은 날! 강아지랑 발맞춰 걷기🐕‍';
+//       } else {
+//         message = '☀️ 너무 더워요! 선선한 아침이나 저녁에 산책시켜주기!';
+//       }
+//     } else if (icon.startsWith('09') || icon.startsWith('10')) {
+//       message = '🌧️ 비가 오니 산책 대신 집에서 터그놀이 한 판 어떨까요?';
+//     } else if (icon.startsWith('13')) {
+//       message = '❄️ 눈이 와요! 산책 대신 집에서 강아지와 눈구경 어떨까요?';
+//     } else if (icon.startsWith('11')) {
+//       message = '⚡ 천둥번개! 오늘은 산책을 피해주세요!';
+//     } else if (icon.startsWith('50')) {
+//       if (temp < 0) {
+//         message = '🌫️ 영하 날씨엔 산책 대신 따뜻한 집에서 터그놀이 어떨까요?';
+//       } else if (temp >= 0 && temp < 15) {
+//         message = '🌫️ 쌀쌀한 날이에요. 따뜻한 낮에 산책시켜주세요!';
+//       } else if (temp >= 15 && temp < 25) {
+//         message = '🌫️ 안개가 꼈어요. 산책시 조심히 다녀오기!';
+//       } else {
+//         message = '🌫️ 너무 더워요! 선선한 아침이나 저녁에 산책시켜주기!';
+//       }
+//
+//     } else {
+//       if (temp < 0) {
+//         message = '🌤️ 영하 날씨엔 산책 대신 따뜻한 집에서 터그놀이 어떨까요?';
+//       } else if (temp >= 0 && temp < 15) {
+//         message = '🌤️ 쌀쌀한 날이에요. 따뜻한 낮에 산책시켜주세요!';
+//       } else if (temp >= 15 && temp < 25) {
+//         message = '🌤️ 살짝 흐리지만 강아지와 산책하기 딱 좋은 날씨예요!';
+//       } else {
+//         message = '🌤️ 너무 더워요! 선선한 아침이나 저녁에 산책시켜주기!';
+//       }
+//     }
+//
+//     const weatherText = '<p>' + message + '<span><strong>   [' + temp + '℃]</strong></span></p>';
+//     const defaultText = '<p>반려동물 용품 전문 쇼핑몰🐶🐱</p>';
+//
+//     let showingWeather = false;
+//     $('#winfo').html(defaultText);
+//
+//     setInterval(() => {
+//       $('#winfo').fadeOut(500, function() {
+//         if (showingWeather) {
+//           $(this).html(defaultText).fadeIn(500);
+//         } else {
+//           $(this).html(weatherText).fadeIn(500);
+//         }
+//         showingWeather = !showingWeather;
+//       });
+//     }, 3000);
+//   }
+// }
 
 
 $(function () {
-
-  home.init();
   let hotDealCountdownInterval = null;
   let homeLikeToggleUrl, homeLikeCheckUrl, homeLoginUrl;
   let homeIsLoggedIn = false;
