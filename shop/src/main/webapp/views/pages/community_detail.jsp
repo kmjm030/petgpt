@@ -75,10 +75,10 @@
 
                   <!-- 좋아요/댓글 피드백 영역 -->
                   <div class="post-feedback">
-                    <div class="feedback-item like-button">
+                    <div class="feedback-item like-button" data-board-key="${board.boardKey}">
                       <i class="fa fa-heart-o"></i>
                       <span>좋아요</span>
-                      <span class="count like-count">0</span>
+                      <span class="count like-count">${board.likeCount != null ? board.likeCount : 0}</span>
                     </div>
                     <div class="feedback-item comment-section-link">
                       <i class="fa fa-comment-o"></i>
@@ -104,7 +104,7 @@
                             </c:choose>
                           </c:set>
                           <img src="${profileImgUrl}" alt="프로필 이미지"
-                            onerror="this.onerror=null; this.src='<c:url value='/img/default-profile.png'/>'">
+                            onerror="this.onerror=null; this.src=contextPath+'/img/default-profile.png'">
                         </div>
                         <div class="comment-content-wrap">
                           <div class="comment-author-name">
@@ -158,7 +158,7 @@
                     <div class="author-img">
                       <%-- 프로필 이미지 (사용자 이름 기반 이미지 또는 기본 이미지 표시) --%>
                         <img src="<c:url value='/img/user/${cust.custName}.png'/>" alt="프로필"
-                          onerror="this.onerror=null; this.src='<c:url value='/img/default-profile.png'/>'">
+                          onerror="this.onerror=null; this.src=contextPath+'/img/default-profile.png'">
                     </div>
                     <div class="form-content">
                       <textarea placeholder="댓글을 남겨보세요..."></textarea>
@@ -231,25 +231,64 @@
             window.location.href = editUrl;
           }
 
+          // 게시글 좋아요 기능
           const likeButton = document.querySelector('.like-button');
           const likeIcon = likeButton?.querySelector('i');
           const likeCountSpan = likeButton?.querySelector('.like-count');
+          const boardKey = likeButton?.dataset.boardKey;
 
-          if (likeButton && likeIcon && likeCountSpan) {
+          if (likeButton && likeIcon && likeCountSpan && boardKey) {
+            // 페이지 로드 시 좋아요 상태 확인
+            const loggedInUser = "${sessionScope.cust.custId}";
+
+            if (loggedInUser) {
+              fetch('/api/posts/' + boardKey + '/like', {
+                method: 'GET'
+              })
+                .then(response => response.json())
+                .then(data => {
+                  if (data.liked) {
+                    likeButton.classList.add('liked');
+                    likeIcon.classList.remove('fa-heart-o');
+                    likeIcon.classList.add('fa-heart');
+                  }
+                })
+                .catch(error => console.error('좋아요 상태 확인 중 오류:', error));
+            }
+
+            // 좋아요 버튼 클릭 이벤트
             likeButton.addEventListener('click', () => {
-              const isLiked = likeButton.classList.toggle('liked');
-              let currentCount = parseInt(likeCountSpan.textContent || '0', 10);
-
-              if (isLiked) {
-                likeIcon.classList.remove('fa-heart-o');
-                likeIcon.classList.add('fa-heart');
-                currentCount++;
-              } else {
-                likeIcon.classList.remove('fa-heart');
-                likeIcon.classList.add('fa-heart-o');
-                currentCount--;
+              if (!loggedInUser) {
+                alert('좋아요를 누르려면 로그인이 필요합니다.');
+                window.location.href = '<c:url value="/gologin"/>';
+                return;
               }
-              likeCountSpan.textContent = currentCount;
+
+              fetch('/api/posts/' + boardKey + '/like', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                }
+              })
+                .then(response => {
+                  if (!response.ok) {
+                    return response.text().then(text => { throw new Error(text || "좋아요 처리 중 오류 발생"); });
+                  }
+                  return response.json();
+                })
+                .then(likeResult => {
+                  const isLikedNow = likeResult.liked;
+                  const newCount = likeResult.likeCount;
+
+                  likeButton.classList.toggle('liked', isLikedNow);
+                  likeIcon.classList.toggle('fa-heart', isLikedNow);
+                  likeIcon.classList.toggle('fa-heart-o', !isLikedNow);
+                  likeCountSpan.textContent = newCount;
+                })
+                .catch(error => {
+                  console.error('좋아요 처리 중 오류:', error);
+                  alert('좋아요 처리 중 오류가 발생했습니다.');
+                });
             });
           }
 
@@ -522,7 +561,7 @@
               return;
             }
 
-            if (!boardKey) {
+            if (!postBoardKey) {
               console.error("답글 저장 오류: 게시글 ID를 찾을 수 없습니다.");
               alert('게시글 정보를 찾을 수 없어 답글을 등록할 수 없습니다.');
               return;
@@ -533,7 +572,7 @@
               parentCommentKey: parseInt(parentCommentKey, 10)
             };
 
-            fetch('/api/posts/' + boardKey + '/comments', {
+            fetch('/api/posts/' + postBoardKey + '/comments', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -651,7 +690,7 @@
           const commentTextarea = commentForm?.querySelector('textarea');
           const submitCommentBtn = commentForm?.querySelector('.submit-btn');
           const loggedInCustId = '${cust != null ? cust.custId : ""}';
-          const boardKey = '${board.boardKey}';
+          const postBoardKey = '${board.boardKey}';
           const postAuthorId = '${board.custId}';
 
           if (commentForm && commentTextarea && submitCommentBtn) {
@@ -674,7 +713,7 @@
                 commentsContent: commentsContent
               };
 
-              fetch('/api/posts/' + boardKey + '/comments', {
+              fetch('/api/posts/' + postBoardKey + '/comments', {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',

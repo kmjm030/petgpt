@@ -35,7 +35,7 @@ public class CommunityController {
     public String community(
             @RequestParam(name = "category", required = false) String category,
             @RequestParam(name = "page", defaultValue = "1") int page,
-            @RequestParam(name = "sort", required = false) String sort,
+            @RequestParam(name = "sort", required = false, defaultValue = "comments") String sort,
             Model model) {
 
         model.addAttribute("selectedCategory", category);
@@ -127,7 +127,7 @@ public class CommunityController {
     public String communitySearch(
             @RequestParam(name = "keyword") String keyword, 
             @RequestParam(name = "page", defaultValue = "1") int page,
-            @RequestParam(name = "sort", required = false, defaultValue = "newest") String sort,
+            @RequestParam(name = "sort", required = false, defaultValue = "comments") String sort,
             Model model) {
 
         model.addAttribute("keyword", keyword);

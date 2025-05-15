@@ -89,12 +89,13 @@ const home = {
 
 $(function () {
   let hotDealCountdownInterval = null;
-
-  // 홈 페이지에서 사용할 전역 변수 추가
   let homeLikeToggleUrl, homeLikeCheckUrl, homeLoginUrl;
   let homeIsLoggedIn = false;
 
-  // home-page-data에서 데이터 가져오기
+  let popularPostsPage = 1;
+  let loadingMorePosts = false;
+  let noMorePopularPosts = false;
+
   const homePageData = $("#home-page-data");
   if (homePageData.length > 0) {
     homeIsLoggedIn =
@@ -104,7 +105,6 @@ $(function () {
     homeLikeCheckUrl = homePageData.data("like-check-url") || "";
     homeLoginUrl = homePageData.data("login-url") || "";
 
-    // 찜 버튼 초기화
     initializeHomeLikeButtons();
   }
 
@@ -279,13 +279,13 @@ $(function () {
           startCountdown(hotDeal.expiryTime);
         } else {
           displayNoHotDeal();
-          setTimeout(loadHotDeal, 10000); // 10초 후 재시도
+          setTimeout(loadHotDeal, 10000);
         }
       },
       error: function (xhr, status, error) {
         console.error("핫딜 정보를 불러오는 중 오류 발생:", status, error);
         displayNoHotDeal("핫딜 정보를 불러오는 중 오류 발생");
-        setTimeout(loadHotDeal, 10000); // 10초 후 재시도
+        setTimeout(loadHotDeal, 10000);
       },
     });
   }
@@ -302,9 +302,7 @@ $(function () {
     $("#hotdeal-price").text(deal.hotDealPrice.toLocaleString() + "원");
     $("#hotdeal-original-price").text(deal.itemPrice.toLocaleString() + "원");
     $("#hotdeal-link").attr("href", detailUrl);
-
-    // 로딩 상태 제거 (만약 있다면)
-    $(".categories__deal__countdown span:first-child").show(); // 타이머 문구 다시 보이게
+    $(".categories__deal__countdown span:first-child").show();
   }
 
   function displayNoHotDeal(message = "진행 중인 핫딜이 없습니다.") {
@@ -314,10 +312,10 @@ $(function () {
     $("#hotdeal-original-price").text("0원");
     $("#hotdeal-minutes").text("00");
     $("#hotdeal-seconds").text("00");
-    $("#hotdeal-link").attr("href", "#").addClass("disabled"); // 링크 비활성화
-    $(".categories__deal__countdown span:first-child").hide(); // 타이머 문구 숨김
+    $("#hotdeal-link").attr("href", "#").addClass("disabled");
+    $(".categories__deal__countdown span:first-child").hide();
     if (hotDealCountdownInterval) {
-      clearInterval(hotDealCountdownInterval); // 기존 카운트다운 중지
+      clearInterval(hotDealCountdownInterval);
     }
   }
 
@@ -326,7 +324,7 @@ $(function () {
       clearInterval(hotDealCountdownInterval);
     }
 
-    const expiryTime = new Date(expiryTimeString).getTime(); // 만료 시간을 밀리초로 변환
+    const expiryTime = new Date(expiryTimeString).getTime();
 
     hotDealCountdownInterval = setInterval(function () {
       const now = new Date().getTime();
@@ -386,8 +384,6 @@ $(function () {
       "/img/product/" +
       (item.itemImg1 || "default-placeholder.png");
     const detailUrl = contextPath + "/shop/details?itemKey=" + item.itemKey;
-
-    // 별점 HTML 생성
     const avgScore = item.avgScore || 0;
     const reviewCount = item.reviewCount || 0;
     let ratingHtml = '<div class="rating">';
@@ -461,7 +457,6 @@ $(function () {
               $(this).css("background-image", "url(" + bg + ")");
             }
           });
-          // 새로운 상품 목록이 로드된 후 찜 버튼 초기화
           initializeHomeLikeButtons();
         } else {
           productContainer.html(
@@ -487,4 +482,147 @@ $(function () {
 
   loadHotDeal();
 
+  function loadMorePopularPosts() {
+    if (loadingMorePosts || noMorePopularPosts) return;
+
+    loadingMorePosts = true;
+    const postsContainer = document.querySelector(".latest .row:nth-child(3)");
+    const loadingIndicator = document.createElement("div");
+    loadingIndicator.className = "col-lg-12 text-center my-3 loading-indicator";
+    loadingIndicator.innerHTML =
+      '<i class="fa fa-spinner fa-spin"></i> 로딩 중...';
+    postsContainer.appendChild(loadingIndicator);
+
+    $.ajax({
+      url: contextPath + "/community/popular-posts",
+      type: "GET",
+      data: {
+        page: popularPostsPage + 1,
+        limit: 5,
+      },
+      success: function (response) {
+        const indicator = document.querySelector(".loading-indicator");
+        if (indicator) indicator.remove();
+
+        loadingMorePosts = false;
+
+        if (!response || !response.posts || response.posts.length === 0) {
+          noMorePopularPosts = true;
+          const noMorePostsDiv = document.createElement("div");
+          noMorePostsDiv.className = "col-lg-12 text-center my-3";
+          noMorePostsDiv.innerHTML = "<p>더 이상 게시글이 없습니다.</p>";
+          postsContainer.appendChild(noMorePostsDiv);
+
+          const moreButton = document.getElementById("more-popular-posts");
+          if (moreButton) moreButton.style.display = "none";
+
+          return;
+        }
+
+        popularPostsPage++;
+
+        response.posts.forEach(function (post) {
+          const postHtml = createPopularPostHtml(post);
+          postsContainer.insertAdjacentHTML("beforeend", postHtml);
+        });
+      },
+      error: function (xhr, status, error) {
+        console.error("인기글 로드 중 오류 발생:", error);
+        loadingMorePosts = false;
+
+        const indicator = document.querySelector(".loading-indicator");
+        if (indicator) indicator.remove();
+
+        const errorDiv = document.createElement("div");
+        errorDiv.className = "col-lg-12 text-center my-3 error-message";
+        errorDiv.innerHTML =
+          '<p>게시글을 불러오는 중 오류가 발생했습니다.</p><button onclick="loadMorePopularPosts()" class="btn btn-primary">다시 시도</button>';
+        postsContainer.appendChild(errorDiv);
+      },
+    });
+  }
+
+  function createPopularPostHtml(post) {
+    const createdAt = new Date(post.regDate);
+    const year = createdAt.getFullYear();
+    const month = String(createdAt.getMonth() + 1).padStart(2, "0");
+    const day = String(createdAt.getDate()).padStart(2, "0");
+    const formattedDate = `${year}.${month}.${day}`;
+
+    let categoryText = "일반글";
+    switch (post.category) {
+      case "notice":
+        categoryText = "공지사항";
+        break;
+      case "free":
+        categoryText = "자유게시판";
+        break;
+      case "show":
+        categoryText = "펫자랑게시판";
+        break;
+    }
+
+    return `
+      <div class="col-lg-12">
+        <div class="blog__post">
+          <div class="blog__post__header">
+            <div>
+              <h3 class="blog__post__title">
+                <a href="${contextPath}/community/detail?id=${post.boardKey}">${post.boardTitle}</a>
+              </h3>
+              <div class="blog__post__meta">
+                <span>작성자: ${post.custId || "익명"}</span>
+                <span>작성일: ${formattedDate}</span>
+              </div>
+            </div>
+          </div>
+
+          ${
+            post.boardImg
+              ? `
+          <div class="blog__post__image-container">
+            <img class="blog__post__image" src="${post.boardImg}" alt="게시글 이미지">
+          </div>
+          `
+              : ""
+          }
+
+          <div class="blog__post__body">
+            <p class="blog__post__content">${
+              post.boardContent
+                ? post.boardContent.substring(0, 150) + "..."
+                : ""
+            }</p>
+          </div>
+
+          <div class="blog__post__footer">
+            <div class="blog__post__stats">
+              <div class="stats__item"><i class="fa fa-eye"></i> ${
+                post.viewCount
+              }</div>
+              <div class="stats__item"><i class="fa fa-heart"></i> ${
+                post.likeCount
+              }</div>
+              <div class="stats__item"><i class="fa fa-comment"></i> ${
+                post.commentCount
+              }</div>
+            </div>
+            <div class="blog__post__category">
+              <span>#${categoryText}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  $(document).ready(function () {
+    const morePopularPostsBtn = document.getElementById("more-popular-posts");
+    if (morePopularPostsBtn) {
+      morePopularPostsBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        loadMorePopularPosts();
+      });
+    }
+  });
 });

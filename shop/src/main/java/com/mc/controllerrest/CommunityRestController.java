@@ -203,4 +203,40 @@ public class CommunityRestController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
+
+    @PostMapping("/admin/update-like-counts")
+    public ResponseEntity<?> updateAllLikeCounts() {
+        try {
+            int updatedCount = communityBoardService.updateAllLikeCounts();
+            
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", true);
+            response.put("message", String.format("%d개의 게시글 좋아요 수가 업데이트되었습니다.", updatedCount));
+            response.put("updatedCount", updatedCount);
+            
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            log.error("좋아요 수 업데이트 중 오류 발생", e);
+            
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", false);
+            response.put("message", "좋아요 수 업데이트 중 오류가 발생했습니다: " + e.getMessage());
+            
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    @GetMapping("/popular-posts")
+    public ResponseEntity<?> getPopularPosts(
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "limit", defaultValue = "5") int limit) {
+        try {
+            Map<String, Object> result = communityBoardService.getBoardList(null, page, "views");
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            log.error("인기글 목록 조회 중 오류 발생: page={}, limit={}", page, limit, e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("message", "인기글 목록 조회 중 오류가 발생했습니다."));
+        }
+    }
 }

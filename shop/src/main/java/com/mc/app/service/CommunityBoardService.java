@@ -168,6 +168,11 @@ public class CommunityBoardService {
         return communityBoardRepository.updateAllCommentCounts();
     }
 
+    @Transactional
+    public int updateAllLikeCounts() {
+        return communityBoardRepository.updateAllLikeCounts();
+    }
+
     public String saveThumbnailFile(MultipartFile thumbnailFile) throws IOException {
         if (thumbnailFile == null || thumbnailFile.isEmpty()) {
             log.warn("저장할 썸네일 파일이 없습니다.");

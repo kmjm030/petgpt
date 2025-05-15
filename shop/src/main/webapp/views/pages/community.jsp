@@ -139,3 +139,24 @@
           </div>
         </div>
       </section>
+
+      <script>
+        $(document).ready(function () {
+          const urlParams = new URLSearchParams(window.location.search);
+          const infiniteScroll = urlParams.get('infiniteScroll');
+
+          if (infiniteScroll === 'true') {
+            const category = urlParams.get('category') || '';
+            const sort = urlParams.get('sort') || 'views';
+
+            $('#pagination-container').hide();
+            $('#posts-container').after('<div class="infinite-scroll-notice text-center mt-3 mb-4"><p><i class="fa fa-refresh fa-spin"></i> 스크롤하여 더 많은 게시글을 확인하세요</p></div>');
+
+            if (typeof community !== 'undefined') {
+              setTimeout(() => {
+                community.startInfiniteScroll(category, sort);
+              }, 300);
+            }
+          }
+        });
+      </script>

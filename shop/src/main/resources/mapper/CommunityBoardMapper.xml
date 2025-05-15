@@ -173,4 +173,13 @@
             WHERE c.pboard_key = cb.board_key
         )
     </update>
+    
+    <update id="updateAllLikeCounts">
+        UPDATE communityboard cb
+        SET like_count = (
+            SELECT COUNT(DISTINCT pl.cust_id)
+            FROM post_likes pl
+            WHERE pl.board_key = cb.board_key
+        )
+    </update>
 </mapper>

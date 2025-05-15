@@ -1,7 +1,9 @@
 package com.mc.controller;
 
+import com.mc.app.dto.CommunityBoard;
 import com.mc.app.dto.Item;
 import com.mc.app.dto.QnaBoard;
+import com.mc.app.service.CommunityBoardService;
 import com.mc.app.service.ItemService;
 import com.mc.app.service.QnaBoardService;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -21,6 +24,7 @@ public class MainController {
 
     private final ItemService itemService;
     private final QnaBoardService qnaBoardService;
+    private final CommunityBoardService communityBoardService;
 
     @GetMapping("/")
     public String home(Model model) {
@@ -59,6 +63,16 @@ public class MainController {
         }
 
         model.addAttribute("bestSellerList", bestSellerList);
+        
+        // 인기글 목록 조회 (조회수 순으로 정렬)
+        try {
+            Map<String, Object> popularPostsData = communityBoardService.getBoardList(null, 1, "views");
+            List<CommunityBoard> popularPosts = (List<CommunityBoard>) popularPostsData.get("posts");
+            model.addAttribute("popularPosts", popularPosts);
+        } catch (Exception e) {
+            log.error("인기글 목록을 불러오는 중 오류 발생: {}", e.getMessage());
+            model.addAttribute("popularPosts", Collections.emptyList());
+        }
 
         model.addAttribute("currentPage", "home");
         model.addAttribute("pageTitle", "Home");

@@ -8,6 +8,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>PetGPT 로그인</title>
       <link rel="stylesheet" href="<c:url value='/css/signin.css'/>">
+      <link rel="stylesheet" href="<c:url value='/css/dark-mode.css'/>">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
       <style>
         #msg {
@@ -33,7 +34,9 @@
         <div class="right-panel">
           <div class="login-form-container">
             <div class="login-box">
-              <img src="<c:url value='/img/logo/logo.png'/>" alt="PetGPT" class="instagram-logo"
+              <img src="<c:url value='/img/logo/logo.png'/>" alt="PetGPT" class="instagram-logo" id="logo-image"
+                data-light-src="<c:url value='/img/logo/logo.png'/>"
+                data-dark-src="<c:url value='/img/logo/logo-dark.png'/>"
                 onerror="this.style.display='none'; document.getElementById('logo-text').style.display='block';">
               <h1 id="logo-text" class="logo-text">PetGPT</h1>
 
@@ -133,6 +136,25 @@
             window.location.href = '/auth/kakao';
           }
         };
+      </script>
+
+      <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          const isDarkMode = localStorage.getItem('theme') === 'dark';
+          console.log('Current theme setting:', localStorage.getItem('theme'));
+
+          if (isDarkMode) {
+            document.body.classList.add('dark-mode');
+
+            const logoImage = document.getElementById('logo-image');
+            if (logoImage) {
+              const darkLogoSrc = logoImage.getAttribute('data-dark-src');
+              if (darkLogoSrc) {
+                logoImage.src = darkLogoSrc;
+              }
+            }
+          }
+        });
       </script>
     </body>
 

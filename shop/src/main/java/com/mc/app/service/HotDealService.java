@@ -23,7 +23,7 @@ public class HotDealService {
     private Integer currentHotDealItemKey = null;
     private LocalDateTime hotDealExpiryTime = null;
 
-    @Scheduled(fixedRate = 1 * 60 * 1000)
+    @Scheduled(fixedRate = 10 * 60 * 1000)
     public void selectNewHotDealItem() {
         log.info("새로운 핫딜 아이템을 선정중...");
         try {
@@ -39,7 +39,7 @@ public class HotDealService {
             int randomIndex = random.nextInt(allItemKeys.size());
             int selectedItemKey = allItemKeys.get(randomIndex);
 
-            LocalDateTime expiryTime = LocalDateTime.now().plusMinutes(1);
+            LocalDateTime expiryTime = LocalDateTime.now().plusMinutes(10);
 
             currentHotDealItemKey = selectedItemKey;
             hotDealExpiryTime = expiryTime;
