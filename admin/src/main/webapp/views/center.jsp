@@ -3,9 +3,13 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <link rel="stylesheet" href="<c:url value='/css/center.css'/>">
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 
-<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/stock/highstock.js"></script>
 <script src="<c:url value='/js/center.js'/>"></script>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
+<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=1d80cc061f948248f9465d96f87b1f5c&libraries=services"></script>
 
 <div class="container-fluid">
   <div class="dashboard-header">메인화면</div>
@@ -67,6 +71,34 @@
   </div>
 
   <div class="row mb-4">
+    <div class="col-lg-6 mb-4"><div id="dailySalesChart" style="height:300px;"></div></div>
+    <div class="col-lg-6 mb-4"><div id="categorySalesDonut" style="height:300px;"></div></div>
+    <div class="col-lg-6 mb-4"><div id="hourlySalesChart" style="height:300px;"></div></div>
+    <div class="col-lg-6 mb-4"><div id="monthlyCandleChart" style="height:300px;"></div></div>
+    <div class="col-lg-6 mb-4"><div id="lowStockBarChart" style="height:300px;"></div></div>
+    <div class="col-lg-6 mb-4"><div id="weeklySalesChart" style="height:300px;"></div></div>
+    <div class="col-lg-6 mb-4"><div id="monthlySalesChart" style="height:300px;"></div></div>
+    <div class="col-lg-6 mb-4"><div id="paymentMethodChart" style="height:300px;"></div></div>
+    <div class="col-lg-6 mb-4"><div id="deliveryStatusChart" style="height:300px;"></div></div>
+    <div class="col-lg-6 mb-4"><div id="priceRangeChart" style="height:300px;"></div></div>
+    <div class="col-lg-6 mb-4"><div id="categoryStockChart" style="height:300px;"></div></div>
+    <div class="col-lg-6 mb-4"><div id="monthlySignupChart" style="height:300px;"></div></div>
+    <div class="col-lg-6 mb-4"><div id="cartConversionChart" style="height:300px;"></div></div>
+    <div class="col-lg-12 mb-4">
+      <div class="dashboard-card">
+        <div class="card-title">📍 지역별 매출 분포</div>
+        <div id="salesMap" style="width:100%; height:400px;"></div>
+      </div>
+    </div>
+    <div class="col-lg-12 mb-4">
+      <div class="dashboard-card">
+        <div class="card-title">🔥 고객 밀집도</div>
+        <div id="userHeatmap" style="width:100%; height:400px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4">
     <div class="col-lg-6 mb-4">
       <div class="dashboard-card">
         <div class="card-title">관리자 알림</div>
@@ -94,12 +126,6 @@
             <li class="list-group-item text-muted">판매 데이터가 없습니다.</li>
           </c:if>
         </ul>
-      </div>
-    </div>
-    <div class="col-lg-6 mb-4">
-      <div class="chart-card">
-        <h6 class="card-title">오늘 시간대별 매출</h6>
-        <div id="hourlySalesChart" style="width:100%; height:300px;"></div>
       </div>
     </div>
     <div class="col-lg-6 mb-4">
@@ -142,6 +168,7 @@
     </div>
   </div>
 </div>
+
 <div class="modal fade" id="orderDetailModal" tabindex="-1" role="dialog" aria-labelledby="orderDetailModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
