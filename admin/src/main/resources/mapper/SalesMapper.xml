@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mc.app.mapper.SalesMapper">
+
+  <select id="selectDailySales" resultType="map">
+    SELECT DATE(order_date) AS label,
+      SUM(order_totalprice) AS total_sales
+    FROM total_order
+    WHERE order_date >= CURDATE() - INTERVAL 7 DAY
+      AND order_status = '결제완료'
+    GROUP BY DATE(order_date)
+    ORDER BY DATE(order_date)
+  </select>
+
+  <select id="selectWeeklySales" resultType="map">
+    SELECT DATE_FORMAT(order_date, '%Y-W%u') AS label,
+           SUM(order_totalprice) AS total_sales
+    FROM total_order
+    WHERE order_date >= CURDATE() - INTERVAL 28 DAY
+      AND order_status = '결제완료'
+    GROUP BY label
+    ORDER BY label
+  </select>
+
+  <select id="selectMonthlySales" resultType="map">
+    SELECT DATE_FORMAT(order_date, '%Y-%m') AS label,
+           SUM(order_totalprice) AS total_sales
+    FROM total_order
+    WHERE order_date >= CURDATE() - INTERVAL 12 MONTH
+      AND order_status = '결제완료'
+    GROUP BY label
+    ORDER BY label
+  </select>
+
+</mapper>
