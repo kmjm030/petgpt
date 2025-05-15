@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mc.app.repository.UserRepository">
+
+  <select id="selectDailyUserStats" resultType="map">
+    SELECT DATE(cust_rdate) AS label,
+      COUNT(*) AS count
+    FROM customer
+    WHERE cust_rdate >= CURDATE() - INTERVAL 7 DAY
+    GROUP BY DATE(cust_rdate)
+    ORDER BY DATE(cust_rdate)
+  </select>
+
+  <select id="selectMonthlyUserStats" resultType="map">
+    SELECT DATE_FORMAT(cust_rdate, '%Y-%m') AS label,
+           COUNT(*) AS count
+    FROM customer
+    WHERE cust_rdate >= CURDATE() - INTERVAL 12 MONTH
+    GROUP BY label
+    ORDER BY label
+  </select>
+
+  <select id="selectYearlyUserStats" resultType="map">
+    SELECT DATE_FORMAT(cust_rdate, '%Y') AS label,
+           COUNT(*) AS count
+    FROM customer
+    GROUP BY label
+    ORDER BY label
+  </select>
+
+</mapper>
