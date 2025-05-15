@@ -3,6 +3,10 @@ const ws = {
   stompClient: null,
   translationEnabled: false,
 
+  generateMessageId: function () {
+    return Date.now() + "-" + Math.random().toString(36).substr(2, 9);
+  },
+
   connect: function () {
     this.id = document.getElementById("adm_id").textContent.trim();
     const socket = new SockJS("/ws");
@@ -75,6 +79,7 @@ const ws = {
     const text = document.getElementById("alltext").value.trim();
     if (text) {
       const msg = JSON.stringify({
+        messageId: this.generateMessageId(),
         sendid: this.id,
         content1: text,
         translationEnabled: this.translationEnabled,
@@ -87,7 +92,11 @@ const ws = {
   sendMe: function () {
     const text = document.getElementById("metext").value.trim();
     if (text) {
-      const msg = JSON.stringify({ sendid: this.id, content1: text });
+      const msg = JSON.stringify({
+        messageId: this.generateMessageId(),
+        sendid: this.id,
+        content1: text,
+      });
       this.stompClient.send("/receiveme", {}, msg);
       document.getElementById("metext").value = "";
     }
@@ -98,6 +107,7 @@ const ws = {
     const text = document.getElementById("totext").value.trim();
     if (targetId && text) {
       const msg = JSON.stringify({
+        messageId: this.generateMessageId(),
         sendid: this.id,
         receiveid: targetId,
         content1: text,
