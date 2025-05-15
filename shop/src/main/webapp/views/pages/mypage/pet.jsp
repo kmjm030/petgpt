@@ -6,6 +6,32 @@
 
 
       <style>
+
+        @font-face {
+          font-family: 'omyu_pretty';
+          src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-01@1.0/omyu_pretty.woff2') format('woff2');
+          font-weight: normal;
+          font-style: normal;
+        }
+
+        @font-face {
+          font-family: 'ONE-Mobile-POP';
+          src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/ONE-Mobile-POP.woff') format('woff');
+          font-weight: normal;
+          font-style: normal;
+        }
+
+        @font-face {
+          font-family: 'NEXON Lv1 Gothic OTF';
+          src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/NEXON Lv1 Gothic OTF.woff') format('woff');
+          font-weight: normal;
+          font-style: normal;
+        }
+
+        .pet-box {
+          font-family: 'omyu_pretty';
+          font-size: 20px;
+        }
         .site-btn>a {
           color: white;
         }
@@ -153,14 +179,15 @@
               <%-- 회원 정보 --%>
                 <div class="col-lg-9 container mt-3">
                   <h4><strong>🐶 나의 펫 정보</strong></h4>
+                  <p style="color:lightgray"><br>이미지를 클릭하면 수정할 수 있어요!<br></p>
                   <h6 class="checkout__title"></h6>
-                  <h6 class="coupon__code"><span class="icon_tag_alt"></span> 이미지를 클릭하면 수정할 수 있어요!</h6>
+                  <h6 class="coupon__code"><span class="icon_tag_alt"></span>강아지가 좋아할만한 상품을 모아봤어요!</h6>
                   <div class="row">
                     <c:forEach var="p" items="${pets}">
                       <div class="col-12 col-sm-6 col-md-6">
                         <div class="pet-box">
                           <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <h5 style="margin: 10px auto; color:lightgray">반려동물 등록증</h5>
+                            <h5 style="margin: 10px auto; color:lightgray; font-family:'NEXON Lv1 Gothic OTF'">반려동물 등록증</h5>
                             <p style="text-align:right; cursor: pointer;" onclick="pet.del(${p.petKey})">&times;</p>
                           </div>
                           <div class="row">
@@ -188,7 +215,7 @@
                                       🐶
                                     </c:otherwise>
                                   </c:choose>
-                                  <strong>${p.petName}</strong>
+                                  <strong style="font-family:'ONE-Mobile-POP'">${p.petName}</strong>
                               </div>
                               <hr>
                               <div class="pet-desc-box">
