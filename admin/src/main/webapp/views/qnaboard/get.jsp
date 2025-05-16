@@ -30,13 +30,13 @@
                 <tbody>
                 <c:forEach var="board" items="${boards}">
                     <tr>
-                        <td>${board.boardKey}</td>
+                      <td><a href="<c:url value="/qnaboard/detail"/>?id=${board.boardKey}">${board.boardKey}</a></td>
                         <td>${board.boardRe}</td>
                         <td>${board.itemKey}</td>
                         <td>${board.custId}</td>
                         <td class="text-start">${board.boardTitle}</td>
                         <td><fmt:formatDate value="${board.boardRdate}" pattern="yyyy-MM-dd HH:mm" /></td>
-                        <td class="text-start">${board.boardContent}</td>
+                      <td class="text-start"><a href="<c:url value="/qnaboard/detail"/>?id=${board.boardKey}"> ${board.boardContent}</a></td>
                         <td>${board.boardOption}</td>
                         <td>
                             <button onclick="board_get.update('${board.boardKey}')" class="btn btn-outline-primary btn-sm">

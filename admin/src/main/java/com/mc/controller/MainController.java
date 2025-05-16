@@ -192,4 +192,11 @@ public class MainController {
         }
         return "redirect:/totalorder";
     }
+
+    @GetMapping("/admin/statistics")
+    public String showStatisticsPage(Model model) {
+      model.addAttribute("center", "statistics");
+      return "index";
+  }
+
 }

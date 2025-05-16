@@ -49,7 +49,8 @@
     <a href="<c:url value='/qnaboard/get'/>"><i class="fas fa-comment-dots"></i> 상품 문의글</a>
     <a href="<c:url value='/ws'/>"><i class="fas fa-comments"></i> 채팅</a>
     <a href="<c:url value='/admin/notice/get'/>"><i class="fas fa-bullhorn"></i> 관리자 공지사항</a>
-    <a href="<c:url value='/views/statistics.jsp'/>"><i class="fas fa-chart-line"></i> 통계</a>
+    <a href="<c:url value='/admin/statistics'/>"><i class="fas fa-chart-line"></i> 통계</a>
+
   </div>
 </div>
 
