@@ -6,6 +6,32 @@
 
 
       <style>
+
+        @font-face {
+          font-family: 'omyu_pretty';
+          src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-01@1.0/omyu_pretty.woff2') format('woff2');
+          font-weight: normal;
+          font-style: normal;
+        }
+
+        @font-face {
+          font-family: 'ONE-Mobile-POP';
+          src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/ONE-Mobile-POP.woff') format('woff');
+          font-weight: normal;
+          font-style: normal;
+        }
+
+        @font-face {
+          font-family: 'NEXON Lv1 Gothic OTF';
+          src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/NEXON Lv1 Gothic OTF.woff') format('woff');
+          font-weight: normal;
+          font-style: normal;
+        }
+
+        .pet-box {
+          font-family: 'omyu_pretty';
+          font-size: 20px;
+        }
         .site-btn>a {
           color: white;
         }
@@ -95,25 +121,52 @@
                     <div class="accordion" id="accordionExample">
                       <div class="card">
                         <div class="card-heading">
-                          <a data-toggle="collapse" data-target="#collapseOne">마이페이지</a>
+                          <a data-toggle="collapse">나의 정보</a>
                         </div>
                         <div id="collapseOne" class="collapse show" data-parent="#accordionExample">
                           <div class="card-body">
                             <div class="shop__sidebar__categories">
-                              <ul>
+                              <ul style="height:auto;">
                                 <li><a href="<c:url value='/mypage?id=${cust.custId}'/>">회원정보</a></li>
-                                <li><a href="<c:url value='/pet?id=#${cust.custId}'/>"><strong id="category">나의 펫
-                                      정보</strong></a></li>
+                                <li><a href="<c:url value='/pet?id=#${cust.custId}'/>"><strong
+                                        id="category">나의 펫 정보</strong></a></li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="card">
+                        <div class="card-heading">
+                          <a data-toggle="collapse">나의 쇼핑 정보</a>
+                        </div>
+                        <div id="collapseTwo" class="collapse show" data-parent="#accordionExample">
+                          <div class="card-body">
+                            <div class="shop__sidebar__categories">
+                              <ul style="height: auto;">
                                 <li><a href="<c:url value='/checkout/orderlist?id=${cust.custId}'/>">주문내역</a></li>
                                 <li><a href="<c:url value='/address?id=${cust.custId}'/>">배송지 목록</a></li>
-                                <li><a href="<c:url value='/mypage/like?id=${cust.custId}'/>">찜 목록</a></li>
                                 <li><a href="<c:url value='/coupon?id=${cust.custId}'/>">보유 쿠폰</a></li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="card">
+                        <div class="card-heading">
+                          <a data-toggle="collapse">나의 활동</a>
+                        </div>
+                        <div id="collapseThree" class="collapse show" data-parent="#accordionExample">
+                          <div class="card-body">
+                            <div class="shop__sidebar__categories">
+                              <ul style="height:auto;">
+                                <li><a href="<c:url value='/mypage/view?id=${cust.custId}'/>">최근 본 상품</a></li>
+                                <li><a href="<c:url value='/mypage/like?id=${cust.custId}'/>">찜 목록</a></li>
                                 <li><a href="<c:url value='/qnaboard?id=${cust.custId}'/>">1:1문의</a></li>
                                 <li><a href="<c:url value='/review?id=${cust.custId}'/>">내가 작성한 리뷰</a></li>
                               </ul>
                               <br /><br />
                               <button class="site-btn" id="logout_btn"><a href="<c:url value="
-                                  /logout" />">로그아웃</a></button>
+                                    /logout" />">로그아웃</a></button>
                             </div>
                           </div>
                         </div>
@@ -121,35 +174,37 @@
                     </div>
                   </div>
                 </div>
+
               </div>
               <%-- 회원 정보 --%>
                 <div class="col-lg-9 container mt-3">
-                  <h6 class="checkout__title">🐶 나의 펫 정보</h6>
-                  <h6 class="coupon__code"><span class="icon_tag_alt"></span> 이미지를 클릭하면 수정할 수 있어요!</h6>
+                  <h4><strong>🐶 나의 펫 정보</strong></h4>
+                  <p style="color:lightgray"><br>이미지를 클릭하면 수정할 수 있어요!<br></p>
+                  <h6 class="checkout__title"></h6>
+                  <h6 class="coupon__code"><span class="icon_tag_alt"></span>강아지가 좋아할만한 상품을 모아봤어요!</h6>
                   <div class="row">
                     <c:forEach var="p" items="${pets}">
-                      <div class="col-md-6">
+                      <div class="col-12 col-sm-6 col-md-6">
                         <div class="pet-box">
                           <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <h5 style="margin: 10px auto; color:lightgray">반려동물 등록증</h5>
+                            <h5 style="margin: 10px auto; color:lightgray; font-family:'NEXON Lv1 Gothic OTF'">반려동물 등록증</h5>
                             <p style="text-align:right; cursor: pointer;" onclick="pet.del(${p.petKey})">&times;</p>
                           </div>
                           <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-sm-6">
                               <form id="pet_update_form" action="${pageContext.request.contextPath}/pet/petimgupdate"
                                 method="post" enctype="multipart/form-data">
                                 <input type="file" id="fileInput" name="petImg" style="display: none;"
                                   onchange="pet.submitForm()" />
                                 <input type="hidden" value="${p.custId}" name="custId">
                                 <input type="hidden" value="${p.petKey}" name="petKey">
-
                               </form>
                               <div class="pet-img-box">
                                 <img src="<c:url value='${p.petImg}'/>" alt="현재 첨부파일"
                                   onclick="document.getElementById('fileInput').click();" style="cursor: pointer;">
                               </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-sm-6">
                               <div class="pet-name-box">
                                 <h5>
                                   <c:choose>
@@ -160,7 +215,7 @@
                                       🐶
                                     </c:otherwise>
                                   </c:choose>
-                                  <strong>${p.petName}</strong>
+                                  <strong style="font-family:'ONE-Mobile-POP'">${p.petName}</strong>
                               </div>
                               <hr>
                               <div class="pet-desc-box">

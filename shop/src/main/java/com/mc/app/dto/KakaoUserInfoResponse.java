@@ -11,43 +11,41 @@ import java.util.Map;
 @ToString
 public class KakaoUserInfoResponse {
 
-    private Long id; // 카카오 회원번호 (고유 식별자)
+    private Long id; 
 
     @JsonProperty("connected_at")
-    private String connectedAt; // 서비스 연결 시각 (ISO 8601 형식)
+    private String connectedAt; 
 
-    private Map<String, Object> properties; // 사용자 프로퍼티 (닉네임, 프로필 이미지 등 포함)
-                                            // 예: properties.get("nickname"), properties.get("profile_image")
+    private Map<String, Object> properties; 
 
     @JsonProperty("kakao_account")
-    private KakaoAccount kakaoAccount; // 카카오계정 정보
+    private KakaoAccount kakaoAccount; 
 
     @Getter
     @Setter
     @ToString
-    public static class KakaoAccount { // 중첩 클래스로 카카오 계정 정보 표현
+    public static class KakaoAccount { 
 
         @JsonProperty("profile_nickname_needs_agreement")
-        private Boolean profileNicknameNeedsAgreement; // 닉네임 동의 필요 여부
+        private Boolean profileNicknameNeedsAgreement; 
 
         @JsonProperty("profile_image_needs_agreement")
-        private Boolean profileImageNeedsAgreement; // 프로필 이미지 동의 필요 여부
+        private Boolean profileImageNeedsAgreement; 
 
-        private Map<String, Object> profile; // 프로필 정보 (닉네임, 썸네일/프로필 이미지 URL 등)
-                                             // 예: profile.get("nickname"), profile.get("thumbnail_image_url")
+        private Map<String, Object> profile; 
 
         @JsonProperty("has_email")
-        private Boolean hasEmail; // 이메일 보유 여부
+        private Boolean hasEmail; 
 
         @JsonProperty("email_needs_agreement")
-        private Boolean emailNeedsAgreement; // 이메일 동의 필요 여부
+        private Boolean emailNeedsAgreement; 
 
         @JsonProperty("is_email_valid")
-        private Boolean isEmailValid; // 이메일 유효성
+        private Boolean isEmailValid; 
 
         @JsonProperty("is_email_verified")
-        private Boolean isEmailVerified; // 이메일 인증 여부
+        private Boolean isEmailVerified; 
 
-        private String email; // 사용자 이메일 (동의한 경우)
+        private String email; 
     }
 }

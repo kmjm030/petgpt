@@ -88,25 +88,52 @@
                     <div class="accordion" id="accordionExample">
                       <div class="card">
                         <div class="card-heading">
-                          <a data-toggle="collapse" data-target="#collapseOne">마이페이지</a>
+                          <a data-toggle="collapse">나의 정보</a>
                         </div>
                         <div id="collapseOne" class="collapse show" data-parent="#accordionExample">
                           <div class="card-body">
                             <div class="shop__sidebar__categories">
-                              <ul>
+                              <ul style="height:auto;">
                                 <li><a href="<c:url value='/mypage?id=${cust.custId}'/>">회원정보</a></li>
                                 <li><a href="<c:url value='/pet?id=#${cust.custId}'/>">나의 펫 정보</a></li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="card">
+                        <div class="card-heading">
+                          <a data-toggle="collapse">나의 쇼핑 정보</a>
+                        </div>
+                        <div id="collapseTwo" class="collapse show" data-parent="#accordionExample">
+                          <div class="card-body">
+                            <div class="shop__sidebar__categories">
+                              <ul style="height: auto;">
                                 <li><a href="<c:url value='/checkout/orderlist?id=${cust.custId}'/>"><strong
-                                      id="category">주문내역</strong></a></li>
+                                        id="category">주문내역</strong></a></li>
                                 <li><a href="<c:url value='/address?id=${cust.custId}'/>">배송지 목록</a></li>
-                                <li><a href="<c:url value='/mypage/like?id=${cust.custId}'/>">찜 목록</a></li>
                                 <li><a href="<c:url value='/coupon?id=${cust.custId}'/>">보유 쿠폰</a></li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="card">
+                        <div class="card-heading">
+                          <a data-toggle="collapse">나의 활동</a>
+                        </div>
+                        <div id="collapseThree" class="collapse show" data-parent="#accordionExample">
+                          <div class="card-body">
+                            <div class="shop__sidebar__categories">
+                              <ul style="height:auto;">
+                                <li><a href="<c:url value='/mypage/view?id=${cust.custId}'/>">최근 본 상품</a></li>
+                                <li><a href="<c:url value='/mypage/like?id=${cust.custId}'/>">찜 목록</a></li>
                                 <li><a href="<c:url value='/qnaboard?id=${cust.custId}'/>">1:1문의</a></li>
                                 <li><a href="<c:url value='/review?id=${cust.custId}'/>">내가 작성한 리뷰</a></li>
                               </ul>
                               <br /><br />
                               <button class="site-btn" id="logout_btn"><a href="<c:url value="
-                                  /logout" />">로그아웃</a></button>
+                                    /logout" />">로그아웃</a></button>
                             </div>
                           </div>
                         </div>
@@ -114,10 +141,12 @@
                     </div>
                   </div>
                 </div>
+
               </div>
               <%-- 회원 정보 --%>
                 <div class="col-lg-9 container mt-3">
-                  <h6 class="checkout__title">🔎 주문내역 상세보기</h6>
+                  <h4><strong>🔎 주문내역 상세보기</strong></h4>
+                  <h6 class="checkout__title"></h6>
                   <h6 class="checkout__input"><strong>▪ 주문번호 :</strong> ${order.orderKey}</h6>
                   <h6 class="checkout__input"><strong>▪ 수령인 :</strong> ${order.recipientName}</h6>
                   <h6 class="checkout__input"><strong>▪ 수령인 전화번호 :</strong> ${order.recipientPhone}</h6>
@@ -144,7 +173,10 @@
                           <td>
                             <img src="<c:url value='/img/product/${itemMap[c.itemKey].itemImg1}'/>" width="200" />
                           </td>
-                          <td>${itemMap[c.itemKey].itemName}</td>
+                          <td>
+                            <p>${itemMap[c.itemKey].itemName}</p>
+                            <p style="font-size:12px;">[옵션: ${optionMap[c.optionKey].optionName}]</p>
+                          </td>
                           <td>${c.orderDetailPrice}</td>
                           <td>${c.orderDetailCount}</td>
                           <td><button class="review-btn"

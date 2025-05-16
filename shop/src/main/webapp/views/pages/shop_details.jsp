@@ -9,10 +9,10 @@
                 <section class="shop-details">
                     <div id="shop-details-data" data-item-key="${item.itemKey}"
                         data-is-hot-deal-active="${isHotDealActive}" data-original-base-price="${item.itemPrice}"
-                        data-options-json='${optionsJson}' data-cart-url="
-                        <c:url value='/cart' />" data-cart-add-batch-url="
-                        <c:url value='/cart/add/batch/ajax' />" data-login-url="
-                        <c:url value='/login' />" style="display: none;">
+                        data-options-json='${optionsJson}' data-cart-url="<c:url value='/cart' />"
+                        data-cart-add-batch-url="<c:url value='/cart/add/batch/ajax' />"
+                        data-login-url="<c:url value='/login' />"
+                        data-order-add-batch-url="<c:url value='/checkout'/>" style="display: none;">
                     </div>
 
                     <div class="product__details__pic">
@@ -292,7 +292,7 @@
                                 style="height: 1.5em; margin-bottom: 2px;"> <%-- 아이콘 아래 여백 추가 --%>
                                 <span style="font-size: 0.8em;">찜</span> <%-- 텍스트 추가 및 크기 조정 --%>
                     </button>
-                    <button type="button" id="open-main-modal-btn">장바구니 담기</button>
+                    <button type="button" id="open-main-modal-btn">상품 선택하기</button>
                 </div>
 
                 <!-- Modal Overlay -->
@@ -314,6 +314,7 @@
                         총 수량 <span id="total-quantity">0</span>개 / 총 <span id="total-price">0</span>원
                     </div>
                     <button type="button" id="final-add-all-to-cart-btn" disabled>장바구니 담기</button>
+                    <button type="button" id="final-add-all-to-order-btn" disabled>바로구매</button>
                 </div>
 
                 <!-- Color Selection Modal (Center) -->

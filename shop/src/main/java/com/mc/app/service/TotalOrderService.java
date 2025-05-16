@@ -1,9 +1,7 @@
 package com.mc.app.service;
 
-import com.mc.app.dto.QnaBoard;
 import com.mc.app.dto.TotalOrder;
 import com.mc.app.frame.MCService;
-import com.mc.app.repository.QnaBoardRepository;
 import com.mc.app.repository.TotalOrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

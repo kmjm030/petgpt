@@ -66,25 +66,52 @@
                     <div class="accordion" id="accordionExample">
                       <div class="card">
                         <div class="card-heading">
-                          <a data-toggle="collapse" data-target="#collapseOne">마이페이지</a>
+                          <a data-toggle="collapse">나의 정보</a>
                         </div>
                         <div id="collapseOne" class="collapse show" data-parent="#accordionExample">
                           <div class="card-body">
                             <div class="shop__sidebar__categories">
-                              <ul>
+                              <ul style="height:auto;">
                                 <li><a href="<c:url value='/mypage?id=${cust.custId}'/>">회원정보</a></li>
                                 <li><a href="<c:url value='/pet?id=#${cust.custId}'/>">나의 펫 정보</a></li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="card">
+                        <div class="card-heading">
+                          <a data-toggle="collapse">나의 쇼핑 정보</a>
+                        </div>
+                        <div id="collapseTwo" class="collapse show" data-parent="#accordionExample">
+                          <div class="card-body">
+                            <div class="shop__sidebar__categories">
+                              <ul style="height: auto;">
                                 <li><a href="<c:url value='/checkout/orderlist?id=${cust.custId}'/>">주문내역</a></li>
                                 <li><a href="<c:url value='/address?id=${cust.custId}'/>">배송지 목록</a></li>
-                                <li><a href="<c:url value='/mypage/like?id=${cust.custId}'/>">찜 목록</a></li>
                                 <li><a href="<c:url value='/coupon?id=${cust.custId}'/>">보유 쿠폰</a></li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="card">
+                        <div class="card-heading">
+                          <a data-toggle="collapse">나의 활동</a>
+                        </div>
+                        <div id="collapseThree" class="collapse show" data-parent="#accordionExample">
+                          <div class="card-body">
+                            <div class="shop__sidebar__categories">
+                              <ul style="height:auto;">
+                                <li><a href="<c:url value='/mypage/view?id=${cust.custId}'/>">최근 본 상품</a></li>
+                                <li><a href="<c:url value='/mypage/like?id=${cust.custId}'/>">찜 목록</a></li>
                                 <li><a href="<c:url value='/qnaboard?id=${cust.custId}'/>"><strong
-                                      id="category">1:1문의</strong></a></li>
+                                        id="category">1:1문의</strong></a></li>
                                 <li><a href="<c:url value='/review?id=${cust.custId}'/>">내가 작성한 리뷰</a></li>
                               </ul>
                               <br /><br />
                               <button class="site-btn" id="logout_btn"><a href="<c:url value="
-                                  /logout" />">로그아웃</a></button>
+                                    /logout" />">로그아웃</a></button>
                             </div>
                           </div>
                         </div>
@@ -92,10 +119,12 @@
                     </div>
                   </div>
                 </div>
+
               </div>
               <%-- 회원 정보 --%>
                 <div class="col-lg-9 container mt-3">
-                  <h6 class="checkout__title">❓ 작성한 문의글 조회</h6>
+                  <h4><strong>❓ 작성한 문의글 조회</strong></h4>
+                  <h6 class="checkout__title"></h6>
                   <table class="table">
                     <thead>
                       <tr>

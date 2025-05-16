@@ -72,6 +72,7 @@ $(function () {
     const rawOptionsJson = detailsDataElement.data('options-json');
     const cartUrl = detailsDataElement.data('cart-url');
     const cartAddBatchUrl = detailsDataElement.data('cart-add-batch-url');
+    const orderAddBatchUrl = detailsDataElement.data('order-add-batch-url');
     const loginUrl = detailsDataElement.data('login-url');
 
 
@@ -83,6 +84,7 @@ $(function () {
     const triggerColorBtn = $('#trigger-color-modal');
     const triggerSizeBtn = $('#trigger-size-modal');
     const finalAddToCartBtn = $('#final-add-all-to-cart-btn');
+    const finalAddToOrderBtn = $('#final-add-all-to-order-btn');
     const totalQuantitySpan = $('#total-quantity');
     const totalPriceSpan = $('#total-price');
     const sizeOptionsList = $('#size-options-list');
@@ -345,6 +347,7 @@ $(function () {
 
         // 장바구니 담기 버튼 활성화/비활성화
         finalAddToCartBtn.prop('disabled', totalQuantity <= 0);
+        finalAddToOrderBtn.prop('disabled', totalQuantity <= 0);
     }
 
     // --- 이벤트 리스너 연결 ---
@@ -398,7 +401,6 @@ $(function () {
         if ($(this).prop('disabled')) {
             return;
         }
-
         const itemsToCart = [];
         selectedOptionsContainer.find('.selected-option-item').each(function () {
             const item = $(this);
@@ -455,11 +457,51 @@ $(function () {
                 }
             },
             error: function (xhr, status, error) {
-                console.error("AJAX Error adding batch to cart:", status, error);
                 alert('장바구니 추가 중 오류가 발생했습니다. 서버 상태를 확인하거나 관리자에게 문의하세요.');
                 finalAddToCartBtn.prop('disabled', false).text('장바구니 담기');
             }
         });
+    });
+
+    // 주문 담기
+    finalAddToOrderBtn.on('click', function () {
+      if ($(this).prop('disabled')) {
+        return;
+      }
+      const itemsToCart = [];
+      selectedOptionsContainer.find('.selected-option-item').each(function () {
+        const item = $(this);
+        const optionKey = item.data('option-key');
+        const quantity = parseInt(item.find('.quantity-control input').val(), 10);
+        if (optionKey && quantity > 0) {
+          itemsToCart.push({
+            item_key: itemKey,
+            option_key: optionKey,
+            cart_cnt: quantity
+          });
+        }
+      });
+      if (itemsToCart.length === 0) {
+        alert("주문할 상품이 없습니다. 옵션을 선택하고 수량을 확인해주세요.");
+        return;
+      }
+
+      // 폼 만들기
+      const form = $('<form>', {
+        method: 'POST',
+        action: '/checkout'
+      });
+
+      // JSON 문자열을 숨은 input에 넣기
+      const input = $('<input>', {
+        type: 'hidden',
+        name: 'itemsJson',
+        value: JSON.stringify(itemsToCart)
+      });
+
+      form.append(input);
+      $('body').append(form);
+      form.submit();
     });
 
     // --- 초기 설정 ---
@@ -492,4 +534,4 @@ $(function () {
         console.log("IntersectionObserver set up for description content.");
     }
 
-}); 
+});

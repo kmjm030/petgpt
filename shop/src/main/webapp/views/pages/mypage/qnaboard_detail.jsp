@@ -41,6 +41,14 @@
       #msg {
         color: darkred;
       }
+
+      .response-box {
+        padding: 20px;
+        margin: 10px;
+        border-radius: 10px;
+        background-color: #f9f9f9;
+        border: solid lightgray 1px;
+      }
     </style>
 
     <!-- Breadcrumb Section Begin -->
@@ -77,25 +85,52 @@
                   <div class="accordion" id="accordionExample">
                     <div class="card">
                       <div class="card-heading">
-                        <a data-toggle="collapse" data-target="#collapseOne">마이페이지</a>
+                        <a data-toggle="collapse">나의 정보</a>
                       </div>
                       <div id="collapseOne" class="collapse show" data-parent="#accordionExample">
                         <div class="card-body">
                           <div class="shop__sidebar__categories">
-                            <ul>
+                            <ul style="height:auto;">
                               <li><a href="<c:url value='/mypage?id=${cust.custId}'/>">회원정보</a></li>
                               <li><a href="<c:url value='/pet?id=#${cust.custId}'/>">나의 펫 정보</a></li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <div class="card-heading">
+                        <a data-toggle="collapse">나의 쇼핑 정보</a>
+                      </div>
+                      <div id="collapseTwo" class="collapse show" data-parent="#accordionExample">
+                        <div class="card-body">
+                          <div class="shop__sidebar__categories">
+                            <ul style="height: auto;">
                               <li><a href="<c:url value='/checkout/orderlist?id=${cust.custId}'/>">주문내역</a></li>
                               <li><a href="<c:url value='/address?id=${cust.custId}'/>">배송지 목록</a></li>
-                              <li><a href="<c:url value='/mypage/like?id=${cust.custId}'/>">찜 목록</a></li>
                               <li><a href="<c:url value='/coupon?id=${cust.custId}'/>">보유 쿠폰</a></li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <div class="card-heading">
+                        <a data-toggle="collapse">나의 활동</a>
+                      </div>
+                      <div id="collapseThree" class="collapse show" data-parent="#accordionExample">
+                        <div class="card-body">
+                          <div class="shop__sidebar__categories">
+                            <ul style="height:auto;">
+                              <li><a href="<c:url value='/mypage/view?id=${cust.custId}'/>">최근 본 상품</a></li>
+                              <li><a href="<c:url value='/mypage/like?id=${cust.custId}'/>">찜 목록</a></li>
                               <li><a href="<c:url value='/qnaboard?id=${cust.custId}'/>"><strong
-                                    id="category">1:1문의</strong></a></li>
+                                      id="category">1:1문의</strong></a></li>
                               <li><a href="<c:url value='/review?id=${cust.custId}'/>">내가 작성한 리뷰</a></li>
                             </ul>
                             <br /><br />
                             <button class="site-btn" id="logout_btn"><a href="<c:url value="
-                                /logout" />">로그아웃</a></button>
+                                    /logout" />">로그아웃</a></button>
                           </div>
                         </div>
                       </div>
@@ -103,16 +138,17 @@
                   </div>
                 </div>
               </div>
+
             </div>
             <%-- 회원 정보 --%>
               <div class="col-lg-9">
-                <h6 class="checkout__title">❓ 1:1 문의 상세정보</h6>
+                <h4><strong>❓ 1:1 문의 상세정보</strong></h4>
+                <h6 class="checkout__title"></h6>
                 <form id="qna_update_form" enctype="multipart/form-data">
                   <%-- 문의종류 --%>
                     <div class="row">
                       <div class="form-group col-md-12">
                         <div class="checkout__input">
-                          <label for="boardTitle">▪ 제목</label>
                           <input type="text" placeholder="제목을 입력하세요." value="${board.boardTitle}" id="boardTitle"
                             name="boardTitle">
                           <input type="hidden" value="${sessionScope.cust.custId}" id="sessionId" name="custId">
@@ -123,7 +159,6 @@
                     <div class="row">
                       <div class="form-group col-md-12">
                         <div class="checkout__input">
-                          <label for="boardContent">▪ 내용</label><br />
                           <textarea placeholder="문의내용을 작성하세요." id="boardContent"
                             name="boardContent">${board.boardContent}</textarea>
                         </div>
@@ -132,17 +167,23 @@
                     <c:if test="${not empty board.boardImg}">
                       <div class="row">
                         <div class="form-group col-md-6">
-                          <label>▪ 현재 이미지파일 </label>
                           <img src="<c:url value='${board.boardImg}'/>" alt="현재 첨부파일">
                         </div>
                       </div>
                     </c:if>
                     <div class="row">
                       <div class="form-group col-md-6">
-                        <label>▪ 이미지 첨부</label>
                         <input type="file" class="form-control" name="img">
                       </div>
                     </div>
+                    <c:if test="${not empty comments}">
+                      <div class="row">
+                        <div class="col-md-12 response-box">
+                          <h5><strong>└ 🗨️ 관리자 답변</strong></h5><hr>
+                          ${comments.adcommentsContent}
+                        </div>
+                      </div>
+                    </c:if>
                     <br />
                 </form>
                 <h6 id="msg"></h6>

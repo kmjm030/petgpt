@@ -14,65 +14,69 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ItemService implements MCService<Item, Integer> {
 
-    private final ItemRepository itemRepository;
+  private final ItemRepository itemRepository;
 
-    @Value("${app.dir.uploadimgdir}")
-    private String uploadDir;
+  @Value("${app.dir.uploadimgdir}")
+  private String uploadDir;
 
-    @Override
-    public void add(Item item) throws Exception {
-        itemRepository.insert(item);
+  @Override
+  public void add(Item item) throws Exception {
+    itemRepository.insert(item);
+  }
+
+  @Override
+  public void mod(Item item) throws Exception {
+    itemRepository.update(item);
+  }
+
+  @Override
+  public void del(Integer itemKey) throws Exception {
+    Item item = itemRepository.selectOne(itemKey);
+
+    try {
+      FileUploadUtil.deleteFile(item.getItemImg1(), uploadDir);
+    } catch (Exception e) {
+      System.out.println("이미지1 삭제 실패: " + e.getMessage());
     }
 
-    @Override
-    public void mod(Item item) throws Exception {
-        itemRepository.update(item);
+    try {
+      FileUploadUtil.deleteFile(item.getItemImg2(), uploadDir);
+    } catch (Exception e) {
+      System.out.println("이미지2 삭제 실패: " + e.getMessage());
     }
 
-    @Override
-    public void del(Integer itemKey) throws Exception {
-        Item item = itemRepository.selectOne(itemKey);
-
-        try {
-            FileUploadUtil.deleteFile(item.getItemImg1(), uploadDir);
-        } catch (Exception e) {
-            System.out.println("이미지1 삭제 실패: " + e.getMessage());
-        }
-
-        try {
-            FileUploadUtil.deleteFile(item.getItemImg2(), uploadDir);
-        } catch (Exception e) {
-            System.out.println("이미지2 삭제 실패: " + e.getMessage());
-        }
-
-        try {
-            FileUploadUtil.deleteFile(item.getItemImg3(), uploadDir);
-        } catch (Exception e) {
-            System.out.println("이미지3 삭제 실패: " + e.getMessage());
-        }
-
-        itemRepository.delete(itemKey);
+    try {
+      FileUploadUtil.deleteFile(item.getItemImg3(), uploadDir);
+    } catch (Exception e) {
+      System.out.println("이미지3 삭제 실패: " + e.getMessage());
     }
 
-    @Override
-    public Item get(Integer itemKey) throws Exception {
-        return itemRepository.selectOne(itemKey);
-    }
+    itemRepository.delete(itemKey);
+  }
 
-    @Override
-    public List<Item> get() throws Exception {
-        return itemRepository.select();
-    }
+  @Override
+  public Item get(Integer itemKey) throws Exception {
+    return itemRepository.selectOne(itemKey);
+  }
 
-    public int getCount() throws Exception {
-        return itemRepository.count();
-    }
+  @Override
+  public List<Item> get() throws Exception {
+    return itemRepository.select();
+  }
 
-    public List<Item> getTopSellingItems(int limit) throws Exception {
-        return itemRepository.selectTopSellingItems(limit);
-    }
+  public int getCount() throws Exception {
+    return itemRepository.count();
+  }
 
-    public List<Item> getItemsWithLowStock(int threshold) throws Exception {
-        return itemRepository.selectItemsWithLowStock(threshold);
-    }
+  public List<Item> getTopSellingItems(int limit) throws Exception {
+    return itemRepository.selectTopSellingItems(limit);
+  }
+
+  public List<Item> getItemsWithLowStock(int threshold) throws Exception {
+    return itemRepository.selectItemsWithLowStock(threshold);
+  }
+
+  public void updateStatus(Item item) throws Exception {
+    itemRepository.updateStatus(item);
+  }
 }

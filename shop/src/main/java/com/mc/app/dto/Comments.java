@@ -25,7 +25,7 @@ public class Comments {
     private boolean likedByCurrentUser;
 
     private Integer parentCommentKey;
-    private int depth; // 댓글 깊이 (0: 원댓글, 1: 답글, ...)
+    private int depth; 
     private String parentCustId;
 
     public void increaseLikeCount() {

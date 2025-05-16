@@ -7,11 +7,11 @@
     <select id="select" resultType="com.mc.app.dto.Like">
         SELECT * FROM `like`
     </select>
-    
+
     <select id="selectOne" parameterType="Integer" resultType="com.mc.app.dto.Like">
         SELECT * FROM `like` WHERE like_key = #{likeKey}
     </select>
-    
+
     <update id="update" parameterType="com.mc.app.dto.Like">
         UPDATE `like`
         SET cust_id = #{custId}, item_key = #{itemKey}
@@ -21,14 +21,14 @@
     <select id="findAllByCustomer" parameterType="String" resultType="com.mc.app.dto.Like">
         SELECT * FROM `like` WHERE cust_id = #{custId}
     </select>
-    
+
     <select id="findByCustIdAndItemKey" resultType="com.mc.app.dto.Like">
-        SELECT * FROM `like` 
+        SELECT * FROM `like`
         WHERE cust_id = #{custId} AND item_key = #{itemKey}
     </select>
-    
+
     <select id="countByCustId" parameterType="String" resultType="int">
-        SELECT COUNT(*) FROM `like` 
+        SELECT COUNT(*) FROM `like`
         WHERE cust_id = #{custId}
     </select>
 
@@ -43,7 +43,7 @@
     <delete id="delete" parameterType="Integer">
         DELETE FROM `like` WHERE like_key = #{likeKey}
     </delete>
-    
+
     <delete id="deleteByCustAndItem" parameterType="com.mc.app.dto.Like">
         DELETE FROM `like`
         WHERE cust_id = #{custId} AND item_key = #{itemKey}
@@ -54,4 +54,8 @@
         WHERE cust_id = #{custId} AND item_key = #{itemKey}
     </delete>
 
+    <delete id="deleteOlderThan" parameterType="java.util.Date">
+        DELETE FROM `like`
+        WHERE like_rdate &lt; #{date}
+    </delete>
 </mapper>

@@ -7,6 +7,7 @@ import com.mc.app.service.AddressService;
 import com.mc.app.service.CouponService;
 import com.mc.app.service.CustomerService;
 import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 @Slf4j
@@ -38,25 +40,20 @@ public class LoginController {
                 .couponUse("미사용").build();
         couponService.add(coupon);
 
-        model.addAttribute("centerPage", "pages/login.jsp");
-        return "index";
+        return "redirect:/signin";
     }
 
-    // 로그인 페이지 보여주기 (GET 요청 처리)
     @GetMapping("/gologin")
     public String showLoginPage(Model model, HttpSession session,
-            @RequestParam(name = "redirectURL", required = false) String redirectURL) { // Explicitly name the parameter
+            @RequestParam(name = "redirectURL", required = false) String redirectURL) { 
         if (redirectURL != null && !redirectURL.isEmpty()) {
             session.setAttribute("redirectURL", redirectURL);
         } else {
             session.removeAttribute("redirectURL");
         }
-        model.addAttribute("viewName", "login");
-        model.addAttribute("centerPage", "pages/login.jsp");
-        return "index";
+        return "redirect:/signin";
     }
 
-    // 로그인 처리 (POST 요청 처리)
     @PostMapping("/loginimpl")
     public String loginProcess(Model model, @RequestParam("id") String id,
             @RequestParam("pwd") String pwd,
@@ -75,16 +72,25 @@ public class LoginController {
                 return "redirect:/";
             }
         }
-        model.addAttribute("centerPage", "pages/login.jsp");
+
         model.addAttribute("msg", "아이디 또는 패스워드가 일치하지 않습니다.");
-        return "index";
+        return "redirect:/signin";
     }
 
-    @RequestMapping("/logout")
-    public String logout(Model model, HttpSession httpSession) throws Exception {
+    @RequestMapping(value = "/signout", method = {RequestMethod.GET, RequestMethod.POST})
+    public String logout(Model model, HttpSession httpSession, HttpServletResponse response) throws Exception {
+        log.info("로그아웃 메서드 호출됨");
         if (httpSession != null) {
-            httpSession.invalidate(); // 로그인해서 깃발 꽂아놨던 것을 없앰
+            Customer cust = (Customer) httpSession.getAttribute("cust");
+            if (cust != null) {
+                log.info("로그아웃: 사용자 ID {}", cust.getCustId());
+            }
+            httpSession.invalidate(); 
+            log.info("사용자 로그아웃 처리 완료 - 세션 무효화됨");
+        } else {
+            log.info("로그아웃: 세션이 이미 없음");
         }
+        log.info("로그아웃 후 홈으로 리다이렉트");
         return "redirect:/";
     }
 

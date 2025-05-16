@@ -1,157 +1,456 @@
 .header__search {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    margin-left: -30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 }
 
 .header__search form {
-    display: flex;
-    width: 100%;
-    max-width: 400px;
-    position: relative;
-    border: 1px solid #ddd;
-    border-radius: 25px;
-    overflow: hidden;
-    background-color: #f9f9f9;
-    transition: border-color 0.3s ease;
+  display: flex;
+  width: 100%;
+  max-width: 400px;
+  position: relative;
+  border: 1px solid #ddd;
+  border-radius: 25px;
+  overflow: hidden;
+  background-color: #f9f9f9;
+  transition: border-color 0.3s ease;
 }
 
 .header__search form:hover {
-    border-color: #000000;
+  border-color: #000000;
 }
 
 .search-input {
-    flex-grow: 1;
-    border: none;
-    padding: 10px 15px;
-    font-size: 14px;
-    border-radius: 25px 0 0 25px;
-    outline: none;
-    background-color: transparent;
+  flex-grow: 1;
+  border: none;
+  padding: 10px 15px;
+  font-size: 14px;
+  border-radius: 25px 0 0 25px;
+  outline: none;
+  background-color: transparent;
 }
 
 .search-input::placeholder {
-    color: #aaa;
+  color: #aaa;
 }
 
 .search-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0 20px;
-    font-size: 14px;
-    font-weight: bold;
-    color: white;
-    background-color: #2b2b2b;
-    border: none;
-    border-radius: 0 25px 25px 0;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 20px;
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
+  background-color: #2b2b2b;
+  border: none;
+  border-radius: 0 25px 25px 0;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .search-btn i {
-    margin-right: 5px;
+  margin-right: 5px;
 }
 
 .search-btn:hover {
-    background-color: #000000;
+  background-color: #000000;
+}
+
+/* 검색창 반응형 미디어 쿼리 */
+@media (max-width: 991.98px) {
+  .header__search {
+    margin-left: 0;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  .header__search form {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .search-btn {
+    padding: 0 15px;
+  }
+
+  .header__logo {
+    text-align: center;
+  }
+
+  .header__menu {
+    text-align: center;
+    margin-top: 10px;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .header__search {
+    width: 100%;
+  }
+
+  .search-input {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  .search-btn {
+    padding: 0 12px;
+    font-size: 13px;
+  }
+
+  .header__logo img {
+    max-width: 120px;
+  }
+
+  .container > .row {
+    flex-direction: column;
+  }
+
+  .header .col-sm-12 {
+    width: 100%;
+    padding: 5px 15px;
+  }
 }
 
 .header__top__right {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    flex-wrap: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: nowrap;
 }
 
 .header__top__links {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .header__top__links a {
-    font-size: 14px;
-    color: #ffffff;
-    margin-left: 15px;
-    display: inline-block;
-    white-space: nowrap;
-    transition: transform 0.1s ease;
-    transform-origin: center center;
+  font-size: 14px;
+  color: #ffffff;
+  margin-left: 15px;
+  display: inline-block;
+  white-space: nowrap;
+  transition: transform 0.1s ease;
+  transform-origin: center center;
 }
 
 .header__top__links a:hover {
-    transform: scale(1.05);
-
+  transform: scale(1.05);
 }
 
 .header__top__links a:first-child {
-    margin-left: 0;
+  margin-left: 0;
 }
 
 #mode-select-wrapper {
-    position: relative;
-    margin-left: 15px;
-    white-space: nowrap;
+  position: relative;
+  margin-left: 15px;
+  white-space: nowrap;
 }
 
 .header__menu {
-    text-align: right;
+  text-align: right;
 }
 
 .header__menu ul li {
-    display: inline-block;
-    margin-left: 10px;
-    float: none;
-    position: relative;
+  display: inline-block;
+  margin-left: 10px;
+  float: none;
+  position: relative;
 }
 
 .header__menu ul li:first-child {
-    margin-left: 0;
+  margin-left: 0;
 }
 
 .header__menu ul .dropdown {
-    padding-left: 0;
-    list-style: none;
-    text-align: left;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background-color: #ffffff;
-    min-width: 160px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-    border-radius: 7px;
-    margin-top: 25px;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-10px);
-    transition: opacity 0.1s ease, visibility 0s 0.1s, transform 0.1s ease;
+  padding-left: 0;
+  list-style: none;
+  text-align: left;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #ffffff;
+  min-width: 160px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  border-radius: 7px;
+  margin-top: 25px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: opacity 0.1s ease, visibility 0s 0.1s, transform 0.1s ease;
 }
 
-.header__menu ul li:hover>.dropdown {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-    transition: opacity 0.1s ease, visibility 0s 0s, transform 0.1s ease;
+.header__menu ul li:hover > .dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition: opacity 0.1s ease, visibility 0s 0s, transform 0.1s ease;
 }
 
 .header__menu ul .dropdown li {
-    display: block;
-    margin-left: 0;
-    width: 100%;
+  display: block;
+  margin-left: 0;
+  width: 100%;
 }
 
 .header__menu ul .dropdown li a {
-    display: block;
-    padding: 10px 15px;
-    white-space: nowrap;
-    color: #333;
-    transition: background-color 0.1s ease, transform 0.1s ease;
-    transform-origin: left center;
+  display: block;
+  padding: 10px 15px;
+  white-space: nowrap;
+  color: #333;
+  transition: background-color 0.1s ease, transform 0.1s ease;
+  transform-origin: left center;
 }
 
 .header__menu ul .dropdown li a:hover {
-    transform: scale(1.05);
+  transform: scale(1.05);
+}
+
+/* 오프캔버스 메뉴 검색창 스타일 */
+.offcanvas__search {
+  padding: 15px;
+}
+
+.offcanvas__search form {
+  display: flex;
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 25px;
+  overflow: hidden;
+  background-color: #f9f9f9;
+  margin-bottom: 15px;
+}
+
+.offcanvas__search .search-input {
+  flex-grow: 1;
+  border: none;
+  padding: 10px 15px;
+  font-size: 14px;
+  border-radius: 25px 0 0 25px;
+  outline: none;
+  background-color: transparent;
+}
+
+.offcanvas__search .search-btn {
+  padding: 8px 15px;
+  font-size: 14px;
+  color: white;
+  background-color: #2b2b2b;
+  border: none;
+  border-radius: 0 25px 25px 0;
+  cursor: pointer;
+}
+
+.offcanvas__search .search-btn:hover {
+  background-color: #000000;
+}
+
+/* 다크모드에서 오프캔버스 검색창 스타일 */
+body.dark-mode .offcanvas__search form {
+  background-color: #303030;
+  border-color: #444;
+}
+
+body.dark-mode .offcanvas__search .search-input {
+  color: #e8eaed;
+}
+
+body.dark-mode .offcanvas__search .search-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+body.dark-mode .offcanvas__search .search-btn {
+  background-color: #444;
+}
+
+body.dark-mode .offcanvas__search .search-btn:hover {
+  background-color: #555;
+}
+
+/* 반응형 헤더 스타일 */
+@media (max-width: 991px) {
+  .header .container {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    position: relative;
+  }
+
+  .header .container .row {
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .header__logo {
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .header__search {
+    margin-left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 0;
+    width: 100%;
+  }
+
+  /* 검색 폼이 row 너비에 맞게 확장되도록 */
+  .header__search form {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .header__menu {
+    padding: 10px 0 15px;
+    margin-top: 5px;
+  }
+
+  .header__menu ul {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .header__menu ul li {
+    margin: 0 15px;
+  }
+
+  /* 메뉴 위에 구분선 추가 */
+  .header__menu::before {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 1px;
+    background-color: rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+  }
+
+  /* 다크모드에서 구분선 색상 변경 */
+  body.dark-mode .header__menu::before {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+}
+
+/* 모바일 화면에서의 추가 조정 */
+@media (max-width: 767px) {
+  .header__search {
+    width: 100%;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .header__search form {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  /* 모바일에서 로고 크기 축소 */
+  .header__logo img {
+    max-width: 120px;
+  }
+
+  /* 모바일에서 컨테이너 패딩 축소 */
+  .header .container {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .header__menu ul li {
+    margin: 0 10px;
+  }
+}
+
+/* 로고 수직 정렬 조정 */
+.header__logo {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.header__logo a {
+  display: block;
+}
+
+/* 헤더 컨테이너 수직 정렬 */
+.header .container .row {
+  display: flex;
+  align-items: center;
+}
+
+@media (min-width: 992px) {
+  .header__search {
+    margin-left: -30px;
+  }
+}
+
+/* 기본 헤더 컨테이너 설정 */
+.header .container {
+  position: relative; /* canvas__open의 절대 위치 기준점 */
+}
+
+/* 모바일 메뉴 토글 버튼 위치 조정 */
+.canvas__open {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+  cursor: pointer;
+  display: none; /* 기본적으로 숨김 */
+}
+
+.canvas__open i {
+  font-size: 24px;
+}
+
+/* 992px 이상의 데스크톱에서는 항상 숨김 */
+@media (min-width: 992px) {
+  .canvas__open {
+    display: none;
+  }
+}
+
+/* 768px ~ 991px 사이(태블릿)에서도 숨김 */
+@media (min-width: 768px) and (max-width: 991px) {
+  .canvas__open {
+    display: none;
+  }
+}
+
+/* 모바일에서만 보이도록 */
+@media (max-width: 767px) {
+  .canvas__open {
+    display: block;
+    position: absolute;
+    right: 15px;
+    top: 25px; /* 모바일에서는 고정된 위치 */
+    transform: none;
+  }
+}
+
+/* 메뉴 항목의 밑줄 호버 효과 */
+.header__menu ul li a {
+  position: relative;
+}
+
+.header__menu ul li a:after {
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 0;
+  height: 2px;
+  background: #000000;
+  content: "";
+  transition: width 0.3s;
+}
+
+.header__menu ul li a:hover:after,
+.header__menu ul li.active a:after {
+  width: 100%;
 }

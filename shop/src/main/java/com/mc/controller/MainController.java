@@ -1,7 +1,9 @@
 package com.mc.controller;
 
+import com.mc.app.dto.CommunityBoard;
 import com.mc.app.dto.Item;
 import com.mc.app.dto.QnaBoard;
+import com.mc.app.service.CommunityBoardService;
 import com.mc.app.service.ItemService;
 import com.mc.app.service.QnaBoardService;
 import lombok.RequiredArgsConstructor;
@@ -9,9 +11,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -20,32 +24,28 @@ public class MainController {
 
     private final ItemService itemService;
     private final QnaBoardService qnaBoardService;
+    private final CommunityBoardService communityBoardService;
 
     @GetMapping("/")
     public String home(Model model) {
 
-        int limit = 8; // 가져올 상품 개수
-        List<Item> bestSellerList; // try 블록 밖에서 선언
+        int limit = 8; 
+        List<Item> bestSellerList; 
 
         try {
-            // 초기 로드 시 기본 목록 (예: 베스트셀러) 조회
-            bestSellerList = itemService.getBestSellingItems(limit); // 예외 발생 가능성 있음
+            bestSellerList = itemService.getBestSellingItems(limit); 
 
-            // 각 상품의 평균 별점과 리뷰 개수 계산
             for (Item item : bestSellerList) {
                 try {
                     List<QnaBoard> reviews = qnaBoardService.findReviewByItem(item.getItemKey());
                     int reviewCount = reviews.size();
 
-                    // 평균 별점 계산
                     double totalScore = 0;
                     for (QnaBoard review : reviews) {
                         totalScore += review.getBoardScore();
                     }
-
                     double avgScore = reviewCount > 0 ? Math.round((totalScore / reviewCount) * 10) / 10.0 : 0;
 
-                    // Item 객체에 평균 별점과 리뷰 개수 저장
                     item.setAvgScore(avgScore);
                     item.setReviewCount(reviewCount);
                 } catch (Exception e) {
@@ -56,14 +56,23 @@ public class MainController {
             }
 
         } catch (Exception e) {
-            // 예외 처리: 로그를 남기거나 사용자에게 오류 메시지 전달
             log.error("Error fetching best selling items: {}", e.getMessage());
-            e.printStackTrace(); // 개발 중 상세 오류 확인
+            e.printStackTrace(); 
             model.addAttribute("errorMessage", "베스트셀러 상품 목록을 불러오는 중 오류가 발생했습니다.");
-            bestSellerList = Collections.emptyList(); // 빈 목록으로 초기화하여 JSP 오류 방지
+            bestSellerList = Collections.emptyList(); 
         }
 
         model.addAttribute("bestSellerList", bestSellerList);
+        
+        // 인기글 목록 조회 (조회수 순으로 정렬)
+        try {
+            Map<String, Object> popularPostsData = communityBoardService.getBoardList(null, 1, "views");
+            List<CommunityBoard> popularPosts = (List<CommunityBoard>) popularPostsData.get("posts");
+            model.addAttribute("popularPosts", popularPosts);
+        } catch (Exception e) {
+            log.error("인기글 목록을 불러오는 중 오류 발생: {}", e.getMessage());
+            model.addAttribute("popularPosts", Collections.emptyList());
+        }
 
         model.addAttribute("currentPage", "home");
         model.addAttribute("pageTitle", "Home");
@@ -73,7 +82,10 @@ public class MainController {
     }
 
     @GetMapping("/about")
-    public String about(Model model) {
+    public String about(Model model, @RequestParam(value = "location", required = false) String location) {
+        if(location!=null){
+          model.addAttribute("location", location);
+        }
         model.addAttribute("currentPage", "pages");
         model.addAttribute("pageTitle", "About Us");
         model.addAttribute("viewName", "about");
@@ -92,11 +104,7 @@ public class MainController {
 
     @GetMapping("/login")
     public String login(Model model) {
-        model.addAttribute("currentPage", "pages");
-        model.addAttribute("pageTitle", "Log In");
-        model.addAttribute("viewName", "login");
-        model.addAttribute("centerPage", "pages/login.jsp");
-        return "index";
+        return "redirect:/signin";
     }
 
     @GetMapping("/shopdetails")
@@ -124,11 +132,18 @@ public class MainController {
 
     @GetMapping("/signin")
     public String signin(Model model) {
-        return "redirect:/";
+        // signin.jsp를 독립적인 페이지로 사용
+        model.addAttribute("pageTitle", "로그인");
+        return "pages/signin";
     }
 
     @GetMapping("/ai-analysis")
     public String aiAnalysisPage(Model model) {
         return "pages/ai_analysis";
+    }
+
+    @GetMapping("/insta")
+    public String instagramPage() {
+        return "pages/insta/insta";
     }
 }

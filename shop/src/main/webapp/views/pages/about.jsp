@@ -80,14 +80,12 @@
           { title: 'PetGPT 서귀포 올레시장점', latlng: new kakao.maps.LatLng(33.2480, 126.5600) }
         ];
       });
-
       function searchAddress() {
         var keyword = document.getElementById('address').value;
         if (!keyword) {
           alert('검색어를 입력해주세요.');
           return;
         }
-
         if (currentLocationMarker) {
           currentLocationMarker.setMap(null);
           currentLocationMarker = null;
@@ -229,7 +227,7 @@
             </div>
             <!-- Search Input and Button -->
             <div style="margin-bottom: 20px; text-align: center;">
-              <input type="text" id="address" placeholder="동, 면, 읍 또는 주소 입력"
+              <input type="text" id="address" placeholder="동, 면, 읍 또는 주소 입력" value="${location}"
                 style="padding: 10px; width: 300px; border: 1px solid #e1e1e1; margin-right: 5px;">
               <button onclick="searchAddress()" class="site-btn">검색</button>
             </div>

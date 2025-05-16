@@ -24,7 +24,7 @@
       <section class="shop spad">
         <div id="shop-page-data" data-context-path="${pageContext.request.contextPath}"
           data-is-logged-in="${ isLoggedIn != null && isLoggedIn }" data-cust-id="${custId}"
-          data-cart-add-url="<c:url value='/cart/add/ajax'/>" data-like-toggle-url="<c:url value='/shop/like/toggle'/>"
+          data-like-toggle-url="<c:url value='/shop/like/toggle'/>"
           data-like-check-url="<c:url value='/shop/like/check'/>" data-login-url="<c:url value='/login'/>"
           data-keyword="${keyword}" style="display: none;">
         </div>
@@ -287,7 +287,6 @@
                           </div>
                           <div class="product__item__text">
                             <h6>${item.itemName}</h6>
-                            <a href="#" class="add-cart" data-item-key="${item.itemKey}">+ Add To Cart</a>
                             <div class="rating">
                               <c:set var="avgScore" value="${item.avgScore != null ? item.avgScore : 0}" />
                               <c:set var="reviewCount" value="${item.reviewCount != null ? item.reviewCount : 0}" />

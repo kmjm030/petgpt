@@ -1,0 +1,110 @@
+body {
+  font-family: 'SF Pro Display', 'Noto Sans KR', sans-serif;
+  background-color: #f5f7fa;
+  color: #333;
+}
+
+.notice-list {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+}
+
+h2 i {
+  margin-right: 0.5rem;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.6rem 1rem;
+  margin-bottom: 2rem;
+  border-radius: 8px;
+  border: 1px solid #dcdde1;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+.search-input:focus {
+  border-color: #4b7bec;
+  outline: none;
+}
+
+.add-btn {
+  padding: 0.6rem 1.5rem;
+  font-weight: 500;
+  border-radius: 30px;
+  background: linear-gradient(90deg, #4b7bec, #34ace0);
+  border: none;
+  color: #fff;
+  text-decoration: none;
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.add-btn:hover {
+  background: linear-gradient(90deg, #34ace0, #4b7bec);
+  transform: translateY(-2px);
+}
+
+.notice-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.notice-table th, .notice-table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.notice-table th {
+  font-weight: 600;
+  background-color: #f9f9f9;
+}
+
+.notice-table td a {
+  color: #34495e;
+  text-decoration: none;
+}
+
+.notice-table td a:hover {
+  text-decoration: underline;
+}
+
+.delete-btn {
+  color: #e74c3c;
+  text-decoration: none;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+  color: #c0392b;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-muted {
+  color: #aaa;
+}
+
+.text-muted a {
+  color: inherit;
+  text-decoration: none;
+}

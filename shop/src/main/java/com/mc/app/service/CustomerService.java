@@ -42,7 +42,7 @@ public class CustomerService implements MCService<Customer, String> {
     }
 
     public Page<Customer> getPage(int pageNo) throws Exception {
-        PageHelper.startPage(pageNo, 3); // pageSize: 한화면에 출력되는 개수
+        PageHelper.startPage(pageNo, 3); 
         return custRepository.getpage();
     }
 

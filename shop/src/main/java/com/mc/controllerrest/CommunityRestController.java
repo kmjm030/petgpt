@@ -7,10 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.server.ResponseStatusException;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List; // List 임포트 추가 (필요하다면)
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,9 +22,6 @@ public class CommunityRestController {
 
     private final CommunityBoardService communityBoardService;
 
-    /**
-     * 게시글 작성 처리 (POST 요청 - AJAX)
-     */
     @PostMapping("/write/submit")
     public ResponseEntity<?> communityWriteSubmit(
             @ModelAttribute CommunityBoard board,
@@ -75,9 +70,6 @@ public class CommunityRestController {
         }
     }
 
-    /**
-     * 게시글 수정 처리 (PUT 요청 - AJAX)
-     */
     @PutMapping("/post/{boardKey}")
     public ResponseEntity<?> updatePost(
             @PathVariable("boardKey") Integer boardKey,
@@ -152,9 +144,6 @@ public class CommunityRestController {
         }
     }
 
-    /**
-     * 게시글 등록 API
-     */
     @PostMapping("/post")
     public ResponseEntity<Map<String, Object>> createPost(@RequestBody CommunityBoard board) {
         int result = communityBoardService.createBoard(board);
@@ -165,9 +154,6 @@ public class CommunityRestController {
         }
     }
 
-    /**
-     * 게시글 삭제 API
-     */
     @DeleteMapping("/post/{boardKey}")
     public ResponseEntity<Map<String, Object>> deletePost(@PathVariable("boardKey") int boardKey) {
         int result = communityBoardService.deleteBoard(boardKey);
@@ -178,10 +164,6 @@ public class CommunityRestController {
         }
     }
 
-    /**
-     * 게시글 목록 조회 API
-     * 
-     */
     @GetMapping("/posts")
     public ResponseEntity<?> getPosts(
             @RequestParam(value = "page", defaultValue = "1") int page,
@@ -197,6 +179,64 @@ public class CommunityRestController {
             log.error("게시글 목록 조회 중 오류 발생 (API): page={}, sort={}", page, sort, e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(Map.of("message", "게시글 목록 조회 중 오류가 발생했습니다."));
+        }
+    }
+
+    @PostMapping("/admin/update-comment-counts")
+    public ResponseEntity<?> updateAllCommentCounts() {
+        try {
+            int updatedCount = communityBoardService.updateAllCommentCounts();
+            
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", true);
+            response.put("message", String.format("%d개의 게시글 댓글 수가 업데이트되었습니다.", updatedCount));
+            response.put("updatedCount", updatedCount);
+            
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            log.error("댓글 수 업데이트 중 오류 발생", e);
+            
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", false);
+            response.put("message", "댓글 수 업데이트 중 오류가 발생했습니다: " + e.getMessage());
+            
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    @PostMapping("/admin/update-like-counts")
+    public ResponseEntity<?> updateAllLikeCounts() {
+        try {
+            int updatedCount = communityBoardService.updateAllLikeCounts();
+            
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", true);
+            response.put("message", String.format("%d개의 게시글 좋아요 수가 업데이트되었습니다.", updatedCount));
+            response.put("updatedCount", updatedCount);
+            
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            log.error("좋아요 수 업데이트 중 오류 발생", e);
+            
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", false);
+            response.put("message", "좋아요 수 업데이트 중 오류가 발생했습니다: " + e.getMessage());
+            
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    @GetMapping("/popular-posts")
+    public ResponseEntity<?> getPopularPosts(
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "limit", defaultValue = "5") int limit) {
+        try {
+            Map<String, Object> result = communityBoardService.getBoardList(null, page, "views");
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            log.error("인기글 목록 조회 중 오류 발생: page={}, limit={}", page, limit, e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("message", "인기글 목록 조회 중 오류가 발생했습니다."));
         }
     }
 }

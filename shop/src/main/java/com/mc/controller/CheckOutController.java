@@ -1,5 +1,7 @@
 package com.mc.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mc.app.dto.*;
 import com.mc.app.service.*;
 import jakarta.servlet.http.HttpSession;
@@ -29,19 +31,58 @@ public class CheckOutController {
     private final OrderDetailService orderDetailService;
     private final AddressService addressService;
     private final ItemService itemService;
+    private final OptionService optionService;
 
-    @GetMapping("")
-    public String checkOut(Model model, HttpSession session) throws Exception {
+    @RequestMapping("")
+    public String checkOut(Model model, HttpSession session,
+                           @RequestParam(value = "itemsJson", required = false) String itemsJson) throws Exception {
 
         Customer loggedInCustomer = (Customer) session.getAttribute("cust");
         if (loggedInCustomer == null) {
             return "redirect:/gologin";
         }
+
         String custId = loggedInCustomer.getCustId();
-        List<Map<String, Object>> cartItems = cartService.getCartWithItems(custId);
         Customer cust = custService.get(custId);
 
+
+      if(itemsJson!= null){
+        try {
+          ObjectMapper objectMapper = new ObjectMapper();
+          // JSON 문자열 → List<Map<String, Object>> 로 변환!
+          List<Map<String, Object>> itemsList = objectMapper.readValue(
+            itemsJson,
+            new TypeReference<List<Map<String, Object>>>() {}
+          );
+          long totalCartPrice = 0;
+          for (Map<String, Object> item : itemsList) {
+            Item orderItem = itemService.get((int)item.get("item_key"));
+            item.put("item_name", orderItem.getItemName());
+            item.put("item_price", orderItem.getItemPrice());
+            item.put("option", optionService.get((int)item.get("option_key")));
+            totalCartPrice += (int)item.get("cart_cnt") * orderItem.getItemPrice();
+          }
+
+          model.addAttribute("totalCartPrice", totalCartPrice);
+          model.addAttribute("cartItems", itemsList);
+          session.setAttribute("cartItems", itemsList);
+
+        } catch (Exception e) {
+          e.printStackTrace();
+          return "redirect:/cart";
+        }
+      }else {
+        List<Map<String, Object>> cartItems = cartService.getCartWithItems(custId);
+        for (Map<String, Object> cartItem : cartItems) {
+          int optionKey = (int)cartItem.get("option_key");
+          cartItem.put("option", optionService.findNameByKey(optionKey));
+        }
         long totalCartPrice = calculateTotal(cartItems);
+        session.setAttribute("cartItems", cartItems);
+        model.addAttribute("cartItems", cartItems);
+        model.addAttribute("totalCartPrice", totalCartPrice);
+      }
+
         Address defAddress = null;
         List<Address> addrList = addrService.findAllByCustomer(custId);
         for (Address address : addrList) {
@@ -49,16 +90,12 @@ public class CheckOutController {
                 defAddress = address;
             }
         }
-
-        List<Coupon> coupons = couponService.findUsableByCustId(custId);
-        session.setAttribute("cartItems", cartItems);
+        List<Coupon> coupons = couponService.findUsableByCustId(custId);;
 
         model.addAttribute("coupons", coupons);
         model.addAttribute("defAddress", defAddress);
         model.addAttribute("addrList", addrList);
         model.addAttribute("cust", cust);
-        model.addAttribute("cartItems", cartItems);
-        model.addAttribute("totalCartPrice", totalCartPrice);
         model.addAttribute("viewName", "checkout");
         model.addAttribute("centerPage", "pages/checkout.jsp");
         return "index";
@@ -71,10 +108,7 @@ public class CheckOutController {
             @RequestParam("orderTotalPrice") int orderTotalPrice,
             @RequestParam(value = "couponId", required = false) Integer couponId) throws Exception {
 
-        // 세션에서 cartItems 꺼내기
         List<Map<String, Object>> cartItems = (List<Map<String, Object>>) session.getAttribute("cartItems");
-
-        // 쿠폰 사용완료로 바꾸기
 
         TotalOrder order = totalOrder;
         if (couponId != null) {
@@ -87,7 +121,6 @@ public class CheckOutController {
         } else {
             order.setCouponId(0);
         }
-        // TotalOrder 저장하기
 
         order.setCustId(custId);
         order.setOrderAddr(address.getAddrAddress());
@@ -100,7 +133,6 @@ public class CheckOutController {
 
         int orderKey = order.getOrderKey();
 
-        // OrderDetail 저장하기
         if (cartItems != null && !cartItems.isEmpty()) {
             for (Map<String, Object> item : cartItems) {
                 int itemKey = (int) item.get("item_key");
@@ -121,7 +153,6 @@ public class CheckOutController {
             }
         }
 
-        // 배송지 저장하기
         if (addrSave != null && addrSave.equals("Y")) {
             Address addr = address;
             addr.setCustId(custId);
@@ -131,7 +162,7 @@ public class CheckOutController {
             addressService.add(addr);
         }
 
-        session.removeAttribute("cartItems"); // 사용 후 정리!
+        session.removeAttribute("cartItems");
         return "redirect:/checkout/success";
 
     }
@@ -144,16 +175,14 @@ public class CheckOutController {
 
     @RequestMapping("/orderlist")
     public String orderlist(Model model, HttpSession session, @RequestParam("id") String id) throws Exception {
-        // 세션에서 로그인된 사용자 확인
         Customer loggedInCustomer = (Customer) session.getAttribute("cust");
 
-        // 로그인하지 않았다면 로그인 페이지로 리다이렉트
         if (loggedInCustomer == null) {
-            return "redirect:/login"; // 로그인 페이지로 리다이렉트
+            return "redirect:/signin";
         }
 
         if (!loggedInCustomer.getCustId().equals(id)) {
-            return "redirect:/orderlist?id=" + loggedInCustomer.getCustId(); // 자신의 마이페이지만 보여줌
+            return "redirect:/orderlist?id=" + loggedInCustomer.getCustId();
         }
 
         List<TotalOrder> orderList = totalOrderService.findAllByCust(id);
@@ -181,17 +210,24 @@ public class CheckOutController {
         List<OrderDetail> orderDetails = orderDetailService.findAllByOrder(orderKey);
 
         Map<Integer, Item> itemMap = new HashMap<>();
+        Map<Integer, Option> optionMap = new HashMap<>();
         for (OrderDetail od : orderDetails) {
             int itemKey = od.getItemKey();
             if (!itemMap.containsKey(itemKey)) {
-                Item item = itemService.get(itemKey); // itemService에서 단건 조회
+                Item item = itemService.get(itemKey);
                 itemMap.put(itemKey, item);
+            }
+            int optionKey = od.getOptionKey();
+            if(!optionMap.containsKey(optionKey)) {
+              Option option = optionService.get(optionKey);
+              optionMap.put(optionKey, option);
             }
         }
 
         model.addAttribute("order", order);
         model.addAttribute("orderDetails", orderDetails);
         model.addAttribute("itemMap", itemMap);
+        model.addAttribute("optionMap", optionMap);
         model.addAttribute("currentPage", "pages");
         model.addAttribute("pageTitle", "Order Detail");
         model.addAttribute("viewName", "order_detail");

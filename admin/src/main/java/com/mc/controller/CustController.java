@@ -26,18 +26,26 @@ public class CustController {
 
     String dir = "cust/";
 
-    @RequestMapping("/get")
-    public String get(Model model) throws Exception {
-        List<Customer> list = null;
-        try {
-            list = custService.get();
-            model.addAttribute("custs", list);
-            model.addAttribute("center", dir + "get");
-        } catch (Exception e) {
-            throw new Exception("ER0001");
-        }
-        return "index";
+  @RequestMapping("/get")
+  public String get(Model model) throws Exception {
+    List<Customer> list = null;
+    try {
+      list = custService.get();
+      int totalCount = custService.getCount();
+      int todayCount = custService.getTodayJoinCount();
+      int avgPoint = custService.getAveragePoint();
+
+      model.addAttribute("custs", list);
+      model.addAttribute("totalCount", totalCount);
+      model.addAttribute("todayCount", todayCount);
+      model.addAttribute("avgPoint", avgPoint);
+      model.addAttribute("center", dir + "get");
+    } catch (Exception e) {
+      throw new Exception("ER0001");
     }
+    return "index";
+  }
+
 
     @RequestMapping("/add")
     public String add(Model model) {

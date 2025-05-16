@@ -13,6 +13,10 @@ public class OptionService {
 
     private final OptionRepository optionRepository;
 
+    public Option get(int optionKey) throws Exception {
+      return optionRepository.selectOne(optionKey);
+    }
+
     public List<Option> getOptionsByItem(int itemKey) throws Exception {
         return optionRepository.findAllByItem(itemKey);
     }
@@ -36,7 +40,7 @@ public class OptionService {
     public List<String> getAllSizes() throws Exception {
         return optionRepository.findAllSizes();
     }
-    
+
     public List<Integer> getItemKeysBySize(String size) throws Exception {
         return optionRepository.findItemKeysBySize(size);
     }
@@ -44,7 +48,7 @@ public class OptionService {
     public List<String> getAllColors() throws Exception {
         return optionRepository.findAllColors();
     }
-    
+
     public List<Integer> getItemKeysByColor(String color) throws Exception {
         return optionRepository.findItemKeysByColor(color);
     }

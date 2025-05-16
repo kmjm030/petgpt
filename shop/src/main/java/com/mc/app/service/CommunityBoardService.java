@@ -35,30 +35,19 @@ public class CommunityBoardService {
     @Value("${file.upload.url.prefix}")
     private String uploadUrlPrefix;
 
-    private static final int PAGE_SIZE = 10; // 페이지당 게시글 수
+    private static final int PAGE_SIZE = 10; 
 
-    // 게시글 생성/수정/삭제
     @Transactional
     public int createBoard(CommunityBoard board) {
         board.onCreate();
         return communityBoardRepository.insertBoard(board);
     }
 
-    /**
-     * 게시글 수정 (썸네일 이미지 처리 포함)
-     * 
-     * @param boardKey       수정할 게시글 키
-     * @param updatedBoard   업데이트할 내용이 담긴 DTO
-     * @param thumbnailImage 새로운 썸네일 파일 (null 가능)
-     * @return 업데이트 성공 여부 (1: 성공, 0: 실패)
-     * @throws IOException
-     */
     @Transactional
     public int updateBoard(Integer boardKey, CommunityBoard updatedBoard, MultipartFile thumbnailImage)
             throws IOException {
         log.debug("게시글 수정 서비스 시작: boardKey={}", boardKey);
 
-        // 1. 기존 게시글 정보 조회
         CommunityBoard originalBoard = communityBoardRepository.selectBoardByKey(boardKey);
         if (originalBoard == null) {
             log.warn("수정하려는 게시글을 찾을 수 없습니다. boardKey={}", boardKey);
@@ -66,7 +55,6 @@ public class CommunityBoardService {
         }
         String oldImagePath = originalBoard.getBoardImg();
 
-        // 2. 새 썸네일 이미지 처리 (컨트롤러에서 이미 저장됨, 여기서는 경로 업데이트 및 기존 파일 삭제)
         boolean newImageUploaded = thumbnailImage != null && !thumbnailImage.isEmpty();
         boolean imageRemoved = !newImageUploaded && updatedBoard.getBoardImg() != null
                 && updatedBoard.getBoardImg().isEmpty() && oldImagePath != null;
@@ -85,14 +73,13 @@ public class CommunityBoardService {
             log.debug("기존 썸네일 이미지 유지: {}", oldImagePath);
         }
 
-        // 3. 업데이트 시간 설정 및 DB 업데이트
         updatedBoard.setBoardKey(boardKey);
         updatedBoard.setCustId(originalBoard.getCustId());
         updatedBoard.setViewCount(originalBoard.getViewCount());
         updatedBoard.setLikeCount(originalBoard.getLikeCount());
         updatedBoard.setCommentCount(originalBoard.getCommentCount());
         updatedBoard.setRegDate(originalBoard.getRegDate());
-        updatedBoard.onUpdate(); // 수정 시간 업데이트
+        updatedBoard.onUpdate(); 
 
         log.debug("게시글 DB 업데이트 시도: {}", updatedBoard);
         int result = communityBoardRepository.updateBoard(updatedBoard);
@@ -103,10 +90,8 @@ public class CommunityBoardService {
     @Transactional
     public int deleteBoard(int boardKey) {
         return communityBoardRepository.deleteBoard(boardKey);
-        // TODO: 게시글 삭제 시 연결된 파일도 삭제하는 로직 추가 필요
     }
 
-    // 게시글 상세 조회
     @Transactional
     public CommunityBoard getBoardDetail(int boardKey) {
         communityBoardRepository.increaseViewCount(boardKey);
@@ -117,7 +102,6 @@ public class CommunityBoardService {
         return communityBoardRepository.selectBoardByKey(boardKey);
     }
 
-    // 게시글 목록/검색
     public Map<String, Object> getBoardList(String category, int page, String sort) {
         int offset = (page - 1) * PAGE_SIZE;
 
@@ -154,7 +138,6 @@ public class CommunityBoardService {
         return result;
     }
 
-    // 좋아요/댓글 관리
     @Transactional
     public void addLike(int boardKey) {
         communityBoardRepository.increaseLikeCount(boardKey);
@@ -175,15 +158,21 @@ public class CommunityBoardService {
         communityBoardRepository.decreaseCommentCount(boardKey);
     }
 
-    // --- Helper Methods ---
+    @Transactional
+    public int updateCommentCount(int boardKey) {
+        return communityBoardRepository.updateCommentCount(boardKey);
+    }
 
-    /**
-     * 썸네일 파일을 저장하고 웹 접근 가능 경로를 반환
-     * 
-     * @param thumbnailFile 저장할 썸네일 파일
-     * @return 웹 접근 가능 경로 (e.g., /uploads/2024/04/22/uuid.jpg)
-     * @throws IOException 파일 저장 중 오류 발생 시
-     */
+    @Transactional
+    public int updateAllCommentCounts() {
+        return communityBoardRepository.updateAllCommentCounts();
+    }
+
+    @Transactional
+    public int updateAllLikeCounts() {
+        return communityBoardRepository.updateAllLikeCounts();
+    }
+
     public String saveThumbnailFile(MultipartFile thumbnailFile) throws IOException {
         if (thumbnailFile == null || thumbnailFile.isEmpty()) {
             log.warn("저장할 썸네일 파일이 없습니다.");
@@ -204,7 +193,7 @@ public class CommunityBoardService {
             log.info("썸네일 파일 저장 성공: {}", targetLocation);
         } catch (IOException e) {
             log.error("썸네일 파일 저장 중 오류 발생: {}", targetLocation, e);
-            throw e; // 예외를 다시 던져서 호출한 쪽에서 처리하도록 함
+            throw e; 
         }
 
         String webAccessiblePath = uploadUrlPrefix + "/" + dateFolder + "/" + storedFileName;
@@ -212,12 +201,6 @@ public class CommunityBoardService {
         return webAccessiblePath;
     }
 
-    /**
-     * 파일명에서 확장자를 추출
-     * 
-     * @param fileName 파일명
-     * @return 확장자 (e.g., .jpg) 또는 ""
-     */
     private String extractExtension(String fileName) {
         if (fileName == null || fileName.lastIndexOf(".") == -1) {
             log.warn("확장자를 추출할 수 없는 파일명: {}", fileName);
@@ -226,19 +209,12 @@ public class CommunityBoardService {
         return fileName.substring(fileName.lastIndexOf("."));
     }
 
-    /**
-     * 기존 썸네일 파일을 삭제 (파일 시스템에서)
-     * 
-     * @param webPath 웹 접근 경로 (e.g., /uploads/2024/04/22/uuid.jpg)
-     */
     private void deleteOldThumbnailFile(String webPath) {
         if (webPath == null || webPath.isEmpty() || !webPath.startsWith(uploadUrlPrefix)) {
             log.debug("삭제할 기존 썸네일 파일 경로가 유효하지 않거나 없습니다: {}", webPath);
             return;
         }
 
-        // 웹 경로에서 실제 파일 시스템 경로 추출
-        // 예: /uploads/2024/04/22/uuid.jpg -> 2024/04/22/uuid.jpg
         String relativePath = webPath.substring(uploadUrlPrefix.length());
         if (relativePath.startsWith("/")) {
             relativePath = relativePath.substring(1);

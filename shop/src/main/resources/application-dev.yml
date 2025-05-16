@@ -14,7 +14,7 @@ spring:
       max-file-size: 10MB
       max-request-size: 15MB
   mvc:
-    static-path-pattern: /uploads/**  
+    static-path-pattern: /uploads/**
     view:
       prefix: /views/
       suffix: .jsp
@@ -25,6 +25,19 @@ spring:
   web:
     resources:
       static-locations: file:///C:/petshop/uploads/
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: hyeonhokim@khu.ac.kr
+    password: awbk wlzn ykzj zbgy
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+        debug: true
 
 # 3. Mybatis
 mybatis:
@@ -36,13 +49,15 @@ mybatis:
 # 3. Log Level
 logging:
   level:
-    root: info   #  error < info < debug
+    root: info #  error < info < debug
 
 # 4. User Define App
 app:
   key:
-    algo: PBEWithMD5AndDES  # Twoway
-    skey: mykey             # Twoway
+    wkey: ENC(GGJSUVp/v6OcnZ9OoAhi/obCJ7UxRK/deVipRtu8PolJrS9ybRY5qvPjLCjdhWLOSLVR+QcHDtjrEQanfKpu9xtR6YYsIVPvVoP+DmotH6Q+u/juLADsaCAQDxPX7uPvwKy/S/xMm2Y=)
+    wkey2: ENC(aKsFhDq4RISU3jDho9hSAyHtwIMRFzKKuUJ55jMfX+1BNEzlomPJ7c6UR01vvIvK)
+    algo: PBEWithMD5AndDES # Twoway
+    skey: mykey # Twoway
 
 # 이미지 업로드 디렉토리 및 URL prefix 설정
 file:
@@ -55,3 +70,21 @@ file:
 chatbot:
   api:
     url: http://127.0.0.1:8000/generate # AI 서비스 API 엔드포인트
+
+# NCP
+ncp:
+  ocr:
+    url: https://tjoxzsvb05.apigw.ntruss.com/custom/v1/41399/bed3fe59b7c73db10170b8b80e05a4cd2ee0b281ddf63f910a1030bd3f76880b/infer
+    key: WVNiQXNTRHVqWFlUdHpQUU1VaWd4dWtFcktKcnp0R1Q=
+  chatbot:
+    url: https://2sw2npiyi7.apigw.ntruss.com/custom/v1/17415/bed3fe59b7c73db10170b8b80e05a4cd2ee0b281ddf63f910a1030bd3f76880b
+    key: WXFOZW9KZ1VJWXlMdFhraFdHSUJSQkRtc0tQS0xXVWM=
+  papago:
+    id: lep3u7pcmn
+    key: F70kVB1NZpnSqCgbiaYmqyd0Faw1VqHIqRFg2HKX
+
+# Google Cloud Vision API
+google:
+  vision:
+    credentials:
+      path: C:/petshop/credentials/gen-lang-client-0283444979-e37cfc993ab4.json

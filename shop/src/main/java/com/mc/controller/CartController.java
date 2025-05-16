@@ -31,8 +31,8 @@ public class CartController {
         }
         String custId = loggedInCustomer.getCustId();
         List<Map<String, Object>> cartItems = cartService.getCartWithItems(custId);
-        // 총액 계산 로직
         long totalCartPrice = calculateTotal(cartItems);
+
         model.addAttribute("cartItems", cartItems);
         model.addAttribute("totalCartPrice", totalCartPrice);
         model.addAttribute("viewName", "shopping-cart");
@@ -67,7 +67,6 @@ public class CartController {
         return "redirect:/cart";
     }
 
-    // Ajax 요청을 위한 별도의 add 메소드
     @RequestMapping(value = "/add/ajax", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> addCartItemAjax(@RequestBody Cart cart, HttpSession session) {
@@ -88,7 +87,7 @@ public class CartController {
             cartService.add(cart);
             response.put("success", true);
         } catch (Exception e) {
-            log.error("장바구니 추가 오류", e);
+            log.error("장바구니 추가 오류: itemKey={}, custId={}, message={}", cart.getItemKey(), custId, e.getMessage(), e);
             response.put("success", false);
             response.put("message", "장바구니 추가 중 오류가 발생했습니다.");
         }

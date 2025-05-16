@@ -13,11 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @Slf4j
@@ -31,6 +27,7 @@ public class ShopController {
     private final CustomerService custService;
     private final AdminCommentsService adminCommentsService;
     private final HotDealService hotDealService;
+    private final RecentViewService viewService;
 
     @GetMapping("")
     public String shop(
@@ -44,7 +41,7 @@ public class ShopController {
             HttpSession session) {
 
         model.addAttribute("currentPage", "shop");
-        int itemsPerPage = 12; // 한 페이지당 상품 수
+        int itemsPerPage = 12; 
 
         try {
             Customer customer = (Customer) session.getAttribute("cust");
@@ -56,7 +53,6 @@ public class ShopController {
             }
 
             shopService.addFilterOptionsToModel(model);
-
             addSortOptionsToModel(model, sort);
 
             ItemFilterCriteria filterCriteria = ItemFilterCriteria.builder()
@@ -66,32 +62,23 @@ public class ShopController {
                     .price(price)
                     .sort(sort)
                     .build();
-
             int totalItems = shopService.getTotalItemsCount(filterCriteria);
             int totalPages = (int) Math.ceil((double) totalItems / itemsPerPage);
-
-            // 페이지 범위 검증
             page = Math.max(1, Math.min(page, totalPages));
 
             List<Item> items = shopService.findItemsByFilterWithPagination(filterCriteria, page, itemsPerPage);
-
-            // 각 아이템의 평균 별점과 리뷰 개수 계산
             for (Item item : items) {
                 try {
                     List<QnaBoard> reviews = qnaService.findReviewByItem(item.getItemKey());
                     int reviewCount = reviews.size();
-
-                    // 평균 별점 계산
                     double totalScore = 0;
                     for (QnaBoard review : reviews) {
                         totalScore += review.getBoardScore();
                     }
-
                     double avgScore = reviewCount > 0 ? Math.round((totalScore / reviewCount) * 10) / 10.0 : 0;
-
-                    // Item 객체에 평균 별점과 리뷰 개수 저장
                     item.setAvgScore(avgScore);
                     item.setReviewCount(reviewCount);
+
                 } catch (Exception e) {
                     log.error("상품 평점 및 리뷰 개수 계산 중 오류 발생: {}", e.getMessage());
                     item.setAvgScore(0.0);
@@ -136,6 +123,7 @@ public class ShopController {
 
     @GetMapping("/details")
     public String shopDetails(@RequestParam("itemKey") int itemKey, Model model, HttpSession session) throws Exception {
+
         try {
 
             Customer customer = (Customer) session.getAttribute("cust");
@@ -143,6 +131,21 @@ public class ShopController {
             if (customer != null) {
                 model.addAttribute("isLoggedIn", true);
                 model.addAttribute("custId", customer.getCustId());
+
+                RecentView existingView = viewService.findByCustAndItem(customer.getCustId(), itemKey);
+                if (existingView != null) {
+                    viewService.del(existingView.getViewKey());
+                }
+
+                RecentView view = RecentView.builder().custId(customer.getCustId()).itemKey(itemKey).build();
+                viewService.add(view);
+                List<RecentView> allViews = viewService.findAllByCustomer(customer.getCustId());
+                if (allViews.size() > 50) {
+                    allViews.sort(Comparator.comparing(RecentView::getViewDate));
+                    for (int i = 50; i < allViews.size(); i++) {
+                        viewService.del(allViews.get(i).getViewKey());
+                    }
+                }
 
                 boolean isLiked = likeService.isLiked(customer.getCustId(), itemKey);
                 model.addAttribute("isLiked", isLiked);
@@ -168,7 +171,7 @@ public class ShopController {
                     expiryTime != null && expiryTime.isAfter(LocalDateTime.now())) {
 
                 isHotDealActive = true;
-                hotDealPrice = (int) (item.getItemPrice() * 0.5); // 50% 가격 계산
+                hotDealPrice = (int) (item.getItemPrice() * 0.5); 
             }
 
             model.addAttribute("isHotDealActive", isHotDealActive);
@@ -185,18 +188,15 @@ public class ShopController {
             if (options != null) {
                 ObjectMapper objectMapper = new ObjectMapper();
                 String optionsJson = objectMapper.writeValueAsString(options);
-
-                // optionsJson = optionsJson.replace("\\", "\\\\")
-                // .replace("'", "\\'")
-                // .replace("<", "\\u003C")
-                // .replace(">", "\\u003E");
-
                 model.addAttribute("optionsJson", optionsJson);
+
             } else {
                 model.addAttribute("optionsJson", "[]");
             }
+
             model.addAttribute("viewName", "shop-details");
             model.addAttribute("centerPage", "pages/shop_details.jsp");
+
         } catch (Exception e) {
             log.error("상품 상세 정보 조회 중 오류 발생 (itemKey: {})", itemKey, e);
             return "redirect:/shop";
@@ -232,7 +232,6 @@ public class ShopController {
             HttpSession session) {
 
         Map<String, Object> response = new HashMap<>();
-
         Customer customer = (Customer) session.getAttribute("cust");
         if (customer == null) {
             response.put("success", false);
@@ -240,7 +239,6 @@ public class ShopController {
             response.put("message", "로그인이 필요한 서비스입니다.");
             return ResponseEntity.ok(response);
         }
-
         Map<String, Object> result = likeService.toggleLike(customer.getCustId(), itemKey);
 
         return ResponseEntity.ok(result);
@@ -253,7 +251,6 @@ public class ShopController {
             HttpSession session) {
 
         Map<String, Object> response = new HashMap<>();
-
         Customer customer = (Customer) session.getAttribute("cust");
         if (customer == null) {
             response.put("success", false);
@@ -263,7 +260,6 @@ public class ShopController {
         }
 
         boolean isLiked = likeService.isLiked(customer.getCustId(), itemKey);
-
         response.put("success", true);
         response.put("isLoggedIn", true);
         response.put("isLiked", isLiked);
@@ -289,7 +285,6 @@ public class ShopController {
             } else {
                 model.addAttribute("isLoggedIn", false);
             }
-
             shopService.addFilterOptionsToModel(model);
             addSortOptionsToModel(model, sort);
             shopService.searchItems(keyword, sort, model);

@@ -185,6 +185,77 @@ const community_edit = {
         });
     },
 
+    setupTranslateButton: function() {
+
+        if ($('#translateBtn').length === 0) {
+            const translateBtn = $('<button type="button" class="btn-translate">외국어 → 한국어 번역</button>');
+            translateBtn.css({
+                'background-color': '#4CAF50',
+                'color': 'white',
+                'padding': '8px 15px',
+                'border': 'none',
+                'border-radius': '4px',
+                'cursor': 'pointer',
+                'margin-bottom': '10px',
+                'font-weight': '500'
+            });
+            
+            $('#summernote').parent().before(translateBtn);
+            
+            translateBtn.on('click', () => {
+                const editorContent = $('#summernote').summernote('code');
+
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = editorContent;
+                const textContent = tempDiv.textContent || tempDiv.innerText || '';
+                
+                if (!textContent.trim()) {
+                    alert('번역할 텍스트가 없습니다.');
+                    return;
+                }
+                
+                translateBtn.text('번역 중...').prop('disabled', true);
+                
+                $.ajax({
+                    url: this.contextPath + '/api/translate',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        text: textContent,
+                        targetLang: 'ko'  
+                    }),
+                    success: (response) => {
+                        if (response && response.translatedText) {
+                            $('#summernote').summernote('code', response.translatedText);
+                            alert('번역이 완료되었습니다.');
+                        } else {
+                            alert('번역 결과를 가져오지 못했습니다.');
+                        }
+                    },
+                    error: (xhr, status, error) => {
+                        console.error('번역 오류:', error);
+                        alert('번역 중 오류가 발생했습니다.');
+                    },
+                    complete: () => {
+                        translateBtn.text('외국어 → 한국어 번역').prop('disabled', false);
+                    }
+                });
+            });
+        }
+    },
+
+    initElements: function () {
+        this.contextPath = $('#community-edit-data').data('contextPath');
+        this.boardKey = $('#community-edit-data').data('boardKey');
+        this.initialContent = $('#community-edit-data').data('initialContent');
+        this.initialImageUrl = $('#community-edit-data').data('initialImageUrl');
+        
+        this.initSummernote();
+        this.setupThumbnailHandling();
+        this.setupFormSubmit();
+        this.setupTranslateButton(); 
+    },
+
     init: function () {
         const dataDiv = $('#community-edit-data');
         this.contextPath = dataDiv.data('context-path') || '';
@@ -205,9 +276,7 @@ const community_edit = {
             return;
         }
 
-        this.initSummernote();
-        this.setupThumbnailHandling();
-        this.setupFormSubmit();
+        this.initElements();
     }
 };
 

@@ -3,10 +3,6 @@
         PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mc.app.repository.CartRepository">
-    <!-- selectOne은 custId만으로 여러 옵션이 있을 수 있어 부적합. 주석 처리 -->
-    <!-- <select id="selectOne" parameterType="String" resultType="cart">
-        SELECT item_key, cust_id, cart_cnt, cart_rdate, option_key FROM cart WHERE cust_id = #{custId}
-    </select> -->
 
     <select id="select" resultType="cart">
         SELECT item_key, cust_id, cart_cnt, cart_rdate, option_key, is_hot_deal 
