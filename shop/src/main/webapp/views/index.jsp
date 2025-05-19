@@ -145,32 +145,36 @@
         .wishlist-preview {
           position: fixed;
           bottom: 200px;
-          right: 30px;
-          width: 180px;
-          padding: 10px;
-          background-color: #fff;
-          border-radius: 12px;
-          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-          z-index: 999;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          font-size: 14px;
+          right: 50px;
+          width: 150px;
+          padding: 16px;
+          background-color: white;
+          border-radius: 16px;
+          box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+          z-index: 9999;
           text-align: center;
-          cursor: pointer;
-          transition: transform 0.2s ease;
-        }
-
-        .wishlist-preview:hover {
-          transform: translateY(-3px);
+          animation: float 1.5s ease-in-out infinite;
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .wishlist-preview img {
-          width: 100%;
-          height: auto;
-          border-radius: 10px;
-          margin-bottom: 6px;
+          max-width: 100%;
+          border-radius: 12px;
+          margin: 10px 0;
         }
+
+        .wishlist-preview:hover {
+          transform: scale(1.05);
+          box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+          animation: none; /* hover하면 둥둥 애니메이션 멈춤 */
+        }
+
+        @keyframes float {
+          0% { transform: translateY(0px); }
+          50% { transform: translateY(-8px); }
+          100% { transform: translateY(0px); }
+        }
+
       </style>
 
     </head>
@@ -435,11 +439,13 @@
       <!-- Search End -->
 
       <!-- 상품 띄우기 -->
-      <div class="wishlist-preview">
-        <p><strong>🔥 NICK님, <br>찜하셨던 상품이 <span style="color:red">핫딜</span>중!</strong></p>
-        <img src="/images/sample-product.jpg" alt="찜한 상품" />
-        <p>강아지 자동급식기</p>
-      </div>
+      <c:if test="${not empty hotDealItem}">
+        <div class="wishlist-preview">
+          <p><strong>🔥 ${sessionScope.cust.custNick}님, <br>찜하셨던 상품이 <span style="color:red">핫딜</span>중!</strong></p>
+          <img src="<c:url value='/img/product/${hotDealItem.itemImg1}'/>" alt="찜한 상품" />
+          <p>${hotDealItem.itemName}</p>
+        </div>
+      </c:if>
 
 
       <!-- Floating Action Button & Chat Modal -->

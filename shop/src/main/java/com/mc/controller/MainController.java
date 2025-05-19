@@ -1,16 +1,14 @@
 package com.mc.controller;
 
-import com.mc.app.dto.CommunityBoard;
-import com.mc.app.dto.Item;
-import com.mc.app.dto.QnaBoard;
-import com.mc.app.service.CommunityBoardService;
-import com.mc.app.service.ItemService;
-import com.mc.app.service.QnaBoardService;
+import com.mc.app.dto.*;
+import com.mc.app.service.*;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Collections;
@@ -25,15 +23,17 @@ public class MainController {
     private final ItemService itemService;
     private final QnaBoardService qnaBoardService;
     private final CommunityBoardService communityBoardService;
+    private final HotDealService hotDealService;
+    private final LikeService likeService;
 
-    @GetMapping("/")
-    public String home(Model model) {
+    @RequestMapping("/")
+    public String home(Model model, HttpSession session) throws Exception {
 
-        int limit = 8; 
-        List<Item> bestSellerList; 
+        int limit = 8;
+        List<Item> bestSellerList;
 
         try {
-            bestSellerList = itemService.getBestSellingItems(limit); 
+            bestSellerList = itemService.getBestSellingItems(limit);
 
             for (Item item : bestSellerList) {
                 try {
@@ -57,13 +57,13 @@ public class MainController {
 
         } catch (Exception e) {
             log.error("Error fetching best selling items: {}", e.getMessage());
-            e.printStackTrace(); 
+            e.printStackTrace();
             model.addAttribute("errorMessage", "베스트셀러 상품 목록을 불러오는 중 오류가 발생했습니다.");
-            bestSellerList = Collections.emptyList(); 
+            bestSellerList = Collections.emptyList();
         }
 
         model.addAttribute("bestSellerList", bestSellerList);
-        
+
         // 인기글 목록 조회 (조회수 순으로 정렬)
         try {
             Map<String, Object> popularPostsData = communityBoardService.getBoardList(null, 1, "views");
@@ -74,11 +74,35 @@ public class MainController {
             model.addAttribute("popularPosts", Collections.emptyList());
         }
 
+
+        // 찜한 상품 핫딜 표기
+        // 🔐 로그인 여부 확인해서 찜한 상품 핫딜 표시
+        Customer loginUser = (Customer) session.getAttribute("cust");// 세션에서 로그인 유저 가져오기\
+        log.info("로그인 유저: {}", loginUser);
+
+        if (loginUser != null) {
+          String custId = loginUser.getCustId();
+          Integer currentHotDealKey = hotDealService.getCurrentHotDealItemKey();
+          List<Like> likes = likeService.getLikesByCustomer(custId);
+          for (Like like : likes) {
+            if(currentHotDealKey != null && currentHotDealKey.equals(like.getItemKey())){
+              log.info("찜한 itemKey: {}", like.getItemKey());
+              log.info("현재 핫딜 itemKey: {}", currentHotDealKey);
+              Item item = itemService.get(like.getItemKey());
+              model.addAttribute("hotDealItem", item);
+              break;
+            }
+          }
+        }
+
+
         model.addAttribute("currentPage", "home");
         model.addAttribute("pageTitle", "Home");
         model.addAttribute("viewName", "home");
         model.addAttribute("centerPage", "pages/home.jsp");
         return "index";
+
+
     }
 
     @GetMapping("/about")
