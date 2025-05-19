@@ -136,27 +136,29 @@ def create_log_table_if_not_exists(conn: Connection) -> None:
     conn.commit()
 
 
-def log_conversation(
-    conn: Connection,
-    session_id: str,
-    user_query: str,
-    bot_response: str,
-    intent: str
-) -> None:
+def log_conversation(log_data: Dict[str, Any]) -> None:
     """
     사용자와 챗봇의 대화 내용을 로그 테이블에 기록
     
     Args:
-        conn (Connection): SQLite 연결 객체
-        session_id (str): 세션 ID
-        user_query (str): 사용자 질문
-        bot_response (str): 챗봇 응답
-        intent (str): 의도 분류 결과
+        log_data (Dict[str, Any]): 로깅할 데이터
+            - session_id: 세션 ID (필수)
+            - query: 사용자 질문 (필수)
+            - response: 챗봇 응답 (필수)
+            - response_type: 응답 유형 (필수)
+            - timestamp: 타임스탬프 (선택, 없으면 현재 시간 사용)
     """
+    conn = get_connection_and_ensure_table()
     cursor = conn.cursor()
     
-    # 현재 시간
-    timestamp = datetime.now().isoformat()
+    # 필수 필드 확인
+    session_id = log_data.get("session_id", "anonymous")
+    user_query = log_data.get("query", "")
+    bot_response = log_data.get("response", "")
+    intent = log_data.get("response_type", "general")
+    
+    # 타임스탬프
+    timestamp = log_data.get("timestamp", datetime.now().isoformat())
     
     # 데이터 삽입
     cursor.execute(
@@ -169,6 +171,24 @@ def log_conversation(
     )
     
     conn.commit()
+    conn.close()
+
+
+async def log_conversation_async(log_data: Dict[str, Any]) -> None:
+    """
+    사용자와 챗봇의 대화 내용을 비동기적으로 로그 테이블에 기록
+    
+    Args:
+        log_data (Dict[str, Any]): 로깅할 데이터
+            - session_id: 세션 ID (필수)
+            - query: 사용자 질문 (필수)
+            - response: 챗봇 응답 (필수)
+            - response_type: 응답 유형 (필수)
+            - timestamp: 타임스탬프 (선택, 없으면 현재 시간 사용)
+    """
+    # 이 함수는 동기 함수를 호출하지만, 비동기 인터페이스를 제공
+    # 실제 프로덕션 환경에서는 완전한 비동기 구현을 사용하는 것이 좋음
+    log_conversation(log_data)
 
 
 def get_connection_and_ensure_table():
