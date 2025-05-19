@@ -3,12 +3,12 @@ PetGPT 챗봇 API 모듈
 """
 import json
 import logging
-from typing import Dict, Any, Literal, Union, Optional
+from typing import Dict, Any, Literal, Union, Optional, List
 from datetime import datetime
 
 from fastapi import APIRouter, HTTPException, Depends
 from langchain_core.output_parsers import StrOutputParser
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from petgpt_chatbot.models import ChatRequest, ChatResponse, ProductInfo
 from petgpt_chatbot.llm_init import get_llm
@@ -16,6 +16,13 @@ from petgpt_chatbot.prompts import INTENT_CLASSIFICATION_PROMPT
 from petgpt_chatbot.db_utils import log_conversation_async
 from petgpt_chatbot.rag import get_qna_answer
 from petgpt_chatbot.recommend import get_product_recommendation
+
+# Spring 백엔드와의 호환성을 위한 모델
+class SpringChatRequest(BaseModel):
+    message: str
+
+class SpringChatResponse(BaseModel):
+    reply: str
 
 # 로깅 설정
 logger = logging.getLogger(__name__)
@@ -161,4 +168,27 @@ async def chat(request: ChatRequest) -> ChatResponse:
         return ChatResponse(
             response_type="general",
             response_text="죄송합니다. 요청을 처리하는 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요."
-        ) 
+        )
+
+
+@router.post("/chatbot/ask", response_model=SpringChatResponse)
+async def chatbot_ask(request: SpringChatRequest) -> SpringChatResponse:
+    """
+    Spring 백엔드와 호환되는 챗봇 API 엔드포인트
+    
+    Args:
+        request (SpringChatRequest): Spring 형식의 요청
+        
+    Returns:
+        SpringChatResponse: Spring 형식의 응답
+    """
+    try:
+        # 기존 /chat 엔드포인트와 동일한 처리 로직 사용
+        chat_request = ChatRequest(query=request.message, session_id="spring-backend")
+        response = await chat(chat_request)
+        
+        # Spring 응답 형식으로 변환
+        return SpringChatResponse(reply=response.response_text)
+    except Exception as e:
+        logger.error(f"Spring 호환 엔드포인트 처리 중 오류: {str(e)}")
+        raise HTTPException(status_code=500, detail="내부 서버 오류") 
