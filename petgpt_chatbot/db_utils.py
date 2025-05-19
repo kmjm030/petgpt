@@ -74,13 +74,13 @@ def get_mysql_connection():
         raise Exception(f"MySQL 연결에 실패했습니다: {str(e)}")
 
 
-def execute_mysql_query(query: str, params: Tuple = None, fetch: bool = True) -> List[Dict[str, Any]]:
+def execute_mysql_query(query: str, params: Any = None, fetch: bool = True) -> List[Dict[str, Any]]:
     """
     MySQL 쿼리를 실행하고 결과를 반환하는 함수
     
     Args:
         query (str): 실행할 SQL 쿼리
-        params (Tuple, optional): 쿼리 파라미터. 기본값은 None.
+        params (Any, optional): 쿼리 파라미터. 기본값은 None. Tuple, List 또는 단일 값 가능.
         fetch (bool, optional): 결과를 가져올지 여부. 기본값은 True.
     
     Returns:
@@ -90,7 +90,13 @@ def execute_mysql_query(query: str, params: Tuple = None, fetch: bool = True) ->
     cursor = conn.cursor(dictionary=True)
     
     try:
-        if params:
+        if params is not None:
+            # params가 tuple이 아니면 tuple로 변환
+            if not isinstance(params, tuple):
+                if isinstance(params, list):
+                    params = tuple(params)
+                else:
+                    params = (params,)
             cursor.execute(query, params)
         else:
             cursor.execute(query)
