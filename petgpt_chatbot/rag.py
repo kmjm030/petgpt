@@ -7,9 +7,9 @@ import os
 from bs4 import BeautifulSoup
 from langchain_core.documents import Document
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_community.vectorstores import Chroma
+from langchain_chroma import Chroma
 from langchain_core.vectorstores import VectorStore
-from langchain_core.runnables import RunnablePassthrough, RunnableLambda
+from langchain_core.runnables import RunnablePassthrough, RunnableLambda, RunnableParallel
 from langchain_core.output_parsers import StrOutputParser
 
 from petgpt_chatbot.db_utils import get_mysql_connection
@@ -21,7 +21,6 @@ from petgpt_chatbot.prompts import (
     MEDICAL_KEYWORDS,
     QNA_RAG_PROMPT
 )
-
 
 def load_documents_from_db(table_name: str) -> List[Document]:
     """
@@ -273,9 +272,11 @@ def create_rag_pipeline(vectorstore: Optional[VectorStore] = None):
     
     # LLM 가져오기
     llm = get_llm()
+    print(f"DEBUG RAG: LLM object type: {type(llm)}")
     
     # 검색기 생성 (Retriever)
-    retriever = vectorstore.as_retriever(search_kwargs={"k": 4})
+    retriever = vectorstore.as_retriever(search_kwargs={"k": 10})
+    print(f"DEBUG RAG: Retriever object type: {type(retriever)}")
     
     # 컨텍스트와 질문을 포맷팅하는 함수
     def format_docs(docs):
@@ -291,33 +292,51 @@ def create_rag_pipeline(vectorstore: Optional[VectorStore] = None):
     
     # 의료 관련 내용 확인 함수
     def check_medical_content_in_chain(input_dict):
+        print(f"DEBUG RAG: input_dict in CMCIC value: {input_dict}")
+        print(f"DEBUG RAG: type of input_dict in CMCIC: {type(input_dict)}")
         query = input_dict.get("query", "")
         docs = input_dict.get("docs", [])
         content = query + " " + " ".join([doc.page_content for doc in docs])
         return check_medical_content(content)
+
+    # retriever 결과를 로깅하는 함수
+    def log_and_retrieve_docs(query_input): # retriever는 이 함수 스코프 외부에서 정의됨
+        actual_query = query_input
+        # RunnablePassthrough()가 전체 입력을 그대로 넘기므로, 실제 사용자 쿼리는 query_input 자체가 됨
+        print(f"DEBUG RAG: Retrieving documents for query: {actual_query}")
+        retrieved_docs = retriever.get_relevant_documents(actual_query) 
+        print(f"DEBUG RAG: Retrieved {len(retrieved_docs)} documents.")
+        for i, doc_retrieved in enumerate(retrieved_docs):
+            print(f"DEBUG RAG: Doc {i+1} Title: {doc_retrieved.metadata.get('title', 'N/A')}, Source: {doc_retrieved.metadata.get('source', 'N/A')}, Type: {doc_retrieved.metadata.get('type', 'N/A')}")
+            # print(f"DEBUG RAG: Doc {i+1} Content Snippet: {doc_retrieved.page_content[:100]}...") # 필요시 내용 일부 출력
+        return retrieved_docs
     
     # RAG 파이프라인 구성 (LCEL)
     rag_chain = (
-        {
-            "query": RunnablePassthrough(),
-            "docs": retriever,
-            "has_medical_content": RunnableLambda(check_medical_content_in_chain)
-        }
-        | {
-            "context": lambda x: format_docs(x["docs"]),
-            "query": lambda x: x["query"],
-            "sources": lambda x: extract_sources(x["docs"]),
-            "has_medical_content": lambda x: x["has_medical_content"] or check_medical_content(x["query"])
-        }
-        | {
-            "raw_answer": {"context": lambda x: x["context"], "query": lambda x: x["query"]} | QNA_RAG_PROMPT | llm | StrOutputParser(),
-            "sources": lambda x: x["sources"],
-            "has_medical_content": lambda x: x["has_medical_content"]
-        }
-        | {
-            "answer": lambda x: format_rag_response(x["raw_answer"], x["sources"], x["has_medical_content"]),
-            "sources": lambda x: x["sources"]
-        }
+        RunnableParallel(
+            query=RunnablePassthrough(), # 사용자 질문(str)을 "query" 키로 전달
+            docs=RunnablePassthrough() | RunnableLambda(log_and_retrieve_docs) # 사용자 질문(str)을 받아 문서 검색 및 로깅
+        )
+        | RunnableParallel(
+            query=lambda x: x["query"],
+            docs=lambda x: x["docs"],
+            has_medical_content=RunnableLambda(check_medical_content_in_chain) 
+        )
+        | RunnableParallel(
+            context = RunnableLambda(lambda x: format_docs(x["docs"])),
+            query = RunnableLambda(lambda x: x["query"]),
+            sources = RunnableLambda(lambda x: extract_sources(x["docs"])),
+            has_medical_content = RunnableLambda(lambda x: x["has_medical_content"] or check_medical_content(x["query"]))
+        )
+        | RunnableParallel(
+            raw_answer = RunnableLambda(lambda x: {"context": x["context"], "query": x["query"]}) | QNA_RAG_PROMPT | llm | StrOutputParser(),
+            sources = RunnableLambda(lambda x: x["sources"]),
+            has_medical_content = RunnableLambda(lambda x: x["has_medical_content"])
+        )
+        | RunnableParallel(
+            answer = RunnableLambda(lambda x: format_rag_response(x["raw_answer"], x["sources"], x["has_medical_content"])),
+            sources = RunnableLambda(lambda x: x["sources"])
+        )
     )
     
     return rag_chain

@@ -325,29 +325,37 @@ def search_products_in_db(parsed_info: Dict[str, Any], limit: int = 10) -> List[
         List[Dict[str, Any]]: 검색된 상품 목록
     """
     try:
+        # 설정 가져오기
+        from petgpt_chatbot.config import get_settings
+        settings = get_settings()
+        
         # 기본 SQL 쿼리 조건
         conditions = ["is_active = 1"]  # 활성화된 상품만
         params = []
         
         # 조건 생성
-        # 1. 반려동물 타입에 따른 조건 (Item 테이블에 pet_type 필드가 있다고 가정)
-        # 기본 테이블 구조에 pet_type 필드가 없을 수 있으므로 예외 처리
+        # 1. 반려동물 타입에 따른 조건
         if parsed_info['animal_type']:
-            try:
-                # pet_type 필드가 있는 경우
-                conditions.append("pet_type = %s")
-                params.append(parsed_info['animal_type'])
-            except Exception:
-                # pet_type 필드가 없는 경우, 대신 상품명과 내용에서 반려동물 타입 검색
-                pet_terms = []
-                for keyword in PET_TYPES.get(parsed_info['animal_type'], []):
+            # animal_type 필드가 테이블에 없으므로 대신 상품명과 내용에서 반려동물 타입 검색
+            pet_terms = []
+            animal_type = parsed_info['animal_type']
+            
+            # 직접 상품명, 설명에서 반려동물 종류 검색
+            pet_terms.append(f"item_name LIKE %s")
+            params.append(f"%{animal_type}%")
+            pet_terms.append(f"item_content LIKE %s")
+            params.append(f"%{animal_type}%")
+            
+            # 관련 키워드 추가 검색
+            if animal_type in PET_TYPES:
+                for keyword in PET_TYPES.get(animal_type, []):
                     pet_terms.append(f"item_name LIKE %s")
                     params.append(f"%{keyword}%")
                     pet_terms.append(f"item_content LIKE %s")
                     params.append(f"%{keyword}%")
-                
-                if pet_terms:
-                    conditions.append(f"({' OR '.join(pet_terms)})")
+            
+            if pet_terms:
+                conditions.append(f"({' OR '.join(pet_terms)})")
         
         # 2. 카테고리 조건
         if parsed_info['category']:
@@ -359,17 +367,12 @@ def search_products_in_db(parsed_info: Dict[str, Any], limit: int = 10) -> List[
             
             # 키워드를 이용한 검색 추가
             for keyword in parsed_info['keywords']:
-                # category_key 필드를 통한 검색 (카테고리 매핑 테이블이 있다고 가정)
-                # 예: "사료" 카테고리는 category_key = 1 등
-                # 실제 DB 구조에 맞게 수정 필요
+                # category_name 필드가 있는 경우
+                category_terms.append(f"category_name LIKE %s")
+                params.append(f"%{keyword}%")
                 
-                # 방법 1: 카테고리 키 필드가 있는 경우
-                try:
-                    # category_name 필드가 있는 경우
-                    category_terms.append(f"category_name LIKE %s")
-                    params.append(f"%{keyword}%")
-                except Exception:
-                    # 방법 2: 키워드 기반 상품명/내용 검색
+                # 상품명/내용 검색도 추가
+                if parsed_info['category'] in PRODUCT_CATEGORIES:
                     for known_keyword in PRODUCT_CATEGORIES.get(parsed_info['category'], []):
                         category_terms.append(f"item_name LIKE %s")
                         params.append(f"%{known_keyword}%")
@@ -384,13 +387,14 @@ def search_products_in_db(parsed_info: Dict[str, Any], limit: int = 10) -> List[
             symptom_terms = []
             
             for keyword in parsed_info['keywords']:
-                # 방법 1: features 필드가 있는 경우 (tags, features 등)
-                try:
-                    # features 필드가 있는 경우
-                    symptom_terms.append(f"features LIKE %s")
-                    params.append(f"%{keyword}%")
-                except Exception:
-                    # 방법 2: 키워드 기반 상품명/내용 검색
+                # 상품명/내용에서 키워드 검색
+                symptom_terms.append(f"item_name LIKE %s")
+                params.append(f"%{keyword}%")
+                symptom_terms.append(f"item_content LIKE %s")
+                params.append(f"%{keyword}%")
+                
+                # 관련 키워드 확장 검색
+                if keyword in SYMPTOM_FEATURES:
                     for known_keyword in SYMPTOM_FEATURES.get(keyword, []):
                         symptom_terms.append(f"item_name LIKE %s")
                         params.append(f"%{known_keyword}%")
@@ -406,8 +410,7 @@ def search_products_in_db(parsed_info: Dict[str, Any], limit: int = 10) -> List[
             if 'brand_preference' in parsed_info['llm_extracted']:
                 brand = parsed_info['llm_extracted']['brand_preference']
                 if brand and isinstance(brand, str) and len(brand) > 0:
-                    conditions.append(f"(item_name LIKE %s OR brand LIKE %s)")
-                    params.append(f"%{brand}%")
+                    conditions.append(f"(item_name LIKE %s)")
                     params.append(f"%{brand}%")
             
             # 가격대
@@ -445,10 +448,12 @@ def search_products_in_db(parsed_info: Dict[str, Any], limit: int = 10) -> List[
         # 최종 쿼리 구성
         query = f"""
             SELECT 
-                item_key, item_name, item_content, item_price, item_sprice, 
-                item_img1, sales_count, category_key 
+                i.item_key, i.item_name, i.item_content, i.item_price, i.item_sprice, 
+                i.item_img1, i.sales_count, c.category_name, '일반' as brand_name
             FROM 
-                Item 
+                `{settings.MYSQL_DB_NAME}`.`item` i
+            LEFT JOIN
+                `{settings.MYSQL_DB_NAME}`.`category` c ON i.category_key = c.category_key
             WHERE 
                 {where_clause} 
             ORDER BY 
@@ -581,25 +586,31 @@ def generate_recommendation_message_llm(query: str, products: List[Dict[str, Any
         return "죄송합니다. 요청하신 조건에 맞는 상품을 찾을 수 없습니다. 다른 조건으로 검색해 보시겠어요?"
     
     try:
-        # 상품 정보 포맷팅
-        product_details_str = ""
-        for i, product in enumerate(products):
-            # 상품 기본 정보 추출
+        # 상품 정보 포맷팅 (JSON 형식으로 변경)
+        product_details_list = []
+        for product in products:
             item_name = product.get('item_name', 'unknown')
             item_price = product.get('item_price', 0)
-            item_content = product.get('item_content', '')
+            item_description_full = product.get('item_content', '설명 없음') 
             item_key = product.get('item_key', 'unknown')
-            
-            # 상품 설명 요약 (너무 길면 자름)
-            content_summary = item_content[:100] + '...' if len(item_content) > 100 else item_content
-            
-            # 상품 정보 포맷팅
-            product_details_str += f"상품 {i+1}:\n"
-            product_details_str += f"상품명: {item_name}\n"
-            product_details_str += f"가격: {item_price}원\n"
-            product_details_str += f"상품 ID: {item_key}\n"
-            product_details_str += f"설명: {content_summary}\n"
-            product_details_str += f"상세 페이지: https://petgpt.com/shop/detail/{item_key}\n\n"
+            # URL 형식 수정
+            product_url = f"http://127.0.0.1/shop/details?itemKey={item_key}"
+
+            # 상품 설명이 너무 길 경우 줄임 (예: 100자)
+            max_desc_len = 100
+            item_description_summary = (item_description_full[:max_desc_len] + '...' 
+                                        if len(item_description_full) > max_desc_len 
+                                        else item_description_full)
+
+            product_details_list.append({
+                "name": item_name,
+                "description": item_description_summary, # 줄인 설명 사용
+                "price": item_price,
+                "product_url": product_url 
+            })
+        
+        #ensure_ascii=False 로 한국어 깨짐 방지, indent로 가독성 향상
+        product_details_json_str = json.dumps(product_details_list, ensure_ascii=False, indent=2)
         
         # LLM 인스턴스 가져오기
         llm = get_llm()
@@ -609,7 +620,7 @@ def generate_recommendation_message_llm(query: str, products: List[Dict[str, Any
         prompt = PRODUCT_RECOMMENDATION_MESSAGE_PROMPT_LLM.format(
             query=query,
             product_count=len(products),
-            product_details=product_details_str
+            product_details=product_details_json_str # JSON 문자열 전달
         )
         
         # LLM 호출 및 결과 파싱
@@ -617,26 +628,37 @@ def generate_recommendation_message_llm(query: str, products: List[Dict[str, Any
         chain = llm | output_parser
         result = chain.invoke(prompt)
         
+        # LLM 원본 응답 로깅 (문제 진단용)
+        print(f"LLM 원본 응답: {result}")
+        
         # 필터링 (혹시 모를 LLM의 추가 설명을 제거)
         lines = result.strip().split('\n')
         filtered_lines = []
         
+        # 필터링 로직 완화
         for line in lines:
-            # 불필요한 프롬프트 답변 패턴 제외
-            if (line.startswith('네,') or 
-                line.startswith('여기') or 
-                line.startswith('추천 메시지:') or 
-                line.startswith('다음은') or
+            # 명백한 메타 설명만 제외 (필터링 기준 완화)
+            if (line.startswith('추천 메시지:') or 
                 '추천 메시지입니다' in line):
                 continue
             filtered_lines.append(line)
         
         filtered_result = '\n'.join(filtered_lines)
+        print(f"필터링 후 결과: {filtered_result}")
         
-        # 결과가 없거나 너무 짧은 경우 기본 메시지 생성
-        if not filtered_result or len(filtered_result) < 10:
+        # 결과가 없거나 너무 짧은 경우 기본 메시지 생성 (복원)
+        if not filtered_result or len(filtered_result.strip()) < 5:  # 최소 길이 조건 완화
             product_names = [p.get('item_name', '상품') for p in products]
-            return f"요청하신 내용에 맞는 {', '.join(product_names)} 상품을 추천해 드립니다. 자세한 정보는 제품 링크를 참고해 주세요."
+            # 상품 이름과 가격을 포함한 기본 메시지 생성
+            basic_msg = f"요청하신 내용에 맞는 상품을 추천해 드립니다:\n\n"
+            for idx, p in enumerate(products):
+                name = p.get('item_name', '상품명')
+                price = p.get('item_price', 0)
+                product_id = p.get('item_key', 'unknown')
+                basic_msg += f"{idx+1}. {name} - {price:,}원\n"
+                basic_msg += f"   상세정보: http://127.0.0.1/shop/details?itemKey={product_id}\n\n"
+            basic_msg += "자세한 정보는 각 제품 링크를 참고해 주세요."
+            return basic_msg
         
         return filtered_result
     
@@ -649,7 +671,7 @@ def generate_recommendation_message_llm(query: str, products: List[Dict[str, Any
         return f"요청하신 내용에 맞는 {', '.join(product_names)} 상품을 추천해 드립니다. 자세한 정보는 제품 링크를 참고해 주세요."
 
 
-def get_product_recommendation(query: str) -> Tuple[str, List[ProductInfo]]:
+async def get_product_recommendation(query: str) -> Dict[str, Any]:
     """
     사용자 질문에 대한 상품 추천 파이프라인 전체 실행 함수
     
@@ -657,7 +679,7 @@ def get_product_recommendation(query: str) -> Tuple[str, List[ProductInfo]]:
         query (str): 사용자 질문
         
     Returns:
-        Tuple[str, List[ProductInfo]]: 추천 메시지와 추천 상품 목록
+        Dict[str, Any]: 추천 메시지와 추천 상품 목록을 포함한 딕셔너리
     """
     # 1. 규칙 기반 파싱
     parsed_info = parse_product_request_rules(query)
@@ -687,7 +709,7 @@ def get_product_recommendation(query: str) -> Tuple[str, List[ProductInfo]]:
         
         # 상품 URL 생성
         product_id = str(product.get("item_key", "0"))
-        product_url = f"{base_product_url}/{product_id}"
+        product_url = f"http://127.0.0.1/shop/details?itemKey={product_id}"
         
         # 할인가격 처리
         original_price = product.get("item_price", 10000)
@@ -709,7 +731,7 @@ def get_product_recommendation(query: str) -> Tuple[str, List[ProductInfo]]:
                     product_url=product_url,
                     description=product.get("item_content", "상품 설명 정보가 없습니다."),
                     category=product.get("category_name", "기타"),
-                    brand=product.get("brand_name", None),
+                    brand='일반',
                     discount_rate=discount_rate,
                     original_price=original_price if discount_rate else None
                 )
@@ -722,4 +744,9 @@ def get_product_recommendation(query: str) -> Tuple[str, List[ProductInfo]]:
     # 6. LLM으로 자연스러운 추천 메시지 생성
     recommendation_message = generate_recommendation_message_llm(query, final_products)
     
-    return recommendation_message, product_info_list 
+    # 딕셔너리로 결과 반환
+    return {
+        "message": recommendation_message,
+        "products": product_info_list,
+        "medical_warning": False
+    } 

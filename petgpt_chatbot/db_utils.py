@@ -2,6 +2,7 @@
 PetGPT 챗봇 데이터베이스 유틸리티 모듈
 """
 import os
+import json
 import sqlite3
 from datetime import datetime
 from pathlib import Path
@@ -60,8 +61,10 @@ def get_mysql_connection():
         raise ImportError("mysql.connector 패키지가 설치되어 있지 않습니다. 'pip install mysql-connector-python'을 실행하세요.")
     
     settings = get_settings()
+    print(f"MySQL 연결 시도: {settings.MYSQL_HOST}:{settings.MYSQL_PORT}, DB={settings.MYSQL_DB_NAME}, User={settings.MYSQL_USER}")
     
     try:
+        # 명시적으로 DATABASE 이름 지정
         conn = mysql.connector.connect(
             host=settings.MYSQL_HOST,
             user=settings.MYSQL_USER,
@@ -69,9 +72,18 @@ def get_mysql_connection():
             database=settings.MYSQL_DB_NAME,
             port=settings.MYSQL_PORT
         )
+        
+        # 명시적으로 USE DATABASE 명령 실행
+        cursor = conn.cursor()
+        cursor.execute(f"USE `{settings.MYSQL_DB_NAME}`")
+        cursor.close()
+        
+        print(f"MySQL 연결 성공: {settings.MYSQL_DB_NAME} 데이터베이스 선택됨")
         return conn
     except Exception as e:
-        raise Exception(f"MySQL 연결에 실패했습니다: {str(e)}")
+        error_msg = f"MySQL 연결에 실패했습니다: {str(e)}"
+        print(error_msg)
+        raise Exception(error_msg)
 
 
 def execute_mysql_query(query: str, params: Any = None, fetch: bool = True) -> List[Dict[str, Any]]:
@@ -86,30 +98,47 @@ def execute_mysql_query(query: str, params: Any = None, fetch: bool = True) -> L
     Returns:
         List[Dict[str, Any]]: 쿼리 결과를 딕셔너리 리스트로 반환
     """
-    conn = get_mysql_connection()
-    cursor = conn.cursor(dictionary=True)
+    # 환경 변수 및 연결 정보 디버깅
+    settings = get_settings()
+    print(f"MySQL 연결 정보: Host={settings.MYSQL_HOST}, User={settings.MYSQL_USER}, DB={settings.MYSQL_DB_NAME}, Port={settings.MYSQL_PORT}")
+    
+    # 실행할 쿼리 디버깅
+    print(f"실행 쿼리: {query}")
+    print(f"쿼리 파라미터: {params}")
     
     try:
-        if params is not None:
-            # params가 tuple이 아니면 tuple로 변환
-            if not isinstance(params, tuple):
-                if isinstance(params, list):
-                    params = tuple(params)
-                else:
-                    params = (params,)
-            cursor.execute(query, params)
-        else:
-            cursor.execute(query)
+        conn = get_mysql_connection()
+        cursor = conn.cursor(dictionary=True)
         
-        if fetch:
-            result = cursor.fetchall()
-            return result
-        else:
-            conn.commit()
-            return [{"affected_rows": cursor.rowcount}]
-    finally:
-        cursor.close()
-        conn.close()
+        try:
+            if params is not None:
+                # params가 tuple이 아니면 tuple로 변환
+                if not isinstance(params, tuple):
+                    if isinstance(params, list):
+                        params = tuple(params)
+                    else:
+                        params = (params,)
+                cursor.execute(query, params)
+            else:
+                cursor.execute(query)
+            
+            if fetch:
+                result = cursor.fetchall()
+                print(f"쿼리 결과 개수: {len(result)}")
+                return result
+            else:
+                conn.commit()
+                print(f"변경된 행 수: {cursor.rowcount}")
+                return [{"affected_rows": cursor.rowcount}]
+        except Exception as e:
+            print(f"SQL 실행 오류: {str(e)}")
+            raise
+        finally:
+            cursor.close()
+            conn.close()
+    except Exception as e:
+        print(f"MySQL 연결 오류: {str(e)}")
+        raise
 
 
 def create_log_table_if_not_exists(conn: Connection) -> None:
@@ -144,7 +173,7 @@ def log_conversation(log_data: Dict[str, Any]) -> None:
         log_data (Dict[str, Any]): 로깅할 데이터
             - session_id: 세션 ID (필수)
             - query: 사용자 질문 (필수)
-            - response: 챗봇 응답 (필수)
+            - response: 챗봇 응답 (ChatResponse.model_dump() 결과, 필수)
             - response_type: 응답 유형 (필수)
             - timestamp: 타임스탬프 (선택, 없으면 현재 시간 사용)
     """
@@ -154,8 +183,20 @@ def log_conversation(log_data: Dict[str, Any]) -> None:
     # 필수 필드 확인
     session_id = log_data.get("session_id", "anonymous")
     user_query = log_data.get("query", "")
-    bot_response = log_data.get("response", "")
-    intent = log_data.get("response_type", "general")
+
+    # bot_response를 JSON 문자열로 변환
+    raw_bot_response = log_data.get("response", {})
+    if hasattr(raw_bot_response, 'model_dump_json'): # Pydantic 모델인 경우
+        bot_response_str = raw_bot_response.model_dump_json()
+    elif hasattr(raw_bot_response, 'model_dump'): # Pydantic v2 model_dump(mode='json') 대체
+        bot_response_str = json.dumps(raw_bot_response.model_dump(mode='json'), ensure_ascii=False)
+    elif isinstance(raw_bot_response, dict):
+        # HttpUrl과 같은 직렬화 불가능한 객체를 문자열로 처리하기 위해 default=str 추가
+        bot_response_str = json.dumps(raw_bot_response, ensure_ascii=False, default=str)
+    else:
+        bot_response_str = str(raw_bot_response) # 이미 문자열이거나 다른 타입일 경우 대비
+        
+    intent = log_data.get("response_type", raw_bot_response.get("response_type", "general") if isinstance(raw_bot_response, dict) else "general")
     
     # 타임스탬프
     timestamp = log_data.get("timestamp", datetime.now().isoformat())
@@ -167,7 +208,7 @@ def log_conversation(log_data: Dict[str, Any]) -> None:
         (session_id, user_query, bot_response, intent, timestamp) 
         VALUES (?, ?, ?, ?, ?)
         """,
-        (session_id, user_query, bot_response, intent, timestamp)
+        (session_id, user_query, bot_response_str, intent, timestamp) # 수정: bot_response_str 사용
     )
     
     conn.commit()

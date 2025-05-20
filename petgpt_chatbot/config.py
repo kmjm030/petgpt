@@ -28,15 +28,23 @@ class Settings(BaseSettings):
     EMBEDDING_MODEL_TYPE: str = "gemini"  # "gemini" 또는 "sbert"
     SBERT_MODEL_NAME: Optional[str] = "jhgan/ko-sroberta-multitask"
 
+    # LLM 및 Embedding 모델 이름 (환경 변수에서 직접 로드)
+    GEMINI_MODEL_NAME: Optional[str] = None # .env 우선
+    EMBEDDING_MODEL_NAME: Optional[str] = None # .env 우선
+
     # LLM 토큰 제한 (비용 모니터링용)
     MAX_TOKENS_PER_QUERY: Optional[int] = 1024
     MAX_TOKENS_PER_RESPONSE: Optional[int] = 512
+
+    # Mock LLM 사용 여부 (환경 변수에서 직접 로드)
+    USE_MOCK_LLM: bool = False # .env 우선
 
     # 내부 클래스 대신 ConfigDict 사용
     model_config = ConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",
-        case_sensitive=True
+        case_sensitive=True,
+        extra='ignore'
     )
 
 def get_settings() -> Settings:
