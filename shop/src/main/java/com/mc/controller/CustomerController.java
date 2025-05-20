@@ -81,7 +81,7 @@ public class CustomerController {
 
         Customer loggedInCustomer = (Customer) session.getAttribute("cust");
         if (loggedInCustomer == null) {
-            return "redirect:/signin"; 
+            return "redirect:/signin";
         }
         if (!loggedInCustomer.getCustId().equals(id)) {
             return "redirect:/mypage?id=" + loggedInCustomer.getCustId();
@@ -213,12 +213,35 @@ public class CustomerController {
         return "redirect:/mypage/like?id=" + custId;
     }
 
+  @RequestMapping("/likeaddimpl")
+  public String likeaddimpl(Model model, @RequestParam("itemKey") int itemKey, HttpSession session) throws Exception {
+      Customer loggedInCustomer = (Customer) session.getAttribute("cust");
+      if (loggedInCustomer == null) {
+        return "redirect:/signin";
+      }
+
+      String custId = loggedInCustomer.getCustId();
+      List<Like> likes = likeService.getLikesByCustomer(custId);
+
+      boolean alreadyLiked = likes.stream()
+        .anyMatch(like -> like.getItemKey() == itemKey);
+
+      if (!alreadyLiked) {
+        Like like = Like.builder()
+          .itemKey(itemKey)
+          .custId(custId)
+          .build();
+        likeService.add(like);
+      }
+      return "redirect:/shop/details?itemKey=" + itemKey;
+  }
+
     @RequestMapping("/view")
     public String view(Model model, @RequestParam("id") String id) throws Exception {
 
         List<RecentView> views = viewService.findAllByCustomer(id);
         views.sort((v1, v2) -> v2.getViewDate().compareTo(v1.getViewDate()));
-        
+
         for (RecentView view : views) {
             Item item = itemService.get(view.getItemKey());
             view.setItem(item);

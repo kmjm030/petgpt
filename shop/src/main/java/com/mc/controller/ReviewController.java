@@ -21,8 +21,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Controller
 @Slf4j
@@ -34,6 +33,7 @@ public class ReviewController {
     private final ItemService itemService;
     private final OptionService optionService;
     private final OrderDetailService orderDetailService;
+    private final TotalOrderService totalOrderService;
 
     @Value("${file.upload.directory}")
     private String uploadDirectory;
@@ -46,10 +46,10 @@ public class ReviewController {
 
         Customer loggedInCustomer = (Customer) session.getAttribute("cust");
         if (loggedInCustomer == null) {
-            return "redirect:/signin"; 
+            return "redirect:/signin";
         }
         if (!loggedInCustomer.getCustId().equals(id)) {
-            return "redirect:/review?id=" + loggedInCustomer.getCustId(); 
+            return "redirect:/review?id=" + loggedInCustomer.getCustId();
         }
 
         List<QnaBoard> reviews = boardService.findReviewByCust(id);
@@ -64,6 +64,55 @@ public class ReviewController {
         model.addAttribute("centerPage", "pages/mypage/review.jsp");
         return "index";
     }
+
+  @GetMapping("/rest")
+  public String reviewRest(Model model, @RequestParam("id") String custId, HttpSession session) throws Exception {
+
+      // 리뷰에는 orderKey가 들어가 있다.
+      // orderDetailKey에도 orderKey가 들어가 있다.
+      // 리뷰에 없어야만! 떠야함!
+
+    Customer loggedInCustomer = (Customer) session.getAttribute("cust");
+    if (loggedInCustomer == null) {
+      return "redirect:/signin";
+    }
+    if (!loggedInCustomer.getCustId().equals(custId)) {
+      return "redirect:/review?id=" + loggedInCustomer.getCustId();
+    }
+
+    List<OrderDetail> orderDetails = orderDetailService.findNoReview(custId);
+    Collections.reverse(orderDetails);
+
+    Map<Integer, Item> itemMap = new HashMap<>();
+    Map<Integer, Option> optionMap = new HashMap<>();
+    Map<Integer, TotalOrder> orderMap = new HashMap<>();
+    for (OrderDetail od : orderDetails) {
+      int itemKey = od.getItemKey();
+      if (!itemMap.containsKey(itemKey)) {
+        Item item = itemService.get(itemKey);
+        itemMap.put(itemKey, item);
+      }
+      int optionKey = od.getOptionKey();
+      if(!optionMap.containsKey(optionKey)) {
+        Option option = optionService.get(optionKey);
+        optionMap.put(optionKey, option);
+      }
+      int orderKey = od.getOrderKey();
+      if(!orderMap.containsKey(orderKey)) {
+        TotalOrder order = totalOrderService.get(orderKey);
+        orderMap.put(orderKey, order);
+      }
+    }
+
+    model.addAttribute("itemMap", itemMap);
+    model.addAttribute("optionMap", optionMap);
+    model.addAttribute("orderMap", orderMap);
+    model.addAttribute("orderDetails", orderDetails);
+    model.addAttribute("currentPage", "pages");
+    model.addAttribute("pageTitle", "Rest Review");
+    model.addAttribute("centerPage", "pages/mypage/review_rest.jsp");
+    return "index";
+  }
 
     @RequestMapping("/add")
     public String add(Model model, HttpSession session,
@@ -108,9 +157,9 @@ public class ReviewController {
             board.setCustId(custId);
             if (img != null && !img.isEmpty()) {
                 String dateFolder = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
-                String originalFilename = img.getOriginalFilename(); 
-                String fileExtension = extractExtension(originalFilename); 
-                String storedFileName = UUID.randomUUID().toString() + fileExtension; 
+                String originalFilename = img.getOriginalFilename();
+                String fileExtension = extractExtension(originalFilename);
+                String storedFileName = UUID.randomUUID().toString() + fileExtension;
                 Path targetDirectory = Paths.get(uploadDirectory, dateFolder);
                 Path targetLocation = targetDirectory.resolve(storedFileName);
 
@@ -165,7 +214,7 @@ public class ReviewController {
 
             if (img != null && !img.isEmpty()) {
                 if (oldImgPath != null && !oldImgPath.isEmpty()) {
-                    String relativePath = oldImgPath.replace(uploadUrlPrefix, ""); 
+                    String relativePath = oldImgPath.replace(uploadUrlPrefix, "");
                     Path oldFilePath = Paths.get(uploadDirectory, relativePath);
                     Files.deleteIfExists(oldFilePath);
                     log.info("기존 이미지 삭제됨: {}", oldFilePath);

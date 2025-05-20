@@ -45,6 +45,14 @@ public class OrderDetailService implements MCService<OrderDetail, Integer> {
         return orderDetailRepository.findAllByOrder(orderKey);
     }
 
+    public List<OrderDetail> findAllByCustomer(String custId) throws Exception {
+      return orderDetailRepository.findAllByCustomer(custId);
+    }
+
+  public List<OrderDetail> findNoReview(String custId) throws Exception {
+    return orderDetailRepository.findNoReview(custId);
+  }
+
 
 
 

@@ -76,8 +76,7 @@ public class MainController {
 
 
         // 찜한 상품 핫딜 표기
-        // 🔐 로그인 여부 확인해서 찜한 상품 핫딜 표시
-        Customer loginUser = (Customer) session.getAttribute("cust");// 세션에서 로그인 유저 가져오기\
+        Customer loginUser = (Customer) session.getAttribute("cust");
         log.info("로그인 유저: {}", loginUser);
 
         if (loginUser != null) {

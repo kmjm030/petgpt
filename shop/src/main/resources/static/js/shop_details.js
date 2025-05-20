@@ -1,3 +1,26 @@
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('.wishlist-btn').forEach(btn => {
+    btn.addEventListener('click', function () {
+      const itemKey = this.dataset.itemkey;
+
+      fetch('/shop/detaillike/toggle', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ itemKey: itemKey })
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.liked) {
+            this.style.backgroundColor = '#ffcbcb';
+          } else {
+            this.style.backgroundColor = 'white';
+          }
+        });
+    });
+  });
+});
+
+
 function toggleContent(id) {
     var contentRow = document.getElementById(id);
     if (contentRow.style.display === "none" || contentRow.style.display === "") {
@@ -63,6 +86,8 @@ function animateDescription() {
     console.log("Animation triggered and marked as executed.");
 }
 
+
+
 // --- DOM 로드 후 실행될 코드 ---
 $(function () {
     const detailsDataElement = $('#shop-details-data');
@@ -74,6 +99,9 @@ $(function () {
     const cartAddBatchUrl = detailsDataElement.data('cart-add-batch-url');
     const orderAddBatchUrl = detailsDataElement.data('order-add-batch-url');
     const loginUrl = detailsDataElement.data('login-url');
+    let detailLikeToggleUrl = detailsDataElement.data("like-toggle-url") || "";
+    let detailLikeCheckUrl = detailsDataElement.data("like-check-url") || "";
+
 
 
     const modalOverlay = $('.modal-overlay');

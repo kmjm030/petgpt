@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
   <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+    <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
     <!DOCTYPE html>
     <html lang="ko">
 
@@ -154,7 +155,7 @@
           z-index: 9999;
           text-align: center;
           animation: float 1.5s ease-in-out infinite;
-          transition: transform 0.3s ease, box-shadow 0.3s ease;
+          transition: transform 1s ease, box-shadow 0.3s ease;
         }
 
         .wishlist-preview img {
@@ -173,6 +174,13 @@
           0% { transform: translateY(0px); }
           50% { transform: translateY(-8px); }
           100% { transform: translateY(0px); }
+        }
+
+        @font-face {
+          font-family: 'Paperlogy-8ExtraBold';
+          src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-8ExtraBold.woff2') format('woff2');
+          font-weight: 800;
+          font-style: normal;
         }
 
       </style>
@@ -441,9 +449,19 @@
       <!-- 상품 띄우기 -->
       <c:if test="${not empty hotDealItem}">
         <div class="wishlist-preview">
-          <p><strong>🔥 ${sessionScope.cust.custNick}님, <br>찜하셨던 상품이 <span style="color:red">핫딜</span>중!</strong></p>
-          <img src="<c:url value='/img/product/${hotDealItem.itemImg1}'/>" alt="찜한 상품" />
-          <p>${hotDealItem.itemName}</p>
+          <p style="font-family:'Paperlogy-8ExtraBold'">${sessionScope.cust.custNick}님, <br>찜하셨던 상품이 <span style="color:red">🔥핫딜🔥</span>중!</p>
+          <a href="<c:url value="/shop/details?itemKey=${hotDealItem.itemKey}"/>"><img src="<c:url value='/img/product/${hotDealItem.itemImg1}'/>" alt="찜한 상품"/></a>
+          <p style="font-family:'Paperlogy-8ExtraBold'">${hotDealItem.itemName}</p>
+          <div class="price-container" style="margin-top:0px;">
+            <span class="original-price" style="text-decoration: line-through;">
+              <fmt:formatNumber value="${hotDealItem.itemPrice}" pattern="#,###" />원
+            </span><span class="discount-badge" style="background-color:red; color:white;">50%</span>
+            <div class="sale-info">
+              <span class="sale-price"><strong>
+                 <fmt:formatNumber value="${hotDealItem.itemPrice * 0.5}" pattern="#,###" />원
+              </strong></span>
+            </div>
+          </div>
         </div>
       </c:if>
 

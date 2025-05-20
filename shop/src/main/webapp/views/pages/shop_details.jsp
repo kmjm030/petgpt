@@ -5,7 +5,8 @@
                 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
                     rel="stylesheet">
 
-                <!-- Shop Details Section Begin -->
+
+<!-- Shop Details Section Begin -->
                 <section class="shop-details">
                     <div id="shop-details-data" data-item-key="${item.itemKey}"
                         data-is-hot-deal-active="${isHotDealActive}" data-original-base-price="${item.itemPrice}"
@@ -285,8 +286,9 @@
 
                 <!-- Sticky Footer Buttons -->
                 <div class="sticky-footer-buttons">
-                    <button type="button" id="add-to-wishlist-btn"
-                        style="display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.2;">
+                    <button type="button" id="add-to-wishlist-btn" class="wishlist-btn" data-itemkey="${item.itemKey}"
+                        style="display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1.2;
+                        <c:if test='${isLiked}'>background-color: #ffcbcb;</c:if>">
                         <%-- Flexbox 스타일 추가 --%>
                             <img src="<c:url value='/img/icon/like.svg'/>" alt="찜하기"
                                 style="height: 1.5em; margin-bottom: 2px;"> <%-- 아이콘 아래 여백 추가 --%>

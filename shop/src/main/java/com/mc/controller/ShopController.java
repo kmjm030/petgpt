@@ -41,7 +41,7 @@ public class ShopController {
             HttpSession session) {
 
         model.addAttribute("currentPage", "shop");
-        int itemsPerPage = 12; 
+        int itemsPerPage = 12;
 
         try {
             Customer customer = (Customer) session.getAttribute("cust");
@@ -146,7 +146,6 @@ public class ShopController {
                         viewService.del(allViews.get(i).getViewKey());
                     }
                 }
-
                 boolean isLiked = likeService.isLiked(customer.getCustId(), itemKey);
                 model.addAttribute("isLiked", isLiked);
 
@@ -171,7 +170,7 @@ public class ShopController {
                     expiryTime != null && expiryTime.isAfter(LocalDateTime.now())) {
 
                 isHotDealActive = true;
-                hotDealPrice = (int) (item.getItemPrice() * 0.5); 
+                hotDealPrice = (int) (item.getItemPrice() * 0.5);
             }
 
             model.addAttribute("isHotDealActive", isHotDealActive);
@@ -242,6 +241,19 @@ public class ShopController {
         Map<String, Object> result = likeService.toggleLike(customer.getCustId(), itemKey);
 
         return ResponseEntity.ok(result);
+    }
+
+    @PostMapping("/detaillike/toggle")
+    @ResponseBody
+    public Map<String, Object> toggleWishlist(@RequestBody Map<String, Object> body, HttpSession session) throws Exception {
+      String custId = ((Customer) session.getAttribute("cust")).getCustId();
+      int itemKey = Integer.parseInt((String) body.get("itemKey"));
+
+      boolean liked = likeService.detailToggleLike(custId, itemKey); // 있으면 삭제, 없으면 추가
+
+      Map<String, Object> result = new HashMap<>();
+      result.put("liked", liked); // true면 추가됨, false면 삭제됨
+      return result;
     }
 
     @GetMapping("/like/check")
