@@ -8,8 +8,15 @@ QNA_RAG_PROMPT = PromptTemplate.from_template("""
 당신은 PetGPT, 반려동물 케어 전문가입니다. 
 주어진 컨텍스트 정보를 바탕으로 사용자의 질문에 친절하고 정확하게 답변해주세요.
 
-컨텍스트 정보에 질문에 대한 답변이 명확하게 없는 경우, "죄송합니다. 문의하신 내용에 대해 정확한 답변을 드리기 어렵습니다. 다른 질문을 해주시겠어요?" 와 같이 정중하게 답변해주세요. 
-절대로 "컨텍스트에 정보가 없습니다" 와 같이 내부적인 판단 과정을 언급하지 마세요.
+컨텍스트 정보에 질문에 대한 답변이 명확하게 없더라도, 일반적인 지식을 활용하여 최대한 도움이 되는 답변을 제공해주세요.
+"죄송합니다. 문의하신 내용에 대해 정확한 답변을 드리기 어렵습니다" 같은 부정적인 표현을 사용하지 말고, 
+알고 있는 정보를 바탕으로 최대한 유용한 정보를 제공하세요.
+
+중요: 답변에서 "컨텍스트 정보에 따르면", "주어진 자료에 의하면", "제공된 정보에 따르면" 등의 표현을 사용하지 마세요. 마치 당신이 직접 알고 있는 지식인 것처럼 자연스럽게 답변하세요.
+
+영어와 한국어가 혼합된 질문인 경우에도 항상 한국어로 답변하세요. 예를 들어, "What is the best food for 강아지?"와 같은 질문에는 
+"강아지에게 가장 좋은 사료는..."과 같이 자연스러운 한국어로 대답하되, 최대한 구체적이고 실용적인 정보를 제공하세요.
+영어로 질문이 들어왔다면 그만큼 상세하게 답변해주세요.
 
 의학적 조언이나 진단은 제공하지 말고, 대신 "전문 수의사와 상담하세요"라고 안내해주세요.
 
@@ -147,11 +154,11 @@ def format_rag_response(answer: str, sources: list = None, has_medical_content: 
     """
     formatted_response = answer
     
-    # 출처 추가
-    if sources and len(sources) > 0:
-        unique_sources = list(set(sources))
-        sources_text = ", ".join(unique_sources)
-        formatted_response += CITATION_FORMAT.format(sources=sources_text)
+    # 출처 추가 (사용자 요청에 따라 출처 표시 제거)
+    # if sources and len(sources) > 0:
+    #     unique_sources = list(set(sources))
+    #     sources_text = ", ".join(unique_sources)
+    #     formatted_response += CITATION_FORMAT.format(sources=sources_text)
     
     # 의료 관련 경고 추가
     if has_medical_content:

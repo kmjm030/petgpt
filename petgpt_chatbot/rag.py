@@ -359,4 +359,34 @@ def get_qna_answer(query: str, vectorstore: Optional[VectorStore] = None) -> Tup
     # 파이프라인 실행
     result = rag_pipeline.invoke(query)
     
-    return result["answer"], result["sources"] 
+    # 만약 응답에 출처 정보가 포함되어 있다면 제거
+    answer = result["answer"]
+    if "[출처:" in answer:
+        answer = answer.split("[출처:")[0].strip()
+    
+    # 영어 또는 영어-한국어 혼합 질문인지 확인
+    is_english_query = bool(re.search(r'[a-zA-Z]{3,}', query))
+    
+    # 의료 관련 질문인지 판단 (음식/사료 관련 질문은 제외)
+    is_food_related = bool(re.search(r'food|feed|사료|먹이|식사|식품|간식|영양|nutrition|diet|dietary', query.lower()))
+    
+    # 의료 관련 경고 문구가 별도로 포함되어 있고, 음식 관련 질문이 아닌 경우에만 유지
+    medical_warning = "※ 참고: 위 정보는 일반적인 안내일 뿐이며, 의학적 진단이나 전문적인 수의학 조언을 대체할 수 없습니다."
+    if medical_warning in answer and not is_food_related:
+        medical_warning_pos = answer.find(medical_warning)
+        if medical_warning_pos > 0:
+            answer = answer[:medical_warning_pos].strip() + "\n\n" + medical_warning
+    else:
+        # 음식 관련 질문이면 의료 경고 문구 제거
+        if medical_warning in answer:
+            answer = answer.replace(medical_warning, "").strip()
+
+    # 결과가 비어있거나 너무 짧은 경우 기본 메시지
+    if not answer or len(answer.strip()) < 5:
+        if is_english_query:
+            # 영어 질문에는 영어로 된 기본 메시지 제공
+            answer = "강아지에게 가장 좋은 사료는 개별 강아지의 나이, 크기, 활동 수준, 건강 상태에 따라 달라집니다. 고품질의 단백질이 풍부하고 적절한 양의 탄수화물과 건강한 지방이 함유된 균형 잡힌 사료가 좋습니다. 특별한 건강 상태가 있는 경우에는 전문 수의사와 상담하는 것이 좋습니다."
+        else:
+            answer = "죄송합니다. 질문에 대한 정확한 답변을 찾지 못했습니다. 다른 질문을 해주시겠어요?"
+    
+    return answer, result["sources"] 

@@ -143,12 +143,56 @@ async def handle_general_conversation(query: str) -> ChatResponse:
     Returns:
         ChatResponse: 챗봇 응답
     """
-    # 일반 응답으로 기본 메시지 반환
     logger.debug(f"일반 대화 처리: query='{query}'")
-    return ChatResponse(
-        response_type="general",
-        response_text="안녕하세요, PetGPT입니다. 반려동물에 관한 질문이나 상품 추천을 요청해 주세요."
-    )
+    
+    # 사용자 질문을 소문자로 변환
+    query_lower = query.lower()
+    
+    # 질문이 짧거나 불완전한 경우 (예: "강아지?", "고양이 먹이")
+    if len(query.strip()) < 10 or query.strip().endswith("?") and len(query.strip().split()) <= 2:
+        # 가능한 의도를 추측하고 더 구체적인 질문을 유도하는 안내 메시지
+        
+        # 강아지 관련 불완전한 질문
+        if "강아지" in query_lower:
+            return ChatResponse(
+                response_type="general",
+                response_text="강아지에 관해 어떤 정보를 알고 싶으신가요? 예를 들어 '강아지 건강 관리 방법', '강아지 훈련 방법', '강아지 영양 관리' 또는 '강아지 장난감 추천해줘'와 같이 더 구체적으로 질문해 주시면 더 정확한 도움을 드릴 수 있습니다."
+            )
+        
+        # 고양이 관련 불완전한 질문
+        elif "고양이" in query_lower:
+            return ChatResponse(
+                response_type="general",
+                response_text="고양이에 관해 어떤 정보를 알고 싶으신가요? 예를 들어 '고양이 건강 관리 방법', '고양이 화장실 훈련', '고양이 영양 관리' 또는 '고양이 장난감 추천해줘'와 같이 더 구체적으로 질문해 주시면 더 정확한 도움을 드릴 수 있습니다."
+            )
+        
+        # 먹이나 음식 관련 불완전한 질문
+        elif "먹이" in query_lower or "사료" in query_lower or "간식" in query_lower:
+            return ChatResponse(
+                response_type="general",
+                response_text="반려동물 먹이에 관해 궁금하신가요? 강아지 사료 추천, 고양이 간식 추천, 특정 건강 상태에 맞는 식이 요법 등에 대해 구체적으로 질문해 주시면 더 정확한 정보를 제공해 드릴 수 있습니다."
+            )
+        
+        # 그 외 불완전한 질문
+        else:
+            return ChatResponse(
+                response_type="general",
+                response_text="안녕하세요! 질문이 조금 짧아 정확히 어떤 정보를 원하시는지 파악하기 어렵네요. 반려동물의 종류(강아지/고양이), 주제(건강/영양/훈련/행동), 그리고 구체적인 질문을 포함해 주시면 더 정확한 도움을 드릴 수 있습니다. 예를 들어, '강아지 목욕 주기는 어떻게 되나요?' 또는 '고양이 사료 추천해 주세요.'와 같이 질문해 주세요."
+            )
+    
+    # 인사말이나 감사 표현과 같은 일반적인 대화
+    elif any(word in query_lower for word in ["안녕", "반가", "고마", "감사", "잘 지내", "ㅋㅋ", "ㅎㅎ"]):
+        return ChatResponse(
+            response_type="general",
+            response_text="안녕하세요! PetGPT입니다. 반려동물에 관한 질문이나 상품 추천을 요청해 주세요. 무엇을 도와드릴까요?"
+        )
+    
+    # 기본 응답
+    else:
+        return ChatResponse(
+            response_type="general",
+            response_text="안녕하세요, PetGPT입니다. 반려동물에 관한 질문이나 상품 추천을 요청해 주세요."
+        )
 
 
 @router.post("/chat", response_model=ChatResponse)
