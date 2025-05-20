@@ -124,7 +124,7 @@
   visibility: hidden;
   transform: translateY(20px);
   transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s 0.3s;
-  z-index: 999;
+  z-index: 999999;
 }
 
 #chat-modal.active {
@@ -132,6 +132,7 @@
   visibility: visible;
   transform: translateY(0);
   transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s 0s;
+
 }
 
 .chat-modal-header {

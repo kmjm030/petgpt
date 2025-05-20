@@ -152,7 +152,7 @@
           background-color: white;
           border-radius: 16px;
           box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-          z-index: 9999;
+          z-index: 999;
           text-align: center;
           animation: float 1.5s ease-in-out infinite;
           transition: transform 1s ease, box-shadow 0.3s ease;
