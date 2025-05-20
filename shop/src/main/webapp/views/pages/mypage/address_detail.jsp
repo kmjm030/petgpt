@@ -88,6 +88,7 @@
                                                             <li><a href="<c:url value='/mypage/like?id=${cust.custId}'/>">찜 목록</a></li>
                                                             <li><a href="<c:url value='/qnaboard?id=${cust.custId}'/>">1:1문의</a></li>
                                                             <li><a href="<c:url value='/review?id=${cust.custId}'/>">내가 작성한 리뷰</a></li>
+                                                          <li><a href="<c:url value='/review/rest?id=${cust.custId}'/>">작성 가능한 리뷰</a></li>
                                                         </ul>
                                                         <br /><br />
                                                         <button class="site-btn" id="logout_btn"><a href="<c:url value="

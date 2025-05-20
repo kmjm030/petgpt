@@ -11,39 +11,6 @@
           color: rosybrown;
         }
 
-        #like_img {
-          width: 150px;
-          height: 150px;
-        }
-
-        #like_del_icon {
-          color: black;
-        }
-
-        #boardRe {
-          color: rosybrown;
-          text-align: center;
-          border-radius: 10px;
-          padding: 10px;
-        }
-
-        #boardTitle {
-          color: black;
-        }
-
-        .checkout__input {
-          margin-bottom: 20px;
-        }
-
-        .order-site-btn {
-          width: 100%;
-          border-radius: 10px;
-          background-color: white;
-          color: black;
-          border: 3px solid black;
-          border-radius: 10px;
-        }
-
         .review-btn {
           width: 100%;
           color: black;
@@ -63,8 +30,7 @@
                 <div class="breadcrumb__links">
                   <a href="<c:url value='/'/>">Home</a>
                   <a href="<c:url value='#'/>">마이페이지</a>
-                  <a href="<c:url value='#'/>">주문내역</a>
-                  <span>주문상세조회</span>
+                  <span>작성 가능한 리뷰</span>
                 </div>
               </div>
             </div>
@@ -109,8 +75,7 @@
                           <div class="card-body">
                             <div class="shop__sidebar__categories">
                               <ul style="height: auto;">
-                                <li><a href="<c:url value='/checkout/orderlist?id=${cust.custId}'/>"><strong
-                                        id="category">주문내역</strong></a></li>
+                                <li><a href="<c:url value='/checkout/orderlist?id=${cust.custId}'/>">주문내역</a></li>
                                 <li><a href="<c:url value='/address?id=${cust.custId}'/>">배송지 목록</a></li>
                                 <li><a href="<c:url value='/coupon?id=${cust.custId}'/>">보유 쿠폰</a></li>
                               </ul>
@@ -130,7 +95,8 @@
                                 <li><a href="<c:url value='/mypage/like?id=${cust.custId}'/>">찜 목록</a></li>
                                 <li><a href="<c:url value='/qnaboard?id=${cust.custId}'/>">1:1문의</a></li>
                                 <li><a href="<c:url value='/review?id=${cust.custId}'/>">내가 작성한 리뷰</a></li>
-                                <li><a href="<c:url value='/review/rest?id=${cust.custId}'/>">작성 가능한 리뷰</a></li>
+                                <li><a href="<c:url value='/review/rest?id=${cust.custId}'/>"><strong
+                                  id="category">작성 가능한 리뷰</strong></a></li>
                               </ul>
                               <br /><br />
                               <button class="site-btn" id="logout_btn"><a href="<c:url value="
@@ -146,58 +112,32 @@
               </div>
               <%-- 회원 정보 --%>
                 <div class="col-lg-9 container mt-3">
-                  <h4><strong>🔎 주문내역 상세보기</strong></h4>
+                  <h4><strong>📝 작성 가능한 리뷰</strong></h4>
                   <h6 class="checkout__title"></h6>
-                  <h6 class="checkout__input"><strong>▪ 주문번호 :</strong> ${order.orderKey}</h6>
-                  <h6 class="checkout__input"><strong>▪ 수령인 :</strong> ${order.recipientName}</h6>
-                  <h6 class="checkout__input"><strong>▪ 수령인 전화번호 :</strong> ${order.recipientPhone}</h6>
-                  <h6 class="checkout__input"><strong>▪ 주문일자 :</strong>
-                    <fmt:formatDate value="${order.orderDate}" pattern="yyyy-MM-dd HH:mm" />
-                  </h6>
-                  <h6 class="checkout__input"><strong>▪ 결제금액 :</strong> ${order.orderTotalPrice}원</h6>
-                  <h6 class="checkout__input"><strong>▪ 배송지정보 :</strong> [${order.orderHomecode}] ${order.orderAddr}
-                    ${order.orderAddrRef} ${order.orderAddrDetail}</h6>
-                  <h6 class="checkout__input"><strong>▪ 주문상품</strong></h6>
-                  <table class="table">
-                    <thead>
-                      <tr>
-                        <th></th>
-                        <th>상품</th>
-                        <th>가격</th>
-                        <th>개수</th>
-                        <th></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <c:forEach var="c" items="${orderDetails}">
-                        <tr>
-                          <td>
-                            <img src="<c:url value='/img/product/${itemMap[c.itemKey].itemImg1}'/>" width="200" />
-                          </td>
-                          <td>
-                            <p>${itemMap[c.itemKey].itemName}</p>
-                            <p style="font-size:12px;">[옵션: ${optionMap[c.optionKey].optionName}]</p>
-                          </td>
-                          <td>${c.orderDetailPrice}</td>
-                          <td>${c.orderDetailCount}</td>
-                          <td><button class="review-btn"
-                              onclick="location.href='<c:url value='/review/add'/>?itemKey=${c.itemKey}&orderKey=${c.orderKey}&orderDetailKey=${c.orderDetailKey}'">
-                              <strong>리뷰쓰기</strong></button></td>
-                        </tr>
-                      </c:forEach>
-                    </tbody>
-                  </table>
-                  <br /><br />
-                  <div class="row">
-                    <div class="col-lg-6">
-                      <button class="site-btn order-site-btn"
-                        onclick="location.href='<c:url value='/qnaboard/add'/>?id=${cust.custId}'">교환/환불 신청</button>
+                  <c:forEach var="c" items="${orderDetails}">
+                    <div>
+                      <span style="font-size: 12px; color:lightgray;">(주문번호: ${c.orderKey})</span>
+<%--                      <span style="float:right"><fmt:formatDate value="${orderMap[c.orderKey].orderDate}" pattern="yyyy-MM-dd"/></span>--%>
                     </div>
-                    <div class="col-lg-6">
-                      <button class="site-btn order-site-btn" onclick="order_detail.del(${order.orderKey})">주문
-                        취소하기</button>
+                    <hr>
+                    <div class="row">
+                      <div class="col-md-2 img-box">
+                        <a href="<c:url value='/shop/details?itemKey=${c.itemKey}'/>">
+                          <img src="<c:url value='/img/product/${itemMap[c.itemKey].itemImg1}'/>" width="200" style="border-radius:10%"/></a>
+                      </div>
+                      <div class="col-md-7" style="padding: 20px;">
+                        <h6 style="padding-bottom:5px;"><strong>${itemMap[c.itemKey].itemName}</strong></h6>
+                        <p>옵션: ${optionMap[c.optionKey].optionName}<br>
+                           구매일자: <fmt:formatDate value="${orderMap[c.orderKey].orderDate}" pattern="yyyy-MM-dd"/></p>
+                      </div>
+                      <div class="col-md-3">
+                        <button class="review-btn"
+                            onclick="location.href='<c:url value='/review/add'/>?itemKey=${c.itemKey}&orderKey=${c.orderKey}&orderDetailKey=${c.orderDetailKey}'">
+                             <strong>리뷰쓰기</strong></button>
+                      </div>
                     </div>
-                  </div>
+                    <hr>
+                  </c:forEach>
                 </div>
           </div>
         </div>

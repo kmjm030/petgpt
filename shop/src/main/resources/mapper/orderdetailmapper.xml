@@ -12,6 +12,22 @@
         SELECT * FROM order_detail WHERE order_key = #{orderKey}
     </select>
 
+    <select id="findAllByCustomer" parameterType="String" resultType="com.mc.app.dto.OrderDetail">
+      SELECT * FROM order_detail WHERE cust_id = #{custId}
+    </select>
+
+    <select id="findNoReview" parameterType="String" resultType="com.mc.app.dto.OrderDetail">
+      SELECT od.*
+      FROM order_detail od JOIN total_order o ON od.order_key = o.order_key
+      WHERE o.cust_id = #{custId}
+        AND NOT EXISTS (
+        SELECT 1 FROM qnaboard r
+        WHERE r.order_key = od.order_key
+          AND r.item_key = od.item_key
+          AND board_type = 2
+      )
+    </select>
+
     <insert id="insert" parameterType="com.mc.app.dto.OrderDetail">
         INSERT INTO order_detail (
             item_key, option_key, order_key,

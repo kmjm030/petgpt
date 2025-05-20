@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
   <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+    <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
     <!DOCTYPE html>
     <html lang="ko">
 
@@ -141,6 +142,47 @@
         body[data-theme="dark"] .back-to-top:hover {
           background-color: #444;
         }
+
+        .wishlist-preview {
+          position: fixed;
+          bottom: 200px;
+          right: 50px;
+          width: 150px;
+          padding: 16px;
+          background-color: white;
+          border-radius: 16px;
+          box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+          z-index: 9999;
+          text-align: center;
+          animation: float 1.5s ease-in-out infinite;
+          transition: transform 1s ease, box-shadow 0.3s ease;
+        }
+
+        .wishlist-preview img {
+          max-width: 100%;
+          border-radius: 12px;
+          margin: 10px 0;
+        }
+
+        .wishlist-preview:hover {
+          transform: scale(1.05);
+          box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+          animation: none; /* hover하면 둥둥 애니메이션 멈춤 */
+        }
+
+        @keyframes float {
+          0% { transform: translateY(0px); }
+          50% { transform: translateY(-8px); }
+          100% { transform: translateY(0px); }
+        }
+
+        @font-face {
+          font-family: 'Paperlogy-8ExtraBold';
+          src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-8ExtraBold.woff2') format('woff2');
+          font-weight: 800;
+          font-style: normal;
+        }
+
       </style>
 
     </head>
@@ -403,6 +445,26 @@
         </div>
       </div>
       <!-- Search End -->
+
+      <!-- 상품 띄우기 -->
+      <c:if test="${not empty hotDealItem}">
+        <div class="wishlist-preview">
+          <p style="font-family:'Paperlogy-8ExtraBold'">${sessionScope.cust.custNick}님, <br>찜하셨던 상품이 <span style="color:red">🔥핫딜🔥</span>중!</p>
+          <a href="<c:url value="/shop/details?itemKey=${hotDealItem.itemKey}"/>"><img src="<c:url value='/img/product/${hotDealItem.itemImg1}'/>" alt="찜한 상품"/></a>
+          <p style="font-family:'Paperlogy-8ExtraBold'">${hotDealItem.itemName}</p>
+          <div class="price-container" style="margin-top:0px;">
+            <span class="original-price" style="text-decoration: line-through;">
+              <fmt:formatNumber value="${hotDealItem.itemPrice}" pattern="#,###" />원
+            </span><span class="discount-badge" style="background-color:red; color:white;">50%</span>
+            <div class="sale-info">
+              <span class="sale-price"><strong>
+                 <fmt:formatNumber value="${hotDealItem.itemPrice * 0.5}" pattern="#,###" />원
+              </strong></span>
+            </div>
+          </div>
+        </div>
+      </c:if>
+
 
       <!-- Floating Action Button & Chat Modal -->
       <div id="fab-container">
