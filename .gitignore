@@ -116,3 +116,52 @@ logs/
 gen-lang-client-0283444979-e37cfc993ab4.json
 .cursor/
 
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# 가상환경
+.venv/
+venv/
+ENV/
+
+# IDE 관련
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# 테스트 관련
+.coverage
+htmlcov/
+.pytest_cache/
+
+# 로그 파일
+*.log
+
+# 챗봇 데이터 디렉토리
+data/chromadb/
+data/logs.db
+
+# 환경 변수 파일
+.env
+
