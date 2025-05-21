@@ -30,5 +30,9 @@ public class UserController {
   public List<Map<String, Object>> getYearlyStats() {
     return userService.getYearlyUserStats();
   }
-}
 
+  @GetMapping("/summary")
+  public Map<String, Long> getUserSummary() {
+    return userService.getUserSummary();
+  }
+}

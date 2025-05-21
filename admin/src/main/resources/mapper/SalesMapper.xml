@@ -67,4 +67,25 @@
     ORDER BY hour
   </select>
 
+  <select id="getTodaySales" resultType="long">
+    SELECT IFNULL(SUM(order_totalprice), 0)
+    FROM total_order
+    WHERE DATE(order_date) = CURDATE()
+      AND order_status = '결제완료'
+  </select>
+
+  <select id="getWeekSales" resultType="long">
+    SELECT IFNULL(SUM(order_totalprice), 0)
+    FROM total_order
+    WHERE YEARWEEK(order_date, 1) = YEARWEEK(NOW(), 1)
+      AND order_status = '결제완료'
+  </select>
+
+  <select id="getMonthSales" resultType="long">
+    SELECT IFNULL(SUM(order_totalprice), 0)
+    FROM total_order
+    WHERE DATE_FORMAT(order_date, '%Y-%m') = DATE_FORMAT(NOW(), '%Y-%m')
+      AND order_status = '결제완료'
+  </select>
+
 </mapper>

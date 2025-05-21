@@ -1,57 +1,68 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.mc.app.repository.CustomerRepository">
 
-    <select id="select" resultType="Customer">
-        SELECT * FROM customer
-    </select>
+  <select id="select" resultType="Customer">
+    SELECT * FROM customer
+  </select>
 
-    <select id="selectOne" parameterType="String" resultType="Customer">
-        SELECT * FROM customer WHERE cust_id = #{custId}
-    </select>
+  <select id="selectOne" parameterType="String" resultType="Customer">
+    SELECT * FROM customer WHERE cust_id = #{custId}
+  </select>
 
-    <insert id="insert" parameterType="Customer">
-        INSERT INTO customer VALUES (#{custId}, #{custPwd}, #{custName}, #{custEmail}, #{custPhone},now(), 0, 0, #{custNick}, 0, null)
-    </insert>
+  <insert id="insert" parameterType="Customer">
+    INSERT INTO customer VALUES (#{custId}, #{custPwd}, #{custName}, #{custEmail}, #{custPhone},now(), 0, 0, #{custNick}, 0, null)
+  </insert>
 
-    <update id="update" parameterType="Customer">
-        UPDATE customer SET
-                            cust_name = #{custName},
-                            cust_pwd = #{custPwd},
-                            cust_email = #{custEmail},
-                            cust_phone = #{custPhone},
-                            cust_point = #{custPoint},
-                            cust_nick = #{custNick},
-                            point_charge = #{pointCharge},
-                            point_reason = #{pointReason}
-        WHERE cust_id = #{custId}
-    </update>
+  <update id="update" parameterType="Customer">
+    UPDATE customer SET
+                      cust_name = #{custName},
+                      cust_pwd = #{custPwd},
+                      cust_email = #{custEmail},
+                      cust_phone = #{custPhone},
+                      cust_point = #{custPoint},
+                      cust_nick = #{custNick},
+                      point_charge = #{pointCharge},
+                      point_reason = #{pointReason}
+    WHERE cust_id = #{custId}
+  </update>
 
-    <delete id="delete" parameterType="String">
-        DELETE FROM customer WHERE cust_id = #{custId}
-    </delete>
+  <delete id="delete" parameterType="String">
+    DELETE FROM customer WHERE cust_id = #{custId}
+  </delete>
 
-    <select id="selectCount" resultType="int">
-        SELECT COUNT(*) FROM customer
-    </select>
+  <select id="selectCount" resultType="int">
+    SELECT COUNT(*) FROM customer
+  </select>
 
-    <select id="selectTodayJoinCount" resultType="int">
-        SELECT COUNT(*)
-        FROM customer
-        WHERE DATE(cust_rdate) = CURDATE()
-    </select>
+  <select id="selectTodayJoinCount" resultType="int">
+    SELECT COUNT(*)
+    FROM customer
+    WHERE DATE(cust_rdate) = CURDATE()
+  </select>
 
-    <select id="selectTodayJoinedCustomers" resultType="Customer">
-        SELECT *
-        FROM customer
-        WHERE DATE_FORMAT(cust_rdate, '%Y-%m-%d') = CURDATE()
-    </select>
+  <select id="selectWeekJoinCount" resultType="int">
+    SELECT COUNT(*)
+    FROM customer
+    WHERE YEARWEEK(cust_rdate, 1) = YEARWEEK(NOW(), 1)
+  </select>
 
-    <select id="selectAveragePoint" resultType="int">
-        SELECT COALESCE(AVG(cust_point), 0) FROM customer
-    </select>
+  <select id="selectMonthJoinCount" resultType="int">
+    SELECT COUNT(*)
+    FROM customer
+    WHERE DATE_FORMAT(cust_rdate, '%Y-%m') = DATE_FORMAT(NOW(), '%Y-%m')
+  </select>
+
+  <select id="selectTodayJoinedCustomers" resultType="Customer">
+    SELECT *
+    FROM customer
+    WHERE DATE_FORMAT(cust_rdate, '%Y-%m-%d') = CURDATE()
+  </select>
+
+  <select id="selectAveragePoint" resultType="int">
+    SELECT COALESCE(AVG(cust_point), 0) FROM customer
+  </select>
 
 </mapper>
-

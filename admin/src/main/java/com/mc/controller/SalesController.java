@@ -46,4 +46,9 @@ public class SalesController {
   public List<Map<String, Object>> getHourlySales() {
     return salesService.getHourlySales();
   }
+
+  @GetMapping("/summary")
+  public Map<String, Long> getSalesSummary() {
+    return salesService.getSalesSummary();  // → service에서 summary map return
+  }
 }
