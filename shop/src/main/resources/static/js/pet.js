@@ -141,6 +141,68 @@ const pet = {
     }
 }
 
+let currentPetIndex = 0;
+let petNames = [];
+let recommendedItemsMap = {};
+
+function loadRecommendations() {
+  console.log("AJAX 호출 테스트 시작");
+  const custId = $('#custId').val();
+  const contextPath = $('#contextPath').val();
+
+  console.log("불러온 custId:", custId)
+
+  $.ajax({
+    url: contextPath + '/recommenditem',
+    method: 'GET',
+    data: { id: custId },
+    success: function (data) {
+      console.log("추천 데이터:", data);
+      recommendedItemsMap = data;
+      petNames = Object.keys(data);
+      if (petNames.length > 0) {
+        showRecommendation();
+        setInterval(showRecommendation, 5000);
+      }
+    },
+    error: function () {
+      console.error("추천 상품을 불러오지 못했어요 😢");
+    }
+  });
+}
+
+function showRecommendation() {
+  const petName = petNames[currentPetIndex];
+  const items = recommendedItemsMap[petName];
+
+  const container = $('#product-box');
+  container.empty();
+
+  let html = `
+        <h5 style="text-align:center;">이런 상품 어때요?</h5>
+        <h6 style="text-align:center; margin-top:10px;">반려동물 <strong>${petName}</strong>를 위해 펫지피티가 추천하는 상품!</h6>
+        <div class="row justify-content-center">
+    `;
+
+  for (let item of items) {
+    html += `
+          <div class="col-md-2">
+            <div class="item-box">
+              <img src="/product/${item.itemImg1}" alt="${item.itemName}" class="img-fluid"/>
+              <p style="text-align:center;">${item.itemName}</p>
+            </div>
+          </div>
+        `;
+  }
+
+  html += '</div>';
+  container.html(html);
+
+  currentPetIndex = (currentPetIndex + 1) % petNames.length;
+}
+
+
 $(function () {
     pet.init();
+    loadRecommendations();
 });

@@ -4,6 +4,10 @@
 
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
+<script>
+  console.log("EL 확인: ${sessionScope.cust.custId}");
+</script>
+
 
       <style>
 
@@ -85,6 +89,7 @@
           margin: 10px;
         }
       </style>
+
 
       <!-- Breadcrumb Section Begin -->
       <section class="breadcrumb-option">
@@ -182,7 +187,9 @@
                   <h4><strong>🐶 나의 펫 정보</strong></h4>
                   <p style="color:lightgray"><br>이미지를 클릭하면 수정할 수 있어요!<br></p>
                   <h6 class="checkout__title"></h6>
-                  <h6 class="coupon__code"><span class="icon_tag_alt"></span>강아지가 좋아할만한 상품을 모아봤어요!</h6>
+                  <input type="hidden" id="custId" value="${sessionScope.cust.custId}">
+                  <input type="hidden" id="contextPath" value="${pageContext.request.contextPath}">
+<%--                  <h6 class="coupon__code"><span class="icon_tag_alt"></span>강아지가 좋아할만한 상품을 모아봤어요!</h6>--%>
                   <div class="row">
                     <c:forEach var="p" items="${pets}">
                       <div class="col-12 col-sm-6 col-md-6">
@@ -241,7 +248,6 @@
                       </div>
                     </c:forEach>
                   </div>
-                  <hr>
                   <div class="checkout__order">
                     <button class="site-btn" id="pet_add_btn" onclick="openModal()">반려동물 등록하기</button>
                   </div>
@@ -332,3 +338,5 @@
             <button class="site-btn" id="modal_pet_add_btn">등록하기</button>
           </div>
         </div>
+
+

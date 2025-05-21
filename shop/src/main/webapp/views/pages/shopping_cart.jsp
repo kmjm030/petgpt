@@ -1,6 +1,7 @@
 <%@ page pageEncoding="UTF-8" %>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
         <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+            <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
             <!-- Breadcrumb Section Begin -->
             <section class="breadcrumb-option">
@@ -8,11 +9,11 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="breadcrumb__text">
-                                <h4>Shopping Cart</h4>
+                                <h4>🛒 장바구니</h4>
                                 <div class="breadcrumb__links">
                                     <a href="<c:url value='/'/>">Home</a>
                                     <a href="<c:url value='/shop'/>">Shop</a>
-                                    <span>Shopping Cart</span>
+                                    <span>장바구니</span>
                                 </div>
                             </div>
                         </div>
@@ -120,28 +121,20 @@
                             <div class="row">
                                 <div class="col-lg-6 col-md-6 col-sm-6">
                                     <div class="continue__btn">
-                                        <a href="<c:url value='/shop'/>">Continue Shopping</a>
+                                        <a href="<c:url value='/shop'/>">쇼핑 계속하기</a>
                                     </div>
                                 </div>
-                                <div class="col-lg-6 col-md-6 col-sm-6">
-                                    <%-- 업데이트 버튼 기능 변경 또는 제거할 것 --%>
-                                        <div class="continue__btn update__btn">
-                                            <a href="#" id="update-cart-btn"><i class="fa fa-refresh"></i> Refresh Cart
-                                                (Manual)</a>
-                                        </div>
-                                </div>
+<%--                                <div class="col-lg-6 col-md-6 col-sm-6">--%>
+<%--                                    &lt;%&ndash; 업데이트 버튼 기능 변경 또는 제거할 것 &ndash;%&gt;--%>
+<%--                                        <div class="continue__btn update__btn">--%>
+<%--                                            <a href="<c:url value='/shop'/>" id="update-cart-btn"><i class="fa fa-refresh"></i> 카트 새로고침</a>--%>
+<%--                                        </div>--%>
+<%--                                </div>--%>
                             </div>
                         </div>
                         <div class="col-lg-4">
-                            <div class="cart__discount">
-                                <h6>Discount codes</h6>
-                                <form action="#">
-                                    <input type="text" placeholder="Coupon code">
-                                    <button type="submit">Apply</button>
-                                </form>
-                            </div>
                             <div class="cart__total">
-                                <h6>Cart total</h6>
+                              <h5><strong>📝 장바구니 총액 확인</strong></h5><hr>
                                 <ul>
                                     <c:set var="total" value="0" />
                                     <c:forEach var="item" items="${cartItems}">
@@ -151,14 +144,14 @@
                                         </c:if>
                                         <c:set var="total" value="${total + (itemEffectivePrice * item.cart_cnt)}" />
                                     </c:forEach>
-                                    <li>Subtotal <span id="cart-subtotal-price">
-                                            <fmt:formatNumber value="${total}" type="number" />원
+                                    <li>주문건수 <span id="cart-subtotal-price">
+                                            ${fn:length(cartItems)}건
                                         </span></li>
-                                    <li>Total <span id="cart-total-price">
+                                    <li>총 주문액 <span id="cart-total-price">
                                             <fmt:formatNumber value="${total}" type="number" />원
                                         </span></li>
                                 </ul>
-                                <a href="<c:url value='/checkout'/>" class="primary-btn">Proceed to checkout</a>
+                                <a href="<c:url value='/checkout'/>" class="primary-btn">주문하기</a>
                             </div>
                         </div>
                     </div>
