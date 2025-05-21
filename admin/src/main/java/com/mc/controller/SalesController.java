@@ -30,5 +30,10 @@ public class SalesController {
   public List<Map<String, Object>> getMonthlySales() {
     return salesService.getMonthlySales();
   }
-}
 
+  @GetMapping("/region")
+  public List<Map<String, Object>> getRegionSales() {
+    return salesService.getRegionSales();
+  }
+
+}

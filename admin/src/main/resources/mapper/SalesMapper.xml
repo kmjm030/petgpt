@@ -35,4 +35,15 @@
     ORDER BY label
   </select>
 
+  <select id="selectRegionSales" resultType="map">
+    SELECT
+      LEFT(order_addr, LOCATE(' ', order_addr) - 1) AS region,
+      SUM(order_totalprice) AS total_sales
+    FROM total_order
+    WHERE order_status = '결제완료'
+      AND order_addr IS NOT NULL
+    GROUP BY region
+    ORDER BY total_sales DESC
+  </select>
+
 </mapper>

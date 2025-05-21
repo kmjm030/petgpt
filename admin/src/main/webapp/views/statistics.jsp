@@ -3,6 +3,8 @@
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
 
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=1d80cc061f948248f9465d96f87b1f5c&libraries=services"></script>
+
 <div class="container py-4">
   <h1 class="mb-4">실시간 매출 통계</h1>
 
@@ -31,6 +33,9 @@
       <div id="yearlyUserChart" style="height: 300px;"></div>
     </div>
   </div>
+
+  <h1 class="mb-4 mt-5">지역별 매출 분포</h1>
+  <div id="regionSalesMap" style="width: 100%; height: 600px;"></div>
 </div>
 
 <div class="modal fade" id="salesDiffModal" tabindex="-1" role="dialog" aria-labelledby="salesDiffModalLabel" aria-hidden="true">

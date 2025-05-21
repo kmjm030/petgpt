@@ -12,7 +12,6 @@ import java.util.Map;
 public class SalesRepository {
 
   private final SqlSession sql;
-
   private static final String NAMESPACE = "com.mc.app.mapper.SalesMapper.";
 
   public List<Map<String, Object>> getDailySales() {
@@ -26,5 +25,8 @@ public class SalesRepository {
   public List<Map<String, Object>> getMonthlySales() {
     return sql.selectList(NAMESPACE + "selectMonthlySales");
   }
-}
 
+  public List<Map<String, Object>> getRegionSales() {
+    return sql.selectList(NAMESPACE + "selectRegionSales");
+  }
+}

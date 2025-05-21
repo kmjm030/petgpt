@@ -37,9 +37,9 @@ function getISOWeek(date) {
 function fillMissingRecentMonths(data) {
   const filled = [];
   const now = new Date();
-  for (let i = 4; i >= 0; i--) {
-    const date = new Date(now.getFullYear(), now.getMonth() - i);
-    const label = date.toISOString().slice(0, 7);
+  for (let i = 0; i < 6; i++) {
+    const date = new Date(now.getFullYear(), now.getMonth() - (4 - i));
+    const label = date.toISOString().slice(0, 7); // YYYY-MM
     const found = data.find(d => d.label === label);
     filled.push({ label, total_sales: found ? found.total_sales : 0 });
   }
@@ -209,6 +209,53 @@ function drawUserChart(apiUrl, containerId, title) {
     .catch(err => console.error(`[${containerId}] 가입자 차트 실패:`, err));
 }
 
+function drawRegionSalesMap() {
+  fetch('/api/sales/region')
+    .then(res => res.json())
+    .then(data => {
+      if (!Array.isArray(data)) {
+        console.error('[지역 매출 지도] 받은 데이터가 배열이 아님:', data);
+        return;
+      }
+
+      const map = new kakao.maps.Map(document.getElementById('regionSalesMap'), {
+        center: new kakao.maps.LatLng(36.5, 127.5),
+        level: 13
+      });
+
+      const geocoder = new kakao.maps.services.Geocoder();
+      let openInfoWindow = null;
+
+      data.forEach(region => {
+        geocoder.addressSearch(region.region, (result, status) => {
+          if (status === kakao.maps.services.Status.OK) {
+            const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+            const marker = new kakao.maps.Marker({ map: map, position: coords });
+
+            const sales = region.total_sales.toLocaleString();
+            const infowindow = new kakao.maps.InfoWindow({
+              content: `<div style="padding:5px;font-weight:bold;">
+                          ${region.region}<br/>매출: ${sales}원
+                        </div>`
+            });
+
+            kakao.maps.event.addListener(marker, 'click', function () {
+              if (openInfoWindow === infowindow) {
+                infowindow.close();
+                openInfoWindow = null;
+              } else {
+                if (openInfoWindow) openInfoWindow.close();
+                infowindow.open(map, marker);
+                openInfoWindow = infowindow;
+              }
+            });
+          }
+        });
+      });
+    })
+    .catch(err => console.error('[지역 매출 지도] 로딩 실패:', err));
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   drawSalesChart('/api/sales/daily', 'dailySalesChart', '일별 매출');
   drawSalesChart('/api/sales/weekly', 'weeklySalesChart', '주별 매출');
@@ -217,4 +264,6 @@ document.addEventListener('DOMContentLoaded', () => {
   drawUserChart('/api/users/daily', 'dailyUserChart', '일별 가입자 수');
   drawUserChart('/api/users/monthly', 'monthlyUserChart', '월별 가입자 수');
   drawUserChart('/api/users/yearly', 'yearlyUserChart', '연도별 가입자 수');
+
+  drawRegionSalesMap();
 });

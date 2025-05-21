@@ -24,5 +24,8 @@ public class SalesService {
   public List<Map<String, Object>> getMonthlySales() {
     return salesRepository.getMonthlySales();
   }
-}
 
+  public List<Map<String, Object>> getRegionSales() {
+    return salesRepository.getRegionSales();
+  }
+}
