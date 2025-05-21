@@ -48,7 +48,7 @@ def run_llm(query: str, chat_history: List[Dict[str, Any]] = []):
         print(f"Number of items in context: {len(result['context'])}")
         for i, item_in_context in enumerate(result["context"]):
             print(f"Item {i} in context - Type: {type(item_in_context)}")
-            if hasattr(item_in_context, 'metadata'):
+            if hasattr(item_in_context, "metadata"):
                 print(f"  Item {i} has metadata: {item_in_context.metadata}")
             else:
                 print(f"  Item {i} does NOT have metadata attribute.")
@@ -58,27 +58,29 @@ def run_llm(query: str, chat_history: List[Dict[str, Any]] = []):
 
     # new_result 구성 직전에 result["context"]의 타입을 다시 한번 로깅
     if "context" in result and result["context"]:
-        print("--- Debug: Checking type of result['context'] items JUST BEFORE new_result creation ---")
+        print(
+            "--- Debug: Checking type of result['context'] items JUST BEFORE new_result creation ---"
+        )
         for i, doc_check in enumerate(result["context"]):
             print(f"Doc {i} type before new_result: {type(doc_check)}")
     else:
         print("No context in result before new_result creation.")
 
-
     new_result = {
         "query": result.get("input", query),
         "result": result.get("answer", "죄송합니다, 답변을 생성하지 못했습니다."),
-        "source_documents": result.get("context", []) # 이 할당이 문제인지 확인
+        "source_documents": result.get("context", []),  # 이 할당이 문제인지 확인
     }
 
     # new_result["source_documents"]의 타입도 확인
     if new_result["source_documents"]:
-        print("--- Debug: Checking type of new_result['source_documents'] items AFTER creation ---")
+        print(
+            "--- Debug: Checking type of new_result['source_documents'] items AFTER creation ---"
+        )
         for i, doc_final_check in enumerate(new_result["source_documents"]):
             print(f"Doc {i} type in new_result: {type(doc_final_check)}")
     else:
         print("No source_documents in new_result.")
-
 
     return new_result
 

@@ -386,14 +386,20 @@ if submit_button and prompt and st.session_state.current_chat_id:
             # --- !!! main.py에서 타입 확인 !!! ---
             print("--- Debug in main.py: Checking llm_response['source_documents'] ---")
             if "source_documents" in llm_response and llm_response["source_documents"]:
-                print(f"Type of llm_response['source_documents'] in main.py: {type(llm_response['source_documents'])}")
-                print(f"Number of items in source_documents: {len(llm_response['source_documents'])}")
+                print(
+                    f"Type of llm_response['source_documents'] in main.py: {type(llm_response['source_documents'])}"
+                )
+                print(
+                    f"Number of items in source_documents: {len(llm_response['source_documents'])}"
+                )
                 for i, doc_main_check in enumerate(llm_response["source_documents"]):
                     print(f"Doc {i} type in main.py: {type(doc_main_check)}")
-                    if hasattr(doc_main_check, 'metadata'):
-                         print(f"  Doc {i} has metadata in main.py: {doc_main_check.metadata}")
+                    if hasattr(doc_main_check, "metadata"):
+                        print(
+                            f"  Doc {i} has metadata in main.py: {doc_main_check.metadata}"
+                        )
                     else:
-                         print(f"  Doc {i} does NOT have metadata attribute in main.py.")
+                        print(f"  Doc {i} does NOT have metadata attribute in main.py.")
             else:
                 print("No source_documents in llm_response or it's empty in main.py.")
             print("--- End Debug in main.py ---")
@@ -411,12 +417,12 @@ if submit_button and prompt and st.session_state.current_chat_id:
                     [doc.metadata["source"] for doc in llm_response["source_documents"]]
                 )
 
-
-
             source_documents_from_llm = llm_response.get("source_documents", [])
 
             # --- !!! created_sources_string 호출 직전 타입 확인 !!! ---
-            print("--- Debug in main.py: Types JUST BEFORE calling created_sources_string ---")
+            print(
+                "--- Debug in main.py: Types JUST BEFORE calling created_sources_string ---"
+            )
             if source_documents_from_llm:
                 for i, doc_before_call in enumerate(source_documents_from_llm):
                     print(f"Doc {i} type before call: {type(doc_before_call)}")
