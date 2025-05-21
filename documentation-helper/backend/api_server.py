@@ -152,15 +152,13 @@ async def suggest_replies_endpoint(
             "required": ["replies"],
         }
 
-        model_name = (
-            "gemini-2.5-flash-preview-05-20"
-        )
+        model_name = "gemini-2.5-flash-preview-05-20"
 
         model = genai.GenerativeModel(
-            model_name=model_name, 
+            model_name=model_name,
             generation_config=genai.types.GenerationConfig(
-                response_mime_type="application/json",  
-                response_schema=schema, 
+                response_mime_type="application/json",
+                response_schema=schema,
             ),
         )
 
@@ -170,7 +168,7 @@ async def suggest_replies_endpoint(
             "각 답변은 1-5단어 사이로 간결해야 합니다."
         )
 
-        response = await model.generate_content_async(prompt) 
+        response = await model.generate_content_async(prompt)
 
         try:
             response_text = ""
@@ -180,7 +178,7 @@ async def suggest_replies_endpoint(
                 and response.candidates[0].content.parts
             ):
                 response_text = response.candidates[0].content.parts[0].text
-            else: 
+            else:
                 response_text = response.text
 
             if not response_text:
@@ -189,9 +187,7 @@ async def suggest_replies_endpoint(
 
             parsed_json = json.loads(response_text)
             suggestions = parsed_json.get("replies", [])
-            if (
-                not suggestions and "replies" not in parsed_json
-            ):  
+            if not suggestions and "replies" not in parsed_json:
                 print(f"Warning: 'replies' key not found in parsed JSON: {parsed_json}")
                 suggestions = ["응답 형식에서 'replies' 키를 찾을 수 없음"]
 

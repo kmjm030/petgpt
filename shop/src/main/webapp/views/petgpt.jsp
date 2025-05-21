@@ -11,8 +11,11 @@
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
       <link rel="stylesheet" href="<c:url value='/css/petgpt.css'/>">
+      <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     </head>
 
     <body>
@@ -177,7 +180,7 @@
 
         function displayMessage(role, text, isLoading = false, sourceDocuments = []) {
           console.log("[displayMessage] Role:", role);
-          console.log("[displayMessage] Text:", text ? text.substring(0, 50) + "..." : "N/A");
+          console.log("[displayMessage] Text (Original):", text ? text.substring(0, 100) + "..." : "N/A"); // 원본 텍스트 일부 로깅
           console.log("[displayMessage] IsLoading:", isLoading);
           console.log("[displayMessage] Received sourceDocuments:", sourceDocuments);
 
@@ -196,67 +199,70 @@
           messageTextDiv.classList.add('message-text');
 
           if (isLoading) {
-            messageTextDiv.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>'; // 템플릿 리터럴 아니어도 되는 부분
+            messageTextDiv.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
           } else {
-            const cleanedText = cleanResponseText(text);
-            let finalHtml = cleanedText.replace(/\n/g, '<br>');
+            let mainContentHtml = ""; // AI 응답 또는 사용자 메시지 HTML을 담을 변수
 
+            if (role === 'user') {
+              // 사용자 메시지는 마크다운 처리 없이, 개행문자만 <br>로 변경
+              mainContentHtml = cleanResponseText(text).replace(/\n/g, '<br>');
+            } else if (role === 'model') {
+              // AI 모델 메시지는 마크다운으로 간주하고 HTML로 변환
+              const markdownText = text || ""; // text가 null일 경우 빈 문자열로
+              try {
+                if (typeof marked === 'undefined') { // Marked.js 라이브러리 로드 확인
+                  console.error("Marked.js library is not loaded. Falling back to plain text.");
+                  mainContentHtml = cleanResponseText(markdownText).replace(/\n/g, '<br>');
+                } else {
+                  mainContentHtml = marked.parse(markdownText); // 마크다운을 HTML로 변환
+                  console.log("[displayMessage] Parsed Markdown HTML:", mainContentHtml.substring(0, 100) + "...");
+                }
+              } catch (e) {
+                console.error("Markdown parsing error:", e);
+                mainContentHtml = cleanResponseText(markdownText).replace(/\n/g, '<br>'); // 파싱 실패 시 단순 텍스트 처리
+              }
+            } else {
+              // 다른 역할의 메시지 (예: 시스템 메시지) - 단순 텍스트 처리
+              mainContentHtml = cleanResponseText(text).replace(/\n/g, '<br>');
+            }
+
+            let finalHtml = mainContentHtml; // 최종적으로 messageTextDiv에 들어갈 HTML
+
+            // AI 모델 응답일 경우에만 출처 정보 추가
             if (role === 'model' && sourceDocuments && sourceDocuments.length > 0) {
               console.log("[displayMessage] Processing source documents, Count:", sourceDocuments.length);
               let sourcesHtml = '<div class="sources-info"><strong>출처:</strong><ul>';
 
               sourceDocuments.forEach((doc, index) => {
-                // --- 루프 내부 상세 디버깅 로그 (템플릿 리터럴 미사용) ---
-                console.log("Current index type:", typeof index, "Current index value:", index); // index 직접 확인
-                console.log("[displayMessage] Loop[" + index + "] - doc object:", JSON.parse(JSON.stringify(doc)));
+                // --- 루프 내부 (이전 디버깅 로그는 간결성을 위해 일부만 남김) ---
+                // console.log("[displayMessage] Loop[" + index + "] - doc object:", JSON.parse(JSON.stringify(doc)));
 
                 const metadata = doc.metadata || {};
                 const pageContent = doc.page_content || "";
 
-                console.log("[displayMessage] Loop[" + index + "] - metadata object:", JSON.parse(JSON.stringify(metadata)));
-                console.log("[displayMessage] Loop[" + index + "] - pageContent (first 30 chars):", pageContent.substring(0, 30));
-
                 const sourceName = metadata.source ? metadata.source : '정보 출처';
-                console.log("[displayMessage] Loop[" + index + "] - sourceName: '" + sourceName + "'");
-
-                let displayText = "N/A";
-                if (metadata.title) {
-                  displayText = metadata.title;
-                } else if (metadata.item_name) {
-                  displayText = metadata.item_name;
-                } else {
-                  displayText = sourceName;
-                }
-                displayText = displayText || '제목 없음';
-                console.log("[displayMessage] Loop[" + index + "] - displayText: '" + displayText + "'");
-
-                let contentPreview = "";
-                if (pageContent) {
-                  contentPreview = " (" + pageContent.substring(0, 30) + "...)"; // 앞뒤 공백 주의
-                }
-                console.log("[displayMessage] Loop[" + index + "] - contentPreview: '" + contentPreview + "'");
+                let displayText = metadata.title || metadata.item_name || sourceName || '제목 없음';
+                let contentPreview = pageContent ? " (" + pageContent.substring(0, 30) + "...)" : '';
 
                 let currentLiHtml = "";
                 if (metadata.source && typeof metadata.source === 'string' && metadata.source.startsWith('http')) {
-                  // 문자열 연결로 HTML 생성
                   currentLiHtml = "<li><a href=\"" + metadata.source + "\" target=\"_blank\" rel=\"noopener noreferrer\">" + displayText + "</a>" + contentPreview + "</li>";
                 } else {
-                  if (displayText !== 'N/A' || contentPreview !== "") {
+                  if (displayText !== '제목 없음' || contentPreview !== "") { // 'N/A' 대신 '제목 없음'과 비교
                     currentLiHtml = "<li>" + displayText + contentPreview + "</li>";
                   } else {
                     currentLiHtml = "<li>출처 정보 없음</li>";
                   }
                 }
-                console.log("[displayMessage] Loop[" + index + "] - currentLiHtml:", currentLiHtml);
+                // console.log("[displayMessage] Loop[" + index + "] - currentLiHtml:", currentLiHtml); // 필요시 주석 해제
                 sourcesHtml += currentLiHtml;
-                // --- 루프 내부 상세 디버깅 로그 끝 ---
               });
 
               sourcesHtml += '</ul></div>';
               console.log("[displayMessage] Generated sourcesHtml:", sourcesHtml);
-              finalHtml += sourcesHtml;
+              finalHtml += sourcesHtml; // AI 응답 HTML(마크다운 변환됨) 뒤에 출처 HTML 추가
             }
-            messageTextDiv.innerHTML = finalHtml;
+            messageTextDiv.innerHTML = finalHtml; // 최종 HTML을 div에 삽입
           }
 
           messageBubble.appendChild(avatar);

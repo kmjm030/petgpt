@@ -3,7 +3,13 @@ import os
 from typing import Any, Dict, List
 from dotenv import load_dotenv
 from langchain.chains.retrieval import create_retrieval_chain
-from langchain_core.documents import Document
+from langchain_core.messages import BaseMessage
+from langchain_core.prompts import (
+    SystemMessagePromptTemplate,
+    HumanMessagePromptTemplate,
+    AIMessagePromptTemplate,
+    ChatPromptTemplate,
+)
 
 load_dotenv()
 
@@ -16,7 +22,7 @@ from langchain.chains.history_aware_retriever import create_history_aware_retrie
 INDEX_NAME = "petgpt-index"
 
 
-def run_llm(query: str, chat_history: List[Dict[str, Any]] = []):
+def run_llm(query: str, chat_history: List[BaseMessage] = []):
     embeddings = GoogleGenerativeAIEmbeddings(
         model="models/embedding-001", google_api_key=os.environ.get("GOOGLE_API_KEY")
     )
@@ -25,12 +31,77 @@ def run_llm(query: str, chat_history: List[Dict[str, Any]] = []):
         model="gemini-2.5-flash-preview-04-17", verbose=True, temperature=0
     )
 
-    retrieval_qa_chat_prompt = hub.pull("langchain-ai/retrieval-qa-chat")
-    stuff_documents_chain = create_stuff_documents_chain(chat, retrieval_qa_chat_prompt)
+    retrieval_qa_chat_prompt_original = hub.pull("langchain-ai/retrieval-qa-chat")
+    new_messages = []
+    markdown_instruction_added = False
+    if hasattr(
+        retrieval_qa_chat_prompt_original, "messages"
+    ): 
+        for msg_template in retrieval_qa_chat_prompt_original.messages:
+            if isinstance(msg_template, SystemMessagePromptTemplate):
+                original_system_template = msg_template.prompt.template
+                if (
+                    "Format your answer in Markdown" not in original_system_template
+                ): 
+                    new_system_content = (
+                        original_system_template
+                        + "\n\nIMPORTANT: Format your answer in Markdown. Use lists for multiple items and bold for emphasis."
+                    )
+                    new_messages.append(
+                        SystemMessagePromptTemplate.from_template(new_system_content)
+                    )
+                    markdown_instruction_added = True
+                else:
+                    new_messages.append(msg_template)
+            else:
+                new_messages.append(msg_template)
+
+        if (
+            not markdown_instruction_added and new_messages
+        ):  
+            pass 
+
+        if new_messages: 
+            retrieval_qa_chat_prompt_markdown = ChatPromptTemplate.from_messages(
+                new_messages
+            )
+        else: 
+            retrieval_qa_chat_prompt_markdown = retrieval_qa_chat_prompt_original
+            print(
+                "Warning: Could not modify the hub prompt to include Markdown instructions. Using original or fallback prompt."
+            )
+    else:  
+        if hasattr(retrieval_qa_chat_prompt_original, "template"):
+            original_template = retrieval_qa_chat_prompt_original.template
+            if (
+                "마크다운 형식" not in original_template
+                and "Format your answer in Markdown" not in original_template
+            ):
+                new_template_content = (
+                    original_template
+                    + "\n\n답변은 반드시 마크다운 형식을 사용해주세요. (예: 목록은 -, 강조는 **단어**)"
+                )
+                from langchain_core.prompts import PromptTemplate
+
+                retrieval_qa_chat_prompt_markdown = PromptTemplate.from_template(
+                    new_template_content
+                )
+                markdown_instruction_added = True
+            else:
+                retrieval_qa_chat_prompt_markdown = retrieval_qa_chat_prompt_original
+        else:  
+            retrieval_qa_chat_prompt_markdown = retrieval_qa_chat_prompt_original
+            print(
+                "Warning: Prompt from hub is not a ChatPromptTemplate or PromptTemplate. Markdown instruction might not be applied."
+            )
+
+    stuff_documents_chain = create_stuff_documents_chain(
+        chat, retrieval_qa_chat_prompt_markdown
+    )  
 
     rephrase_prompt = hub.pull("langchain-ai/chat-langchain-rephrase")
 
-    retriever = docsearch.as_retriever(search_kwargs={"k": 10})
+    retriever = docsearch.as_retriever(search_kwargs={"k": 5})
 
     history_aware_retriever = create_history_aware_retriever(
         llm=chat, retriever=retriever, prompt=rephrase_prompt
@@ -87,40 +158,3 @@ def run_llm(query: str, chat_history: List[Dict[str, Any]] = []):
 
 def format_docs(docs):
     return "\n\n".join(doc.page_content for doc in docs)
-
-
-# def run_llm2(query: str, chat_history: List[Dict[str, Any]] = []):
-#     embeddings = GoogleGenerativeAIEmbeddings(
-#         model="models/embedding-001", google_api_key=os.environ.get("GOOGLE_API_KEY")
-#     )
-#     docsearch = PineconeVectorStore(index_name=INDEX_NAME, embedding=embeddings)
-#     chat = ChatGoogleGenerativeAI(
-#         model="gemini-2.5-flash-preview-04-17", verbose=True, temperature=0
-#     )
-
-#     rephrase_prompt = hub.pull(
-#         "langchain-ai/chat-langchain-rephrase"
-#     )  # 참고: run_llm의 변수명과 동일
-
-#     retrieval_qa_chat_prompt = hub.pull(
-#         "langchain-ai/retrieval-qa-chat"
-#     )  # 참고: run_llm의 변수명과 동일
-
-#     rag_chain = (
-#         {
-#             "context": docsearch.as_retriever() | format_docs,
-#             "input": RunnablePassthrough(),
-#         }
-#         | retrieval_qa_chat_prompt
-#         | chat
-#         | StrOutputParser()
-#     )
-
-#     retrieve_docs_chain = (lambda x: x["input"]) | docsearch.as_retriever()
-
-#     chain = RunnablePassthrough.assign(context=retrieve_docs_chain).assign(
-#         answer=rag_chain
-#     )
-
-#     result = chain.invoke({"input": query, "chat_history": chat_history})
-#     return result

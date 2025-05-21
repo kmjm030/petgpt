@@ -19,6 +19,7 @@
 
   --font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont,
     Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  --font-family-roboto: "Roboto", sans-serif;
   --border-radius-sm: 4px;
   --border-radius-md: 8px;
 }
@@ -422,6 +423,8 @@ body {
 }
 
 .message-bubble .message-text {
+  font-family: var(--font-family-roboto);
+  font-size: 20px;
   padding-top: 5px;
   /* Align text a bit better with avatar center */
   white-space: pre-wrap;
