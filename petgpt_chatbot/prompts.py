@@ -1,10 +1,12 @@
 """
 PetGPT 챗봇 프롬프트 템플릿 모듈
 """
+
 from langchain_core.prompts import PromptTemplate
 
 # RAG 질의응답 프롬프트 템플릿
-QNA_RAG_PROMPT = PromptTemplate.from_template("""
+QNA_RAG_PROMPT = PromptTemplate.from_template(
+    """
 당신은 PetGPT, 반려동물 케어 전문가입니다. 
 주어진 컨텍스트 정보를 바탕으로 사용자의 질문에 친절하고 정확하게 답변해주세요.
 
@@ -29,10 +31,12 @@ QNA_RAG_PROMPT = PromptTemplate.from_template("""
 ------------------------
 
 답변:
-""")
+"""
+)
 
 # 상품 세부 정보 추출 프롬프트 템플릿
-PRODUCT_DETAIL_EXTRACTION_PROMPT_LLM = PromptTemplate.from_template("""
+PRODUCT_DETAIL_EXTRACTION_PROMPT_LLM = PromptTemplate.from_template(
+    """
 당신은 PetGPT의 상품 추천 기능을 돕는 반려동물 전문가입니다.
 사용자의 상품 요청에서 이미 파싱된 정보를 기반으로, 추가적인 상세 정보를 추출해주세요.
 
@@ -54,10 +58,12 @@ PRODUCT_DETAIL_EXTRACTION_PROMPT_LLM = PromptTemplate.from_template("""
 5. 기타 중요 정보
 
 결과는 JSON 형식으로 출력해주세요.
-""")
+"""
+)
 
 # 최종 상품 선택 프롬프트 템플릿
-PRODUCT_FINAL_SELECTION_PROMPT_LLM = PromptTemplate.from_template("""
+PRODUCT_FINAL_SELECTION_PROMPT_LLM = PromptTemplate.from_template(
+    """
 당신은 PetGPT의 상품 추천 전문가입니다.
 사용자의 요청에 가장 적합한 상품을 1~3개 선택해주세요.
 
@@ -77,10 +83,12 @@ PRODUCT_FINAL_SELECTION_PROMPT_LLM = PromptTemplate.from_template("""
 4. 다양성 (비슷한 상품은 1개만 선택)
 
 결과는 선택한 상품 ID 목록만 [id1, id2, ...] 형식으로 출력해주세요.
-""")
+"""
+)
 
 # 상품 추천 메시지 생성 프롬프트 템플릿
-PRODUCT_RECOMMENDATION_MESSAGE_PROMPT_LLM = PromptTemplate.from_template("""
+PRODUCT_RECOMMENDATION_MESSAGE_PROMPT_LLM = PromptTemplate.from_template(
+    """
 당신은 PetGPT의 친절한 상품 추천 도우미입니다.
 선택된 상품들의 상세 정보를 바탕으로 사용자에게 자연스럽게 추천하는 메시지를 작성해주세요.
 
@@ -104,10 +112,12 @@ PRODUCT_RECOMMENDATION_MESSAGE_PROMPT_LLM = PromptTemplate.from_template("""
 5. 친절한 존댓말을 사용해주세요.
 
 추천 메시지만 작성해주세요:
-""")
+"""
+)
 
 # 의도 분류 프롬프트 템플릿
-INTENT_CLASSIFICATION_PROMPT = PromptTemplate.from_template("""
+INTENT_CLASSIFICATION_PROMPT = PromptTemplate.from_template(
+    """
 당신은 PetGPT 챗봇의 의도 분석가입니다.
 사용자 질문의 의도를 정확히 분류해주세요.
 
@@ -121,13 +131,33 @@ INTENT_CLASSIFICATION_PROMPT = PromptTemplate.from_template("""
 3. general: 일반 대화 (예: "안녕", "고마워", "너는 누구니?")
 
 결과는 "intent": "의도명" 형식으로만 출력하세요. 추가 설명 없이.
-""")
+"""
+)
 
 # 의료 관련 키워드 목록 (답변에 경고 추가 용도)
 MEDICAL_KEYWORDS = [
-    "진단", "질병", "증상", "치료", "처방", "약물", "수술", "부작용",
-    "병원", "질환", "통증", "치료법", "수의사", "처방전", "감염",
-    "질환", "회복", "약품", "투약", "부상", "염증", "검사"
+    "진단",
+    "질병",
+    "증상",
+    "치료",
+    "처방",
+    "약물",
+    "수술",
+    "부작용",
+    "병원",
+    "질환",
+    "통증",
+    "치료법",
+    "수의사",
+    "처방전",
+    "감염",
+    "질환",
+    "회복",
+    "약품",
+    "투약",
+    "부상",
+    "염증",
+    "검사",
 ]
 
 # 의료 관련 경고 문구
@@ -139,55 +169,58 @@ MEDICAL_ADVICE_WARNING = """
 # 출처 표시 형식 문자열
 CITATION_FORMAT = "\n\n[출처: {sources}]"
 
+
 # RAG 응답 구성 템플릿
-def format_rag_response(answer: str, sources: list = None, has_medical_content: bool = False) -> str:
+def format_rag_response(
+    answer: str, sources: list = None, has_medical_content: bool = False
+) -> str:
     """
     RAG 응답을 포맷팅하는 함수
-    
+
     Args:
         answer (str): LLM이 생성한 응답
         sources (list, optional): 출처 목록. 기본값은 None
         has_medical_content (bool, optional): 의료 관련 내용 포함 여부. 기본값은 False
-    
+
     Returns:
         str: 포맷팅된 응답
     """
     formatted_response = answer
-    
+
     # 출처 추가 (사용자 요청에 따라 출처 표시 제거)
     # if sources and len(sources) > 0:
     #     unique_sources = list(set(sources))
     #     sources_text = ", ".join(unique_sources)
     #     formatted_response += CITATION_FORMAT.format(sources=sources_text)
-    
+
     # 의료 관련 경고 추가
     if has_medical_content:
         formatted_response += "\n\n" + MEDICAL_ADVICE_WARNING
-    
+
     return formatted_response
+
 
 # 전체 RAG 프롬프트 구성 함수
 def format_qna_rag_prompt(query: str, context_docs: list) -> str:
     """
     RAG 질의응답을 위한 최종 프롬프트를 구성하는 함수
-    
+
     Args:
         query (str): 사용자 질문
         context_docs (list): 관련 문서 목록
-    
+
     Returns:
         str: 포맷팅된 프롬프트
     """
     # 컨텍스트 문서 결합
     if context_docs and len(context_docs) > 0:
-        context_text = "\n\n".join([f"문서 {i+1}: {doc.page_content}" for i, doc in enumerate(context_docs)])
+        context_text = "\n\n".join(
+            [f"문서 {i+1}: {doc.page_content}" for i, doc in enumerate(context_docs)]
+        )
     else:
         context_text = "관련 정보가 없습니다."
-    
+
     # 프롬프트 포맷팅
-    formatted_prompt = QNA_RAG_PROMPT.format(
-        context=context_text,
-        query=query
-    )
-    
-    return formatted_prompt 
+    formatted_prompt = QNA_RAG_PROMPT.format(context=context_text, query=query)
+
+    return formatted_prompt
