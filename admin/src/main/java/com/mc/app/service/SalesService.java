@@ -28,4 +28,12 @@ public class SalesService {
   public List<Map<String, Object>> getRegionSales() {
     return salesRepository.getRegionSales();
   }
+
+  public List<Map<String, Object>> getTopSellingProducts(int limit) {
+    return salesRepository.getTopSellingProducts(limit);
+  }
+
+  public List<Map<String, Object>> getHourlySales() {
+    return salesRepository.getHourlySales();
+  }
 }

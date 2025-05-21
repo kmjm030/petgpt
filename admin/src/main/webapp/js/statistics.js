@@ -208,7 +208,6 @@ function drawUserChart(apiUrl, containerId, title) {
     })
     .catch(err => console.error(`[${containerId}] 가입자 차트 실패:`, err));
 }
-
 function drawRegionSalesMap() {
   fetch('/api/sales/region')
     .then(res => res.json())
@@ -239,7 +238,7 @@ function drawRegionSalesMap() {
                         </div>`
             });
 
-            kakao.maps.event.addListener(marker, 'click', function () {
+            kakao.maps.event.addListener(marker, 'click', () => {
               if (openInfoWindow === infowindow) {
                 infowindow.close();
                 openInfoWindow = null;
@@ -256,6 +255,116 @@ function drawRegionSalesMap() {
     .catch(err => console.error('[지역 매출 지도] 로딩 실패:', err));
 }
 
+function drawTopProductsChart() {
+  fetch('/api/sales/top-products?limit=5')
+    .then(res => res.json())
+    .then(data => {
+      if (!Array.isArray(data)) {
+        console.error('[상품별 매출] API 응답이 배열이 아님:', data);
+        return;
+      }
+
+      Highcharts.chart('topProductsChart', {
+        chart: { type: 'bar' },
+        title: { text: '상품별 매출 TOP 5' },
+        xAxis: {
+          categories: data.map(p => p.product_name),
+          title: { text: null }
+        },
+        yAxis: {
+          min: 0,
+          title: { text: '매출 (원)', align: 'high' },
+          labels: { overflow: 'justify' }
+        },
+        tooltip: {
+          valueSuffix: ' 원',
+          valueDecimals: 0
+        },
+        plotOptions: {
+          bar: {
+            dataLabels: {
+              enabled: true,
+              format: '{point.y:,.0f} 원'
+            }
+          }
+        },
+        series: [{
+          name: '매출',
+          data: data.map(p => p.total_sales),
+          color: '#ffc107'
+        }],
+        credits: { enabled: false }
+      });
+    })
+    .catch(err => console.error('[상품별 매출] 로딩 실패:', err));
+}
+
+function drawHourlySalesChart() {
+  fetch('/api/sales/hourly')
+    .then(res => res.json())
+    .then(data => {
+      if (!Array.isArray(data)) {
+        console.error('[시간대별 매출] 응답이 배열이 아님:', data);
+        return;
+      }
+
+      const now = new Date();
+      const currentHour = now.getHours();
+      const recentHours = [];
+
+      for (let i = 5; i >= 0; i--) {
+        recentHours.push((currentHour - i + 24) % 24);
+      }
+
+      const filled = recentHours.map(hour => {
+        const found = data.find(d => d.hour === hour);
+        return {
+          hour,
+          total_sales: found ? found.total_sales : 0
+        };
+      });
+
+      Highcharts.chart('hourlySalesChart', {
+        chart: { type: 'line' },
+        title: { text: '최근 6시간 매출' },
+        xAxis: {
+          categories: filled.map(d => `${d.hour}시`),
+          labels: { style: { fontWeight: 'bold' } }
+        },
+        yAxis: {
+          title: { text: '매출 (원)' },
+          labels: {
+            formatter() {
+              return this.value.toLocaleString();
+            }
+          }
+        },
+        tooltip: {
+          valueSuffix: ' 원',
+          shared: true
+        },
+        series: [{
+          name: '매출',
+          data: filled.map(d => d.total_sales),
+          color: '#17a2b8'
+        }],
+        credits: { enabled: false }
+      });
+    })
+    .catch(err => console.error('[시간대별 매출] 로딩 실패:', err));
+}
+
+function updateActiveUsers() {
+  fetch('/api/traffic/active-users')
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('activeUserCount').innerText = data.count.toLocaleString();
+    })
+    .catch(err => console.error('[실시간 접속자] 로딩 실패:', err));
+}
+
+setInterval(updateActiveUsers, 10000);
+
 document.addEventListener('DOMContentLoaded', () => {
   drawSalesChart('/api/sales/daily', 'dailySalesChart', '일별 매출');
   drawSalesChart('/api/sales/weekly', 'weeklySalesChart', '주별 매출');
@@ -266,4 +375,7 @@ document.addEventListener('DOMContentLoaded', () => {
   drawUserChart('/api/users/yearly', 'yearlyUserChart', '연도별 가입자 수');
 
   drawRegionSalesMap();
+  drawTopProductsChart();
+  drawHourlySalesChart();
+  updateActiveUsers();
 });

@@ -4,6 +4,7 @@ import com.mc.app.service.SalesService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -36,4 +37,13 @@ public class SalesController {
     return salesService.getRegionSales();
   }
 
+  @GetMapping("/top-products")
+  public List<Map<String, Object>> getTopProducts(@RequestParam(defaultValue = "5") int limit) {
+    return salesService.getTopSellingProducts(limit);
+  }
+
+  @GetMapping("/hourly")
+  public List<Map<String, Object>> getHourlySales() {
+    return salesService.getHourlySales();
+  }
 }

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,5 +29,13 @@ public class SalesRepository {
 
   public List<Map<String, Object>> getRegionSales() {
     return sql.selectList(NAMESPACE + "selectRegionSales");
+  }
+
+  public List<Map<String, Object>> getTopSellingProducts(int limit) {
+    return sql.selectList(NAMESPACE + "selectTopSellingProducts", limit);
+  }
+
+  public List<Map<String, Object>> getHourlySales() {
+    return sql.selectList(NAMESPACE + "selectHourlySales");
   }
 }
