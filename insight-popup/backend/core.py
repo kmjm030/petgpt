@@ -17,7 +17,7 @@ from langchain_pinecone import PineconeVectorStore
 from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
 from langchain.chains.history_aware_retriever import create_history_aware_retriever
 
-INDEX_NAME = "petgpt-index"  
+INDEX_NAME = "petgpt-index"
 
 AI_SHOPPING_ASSISTANT_SYSTEM_PROMPT = """당신은 사용자의 질문과 **사용자가 현재 보고 있는 화면에 대한 설명 (사용자 질문에 포함되어 전달됨)**, 그리고 검색된 관련 정보를 종합적으로 분석하여, 실용적인 쇼핑 도움을 제공하는 AI 어시스턴트입니다. 당신의 주요 임무는 사용자의 쇼핑 경험을 향상시키는 것입니다. 다음 지침에 따라 분석 결과와 제안을 **매우 친절하고 핵심만 간결하게 (예: 2~3 문장)** 제공해주세요:
 
@@ -55,9 +55,9 @@ def run_llm(query: str, chat_history: List[BaseMessage] = []):
     )
     docsearch = PineconeVectorStore(index_name=INDEX_NAME, embedding=embeddings)
     chat = ChatGoogleGenerativeAI(
-        model="gemini-2.5-flash-preview-05-20",  
+        model="gemini-2.5-flash-preview-05-20",
         verbose=True,
-        temperature=0.2,  
+        temperature=0.2,
     )
 
     answer_generation_prompt = ChatPromptTemplate.from_messages(
@@ -81,9 +81,7 @@ def run_llm(query: str, chat_history: List[BaseMessage] = []):
 
     rephrase_prompt = hub.pull("langchain-ai/chat-langchain-rephrase")
 
-    retriever = docsearch.as_retriever(
-        search_kwargs={"k": 3}
-    )  
+    retriever = docsearch.as_retriever(search_kwargs={"k": 3})
 
     history_aware_retriever = create_history_aware_retriever(
         llm=chat, retriever=retriever, prompt=rephrase_prompt
@@ -96,9 +94,7 @@ def run_llm(query: str, chat_history: List[BaseMessage] = []):
     result = qa_chain.invoke(input={"input": query, "chat_history": chat_history})
 
     print("--- Debug in core.run_llm ---")
-    print(
-        f"Received query (with screen description): {query[:300]}..."
-    )  
+    print(f"Received query (with screen description): {query[:300]}...")
     if "context" in result and result["context"]:
         print(f"Number of items in context: {len(result['context'])}")
         for i, item_in_context in enumerate(result["context"]):
@@ -114,7 +110,7 @@ def run_llm(query: str, chat_history: List[BaseMessage] = []):
     print("--- End Debug in core.run_llm ---")
 
     final_result = {
-        "query": result.get("input", query),  
+        "query": result.get("input", query),
         "result": result.get(
             "answer",
             "죄송합니다, 지금은 답변을 드리기 어렵네요. 다른 도움이 필요하시면 말씀해주세요.",

@@ -99,17 +99,13 @@ async def chat_with_rag_endpoint(request: ChatQuery):
     print(f"Received query: {request.query}")
     print(f"Received chat_history (raw from frontend): {request.chat_history}")
 
-    # 프론트엔드의 chatHistory (user/model role)를 Langchain 메시지 형식으로 변환
     langchain_chat_history: List[BaseMessage] = (
         convert_frontend_history_to_langchain_messages(request.chat_history)
     )
     print(f"Converted langchain_chat_history for run_llm: {langchain_chat_history}")
 
-    # core.py의 run_llm 호출
-    # run_llm의 chat_history 파라미터는 List[Dict[str, Any]] 이지만, 내부적으로 Langchain Message 객체를 기대
     response_data = run_llm(query=request.query, chat_history=langchain_chat_history)
 
-    # source_documents를 직렬화 가능한 형태로 변환
     serialized_sources = serialize_documents(response_data.get("source_documents", []))
 
     return ChatResponse(
