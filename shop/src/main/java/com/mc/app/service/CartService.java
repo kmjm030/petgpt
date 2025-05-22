@@ -71,4 +71,8 @@ public class CartService implements MCService<Cart, String> {
     public List<Map<String, Object>> getCartWithItems(String custId) throws Exception {
         return cartRepository.selectCartWithItems(custId);
     }
+
+    public void deleteByCust(String custId) throws Exception {
+      cartRepository.deleteByCust(custId);
+    }
 }

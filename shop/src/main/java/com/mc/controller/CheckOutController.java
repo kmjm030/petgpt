@@ -44,6 +44,7 @@ public class CheckOutController {
 
         String custId = loggedInCustomer.getCustId();
         Customer cust = custService.get(custId);
+        boolean isCart = true;
 
 
       if(itemsJson!= null){
@@ -63,6 +64,7 @@ public class CheckOutController {
             totalCartPrice += (int)item.get("cart_cnt") * orderItem.getItemPrice();
           }
 
+          isCart = false;
           model.addAttribute("totalCartPrice", totalCartPrice);
           model.addAttribute("cartItems", itemsList);
           session.setAttribute("cartItems", itemsList);
@@ -92,6 +94,7 @@ public class CheckOutController {
         }
         List<Coupon> coupons = couponService.findUsableByCustId(custId);;
 
+        model.addAttribute("isCart", isCart);
         model.addAttribute("coupons", coupons);
         model.addAttribute("defAddress", defAddress);
         model.addAttribute("addrList", addrList);
@@ -106,7 +109,8 @@ public class CheckOutController {
             @RequestParam("custId") String custId,
             @RequestParam(value = "addrSave", required = false) String addrSave,
             @RequestParam("orderTotalPrice") int orderTotalPrice,
-            @RequestParam(value = "couponId", required = false) Integer couponId) throws Exception {
+            @RequestParam(value = "couponId", required = false) Integer couponId,
+            @RequestParam("isCart") boolean isCart) throws Exception {
 
         List<Map<String, Object>> cartItems = (List<Map<String, Object>>) session.getAttribute("cartItems");
 
@@ -163,6 +167,9 @@ public class CheckOutController {
         }
 
         session.removeAttribute("cartItems");
+        if(isCart){
+          cartService.deleteByCust(custId);
+        }
         return "redirect:/checkout/success";
 
     }

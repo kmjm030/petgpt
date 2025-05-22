@@ -5,28 +5,28 @@
 <mapper namespace="com.mc.app.repository.CartRepository">
 
     <select id="select" resultType="cart">
-        SELECT item_key, cust_id, cart_cnt, cart_rdate, option_key, is_hot_deal 
+        SELECT item_key, cust_id, cart_cnt, cart_rdate, option_key, is_hot_deal
         FROM cart
     </select>
 
     <select id="selectCartWithItems" parameterType="String" resultType="map">
         SELECT
-            c.item_key, c.cust_id, c.cart_cnt, c.cart_rdate, c.option_key, c.is_hot_deal, 
+            c.item_key, c.cust_id, c.cart_cnt, c.cart_rdate, c.option_key, c.is_hot_deal,
             i.item_name, i.item_price, i.item_img1,
             o.size, o.color, o.additional_price
         FROM cart c
         JOIN item i ON c.item_key = i.item_key
         LEFT JOIN `option` o ON c.option_key = o.option_key -- LEFT JOIN(옵션 없는 상품 고려)
         WHERE c.cust_id = #{custId}
-        ORDER BY c.cart_rdate DESC 
+        ORDER BY c.cart_rdate DESC
     </select>
 
     <insert id="insert" parameterType="cart">
-        INSERT INTO cart (cust_id, item_key, cart_cnt, cart_rdate, option_key, is_hot_deal) 
-        VALUES (#{custId}, #{itemKey}, #{cartCnt}, NOW(), #{optionKey}, #{isHotDeal}) 
+        INSERT INTO cart (cust_id, item_key, cart_cnt, cart_rdate, option_key, is_hot_deal)
+        VALUES (#{custId}, #{itemKey}, #{cartCnt}, NOW(), #{optionKey}, #{isHotDeal})
         ON DUPLICATE KEY UPDATE
         cart_cnt = cart_cnt + VALUES(cart_cnt),
-        is_hot_deal = VALUES(is_hot_deal) 
+        is_hot_deal = VALUES(is_hot_deal)
     </insert>
 
     <update id="update" parameterType="cart">
@@ -54,5 +54,10 @@
               </otherwise>
           </choose>
     </delete>
-    
+
+  <delete id="deleteByCust" parameterType="String">
+    DELETE FROM cart
+    WHERE cust_id = #{custId}
+  </delete>
+
 </mapper>

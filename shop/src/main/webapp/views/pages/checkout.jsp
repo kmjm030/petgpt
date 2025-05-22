@@ -50,6 +50,7 @@
                             <input type="text" value="${cust.custName}" name="custName" readonly>
                             <input type="hidden" id="finalAmount" name="orderTotalPrice" value="${totalCartPrice}">
                             <input type="hidden" value="${cust.custId}" id="custId" name="custId">
+                            <input type="hidden" name="isCart" value="${isCart}" />
                           </div>
                         </div>
                       </div>
