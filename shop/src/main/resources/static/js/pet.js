@@ -146,7 +146,6 @@ let petNames = [];
 let recommendedItemsMap = {};
 
 function loadRecommendations() {
-  console.log("AJAX 호출 테스트 시작");
   const custId = $('#custId').val();
   const contextPath = $('#contextPath').val();
 
@@ -162,7 +161,7 @@ function loadRecommendations() {
       petNames = Object.keys(data);
       if (petNames.length > 0) {
         showRecommendation();
-        setInterval(showRecommendation, 5000);
+        setInterval(showRecommendation, 10000);
       }
     },
     error: function () {
@@ -176,32 +175,38 @@ function showRecommendation() {
   const items = recommendedItemsMap[petName];
 
   const container = $('#product-box');
-  container.empty();
 
-  let html = `
-        <h5 style="text-align:center;">이런 상품 어때요?</h5>
-        <h6 style="text-align:center; margin-top:10px;">반려동물 <strong>${petName}</strong>를 위해 펫지피티가 추천하는 상품!</h6>
-        <div class="row justify-content-center">
+  container.fadeOut(300, function () {
+    let html = `
+      <h4 style="text-align:center; font-family:'NEXON Lv1 Gothic OTF'"><strong>이런 상품 어때요?</strong></h4>
+      <h6 style="text-align:center; margin-top:10px;">반려동물 <strong>${petName}</strong>를 위해 펫지피티가 추천하는 상품 5가지!✨</h6>
+      <div class="row justify-content-center">
     `;
 
-  for (let item of items) {
-    html += `
-          <div class="col-md-2">
-            <div class="item-box">
-              <img src="/product/${item.itemImg1}" alt="${item.itemName}" class="img-fluid"/>
-              <p style="text-align:center;">${item.itemName}</p>
-            </div>
+    for (let item of items) {
+      html += `
+        <div class="col-md-2">
+          <div class="item-box">
+            <a href="/shop/details?itemKey=${item.itemKey}">
+            <img class="fade-target img-fluid" src="${contextPath}/img/product/${item.itemImg1}" width="200" style="display:none;"/></a>
+            <p class="fade-target" style="display:none; text-align:center;">${item.itemName}</p>
           </div>
-        `;
-  }
+        </div>
+      `;
+    }
 
-  html += '</div>';
-  container.html(html);
+    html += '</div>';
+
+    container.html(html).fadeIn(300, function () {
+      // 이미지랑 텍스트만 따로 페이드 인
+      $('.fade-target').each(function (i, el) {
+        $(el).delay(100 * i).fadeIn(400); // 하나씩 살짝 딜레이 주면 귀여움 UP!
+      });
+    });
+  });
 
   currentPetIndex = (currentPetIndex + 1) % petNames.length;
 }
-
-
 $(function () {
     pet.init();
     loadRecommendations();

@@ -120,9 +120,48 @@ public class AjaxRestController {
             itemKeys = itemService.getRandomItems(new ArrayList<>(seniorCatItemKeys), 3);
           }
         }
-        // itemKey들로 실제 아이템 객체들 불러오기
+
+        List<Item> allItems = itemService.get();
+        List<Integer> keysToRemove = Arrays.asList(100, 101, 102, 103, 104, 130, 131, 132, 133, 134, 140, 141, 142, 143, 144, 150, 151, 152, 153, 154, 160, 161, 162, 163, 164);
+        allItems.removeIf(item -> keysToRemove.contains(item.getItemKey()));
+
         List<Item> reItems = itemService.findItemsByKeys(itemKeys);
+
+        Random rand = new Random();
+        int total = allItems.size();
+        if (total >= 2) {
+          int first = rand.nextInt(total);
+          int second;
+          do {
+            second = rand.nextInt(total);
+          } while (second == first);
+
+          Item randomItem1 = allItems.get(first);
+          Item randomItem2 = allItems.get(second);
+
+          // reItems 중간에 랜덤하게 끼워 넣기
+          int insertPos1 = rand.nextInt(reItems.size() + 1); // 0 ~ size
+          reItems.add(insertPos1, randomItem1);
+
+          int insertPos2 = rand.nextInt(reItems.size() + 1); // 다시 랜덤한 위치 (방금 넣은 거 포함)
+          reItems.add(insertPos2, randomItem2);
+        } else {
+          // 2개 미만이면 그냥 랜덤한 위치에 추가
+          for (Item item : allItems) {
+            int insertPos = rand.nextInt(reItems.size() + 1);
+            reItems.add(insertPos, item);
+          }
+        }
+
         recommendedItemsMap.put(pet.getPetName(), reItems);
+//
+//        Collections.shuffle(allItems);
+//        int randomCount = Math.min(2, allItems.size());
+//        reItems.addAll(allItems.subList(0, randomCount));
+//
+//        recommendedItemsMap.put(pet.getPetName(), reItems);
+
+
       }
 
       return recommendedItemsMap;
