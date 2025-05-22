@@ -6,11 +6,14 @@ import com.mc.app.dto.SortType;
 import com.mc.app.frame.MCService;
 import com.mc.app.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -351,4 +354,15 @@ public class ItemService implements MCService<Item, Integer> {
 
         return itemRepository.selectWithOrderAndLimit(orderBy, limit);
     }
+
+    public List<Integer> getRandomItems(List<Integer> items, int count) {
+      Collections.shuffle(items);
+      return items.stream().limit(count).collect(Collectors.toList());
+    }
+
+    public List<Item> findItemsByKeys(List<Integer> keys) {
+      return itemRepository.findItemsByKeys(keys);
+    }
+
+
 }

@@ -141,6 +141,73 @@ const pet = {
     }
 }
 
+let currentPetIndex = 0;
+let petNames = [];
+let recommendedItemsMap = {};
+
+function loadRecommendations() {
+  const custId = $('#custId').val();
+  const contextPath = $('#contextPath').val();
+
+  console.log("불러온 custId:", custId)
+
+  $.ajax({
+    url: contextPath + '/recommenditem',
+    method: 'GET',
+    data: { id: custId },
+    success: function (data) {
+      console.log("추천 데이터:", data);
+      recommendedItemsMap = data;
+      petNames = Object.keys(data);
+      if (petNames.length > 0) {
+        showRecommendation();
+        setInterval(showRecommendation, 10000);
+      }
+    },
+    error: function () {
+      console.error("추천 상품을 불러오지 못했어요 😢");
+    }
+  });
+}
+
+function showRecommendation() {
+  const petName = petNames[currentPetIndex];
+  const items = recommendedItemsMap[petName];
+
+  const container = $('#product-box');
+
+  container.fadeOut(300, function () {
+    let html = `
+      <h4 style="text-align:center; font-family:'NEXON Lv1 Gothic OTF'"><strong>이런 상품 어때요?</strong></h4>
+      <h6 style="text-align:center; margin-top:10px;">반려동물 <strong>${petName}</strong>를 위해 펫지피티가 추천하는 상품 5가지!✨</h6>
+      <div class="row justify-content-center">
+    `;
+
+    for (let item of items) {
+      html += `
+        <div class="col-md-2">
+          <div class="item-box">
+            <a href="/shop/details?itemKey=${item.itemKey}">
+            <img class="fade-target img-fluid" src="${contextPath}/img/product/${item.itemImg1}" width="200" style="display:none;"/></a>
+            <p class="fade-target" style="display:none; text-align:center;">${item.itemName}</p>
+          </div>
+        </div>
+      `;
+    }
+
+    html += '</div>';
+
+    container.html(html).fadeIn(300, function () {
+      // 이미지랑 텍스트만 따로 페이드 인
+      $('.fade-target').each(function (i, el) {
+        $(el).delay(100 * i).fadeIn(400); // 하나씩 살짝 딜레이 주면 귀여움 UP!
+      });
+    });
+  });
+
+  currentPetIndex = (currentPetIndex + 1) % petNames.length;
+}
 $(function () {
     pet.init();
+    loadRecommendations();
 });

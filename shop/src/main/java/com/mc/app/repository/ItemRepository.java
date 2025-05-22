@@ -33,9 +33,10 @@ public interface ItemRepository extends MCRepository<Item, Integer> {
         List<Item> selectBestSellingItemsFromOrders(@Param("orderStatus") String orderStatus, @Param("limit") int limit)
                         throws Exception;
         List<Item> selectItemsByReviewCount(@Param("limit") int limit) throws Exception;
-        Item findItemWithDetailByKey(int itemKey) throws Exception; 
+        Item findItemWithDetailByKey(int itemKey) throws Exception;
         int upsertItemDetail(Item item) throws Exception;
         int deleteItemDetail(int itemKey) throws Exception;
         List<Integer> selectAllItemKeys();
+        List<Item> findItemsByKeys(@Param("keys") List<Integer> keys);
 
 }

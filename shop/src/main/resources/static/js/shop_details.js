@@ -206,6 +206,7 @@ $(function () {
 
     // --- 사이즈 옵션 모달 채우기 함수 ---
     function populateSizeOptions() {
+
         if (!selectedColor || allOptionsData.length === 0) {
             console.error("Cannot populate sizes: Color not selected or no options data.");
             return;
