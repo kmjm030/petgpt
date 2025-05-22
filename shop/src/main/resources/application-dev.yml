@@ -67,10 +67,12 @@ file:
       prefix: /uploads/images
 
 # AI 서비스
+python:
+  api:
+    baseurl: http://localhost:8000
 chatbot:
   api:
-    url: http://127.0.0.1:8000/api/chat # FastAPI PetGPT 엔드포인트
-
+    url: http://localhost:8000/api/chatbot/ask
 # NCP
 ncp:
   ocr:

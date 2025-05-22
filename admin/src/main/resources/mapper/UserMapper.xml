@@ -31,4 +31,19 @@
     ORDER BY label
   </select>
 
+  <select id="selectTodayUserCount" resultType="int">
+    SELECT COUNT(*) FROM customer
+    WHERE DATE(cust_rdate) = CURDATE()
+  </select>
+
+  <select id="selectWeekUserCount" resultType="int">
+    SELECT COUNT(*) FROM customer
+    WHERE YEARWEEK(cust_rdate, 1) = YEARWEEK(NOW(), 1)
+  </select>
+
+  <select id="selectMonthUserCount" resultType="int">
+    SELECT COUNT(*) FROM customer
+    WHERE DATE_FORMAT(cust_rdate, '%Y-%m') = DATE_FORMAT(NOW(), '%Y-%m')
+  </select>
+
 </mapper>

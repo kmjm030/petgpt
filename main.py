@@ -1,6 +1,7 @@
 """
 PetGPT 챗봇 메인 애플리케이션
 """
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from petgpt_chatbot.api import router as api_router
@@ -8,7 +9,7 @@ from petgpt_chatbot.api import router as api_router
 app = FastAPI(
     title="PetGPT 챗봇",
     description="Langchain 기반 반려동물 지식 Q&A 및 상품 추천 서비스",
-    version="0.1.0"
+    version="0.1.0",
 )
 
 # CORS 미들웨어 설정 추가
@@ -23,6 +24,7 @@ app.add_middleware(
 # API 라우터 등록
 app.include_router(api_router)
 
+
 @app.get("/ping")
 async def ping():
     """
@@ -30,6 +32,8 @@ async def ping():
     """
     return {"message": "pong"}
 
+
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)  
+
+    uvicorn.run(app, host="0.0.0.0", port=8000)

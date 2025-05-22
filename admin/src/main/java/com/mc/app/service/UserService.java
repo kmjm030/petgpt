@@ -3,6 +3,7 @@ package com.mc.app.service;
 import com.mc.app.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,5 +27,12 @@ public class UserService {
   public List<Map<String, Object>> getYearlyUserStats() {
     return userRepository.selectYearlyUserStats();
   }
-}
 
+  public Map<String, Long> getUserSummary() {
+    Map<String, Long> result = new HashMap<>();
+    result.put("today", (long) userRepository.selectTodayUserCount());
+    result.put("week", (long) userRepository.selectWeekUserCount());
+    result.put("month", (long) userRepository.selectMonthUserCount());
+    return result;
+  }
+}

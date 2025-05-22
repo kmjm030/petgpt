@@ -35,4 +35,57 @@
     ORDER BY label
   </select>
 
+  <select id="selectRegionSales" resultType="map">
+    SELECT
+      LEFT(order_addr, LOCATE(' ', order_addr) - 1) AS region,
+      SUM(order_totalprice) AS total_sales
+    FROM total_order
+    WHERE order_status = '결제완료'
+      AND order_addr IS NOT NULL
+    GROUP BY region
+    ORDER BY total_sales DESC
+  </select>
+
+  <select id="selectTopSellingProducts" parameterType="int" resultType="map">
+    SELECT i.item_name AS product_name,
+           SUM(o.order_totalprice) AS total_sales
+    FROM total_order o
+           JOIN item i ON o.item_key = i.item_key
+    WHERE o.order_status = '결제완료'
+    GROUP BY i.item_name
+    ORDER BY total_sales DESC
+      LIMIT #{limit}
+  </select>
+
+  <select id="selectHourlySales" resultType="map">
+    SELECT HOUR(order_date) AS hour,
+      SUM(order_totalprice) AS total_sales
+    FROM total_order
+    WHERE order_date >= CURDATE()
+      AND order_status = '결제완료'
+    GROUP BY hour
+    ORDER BY hour
+  </select>
+
+  <select id="getTodaySales" resultType="long">
+    SELECT IFNULL(SUM(order_totalprice), 0)
+    FROM total_order
+    WHERE DATE(order_date) = CURDATE()
+      AND order_status = '결제완료'
+  </select>
+
+  <select id="getWeekSales" resultType="long">
+    SELECT IFNULL(SUM(order_totalprice), 0)
+    FROM total_order
+    WHERE YEARWEEK(order_date, 1) = YEARWEEK(NOW(), 1)
+      AND order_status = '결제완료'
+  </select>
+
+  <select id="getMonthSales" resultType="long">
+    SELECT IFNULL(SUM(order_totalprice), 0)
+    FROM total_order
+    WHERE DATE_FORMAT(order_date, '%Y-%m') = DATE_FORMAT(NOW(), '%Y-%m')
+      AND order_status = '결제완료'
+  </select>
+
 </mapper>
