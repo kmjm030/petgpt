@@ -1,6 +1,5 @@
 import customtkinter as ctk
 
-# CustomTkinter 외관 및 테마 설정
 ctk.set_appearance_mode("System")  # "System", "Light", "Dark"
 ctk.set_default_color_theme("dark-blue")  # "blue", "green", "dark-blue"
 
@@ -12,7 +11,7 @@ from ai_processor import get_ai_response_based_on_screen_description
 from display_bubble import SpeechBubble
 import tkinter as tk
 
-CAPTURE_INTERVAL_SECONDS = 20
+CAPTURE_INTERVAL_SECONDS = 60
 bubble = None
 message_queue = queue.Queue()
 stop_event = threading.Event()
@@ -28,9 +27,9 @@ def periodic_task():
         current_chat_history_for_main = []
         ai_text = get_ai_response_based_on_screen_description(
             image_data,
-            chat_history_frontend=current_chat_history_for_main,  # 프론트엔드 형식으로 전달
+            chat_history_frontend=current_chat_history_for_main,  
         )
-        print(f"AI (이미지 설명+RAG) 어시스턴트 답변: {ai_text}")  # 로그 메시지 변경
+        print(f"AI (이미지 설명+RAG) 어시스턴트 답변: {ai_text}") 
         if ai_text:
             message_queue.put(ai_text)
     else:
@@ -97,13 +96,7 @@ def main():
         stop_event.set()
 
         if main_timer_thread and main_timer_thread.is_alive():
-            # Timer는 cancel() 메소드로 직접 취소할 수 있습니다.
-            # 하지만 daemon 스레드이므로 메인 종료 시 알아서 정리될 수도 있습니다.
-            # 명시적으로 취소하려면 periodic_task 내부에서 다음 Timer를 시작하기 전에
-            # stop_event를 확인하는 것 외에, main_timer_thread.cancel()을 호출할 수 있어야 합니다.
-            # 현재 구조에서는 stop_event로 자연스럽게 다음 Timer가 생성되지 않도록 합니다.
             print("실행 중인 타이머 작업이 있다면 종료 대기 중...")
-            # main_timer_thread.join(timeout=5) # 이미 daemon이므로 필수는 아님
 
         if bubble:
             print("말풍선 닫는 중...")
