@@ -1,0 +1,34 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+pillow = "*"
+google-generativeai = "*"
+mss = "*"
+schedule = "*"
+customtkinter = "*"
+screeninfo = "*"
+langchain = "*"
+beautifulsoup4 = "*"
+black = "*"
+tiktoken = "*"
+pinecone-client = "*"
+unstructured = "*"
+nltk = "*"
+fastapi = "*"
+jinja2 = "*"
+uvicorn = "*"
+streamlit = "*"
+streamlit-chat = "*"
+tqdm = "*"
+langchain-pinecone = "*"
+langchain-google-genai = "*"
+python-dotenv = "*"
+langchain-community = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.13"
