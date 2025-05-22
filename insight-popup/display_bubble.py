@@ -146,7 +146,7 @@ class SpeechBubble:
             fill="both", padx=self.padding_x, pady=(0, self.padding_y)
         )
 
-    def show_message(self, message, duration_ms=7000):
+    def show_message(self, message, duration_ms=30000):
         if not self.root or not self.root.winfo_exists():
             self._setup_window()
             if not self.root:
