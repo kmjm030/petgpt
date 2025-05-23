@@ -4,12 +4,16 @@ const order_detail = {
         this.contextPath = $('#order-detail-data').data('context-path') || '';
         console.log("Order Detail JS initialized. Context Path:", this.contextPath);
     },
-    del: function (orderKey) {
-        console.log("Cancelling order with orderKey: " + orderKey);
-        let c = confirm('주문을 취소하시겠습니까?');
-        if (c == true) {
-            // contextPath를 사용하여 URL 생성
-            location.href = this.contextPath + '/checkout/delimpl?orderKey=' + orderKey;
+    del: function (orderKey, event) {
+        const orderStatus = event.currentTarget.dataset.orderStatus;
+
+        if (orderStatus === "결제완료" || orderStatus === "상품준비중") {
+            let c = confirm('주문을 취소하시겠습니까?');
+            if (c === true) {
+                location.href = this.contextPath + '/checkout/delimpl?orderKey=' + orderKey;
+            }
+        } else {
+            alert('취소가 불가합니다. 교환/반품 문의로 접수해주세요.');
         }
     }
 }
