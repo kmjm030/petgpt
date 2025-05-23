@@ -33,18 +33,14 @@
           <ul>
             <li><a href="#" class="active"><i class="fa-solid fa-brain"></i> <span class="link-text">PetGPT
                   AI</span></a></li>
-
           </ul>
         </nav>
         <div class="sidebar-history">
           <h4><span class="link-text">오늘</span></h4>
           <ul id="historyToday">
-
           </ul>
-
         </div>
         <div class="sidebar-footer">
-
         </div>
       </aside>
 
@@ -54,16 +50,7 @@
         </button>
 
         <header class="chat-header">
-          <div class="chat-model-selector" id="modelSelector">
-            PetGPT AI <i class="fa-solid fa-chevron-down"></i>
-          </div>
           <div class="chat-header-actions">
-
-
-            <div class="user-profile" title="프로필">
-              <div class="user-profile-icon"><span>펫</span></div>
-              <%-- <span class="user-profile-plus">PLUS</span> --%>
-            </div>
           </div>
         </header>
 
@@ -71,12 +58,10 @@
           <div class="initial-prompt" id="initialPrompt">
             <h1>무엇이든 물어보세요!</h1>
           </div>
-
         </div>
 
         <div class="message-input-area">
           <div class="quick-reply-suggestions" id="quickReplySuggestions">
-
           </div>
         </div>
 
@@ -85,7 +70,7 @@
             <button class="icon-btn" title="파일 첨부" id="attachFileBtn" style="display: none;">
               <i class="fa-solid fa-paperclip"></i>
             </button>
-            <textarea id="messageInput" placeholder="PetGPT에게 무엇이든 물어보세요 (Shift+Enter로 줄바꿈)" rows="1"></textarea>
+            <textarea id="messageInput" placeholder="오늘 어떤 도움을 드릴까요?" rows="1"></textarea>
             <button class="icon-btn gemini-btn" id="suggestReplyBtn" title="✨ 빠른 답변 제안받기">
               <span class="gemini-icon">✨</span>
             </button>
@@ -93,7 +78,7 @@
               <i class="fa-solid fa-microphone"></i>
             </button>
             <button class="icon-btn send-btn" id="sendButton" title="보내기">
-              <i class="fa-solid fa-arrow-up"></i>
+              <i class="fa-solid fa-paper-plane"></i>
             </button>
           </div>
         </footer>
@@ -487,12 +472,12 @@
         suggestReplyBtn.addEventListener('click', async () => {
           const lastAiMessage = chatHistory.filter(msg => msg.role == 'model').pop();
           if (!lastAiMessage) {
-            quickReplySuggestionsContainer.innerHTML = `< button class="loading" disabled > AI 응답이 없습니다.</button > `;
+            quickReplySuggestionsContainer.innerHTML = `<button class="loading" disabled>AI 응답이 없습니다.</button>`;
             return;
           }
           const contextMessage = lastAiMessage.parts[0].text;
 
-          quickReplySuggestionsContainer.innerHTML = `< button class="loading" disabled > <i class="fas fa-spinner fa-spin"></i> 제안 로딩 중...</button > `;
+          quickReplySuggestionsContainer.innerHTML = `<button class="loading" disabled><i class="fas fa-spinner fa-spin"></i> 제안 로딩 중...</button>`;
           suggestReplyBtn.classList.add('loading');
           suggestReplyBtn.disabled = true;
 
@@ -546,12 +531,12 @@
                 quickReplySuggestionsContainer.appendChild(button);
               });
             } else {
-              quickReplySuggestionsContainer.innerHTML = `< button class= "loading" disabled > 제안 없음</button > `;
+              quickReplySuggestionsContainer.innerHTML = `<button class="loading" disabled>제안 없음</button>`;
             }
 
           } catch (error) {
             console.error('빠른 답변 제안 실패:', error);
-            quickReplySuggestionsContainer.innerHTML = `< button class= "loading" disabled > 제안 실패</button > `;
+            quickReplySuggestionsContainer.innerHTML = `<button class="loading" disabled>제안 실패</button>`;
           } finally {
             suggestReplyBtn.classList.remove('loading');
             suggestReplyBtn.disabled = false;
