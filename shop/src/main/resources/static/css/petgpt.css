@@ -220,6 +220,60 @@ body {
 
 .sidebar-history li a {
   padding-left: 12px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sidebar-history li .chat-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 10px 12px;
+  color: var(--text-primary);
+  text-decoration: none;
+  border-radius: var(--border-radius-md);
+  font-size: 0.9rem;
+  margin-bottom: 2px;
+  transition: background-color 0.2s;
+  position: relative;
+}
+
+.sidebar-history li .chat-item:hover {
+  background-color: var(--hover-bg);
+}
+
+.sidebar-history li .chat-item .chat-title {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.sidebar-history li .chat-item .delete-btn {
+  opacity: 0;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  padding: 4px;
+  cursor: pointer;
+  border-radius: var(--border-radius-sm);
+  transition: opacity 0.2s, background-color 0.2s;
+  margin-left: 8px;
+  flex-shrink: 0;
+}
+
+.sidebar-history li .chat-item:hover .delete-btn {
+  opacity: 1;
+}
+
+.sidebar-history li .chat-item .delete-btn:hover {
+  background-color: #dc3545;
+  color: white;
 }
 
 .sidebar-footer {
