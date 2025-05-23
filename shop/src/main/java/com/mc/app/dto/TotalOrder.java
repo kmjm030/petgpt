@@ -28,4 +28,5 @@ public class TotalOrder {
     private String orderAddrRef;
     private String orderAddrDetail;
     private String orderHomecode;
+    private int orderPoint;
 }

@@ -110,6 +110,7 @@ public class CheckOutController {
             @RequestParam(value = "addrSave", required = false) String addrSave,
             @RequestParam("orderTotalPrice") int orderTotalPrice,
             @RequestParam(value = "couponId", required = false) Integer couponId,
+            @RequestParam("orderPoint") int orderPoint,
             @RequestParam("isCart") boolean isCart) throws Exception {
 
         List<Map<String, Object>> cartItems = (List<Map<String, Object>>) session.getAttribute("cartItems");
@@ -126,6 +127,13 @@ public class CheckOutController {
             order.setCouponId(0);
         }
 
+        if (orderPoint != 0){
+            Customer cust = custService.get(custId);
+            int point = cust.getCustPoint() - orderPoint;
+            cust.setCustPoint(point);
+            custService.mod(cust);
+        }
+
         order.setCustId(custId);
         order.setOrderAddr(address.getAddrAddress());
         order.setOrderAddrDetail(address.getAddrDetail());
@@ -133,6 +141,7 @@ public class CheckOutController {
         order.setOrderHomecode(address.getAddrHomecode());
         order.setOrderTotalPrice(orderTotalPrice);
         order.setItemKey((int) cartItems.get(0).get("item_key"));
+        order.setOrderPoint(orderPoint);
         totalOrderService.add(order);
 
         int orderKey = order.getOrderKey();
@@ -244,16 +253,28 @@ public class CheckOutController {
 
     @RequestMapping("/delimpl")
     public String delimpl(Model model, HttpSession session, @RequestParam("orderKey") int orderKey) throws Exception {
+
+        Customer loggedInCustomer = (Customer) session.getAttribute("cust");
+        String custId = loggedInCustomer.getCustId();
+
         TotalOrder order = totalOrderService.get(orderKey);
         Coupon coupon = couponService.get(order.getCouponId());
+
         if (coupon != null) {
             coupon.setCouponUse("N");
             couponService.mod(coupon);
         }
+
+        if(order.getOrderPoint() != 0){
+            Customer cust = custService.get(custId);
+            int point = cust.getCustPoint() + order.getOrderPoint();
+            cust.setCustPoint(point);
+            custService.mod(cust);
+        }
+
         totalOrderService.del(orderKey);
 
-        Customer loggedInCustomer = (Customer) session.getAttribute("cust");
-        return "redirect:/checkout/orderlist?id=" + loggedInCustomer.getCustId();
+        return "redirect:/checkout/orderlist?id=" + custId;
     }
 
     private long calculateTotal(List<Map<String, Object>> cartItems) {

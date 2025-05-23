@@ -27,8 +27,9 @@
       <div id="checkout-data" style="display: none;" data-cust-name="${cust.custName}"
         data-cust-phone="${cust.custPhone}" data-def-addr-homecode="${defAddress.addrHomecode}"
         data-def-addr-address="${defAddress.addrAddress}" data-def-addr-detail="${defAddress.addrDetail}"
-        data-def-addr-ref="${defAddress.addrRef}" data-total-cart-price="${totalCartPrice}"
+        data-def-addr-ref="${defAddress.addrRef}" data-total-cart-price="${totalCartPrice != null ? totalCartPrice : 0}"
         data-context-path="${pageContext.request.contextPath}" <%-- contextPath 추가 --%>
+        data-cust-point="${cust.custPoint}"
         >
       </div>
 
@@ -51,6 +52,7 @@
                             <input type="hidden" id="finalAmount" name="orderTotalPrice" value="${totalCartPrice}">
                             <input type="hidden" value="${cust.custId}" id="custId" name="custId">
                             <input type="hidden" name="isCart" value="${isCart}" />
+                            <input type="hidden" id="orderPoint" name="orderPoint"/>
                           </div>
                         </div>
                       </div>
@@ -124,15 +126,6 @@
                   <div class="col-lg-4 col-md-6">
                     <div class="checkout__order">
                       <h4 class="order__title">📝 주문 금액 확인</h4>
-                      <div>
-                        <select class="form-select" id="couponSelect" name="couponId">
-                          <option value="" disabled selected>💌 보유하고 있는 쿠폰을 확인하세요!</option>
-                          <c:forEach var="c" items="${coupons}">
-                            <option value="${c.couponId}">💌 ${c.couponName}</option>
-                          </c:forEach>
-                        </select>
-                      </div><br /><br /><br>
-                      <hr>
                       <div class="checkout__order__products"><strong>상품</strong> <span style="float:right;"><strong>총액</strong></span></div>
                       <ul class="checkout__total__products">
                         <c:forEach var="c" items="${cartItems}">
@@ -142,11 +135,42 @@
                             <span>${c.item_price * c.cart_cnt}원</span>
                           </li>
                         </c:forEach>
-                      </ul>
+                      </ul><hr>
+                      <div class="point-use" style="padding:3px;">
+                        <p><strong>적립금 사용</strong></p>
+                        <div id="point-input" style="display: flex; gap: 5px;">
+                          <input type="text"
+                                 oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+                                 id="point-use"
+                                 name="pointUse"
+                                 style="flex: 1; border: 1px solid #e1e1e1; padding: 5px;">
+                          <button type="button"
+                                  id="apply-point-btn"
+                                  style="padding: 5px 10px; background-color: black; color: white; border: none; border-radius: 4px;">
+                            ✔
+                          </button>
+                        </div>
+                        <p id="availablePointText"
+                           data-cust-point="${cust.custPoint}"
+                           style="font-size:12px; color:gray; text-align:right;">
+                          (사용가능한 포인트: ${cust.custPoint}p)
+                        </p>
+                      </div><hr>
+                      <div>
+                        <p><strong>쿠폰</strong></p>
+                        <select class="form-select" id="couponSelect" name="couponId"">
+                          <option value="" disabled selected>💌 보유하고 있는 쿠폰을 확인하세요!</option>
+                          <c:forEach var="c" items="${coupons}">
+                            <option value="${c.couponId}">💌 ${c.couponName}</option>
+                          </c:forEach>
+                        </select>
+                      </div><br /><br /><br>
+
                       <%-- 소계, 총계 동적 계산 필요 --%>
                         <ul class="checkout__total__all">
                           <li>상품 금액 <span>${totalCartPrice}원</span></li>
-                          <li>할인 가격 <span id="discount_price">-0원</span></li>
+                          <li>포인트 사용 <span id="point_price">-0원</span></li>
+                          <li>쿠폰 할인 <span id="discount_price">-0원</span></li>
                           <li>최종 결제금액 <span id="discounted_price">${totalCartPrice}원</span></li>
                         </ul>
                         <%-- 결제 --%>
@@ -161,4 +185,5 @@
           </div>
         </div>
       </section>
+
       <!-- Checkout Section End -->

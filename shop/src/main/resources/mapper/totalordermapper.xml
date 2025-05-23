@@ -18,12 +18,12 @@
             cust_id, order_date, item_key, coupon_id,
             recipient_name, recipient_phone, order_req, order_status,
             order_card, order_totalprice, order_shootnum,
-            order_addr, order_addrdetail, order_homecode, order_addrref
+            order_addr, order_addrdetail, order_homecode, order_addrref, order_point
         ) VALUES (
                      #{custId}, now(), #{itemKey}, #{couponId},
                      #{recipientName}, #{recipientPhone}, #{orderReq}, "주문확인중",
                      #{orderCard}, #{orderTotalPrice}, null,
-                     #{orderAddr}, #{orderAddrDetail}, #{orderHomecode}, #{orderAddrRef}
+                     #{orderAddr}, #{orderAddrDetail}, #{orderHomecode}, #{orderAddrRef}, #{orderPoint}
                  )
     </insert>
 
