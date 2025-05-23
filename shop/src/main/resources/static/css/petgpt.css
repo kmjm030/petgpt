@@ -356,7 +356,7 @@ body {
 }
 
 .message-bubble.user .avatar {
-  background-color: #4d7bf3;
+  background-color: #c96442;
   color: white;
 }
 
@@ -369,7 +369,7 @@ body {
 }
 
 .message-bubble.model .avatar {
-  background-color: var(--accent-color);
+  background-color: #c96442;
   color: white;
 }
 
