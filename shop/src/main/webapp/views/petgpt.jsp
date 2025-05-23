@@ -13,7 +13,9 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
       <link rel="preconnect" href="https://fonts.googleapis.com">
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-      <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+      <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+KR:wght@400;500;700&family=Roboto:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
       <link rel="stylesheet" href="<c:url value='/css/petgpt.css'/>">
       <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     </head>
@@ -22,7 +24,7 @@
       <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
           <button class="new-chat-btn" id="newChatBtn">
-            <i class="fa-regular fa-pen-to-square"></i>
+            <i class="fa-solid fa-plus"></i>
             <span class="btn-text">새 채팅</span>
           </button>
           <button class="icon-btn" id="collapseSidebarBtn" title="사이드바 숨기기">
@@ -36,11 +38,21 @@
           </ul>
         </nav>
         <div class="sidebar-history">
-          <h4><span class="link-text">오늘</span></h4>
+          <h4><span class="link-text">채팅</span></h4>
           <ul id="historyToday">
           </ul>
         </div>
         <div class="sidebar-footer">
+          <div class="user-account">
+            <div class="user-avatar">펫</div>
+            <div class="user-info">
+              <div class="user-name">사용자</div>
+              <div class="account-type">무료 요금제</div>
+            </div>
+            <div class="dropdown-icon">
+              <i class="fa-solid fa-chevron-down"></i>
+            </div>
+          </div>
         </div>
       </aside>
 
@@ -56,7 +68,7 @@
 
         <div class="chat-content" id="chatContent">
           <div class="initial-prompt" id="initialPrompt">
-            <h1>무엇이든 물어보세요!</h1>
+            <h1><span class="welcome-icon">✨</span>무엇이든 물어보세요!</h1>
           </div>
         </div>
 
