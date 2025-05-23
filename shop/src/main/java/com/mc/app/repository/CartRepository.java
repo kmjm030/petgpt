@@ -14,4 +14,5 @@ public interface CartRepository extends MCRepository<Cart, String> {
     List<Map<String, Object>> selectCartWithItems(String custId) throws Exception;
     void delete(Cart cart) throws Exception;
     void update(Cart cart) throws Exception;
+    void deleteByCust(String custId) throws Exception;
 }

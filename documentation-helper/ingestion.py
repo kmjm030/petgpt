@@ -1,169 +1,198 @@
 import os
+import re
 import pickle
-from xml.dom.minidom import Document
+from langchain_core.documents import Document
 from dotenv import load_dotenv
 
 load_dotenv()
 
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_community.document_loaders import ReadTheDocsLoader
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_pinecone import PineconeVectorStore
-from firecrawl import FirecrawlApp, JsonConfig
-from pydantic import BaseModel, Field
 
-embeddings = GoogleGenerativeAIEmbeddings(
-    model="models/embedding-001", google_api_key=os.environ.get("GOOGLE_API_KEY")
-)
+# ---------------- Global Configurations ----------------
+GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY")
+PINECONE_API_KEY = os.environ.get("PINECONE_API_KEY")
+PINECONE_INDEX_NAME = "petgpt-index"
+
+# Text Splitting Parameters for the combined document
+COMBINED_DOC_CHUNK_SIZE = 10000
+COMBINED_DOC_CHUNK_OVERLAP = 1000
+
+# Pinecone Batching Parameters
+PINECONE_ADD_BATCH_SIZE = 32
+
+# Initialize Embeddings
+try:
+    embeddings = GoogleGenerativeAIEmbeddings(
+        model="models/embedding-001", google_api_key=GOOGLE_API_KEY
+    )
+except Exception as e:
+    print(f"Error initializing GoogleGenerativeAIEmbeddings: {e}")
+    embeddings = None
 
 
-def load_db_documents_from_pickle(
-    folder_path="docs", filename="petgpt_db_documents.pkl"
-):
-    file_path = os.path.join(folder_path, filename)
-    if os.path.exists(file_path):
-        with open(file_path, "rb") as f:
-            loaded_docs = pickle.load(f)
-        print(f"Successfully loaded {len(loaded_docs)} documents from {file_path}")
-        return loaded_docs
-    else:
-        print(f"Pickle file {file_path} not found.")
-        return []
+# ---------------- Core Ingestion Logic ----------------
+def ingest_combined_document_to_pinecone(single_large_document: Document):
+    """
+    하나의 매우 큰 Document 객체를 받아서 청크로 분할하고 Pinecone에 추가합니다.
+    """
+    if not single_large_document or not single_large_document.page_content:
+        print("Pinecone에 추가할 내용이 없습니다.")
+        return
+    if not embeddings:
+        print("Embeddings not initialized. Skipping Pinecone ingestion.")
+        return
+    if not PINECONE_API_KEY:
+        print("PINECONE_API_KEY not set. Skipping Pinecone ingestion.")
+        return
 
+    print(f"분할할 전체 문서의 글자 수: {len(single_large_document.page_content)}")
 
-def ingest_docs(raw_documents):
-    text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=100)
-    documents = text_splitter.split_documents(raw_documents)
-
-    print(f"Prepared {len(documents)} documents for Pinecone")
-
-    from pinecone import Pinecone
-
-    pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
-    index_name = "petgpt-index"
-
-    vector_store = PineconeVectorStore.from_existing_index(
-        index_name=index_name, embedding=embeddings
+    text_splitter = RecursiveCharacterTextSplitter(
+        chunk_size=COMBINED_DOC_CHUNK_SIZE,
+        chunk_overlap=COMBINED_DOC_CHUNK_OVERLAP,
+        length_function=len,
+        is_separator_regex=False,
     )
 
-    # --- 수동 배칭 시작 ---
-    manual_submission_batch_size = 100
-    pinecone_api_internal_batch_size = 4
+    chunked_documents = text_splitter.split_documents([single_large_document])
 
-    total_docs = len(documents)
+    if not chunked_documents:
+        print(
+            "문서 분할 후 Pinecone에 추가할 청크가 없습니다. 원본 문서가 너무 작거나 chunk_size가 너무 클 수 있습니다."
+        )
+        return
+
     print(
-        f"Adding {total_docs} documents to Pinecone index '{index_name}' using manual submission batches of {manual_submission_batch_size} and internal API batch size of {pinecone_api_internal_batch_size}"
+        f"전체 텍스트를 {len(chunked_documents)}개의 청크로 분할했습니다 (청크 크기 목표: {COMBINED_DOC_CHUNK_SIZE})."
     )
 
-    for i in range(0, total_docs, manual_submission_batch_size):
-        batch_to_submit = documents[i : i + manual_submission_batch_size]
+    for i, chunk in enumerate(chunked_documents):
+        chunk.metadata["chunk_sequence"] = i + 1
+        chunk.metadata["original_sources"] = single_large_document.metadata.get(
+            "source", "N/A"
+        )
+        chunk.metadata["original_title"] = single_large_document.metadata.get(
+            "title", "N/A"
+        )
+        if "source" not in chunk.metadata:
+            chunk.metadata["source"] = single_large_document.metadata.get(
+                "source", f"chunk_{i+1}_of_combined_doc"
+            )
+        if "title" not in chunk.metadata:
+            chunk.metadata["title"] = (
+                f"Chunk {i+1} of {single_large_document.metadata.get('title', 'Combined Document')}"
+            )
 
-        num_current_batch = (i // manual_submission_batch_size) + 1
-        total_manual_batches = (
-            total_docs + manual_submission_batch_size - 1
-        ) // manual_submission_batch_size
+    print(f"\nInitializing Pinecone connection for index '{PINECONE_INDEX_NAME}'...")
+    try:
+        vector_store = PineconeVectorStore.from_existing_index(
+            index_name=PINECONE_INDEX_NAME, embedding=embeddings
+        )
+    except Exception as e:
+        print(f"Error connecting to Pinecone index '{PINECONE_INDEX_NAME}': {e}")
+        return
+
+    total_chunks = len(chunked_documents)
+    print(
+        f"Starting ingestion of {total_chunks} chunks into Pinecone index '{PINECONE_INDEX_NAME}'."
+    )
+    print(f"Using Pinecone add_documents batch size: {PINECONE_ADD_BATCH_SIZE}")
+
+    log_batch_size = 100
+
+    for i in range(0, total_chunks, log_batch_size):
+        batch_to_submit = chunked_documents[i : i + log_batch_size]
+
+        num_current_log_batch = (i // log_batch_size) + 1
+        total_log_batches = (total_chunks + log_batch_size - 1) // log_batch_size
 
         print(
-            f"Processing manual batch {num_current_batch}/{total_manual_batches}: Adding {len(batch_to_submit)} documents"
+            f"  Submitting log batch {num_current_log_batch}/{total_log_batches} (chunks {i+1}-{min(i+log_batch_size, total_chunks)} of {total_chunks})"
         )
-
         try:
             vector_store.add_documents(
-                batch_to_submit, batch_size=pinecone_api_internal_batch_size
+                documents=batch_to_submit, batch_size=PINECONE_ADD_BATCH_SIZE
             )
-            print(f"Successfully added manual batch {num_current_batch}")
+            print(
+                f"    Successfully submitted {len(batch_to_submit)} chunks in log batch {num_current_log_batch}."
+            )
         except Exception as e:
             print(
-                f"Error during add_documents for manual batch {num_current_batch} (starting at index {i}): {e}"
+                f"    Error during add_documents for log batch {num_current_log_batch}: {e}"
             )
-            print("Problematic batch documents (first few):")
             for k, doc_problem in enumerate(
-                batch_to_submit[: min(3, len(batch_to_submit))]
+                batch_to_submit[: min(5, len(batch_to_submit))]
             ):
                 print(
-                    f"  Doc {k}: source='{doc_problem.metadata.get('source', 'N/A')}', content_len={len(doc_problem.page_content)}"
+                    f"      Problem Doc {k}: metadata={doc_problem.metadata}, content_preview='{doc_problem.page_content[:100]}...'"
                 )
-            raise e
-
-    print("Successfully added all documents.")
-    # --- 수동 배칭 끝 ---
-
-
-def ingest_docs2() -> None:
-    firecrawl_api_key = os.environ.get("FIRECRAWL_API_KEY")
-    firecrawl_app = FirecrawlApp(api_key=firecrawl_api_key)
-
-    langchain_documents_base_urls = [
-        "https://python.langchain.com/docs/integrations/chat/",
-        "https://python.langchain.com/docs/integrations/llms/",
-        "https://python.langchain.com/docs/integrations/text_embedding/",
-        "https://python.langchain.com/docs/integrations/document_loaders/",
-        "https://python.langchain.com/docs/integrations/document_transformers/",
-        "https://python.langchain.com/docs/integrations/vectorstores/",
-        "https://python.langchain.com/docs/integrations/retrievers/",
-        "https://python.langchain.com/docs/integrations/tools/",
-        "https://python.langchain.com/docs/integrations/stores/",
-        "https://python.langchain.com/docs/integrations/llm_caching/",
-        "https://python.langchain.com/docs/integrations/graphs/",
-        "https://python.langchain.com/docs/integrations/memory/",
-        "https://python.langchain.com/docs/integrations/callbacks/",
-        "https://python.langchain.com/docs/integrations/chat_loaders/",
-        "https://python.langchain.com/docs/concepts/",
-    ]
-
-    all_docs_for_pinecone = []
-
-    for url in langchain_documents_base_urls:
-        print(f"Crawling URL: {url} using firecrawl-py directly...")
-        try:
-            crawled_data_list = firecrawl_app.crawl_url(url)
-
-            if not crawled_data_list:
-                print(f"No data crawled from {url}")
-                continue
-
-            print(f"Successfully crawled {len(crawled_data_list)} pages from {url}")
-
-            current_url_docs = []
-            for item in crawled_data_list:
-                page_content = item.get("markdown", "")
-                metadata = item.get("metadata", {})
-
-                if "source" not in metadata:
-                    metadata["source"] = item.get("url", url)
-
-                if page_content:
-                    current_url_docs.append(
-                        Document(page_content=page_content, metadata=metadata)
-                    )
-
-            print(
-                f"Converted {len(current_url_docs)} crawled items from {url} to LangChain Documents."
-            )
-            all_docs_for_pinecone.extend(current_url_docs)
-
-        except Exception as e:
-            print(f"Error crawling {url}: {e}")
+            print("    Attempting to continue with next batch if any...")
             continue
 
-    documents_to_index = all_docs_for_pinecone
-
-    print(
-        f"Going to add {len(documents_to_index)} documents to Pinecone index 'firecrawl-index'"
-    )
-
-    try:
-        PineconeVectorStore.from_documents(
-            documents_to_index, embeddings, index_name="firecrawl-index"
-        )
-        print(f"****Loading all crawled data to vectorstore 'firecrawl-index' done ***")
-    except Exception as e:
-        print(f"Error adding documents to Pinecone: {e}")
+    print(f"\nSuccessfully attempted ingestion of {total_chunks} chunks into Pinecone.")
 
 
+# ---------------- Main Execution ----------------
 if __name__ == "__main__":
-    ingest_docs(
-        load_db_documents_from_pickle(
-            folder_path="docs", filename="petgpt_db_documents.pkl"
+    if not embeddings:
+        print("Exiting due to embedding initialization error.")
+        exit()
+    if not PINECONE_API_KEY:
+        print("PINECONE_API_KEY environment variable not set. Exiting.")
+        exit()
+
+    docs_folder_path = r"c:\CursorProjects\petgpt\documentation-helper\docs"
+    all_markdown_content = ""
+    processed_file_names = []
+
+    print("Starting to read and combine markdown files...")
+    for i in range(1, 35):
+        file_name = f"doc{i}.md"
+        markdown_file_path = os.path.join(docs_folder_path, file_name)
+
+        if not os.path.exists(markdown_file_path):
+            print(f"  File not found, skipping: {markdown_file_path}")
+            continue
+
+        print(f"  Reading file: {markdown_file_path}")
+        try:
+            with open(markdown_file_path, "r", encoding="utf-8") as f:
+                all_markdown_content += (
+                    f"\n\n===== START OF FILE: {file_name} =====\n\n"
+                )
+                all_markdown_content += f.read()
+                all_markdown_content += f"\n\n===== END OF FILE: {file_name} =====\n\n"
+                processed_file_names.append(file_name)
+        except Exception as e:
+            print(f"  Error reading file {markdown_file_path}: {e}")
+
+    if all_markdown_content:
+        print(
+            f"\nSuccessfully combined content from {len(processed_file_names)} files."
         )
-    )
+        print(
+            f"Total combined content length (characters): {len(all_markdown_content)}"
+        )
+
+        combined_document_metadata = {
+            "source_files": ", ".join(processed_file_names),
+            "title": "Combined PetGPT Documentation (All Docs)",
+            "document_type": "large_combined_document",
+        }
+
+        combined_document = Document(
+            page_content=all_markdown_content.strip(),
+            metadata=combined_document_metadata,
+        )
+
+        print(
+            f"\n--- Starting Pinecone ingestion for the large combined document (target chunk size: {COMBINED_DOC_CHUNK_SIZE}) ---"
+        )
+        ingest_combined_document_to_pinecone(combined_document)
+        print(
+            "\n--- Combined document processed and ingestion to Pinecone attempted. ---"
+        )
+    else:
+        print("\n--- No content was read from files. Pinecone ingestion skipped. ---")

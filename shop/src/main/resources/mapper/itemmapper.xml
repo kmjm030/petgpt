@@ -71,14 +71,14 @@
         SELECT * FROM item
         WHERE item_price >= #{minPrice}
     </select>
-    
+
     <select id="selectWithOrder" resultMap="itemBaseResultMap">
         SELECT * FROM item
         <if test="orderBy != null">
             ORDER BY ${orderBy}
         </if>
     </select>
-    
+
     <select id="findByCategoryWithOrder" resultMap="itemBaseResultMap">
         SELECT * FROM item
         WHERE category_key=#{categoryKey}
@@ -86,7 +86,7 @@
             ORDER BY ${orderBy}
         </if>
     </select>
-    
+
     <select id="findByItemKeysWithOrder" resultMap="itemBaseResultMap">
         SELECT * FROM item
         WHERE item_key IN
@@ -97,7 +97,7 @@
             ORDER BY ${orderBy}
         </if>
     </select>
-    
+
     <select id="findByPriceRangeWithOrder" resultMap="itemBaseResultMap">
         SELECT * FROM item
         WHERE item_price BETWEEN #{minPrice} AND #{maxPrice}
@@ -105,7 +105,7 @@
             ORDER BY ${orderBy}
         </if>
     </select>
-    
+
     <select id="findByPriceGreaterThanWithOrder" resultMap="itemBaseResultMap">
         SELECT * FROM item
         WHERE item_price >= #{minPrice}
@@ -113,12 +113,12 @@
             ORDER BY ${orderBy}
         </if>
     </select>
-    
+
     <select id="findByNameContaining" resultMap="itemBaseResultMap">
         SELECT * FROM item
         WHERE item_name LIKE CONCAT('%', #{keyword}, '%')
     </select>
-    
+
     <select id="findByNameContainingWithOrder" resultMap="itemBaseResultMap">
         SELECT * FROM item
         WHERE item_name LIKE CONCAT('%', #{keyword}, '%')
@@ -172,11 +172,21 @@
         LIMIT #{limit}
     </select>
 
+  <select id="findItemsByKeys" resultType="com.mc.app.dto.Item">
+    SELECT *
+    FROM item
+    WHERE item_key IN
+    <foreach item="key" collection="keys" open="(" separator="," close=")">
+      #{key}
+    </foreach>
+  </select>
+
     <insert id="insert" parameterType="item" useGeneratedKeys="true" keyProperty="itemKey">
         INSERT INTO item VALUES (null, #{categoryKey}, #{itemName}, #{itemContent},
                                  #{itemPrice}, #{itemSprice}, #{itemCount}, now(),
                                  #{itemImg1}, #{itemImg2}, #{itemImg3})
     </insert>
+
 
     <update id="update" parameterType="item">
         UPDATE item SET

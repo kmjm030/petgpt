@@ -4,6 +4,10 @@
 
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
+<script>
+  console.log("EL 확인: ${sessionScope.cust.custId}");
+</script>
+
 
       <style>
 
@@ -84,7 +88,38 @@
         .modal-input-box {
           margin: 10px;
         }
+
+        .item-box {
+          margin-top: 20px;
+        }
+
+        .item-box img {
+          border-radius: 50%;
+          margin-bottom: 10px;
+          transition: transform 0.3s ease;
+        }
+
+        .item-box img:hover {
+          transform: scale(1.10);
+        }
+
+        .item-box p {
+          font-size: 12px;
+          font-family: 'NEXON Lv1 Gothic OTF';
+
+        }
+
+        #product-box {
+          padding: 20px 10px;
+          margin-bottom:10px;
+          border-radius: 10px;
+          height: 300px;
+          overflow: hidden;
+          position: relative;
+        }
       </style>
+
+
 
       <!-- Breadcrumb Section Begin -->
       <section class="breadcrumb-option">
@@ -180,9 +215,11 @@
               <%-- 회원 정보 --%>
                 <div class="col-lg-9 container mt-3">
                   <h4><strong>🐶 나의 펫 정보</strong></h4>
-                  <p style="color:lightgray"><br>이미지를 클릭하면 수정할 수 있어요!<br></p>
                   <h6 class="checkout__title"></h6>
-                  <h6 class="coupon__code"><span class="icon_tag_alt"></span>강아지가 좋아할만한 상품을 모아봤어요!</h6>
+                  <input type="hidden" id="custId" value="${sessionScope.cust.custId}">
+                  <input type="hidden" id="contextPath" value="${pageContext.request.contextPath}">
+<%--                  <h6 class="coupon__code"><span class="icon_tag_alt"></span>강아지가 좋아할만한 상품을 모아봤어요!</h6>--%>
+                  <div id="product-box"></div>
                   <div class="row">
                     <c:forEach var="p" items="${pets}">
                       <div class="col-12 col-sm-6 col-md-6">
@@ -241,7 +278,6 @@
                       </div>
                     </c:forEach>
                   </div>
-                  <hr>
                   <div class="checkout__order">
                     <button class="site-btn" id="pet_add_btn" onclick="openModal()">반려동물 등록하기</button>
                   </div>
@@ -332,3 +368,5 @@
             <button class="site-btn" id="modal_pet_add_btn">등록하기</button>
           </div>
         </div>
+
+

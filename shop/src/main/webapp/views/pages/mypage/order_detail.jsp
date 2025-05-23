@@ -157,7 +157,7 @@
                   <h6 class="checkout__input"><strong>▪ 결제금액 :</strong> ${order.orderTotalPrice}원</h6>
                   <h6 class="checkout__input"><strong>▪ 배송지정보 :</strong> [${order.orderHomecode}] ${order.orderAddr}
                     ${order.orderAddrRef} ${order.orderAddrDetail}</h6>
-                  <h6 class="checkout__input"><strong>▪ 주문상품</strong></h6>
+                  <h6 class="checkout__input"><strong>▪ 주문상품</strong><span style="color: #e76f51">  [${order.orderStatus}]</span></h6>
                   <table class="table">
                     <thead>
                       <tr>
@@ -194,8 +194,11 @@
                         onclick="location.href='<c:url value='/qnaboard/add'/>?id=${cust.custId}'">교환/환불 신청</button>
                     </div>
                     <div class="col-lg-6">
-                      <button class="site-btn order-site-btn" onclick="order_detail.del(${order.orderKey})">주문
-                        취소하기</button>
+                      <button class="site-btn order-site-btn"
+                              data-order-status="${order.orderStatus}"
+                              onclick="order_detail.del(${order.orderKey}, event)">
+                        주문 취소하기
+                      </button>
                     </div>
                   </div>
                 </div>

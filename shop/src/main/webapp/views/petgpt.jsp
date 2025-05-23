@@ -33,18 +33,14 @@
           <ul>
             <li><a href="#" class="active"><i class="fa-solid fa-brain"></i> <span class="link-text">PetGPT
                   AI</span></a></li>
-
           </ul>
         </nav>
         <div class="sidebar-history">
           <h4><span class="link-text">오늘</span></h4>
           <ul id="historyToday">
-
           </ul>
-
         </div>
         <div class="sidebar-footer">
-
         </div>
       </aside>
 
@@ -54,18 +50,7 @@
         </button>
 
         <header class="chat-header">
-          <div class="chat-model-selector" id="modelSelector">
-            PetGPT AI <i class="fa-solid fa-chevron-down"></i>
-          </div>
           <div class="chat-header-actions">
-            <button class="action-btn gemini-btn" id="summarizeChatBtn" title="✨ 대화 요약하기">
-              <span class="gemini-icon">✨</span> <span>요약</span>
-            </button>
-
-            <div class="user-profile" title="프로필">
-              <div class="user-profile-icon"><span>펫</span></div>
-              <%-- <span class="user-profile-plus">PLUS</span> --%>
-            </div>
           </div>
         </header>
 
@@ -73,12 +58,10 @@
           <div class="initial-prompt" id="initialPrompt">
             <h1>무엇이든 물어보세요!</h1>
           </div>
-
         </div>
 
         <div class="message-input-area">
           <div class="quick-reply-suggestions" id="quickReplySuggestions">
-
           </div>
         </div>
 
@@ -87,7 +70,7 @@
             <button class="icon-btn" title="파일 첨부" id="attachFileBtn" style="display: none;">
               <i class="fa-solid fa-paperclip"></i>
             </button>
-            <textarea id="messageInput" placeholder="PetGPT에게 무엇이든 물어보세요 (Shift+Enter로 줄바꿈)" rows="1"></textarea>
+            <textarea id="messageInput" placeholder="오늘 어떤 도움을 드릴까요?" rows="1"></textarea>
             <button class="icon-btn gemini-btn" id="suggestReplyBtn" title="✨ 빠른 답변 제안받기">
               <span class="gemini-icon">✨</span>
             </button>
@@ -95,7 +78,7 @@
               <i class="fa-solid fa-microphone"></i>
             </button>
             <button class="icon-btn send-btn" id="sendButton" title="보내기">
-              <i class="fa-solid fa-arrow-up"></i>
+              <i class="fa-solid fa-paper-plane"></i>
             </button>
           </div>
         </footer>
@@ -123,15 +106,116 @@
         const sendButton = document.getElementById('sendButton');
         const chatContent = document.getElementById('chatContent');
         const initialPrompt = document.getElementById('initialPrompt');
-        const summarizeChatBtn = document.getElementById('summarizeChatBtn');
-        const summaryModal = document.getElementById('summaryModal');
-        const closeSummaryModalBtn = document.getElementById('closeSummaryModal');
-        const summaryModalBody = document.getElementById('summaryModalBody');
         const suggestReplyBtn = document.getElementById('suggestReplyBtn');
         const quickReplySuggestionsContainer = document.getElementById('quickReplySuggestions');
         const newChatBtn = document.getElementById('newChatBtn');
-
         let chatHistory = [];
+        let currentChatId = null;
+        let chatSessions = JSON.parse(localStorage.getItem('petgpt_chat_sessions') || '{}');
+
+        function saveChatSession() {
+          if (chatHistory.length > 0 && currentChatId) {
+            const firstUserMessage = chatHistory.find(msg => msg.role === 'user');
+            if (firstUserMessage) {
+              chatSessions[currentChatId] = {
+                id: currentChatId,
+                title: firstUserMessage.parts[0].text.substring(0, 30) + (firstUserMessage.parts[0].text.length > 30 ? '...' : ''),
+                history: [...chatHistory],
+                timestamp: new Date().toISOString()
+              };
+              localStorage.setItem('petgpt_chat_sessions', JSON.stringify(chatSessions));
+            }
+          }
+        }
+
+        function loadChatSession(chatId) {
+          const session = chatSessions[chatId];
+          if (session) {
+            saveChatSession();
+
+            currentChatId = chatId;
+            chatHistory = [...session.history];
+
+            chatContent.innerHTML = '';
+            if (initialPrompt) {
+              initialPrompt.style.display = 'none';
+            }
+
+            session.history.forEach(msg => {
+              displayMessage(msg.role, msg.parts[0].text, false, msg.sourceDocuments || []);
+            });
+
+            console.log(`채팅 세션 로드됨: ${chatId}`);
+          }
+        }
+
+        function generateChatId() {
+          return 'chat_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        }
+
+        function deleteChatSession(chatId) {
+          if (chatSessions[chatId]) {
+            delete chatSessions[chatId];
+            localStorage.setItem('petgpt_chat_sessions', JSON.stringify(chatSessions));
+
+            if (currentChatId === chatId) {
+              chatHistory = [];
+              currentChatId = null;
+              chatContent.innerHTML = '';
+              if (initialPrompt) {
+                if (!chatContent.contains(initialPrompt)) {
+                  chatContent.appendChild(initialPrompt);
+                }
+                initialPrompt.style.display = 'block';
+              }
+            }
+
+            updateSidebarHistoryFromStorage();
+            console.log(`채팅 세션 삭제됨: ${chatId}`);
+          }
+        }
+
+        function updateSidebarHistoryFromStorage() {
+          const historyTodayList = document.getElementById('historyToday');
+          historyTodayList.innerHTML = '';
+
+          const sessions = Object.values(chatSessions)
+            .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+            .slice(0, 5);
+
+          sessions.forEach(session => {
+            const listItem = document.createElement('li');
+
+            const chatItem = document.createElement('div');
+            chatItem.className = 'chat-item';
+
+            const chatTitle = document.createElement('span');
+            chatTitle.className = 'chat-title';
+            chatTitle.textContent = session.title;
+            chatTitle.addEventListener('click', (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              loadChatSession(session.id);
+            });
+
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'delete-btn';
+            deleteBtn.innerHTML = '<i class="fa-solid fa-trash"></i>';
+            deleteBtn.title = '채팅 삭제';
+            deleteBtn.addEventListener('click', (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              if (confirm('이 채팅을 삭제하시겠습니까?')) {
+                deleteChatSession(session.id);
+              }
+            });
+
+            chatItem.appendChild(chatTitle);
+            chatItem.appendChild(deleteBtn);
+            listItem.appendChild(chatItem);
+            historyTodayList.appendChild(listItem);
+          });
+        }
 
         function toggleSidebar() {
           sidebar.classList.toggle('collapsed');
@@ -271,15 +355,20 @@
           chatContent.scrollTop = chatContent.scrollHeight;
           return messageBubble;
         }
-
         async function handleSendMessage() {
           const messageText = messageInput.value.trim();
           if (!messageText) return;
 
-          displayMessage('user', messageText);
+          if (!currentChatId) {
+            currentChatId = generateChatId();
+          } displayMessage('user', messageText);
           chatHistory.push({ role: 'user', parts: [{ text: messageText }] });
+          console.log("[메시지 전송] 사용자 메시지 추가 후 chatHistory.length:", chatHistory.length);
 
-          updateSidebarHistory(messageText);
+          if (chatHistory.length === 1) {
+            saveChatSession();
+            updateSidebarHistoryFromStorage();
+          }
 
           messageInput.value = '';
           messageInput.style.height = 'auto';
@@ -339,12 +428,28 @@
               return;
             }
 
-            const aiResponseText = result.result || "응답을 받지 못했습니다.";
             const sourceDocs = result.source_documents || [];
+
+            let rawAiTextFromResult = result.result;
+            let processedAiText = "";
+
+            if (typeof rawAiTextFromResult === 'string') {
+              // Remove zero-width spaces and similar, then trim
+              processedAiText = rawAiTextFromResult.replace(/[\\u200B-\\u200D\\uFEFF]/g, '').trim();
+            }
+            // If rawAiTextFromResult was not a string (e.g. null, undefined), processedAiText remains ""
+            // and aiResponseText will become the fallback.
+
+            const aiResponseText = processedAiText || "응답을 받지 못했습니다.";
+
+            console.log("Original result.result from backend (Chat):", rawAiTextFromResult);
+            console.log("Final aiResponseText for display/history (Chat):", aiResponseText);
             console.log("Source documents received in JSP (Chat):", sourceDocs);
 
             displayMessage('model', aiResponseText, false, sourceDocs);
-            chatHistory.push({ role: 'model', parts: [{ text: aiResponseText }] });
+            chatHistory.push({ role: 'model', parts: [{ text: aiResponseText }], sourceDocuments: sourceDocs });
+
+            saveChatSession();
 
           } catch (error) {
             console.error('메시지 전송 중 네트워크 오류 또는 기타 오류:', error);
@@ -364,84 +469,15 @@
             handleSendMessage();
           }
         });
-
-        summarizeChatBtn.addEventListener('click', async () => {
-          if (chatHistory.length === 0) {
-            const tempMsg = document.createElement('div');
-            tempMsg.textContent = "요약할 대화 내용이 없습니다.";
-            tempMsg.style.cssText = "position:fixed; top:20px; left:50%; transform:translateX(-50%); background:var(--input-bg); padding:10px 20px; border-radius:5px; box-shadow:0 2px 5px rgba(0,0,0,0.2); z-index:1001;";
-            document.body.appendChild(tempMsg);
-            setTimeout(() => tempMsg.remove(), 3000);
-            return;
-          }
-
-          summaryModal.style.display = 'flex';
-          summaryModalBody.innerHTML = `<div class="loading-indicator"><i class="fas fa-spinner fa-spin"></i> 요약하는 중...</div>`;
-          summarizeChatBtn.disabled = true;
-
-          try {
-            const conversationText = chatHistory.map(msg =>
-              `${msg.role == 'user' ? '사용자' : 'AI'}: ${msg.parts[0].text} `
-            ).join('\n\n');
-
-            const response = await fetch('<c:url value="/api/summarize"/>', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ conversation_text: conversationText })
-            });
-
-            if (!response.ok) {
-              let errorMsg = `API 요약 오류 (${response.status}): ${response.statusText}`;
-              const responseText = await response.text();
-              console.error('Summarize API Error (Text):', responseText);
-              try {
-                const errorData = JSON.parse(responseText);
-                errorMsg += ` - ${errorData.error || JSON.stringify(errorData)}`;
-              } catch (e) {
-                errorMsg += ` - ${responseText || '내용 없음'}`;
-              }
-              throw new Error(errorMsg);
-            }
-
-            const responseBodyText = await response.text();
-            console.log("Raw response body text from Spring backend (Summarize):", responseBodyText);
-
-            let result;
-            try {
-              result = JSON.parse(responseBodyText);
-              console.log("Parsed JSON result in JSP (Summarize):", result);
-            } catch (e) {
-              console.error("Failed to parse JSON response from backend (Summarize):", e);
-              console.error("Response text was (Summarize):", responseBodyText);
-              summaryModalBody.textContent = "요약 응답 처리 중 오류가 발생했습니다. (JSON 파싱 실패)";
-              return;
-            }
-
-            summaryModalBody.textContent = result.summary || "요약을 생성할 수 없습니다.";
-
-          } catch (error) {
-            console.error('요약 실패:', error);
-            summaryModalBody.textContent = `요약 실패: ${error.message}`;
-          } finally {
-            summarizeChatBtn.disabled = false;
-          }
-        });
-        closeSummaryModalBtn.addEventListener('click', () => summaryModal.style.display = 'none');
-        window.addEventListener('click', (event) => {
-          if (event.target == summaryModal) {
-            summaryModal.style.display = 'none';
-          }
-        });
-
         suggestReplyBtn.addEventListener('click', async () => {
           const lastAiMessage = chatHistory.filter(msg => msg.role == 'model').pop();
           if (!lastAiMessage) {
-            quickReplySuggestionsContainer.innerHTML = `< button class="loading" disabled > AI 응답이 없습니다.</button > `;
+            quickReplySuggestionsContainer.innerHTML = `<button class="loading" disabled>AI 응답이 없습니다.</button>`;
             return;
           }
           const contextMessage = lastAiMessage.parts[0].text;
 
-          quickReplySuggestionsContainer.innerHTML = `< button class="loading" disabled > <i class="fas fa-spinner fa-spin"></i> 제안 로딩 중...</button > `;
+          quickReplySuggestionsContainer.innerHTML = `<button class="loading" disabled><i class="fas fa-spinner fa-spin"></i> 제안 로딩 중...</button>`;
           suggestReplyBtn.classList.add('loading');
           suggestReplyBtn.disabled = true;
 
@@ -495,20 +531,23 @@
                 quickReplySuggestionsContainer.appendChild(button);
               });
             } else {
-              quickReplySuggestionsContainer.innerHTML = `< button class= "loading" disabled > 제안 없음</button > `;
+              quickReplySuggestionsContainer.innerHTML = `<button class="loading" disabled>제안 없음</button>`;
             }
 
           } catch (error) {
             console.error('빠른 답변 제안 실패:', error);
-            quickReplySuggestionsContainer.innerHTML = `< button class= "loading" disabled > 제안 실패</button > `;
+            quickReplySuggestionsContainer.innerHTML = `<button class="loading" disabled>제안 실패</button>`;
           } finally {
             suggestReplyBtn.classList.remove('loading');
             suggestReplyBtn.disabled = false;
           }
         });
-
         newChatBtn.addEventListener('click', () => {
+          saveChatSession();
+
           chatHistory = [];
+          currentChatId = null;
+
           chatContent.innerHTML = '';
           if (initialPrompt) {
             if (!chatContent.contains(initialPrompt)) {
@@ -520,37 +559,20 @@
           messageInput.style.height = 'auto';
           messageInput.dispatchEvent(new Event('input'));
           quickReplySuggestionsContainer.innerHTML = '';
-          document.getElementById('historyToday').innerHTML = '';
+
           console.log("새 채팅 시작됨");
         });
-
         function updateSidebarHistory(firstQuery) {
-          const historyTodayList = document.getElementById('historyToday');
-          if (historyTodayList.children.length >= 5) {
-            historyTodayList.removeChild(historyTodayList.lastChild);
-          }
-
-          const listItem = document.createElement('li');
-          const link = document.createElement('a');
-          link.href = "#";
-          const displayMessage = firstQuery.length > 20 ? firstQuery.substring(0, 17) + "..." : firstQuery;
-          link.innerHTML = `< span class= "link-text" > ${displayMessage}</span >`;
-          link.addEventListener('click', (e) => {
-            e.preventDefault();
-            console.log("선택된 채팅 기록 로드 기능은 아직 구현되지 않았습니다:", firstQuery);
-            alert("선택한 채팅 불러오기 기능은 아직 개발 중입니다.");
-          });
-          listItem.appendChild(link);
-          if (historyTodayList.firstChild) {
-            historyTodayList.insertBefore(listItem, historyTodayList.firstChild);
-          } else {
-            historyTodayList.appendChild(listItem);
-          }
+          // 이 함수는 더 이상 사용하지 않음 - updateSidebarHistoryFromStorage로 대체됨
+          console.log("updateSidebarHistory 호출됨 (더 이상 사용하지 않음):", firstQuery);
         }
 
         document.addEventListener('DOMContentLoaded', () => {
           checkScreenSize();
           messageInput.dispatchEvent(new Event('input'));
+
+          updateSidebarHistoryFromStorage();
+
           if (chatContent.children.length === 1 && chatContent.firstChild.id === 'initialPrompt') {
             initialPrompt.style.display = 'block';
           } else if (chatContent.children.length === 0 && initialPrompt) {

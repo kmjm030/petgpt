@@ -72,7 +72,7 @@ python:
     baseurl: http://localhost:8000
 chatbot:
   api:
-    url: http://localhost:8000/api/chatbot/ask
+    url: http://localhost:8000
 # NCP
 ncp:
   ocr:

@@ -207,4 +207,61 @@ $(document).ready(function () {
         }
     });
 
+    // 적립금 사용
+    document.getElementById("apply-point-btn").addEventListener("click", function () {
+        const input = document.getElementById("point-use");
+        const pointText = document.getElementById("availablePointText");
+        const pointPriceSpan = document.getElementById("point_price");
+        const finalPriceSpan = document.getElementById("discounted_price");
+        const finalAmountInput = document.getElementById("finalAmount");
+        const orderPoint = document.getElementById("orderPoint");
+
+        const checkoutData = document.getElementById("checkout-data");
+        const custPoint = parseInt(checkoutData.dataset.custPoint, 10) || 0;
+        const totalPrice = parseInt(checkoutData.dataset.totalCartPrice, 10) || 0;
+
+        const entered = parseInt(input.value, 10) || 0;
+
+
+        // 유효성 검사
+        if (entered % 100 !== 0) {
+            alert("포인트는 100원 단위로 사용 가능합니다.");
+            input.value = "";
+            return;
+        }
+
+        if (entered > custPoint) {
+            alert("보유 포인트를 초과할 수 없습니다.");
+            input.value = "";
+            return;
+        }
+
+        if (entered > totalPrice) {
+            alert("주문 금액을 초과할 수 없습니다.");
+            input.value = "";
+            return;
+        }
+
+        // 적용 성공
+        const appliedPoint = entered;
+
+        // 포인트 사용 표시 업데이트
+        pointPriceSpan.textContent = `-${appliedPoint.toLocaleString()}원`;
+
+        console.log("orderPoint:", orderPoint);
+        console.log("appliedPoint:", appliedPoint);
+
+
+        // 최종 결제 금액 계산
+        const finalAmount = totalPrice - appliedPoint;
+        finalPriceSpan.textContent = `${finalAmount.toLocaleString()}원`;
+        finalAmountInput.value = finalAmount;
+        orderPoint.value = appliedPoint;
+
+
+        // 사용 가능한 포인트 표시 업데이트
+        const leftPoint = custPoint - appliedPoint;
+        pointText.textContent = `(사용가능한 포인트: ${leftPoint.toLocaleString()}p)`;
+    });
+
 });
