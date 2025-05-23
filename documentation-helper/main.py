@@ -168,14 +168,12 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# --- 세션 상태 초기화 ---
 if "chat_history_list" not in st.session_state:
     st.session_state.chat_history_list = []
 
 if "current_chat_id" not in st.session_state:
     st.session_state.current_chat_id = None
 
-# 각 채팅별 대화 기록을 저장하기 위한 구조
 if "chats" not in st.session_state:
     st.session_state.chats = {}
 
@@ -209,9 +207,8 @@ with st.sidebar:
         use_container_width=True,
     )
 
-    st.markdown("---")  # 구분선
+    st.markdown("---")
 
-    # 지난 채팅 목록 (최신순 정렬을 위해 chat_history_list를 그대로 사용)
     if not st.session_state.chat_history_list:
         st.caption("지난 채팅이 없습니다.")
     else:
@@ -224,19 +221,17 @@ with st.sidebar:
                 args=(chat_info["id"],),
                 use_container_width=True,
             ):
-                pass  # on_click에서 처리
+                pass
 
-    st.markdown("---")  # 구분선
+    st.markdown("---")
     st.markdown("##### 사용자 프로필")
 
-    # Gravatar URL 생성 (기본 이미지 사용)
     gravatar_url = "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y&s=100"
     st.markdown(
         f'<div class="sidebar-profile-pic"><img src="{gravatar_url}" alt="User Profile"></div>',
         unsafe_allow_html=True,
     )
 
-    # 사용자 이름 (예시, 실제 인증 로직 필요 시 확장)
     if "user_name" not in st.session_state:
         st.session_state.user_name = "사용자"
     st.write(f"안녕하세요, {st.session_state.user_name}님!")
@@ -273,7 +268,7 @@ st.markdown('<div class="chat-container">', unsafe_allow_html=True)
 if st.session_state.current_chat_id is None:
     if not st.session_state.chat_history_list:
         st.markdown(
-            '<h2 style="text-align: center; margin-top: 100px;">PetGPT 검색 시작하기</h2>',  # 문구 변경
+            '<h2 style="text-align: center; margin-top: 100px;">PetGPT 검색 시작하기</h2>',
             unsafe_allow_html=True,
         )
         st.markdown(
@@ -282,20 +277,18 @@ if st.session_state.current_chat_id is None:
         )
 else:
     current_chat_id = st.session_state.current_chat_id
-    # 현재 채팅 ID가 chat_history_list에 있는지 확인
     chat_exists_in_list = any(
         c["id"] == current_chat_id for c in st.session_state.chat_history_list
     )
     current_chat_data = st.session_state.chats.get(current_chat_id)
 
     if current_chat_data and chat_exists_in_list:
-        # 채팅 제목 가져오기
-        chat_title = "채팅"  # 기본값
+        chat_title = "채팅"
         for chat_info_item in st.session_state.chat_history_list:
             if chat_info_item["id"] == current_chat_id:
                 chat_title = chat_info_item["title"]
                 break
-        st.markdown(f"### {chat_title}")  # 채팅 제목 표시
+        st.markdown(f"### {chat_title}")
 
         st.markdown('<div class="chat-history">', unsafe_allow_html=True)
         for msg_data in current_chat_data["messages"]:
@@ -312,9 +305,7 @@ else:
                 """,
                     unsafe_allow_html=True,
                 )
-            else:  # AI 메시지
-                # AI 응답 내용을 표시할 때 st.markdown 사용 (HTML 직접 삽입보다는 markdown 선호)
-                # unsafe_allow_html=True는 링크 등을 위해 필요
+            else:
                 st.markdown(
                     f"""
                 <div class="bot-message-container">
@@ -331,15 +322,10 @@ else:
         st.warning(
             f"선택된 채팅 ID '{current_chat_id}'가 채팅 목록에 없습니다. 새 채팅을 시작해주세요."
         )
-        # st.session_state.current_chat_id = None # 선택된 채팅 ID 초기화
-        # st.experimental_rerun()
     elif not current_chat_data and current_chat_id:
         st.error(
             f"채팅 ID '{current_chat_id}'에 대한 데이터를 찾을 수 없습니다. 문제가 지속되면 새 채팅을 시도해주세요."
         )
-        # st.session_state.current_chat_id = None
-        # st.experimental_rerun()
-
 
 st.markdown("</div>", unsafe_allow_html=True)
 
@@ -368,22 +354,19 @@ st.markdown("</div>", unsafe_allow_html=True)
 if submit_button and prompt and st.session_state.current_chat_id:
     current_chat_id = st.session_state.current_chat_id
 
-    # current_chat_id가 st.session_state.chats에 존재하는지 다시 한번 확인
     if current_chat_id not in st.session_state.chats:
         st.error("오류: 현재 채팅 세션을 찾을 수 없습니다. 새 채팅을 시작해 주세요.")
-        st.stop()  # 더 이상 진행하지 않음
+        st.stop()
 
     current_chat_data = st.session_state.chats[current_chat_id]
 
     current_chat_data["messages"].append({"role": "user", "content": prompt})
     history_for_llm = current_chat_data["history_for_llm"]
 
-    # 스피너를 채팅창 대신 사이드바나 특정 영역에 표시할 수도 있음
     with st.spinner("PetGPT가 답변을 준비하고 있어요... 🐾"):
         try:
             llm_response = run_llm(query=prompt, chat_history=history_for_llm)
 
-            # --- !!! main.py에서 타입 확인 !!! ---
             print("--- Debug in main.py: Checking llm_response['source_documents'] ---")
             if "source_documents" in llm_response and llm_response["source_documents"]:
                 print(
@@ -403,23 +386,18 @@ if submit_button and prompt and st.session_state.current_chat_id:
             else:
                 print("No source_documents in llm_response or it's empty in main.py.")
             print("--- End Debug in main.py ---")
-            # --- !!! 디버깅 코드 끝 !!! ---
 
             raw_ai_answer = llm_response["result"]
-            # AI 답변 정제
             cleaned_ai_answer = clean_response_text(raw_ai_answer)
 
             sources = set()
-            if llm_response.get(
-                "source_documents"
-            ):  # source_documents가 없을 수도 있음
+            if llm_response.get("source_documents"):
                 sources = set(
                     [doc.metadata["source"] for doc in llm_response["source_documents"]]
                 )
 
             source_documents_from_llm = llm_response.get("source_documents", [])
 
-            # --- !!! created_sources_string 호출 직전 타입 확인 !!! ---
             print(
                 "--- Debug in main.py: Types JUST BEFORE calling created_sources_string ---"
             )
@@ -430,11 +408,8 @@ if submit_button and prompt and st.session_state.current_chat_id:
                 print("source_documents_from_llm is empty before call.")
             print("--- End Debug ---")
 
-            # 출처 문자열 생성 (클릭 가능한 링크 포함)
             sources_html = created_sources_string(sources)
 
-            # 최종 AI 응답 컨텐츠 (HTML 형식으로 조합)
-            # Markdown을 사용하여 줄바꿈 등을 처리하고, st.markdown(unsafe_allow_html=True)로 렌더링
             formatted_response_content_for_display = (
                 f"{cleaned_ai_answer}<br><br>{sources_html}"
             )
@@ -444,20 +419,17 @@ if submit_button and prompt and st.session_state.current_chat_id:
             )
 
             history_for_llm.append(("human", prompt))
-            history_for_llm.append(
-                ("ai", raw_ai_answer)
-            )  # LLM 히스토리에는 정제되지 않은 원본 답변 저장
+            history_for_llm.append(("ai", raw_ai_answer))
 
-            if len(current_chat_data["messages"]) == 2:  # 사용자 질문 1개, AI 답변 1개
+            if len(current_chat_data["messages"]) == 2:
                 chat_idx_in_list = -1
                 for i, chat_item in enumerate(st.session_state.chat_history_list):
                     if chat_item["id"] == current_chat_id:
                         chat_idx_in_list = i
                         break
                 if chat_idx_in_list != -1:
-                    new_title_prefix = "질문: "  # 접두사 추가
-                    # 사용자 질문(prompt)을 기반으로 제목 생성, 길이 제한
-                    title_content = prompt[:25]  # 제목으로 사용할 내용 길이 (예: 25자)
+                    new_title_prefix = "질문: "
+                    title_content = prompt[:25]
                     new_title = (
                         new_title_prefix
                         + title_content

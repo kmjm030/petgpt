@@ -1,9 +1,8 @@
-## File: backend/core.py (원본 제공 코드)
 import os
 from typing import Any, Dict, List
 from dotenv import load_dotenv
 from langchain.chains.retrieval import create_retrieval_chain
-from langchain_core.messages import BaseMessage
+from langchain_core.messages import BaseMessage, SystemMessage
 from langchain_core.prompts import (
     SystemMessagePromptTemplate,
     HumanMessagePromptTemplate,
@@ -28,80 +27,70 @@ def run_llm(query: str, chat_history: List[BaseMessage] = []):
     )
     docsearch = PineconeVectorStore(index_name=INDEX_NAME, embedding=embeddings)
     chat = ChatGoogleGenerativeAI(
-        model="gemini-2.5-flash-preview-04-17", verbose=True, temperature=0
+        model="gemini-2.5-flash-preview-05-20",
+        verbose=True,
+        temperature=0,
+        convert_system_message_to_human=True,
     )
 
-    retrieval_qa_chat_prompt_original = hub.pull("langchain-ai/retrieval-qa-chat")
-    new_messages = []
-    markdown_instruction_added = False
-    if hasattr(
-        retrieval_qa_chat_prompt_original, "messages"
-    ): 
-        for msg_template in retrieval_qa_chat_prompt_original.messages:
+    custom_system_prompt_template = """당신은 펫GPT 쇼핑몰의 상품 및 고객 정보 전문가입니다.
+    제공된 펫GPT 관련 Markdown 문서(상품, 고객, 카테고리, 커뮤니티, Q&A 정보 포함)를 기반으로 다음 질문에 답변해주세요.
+    외부 지식을 사용하지 말고, 제공된 문서 내용만을 활용하여 답변해야 합니다.
+    문서에서 검색된 내용을 바탕으로, 질문에 대해 명확하고 간결하게 답변해주세요.
+    답변은 반드시 마크다운 형식을 사용해주세요. (예: 목록은 '-', 강조는 **단어**)
+    만약 문서에 해당 정보가 없다면, "제공된 문서에서는 해당 정보를 찾을 수 없습니다."라고 명확히 답변해주세요.
+
+    검색된 문서 내용:
+    {context}"""
+
+    prompt_for_answer_generation = hub.pull("langchain-ai/retrieval-qa-chat")
+    new_messages_for_answer_gen = []
+
+    if hasattr(prompt_for_answer_generation, "messages"):
+        system_message_exists_in_hub_prompt = False
+        for msg_template in prompt_for_answer_generation.messages:
             if isinstance(msg_template, SystemMessagePromptTemplate):
-                original_system_template = msg_template.prompt.template
-                if (
-                    "Format your answer in Markdown" not in original_system_template
-                ): 
-                    new_system_content = (
-                        original_system_template
-                        + "\n\nIMPORTANT: Format your answer in Markdown. Use lists for multiple items and bold for emphasis."
+                new_messages_for_answer_gen.append(
+                    SystemMessagePromptTemplate.from_template(
+                        custom_system_prompt_template
                     )
-                    new_messages.append(
-                        SystemMessagePromptTemplate.from_template(new_system_content)
-                    )
-                    markdown_instruction_added = True
-                else:
-                    new_messages.append(msg_template)
-            else:
-                new_messages.append(msg_template)
-
-        if (
-            not markdown_instruction_added and new_messages
-        ):  
-            pass 
-
-        if new_messages: 
-            retrieval_qa_chat_prompt_markdown = ChatPromptTemplate.from_messages(
-                new_messages
-            )
-        else: 
-            retrieval_qa_chat_prompt_markdown = retrieval_qa_chat_prompt_original
-            print(
-                "Warning: Could not modify the hub prompt to include Markdown instructions. Using original or fallback prompt."
-            )
-    else:  
-        if hasattr(retrieval_qa_chat_prompt_original, "template"):
-            original_template = retrieval_qa_chat_prompt_original.template
-            if (
-                "마크다운 형식" not in original_template
-                and "Format your answer in Markdown" not in original_template
-            ):
-                new_template_content = (
-                    original_template
-                    + "\n\n답변은 반드시 마크다운 형식을 사용해주세요. (예: 목록은 -, 강조는 **단어**)"
                 )
-                from langchain_core.prompts import PromptTemplate
-
-                retrieval_qa_chat_prompt_markdown = PromptTemplate.from_template(
-                    new_template_content
-                )
-                markdown_instruction_added = True
+                system_message_exists_in_hub_prompt = True
             else:
-                retrieval_qa_chat_prompt_markdown = retrieval_qa_chat_prompt_original
-        else:  
-            retrieval_qa_chat_prompt_markdown = retrieval_qa_chat_prompt_original
-            print(
-                "Warning: Prompt from hub is not a ChatPromptTemplate or PromptTemplate. Markdown instruction might not be applied."
+                new_messages_for_answer_gen.append(msg_template)
+
+        if not system_message_exists_in_hub_prompt:
+            new_messages_for_answer_gen.insert(
+                0,
+                SystemMessagePromptTemplate.from_template(
+                    custom_system_prompt_template
+                ),
             )
 
-    stuff_documents_chain = create_stuff_documents_chain(
-        chat, retrieval_qa_chat_prompt_markdown
-    )  
+        combine_docs_chat_prompt = ChatPromptTemplate.from_messages(
+            new_messages_for_answer_gen
+        )
+    else:
+        print(
+            "Warning: Prompt from hub for answer generation is not a ChatPromptTemplate. Attempting to create a new one."
+        )
+        combine_docs_chat_prompt = ChatPromptTemplate.from_messages(
+            [
+                SystemMessagePromptTemplate.from_template(
+                    custom_system_prompt_template
+                ),
+                HumanMessagePromptTemplate.from_template("{input}"),
+            ]
+        )
+
+    stuff_documents_chain = create_stuff_documents_chain(chat, combine_docs_chat_prompt)
 
     rephrase_prompt = hub.pull("langchain-ai/chat-langchain-rephrase")
 
-    retriever = docsearch.as_retriever(search_kwargs={"k": 5})
+    retriever = docsearch.as_retriever(
+        search_type="mmr",
+        search_kwargs={"k": 5, "fetch_k": 50, "lambda_mult": 0.6},
+    )
 
     history_aware_retriever = create_history_aware_retriever(
         llm=chat, retriever=retriever, prompt=rephrase_prompt
@@ -127,7 +116,6 @@ def run_llm(query: str, chat_history: List[BaseMessage] = []):
         print("No 'context' found in result or context is empty in run_llm.")
     print("--- End Debug in run_llm ---")
 
-    # new_result 구성 직전에 result["context"]의 타입을 다시 한번 로깅
     if "context" in result and result["context"]:
         print(
             "--- Debug: Checking type of result['context'] items JUST BEFORE new_result creation ---"
@@ -140,10 +128,9 @@ def run_llm(query: str, chat_history: List[BaseMessage] = []):
     new_result = {
         "query": result.get("input", query),
         "result": result.get("answer", "죄송합니다, 답변을 생성하지 못했습니다."),
-        "source_documents": result.get("context", []),  # 이 할당이 문제인지 확인
+        "source_documents": result.get("context", []),
     }
 
-    # new_result["source_documents"]의 타입도 확인
     if new_result["source_documents"]:
         print(
             "--- Debug: Checking type of new_result['source_documents'] items AFTER creation ---"
