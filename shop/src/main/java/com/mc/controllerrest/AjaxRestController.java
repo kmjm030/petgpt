@@ -94,6 +94,7 @@ public class AjaxRestController {
       List<Pet> pets = petService.findByCust(custId);
       Map<String, List<Item>> recommendedItemsMap = new HashMap<>();
 
+
       for (Pet pet : pets) {
         Date date = pet.getPetBirthdate();
         LocalDate birthDate = date.toInstant()
@@ -101,6 +102,10 @@ public class AjaxRestController {
           .toLocalDate();
 
         int age = Period.between(birthDate, LocalDate.now()).getYears();
+
+          List<Item> allItems = itemService.get();
+          List<Integer> keysToRemove = Arrays.asList(100, 101, 102, 103, 104, 130, 131, 132, 133, 134, 140, 141, 142, 143, 144, 150, 151, 152, 153, 154, 160, 161, 162, 163, 164);
+          allItems.removeIf(item -> keysToRemove.contains(item.getItemKey()));
 
         List<Integer> itemKeys = new ArrayList<>();
         if(pet.getPetType().equals("dog")){
@@ -111,6 +116,7 @@ public class AjaxRestController {
           } else {
             itemKeys = itemService.getRandomItems(new ArrayList<>(seniorDogItemKeys), 3);
           }
+          allItems.removeIf(item -> item.getCategoryKey() >= 1 && item.getCategoryKey() <= 9);
         }else if(pet.getPetType().equals("cat")){
           if (age <= 1) {
             itemKeys = itemService.getRandomItems(new ArrayList<>(youngCatItemKeys), 3);
@@ -119,11 +125,8 @@ public class AjaxRestController {
           } else {
             itemKeys = itemService.getRandomItems(new ArrayList<>(seniorCatItemKeys), 3);
           }
+          allItems.removeIf(item -> item.getCategoryKey() > 9);
         }
-
-        List<Item> allItems = itemService.get();
-        List<Integer> keysToRemove = Arrays.asList(100, 101, 102, 103, 104, 130, 131, 132, 133, 134, 140, 141, 142, 143, 144, 150, 151, 152, 153, 154, 160, 161, 162, 163, 164);
-        allItems.removeIf(item -> keysToRemove.contains(item.getItemKey()));
 
         List<Item> reItems = itemService.findItemsByKeys(itemKeys);
 
