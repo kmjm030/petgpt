@@ -49,6 +49,6 @@ public class SalesController {
 
   @GetMapping("/summary")
   public Map<String, Long> getSalesSummary() {
-    return salesService.getSalesSummary();  // → service에서 summary map return
+    return salesService.getSalesSummary();
   }
 }
