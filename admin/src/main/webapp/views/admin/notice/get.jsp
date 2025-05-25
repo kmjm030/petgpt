@@ -1,6 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<canvas id="snow-canvas"></canvas>
+
 <link rel="stylesheet" href="/css/admin/get.css">
 
 <div class="notice-list">
@@ -24,6 +26,7 @@
     </tr>
     </thead>
     <tbody>
+
     <c:forEach var="notice" items="${noticeList}" varStatus="status">
       <tr class="notice-row">
         <td>${status.index + 1}</td>
