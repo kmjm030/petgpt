@@ -214,3 +214,19 @@ body.statistics-page #activeUserBox .unit {
   color: black;
   box-shadow: 0 0 16px #FF00F6;
 }
+
+@keyframes pulseBorder {
+  0% {
+    box-shadow: 0 0 6px var(--accent1), 0 0 12px var(--accent2);
+  }
+  50% {
+    box-shadow: 0 0 16px var(--accent2), 0 0 24px var(--accent1);
+  }
+  100% {
+    box-shadow: 0 0 6px var(--accent1), 0 0 12px var(--accent2);
+  }
+}
+
+.pulse-border {
+  animation: pulseBorder 2s infinite ease-in-out;
+}

@@ -413,3 +413,42 @@ document.addEventListener('DOMContentLoaded', () => {
   const btn = document.getElementById('pdfDownloadBtn');
   if (btn) btn.addEventListener('click', downloadReportAsPDF);
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+  const canvas = document.getElementById('mouseTrailCanvas');
+  if (!canvas) return;
+
+  const ctx = canvas.getContext('2d');
+  let width = window.innerWidth;
+  let height = window.innerHeight;
+  canvas.width = width;
+  canvas.height = height;
+
+  window.addEventListener('resize', () => {
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
+  });
+
+  const trail = [];
+
+  document.addEventListener('mousemove', e => {
+    trail.push({ x: e.clientX, y: e.clientY, alpha: 1 });
+    if (trail.length > 20) trail.shift();
+  });
+
+  function drawTrail() {
+    ctx.clearRect(0, 0, width, height);
+    trail.forEach(point => {
+      ctx.beginPath();
+      ctx.arc(point.x, point.y, 4, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255, 0, 246, ${point.alpha})`;
+      ctx.fill();
+      point.alpha *= 0.9;
+    });
+    requestAnimationFrame(drawTrail);
+  }
+
+  drawTrail();
+});

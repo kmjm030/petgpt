@@ -18,36 +18,36 @@
     <h1 class="mb-4">Real-Time Sales Statistics</h1>
     <div class="row text-center">
       <div class="col-lg-4 col-md-6 mb-4">
-        <div id="dailySalesChart" class="chart-container" style="height: 300px;"></div>
+        <div id="dailySalesChart" class="chart-container pulse-border" style="height: 300px;"></div>
       </div>
       <div class="col-lg-4 col-md-6 mb-4">
-        <div id="weeklySalesChart" class="chart-container" style="height: 300px;"></div>
+        <div id="weeklySalesChart" class="chart-container pulse-border" style="height: 300px;"></div>
       </div>
       <div class="col-lg-4 col-md-12 mb-4">
-        <div id="monthlySalesChart" class="chart-container" style="height: 300px;"></div>
+        <div id="monthlySalesChart" class="chart-container pulse-border" style="height: 300px;"></div>
       </div>
     </div>
 
     <h1 class="mb-4 mt-5">User Registration Statistics</h1>
     <div class="row text-center">
       <div class="col-lg-4 col-md-6 mb-4">
-        <div id="dailyUserChart" class="chart-container" style="height: 300px;"></div>
+        <div id="dailyUserChart" class="chart-container pulse-border" style="height: 300px;"></div>
       </div>
       <div class="col-lg-4 col-md-6 mb-4">
-        <div id="monthlyUserChart" class="chart-container" style="height: 300px;"></div>
+        <div id="monthlyUserChart" class="chart-container pulse-border" style="height: 300px;"></div>
       </div>
       <div class="col-lg-4 col-md-12 mb-4">
-        <div id="yearlyUserChart" class="chart-container" style="height: 300px;"></div>
+        <div id="yearlyUserChart" class="chart-container pulse-border" style="height: 300px;"></div>
       </div>
     </div>
 
     <h1 class="mb-4 mt-5">Additional Sales Analysis</h1>
     <div class="row text-center">
       <div class="col-lg-4 col-md-6 mb-4">
-        <div id="topProductsChart" class="chart-container" style="height: 300px;"></div>
+        <div id="topProductsChart" class="chart-container pulse-border" style="height: 300px;"></div>
       </div>
       <div class="col-lg-4 col-md-6 mb-4">
-        <div id="hourlySalesChart" class="chart-container" style="height: 300px;"></div>
+        <div id="hourlySalesChart" class="chart-container pulse-border" style="height: 300px;"></div>
       </div>
       <div class="col-lg-4 col-md-12 mb-4 d-flex align-items-center justify-content-center">
         <div id="activeUserBox">
@@ -60,7 +60,7 @@
     </div>
 
     <h1 class="mb-4 mt-5">Sales by Region</h1>
-    <div id="regionSalesMap" class="chart-container" style="width: 100%; height: 600px;"></div>
+    <div id="regionSalesMap" class="chart-container pulse-border" style="width: 100%; height: 600px;"></div>
   </div>
 </div>
 
@@ -82,5 +82,6 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="<c:url value='/js/statistics.js'/>"></script>
+<canvas id="mouseTrailCanvas" style="position:fixed;top:0;left:0;z-index:9999;pointer-events:none;"></canvas>
 
 </body>
