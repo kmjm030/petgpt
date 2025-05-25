@@ -3,11 +3,15 @@ window.addEventListener('DOMContentLoaded', function () {
   const titleInput = document.getElementById('title');
   const titleCount = document.getElementById('titleCount');
   const toast = document.getElementById('toast');
+  const autoSaveToast = document.getElementById('autosave-toast');
   const form = document.querySelector('form');
   const previewBtn = document.getElementById('previewBtn');
   const submitBtn = document.querySelector('.submit-btn');
 
-  // CKEditor 적용 - 간소화된 툴바
+  const LOCAL_TITLE_KEY = 'notice_draft_title';
+  const LOCAL_CONTENT_KEY = 'notice_draft_content';
+
+  // CKEditor 적용
   if (content) {
     CKEDITOR.replace('content', {
       height: 300,
@@ -18,20 +22,38 @@ window.addEventListener('DOMContentLoaded', function () {
         { name: 'paragraph', items: ['NumberedList', 'BulletedList'] },
         { name: 'insert', items: ['Link', 'Image'] },
         { name: 'tools', items: ['Maximize'] }
-      ]
+      ],
+      on: {
+        instanceReady: function () {
+          const savedContent = localStorage.getItem(LOCAL_CONTENT_KEY);
+          if (savedContent) {
+            CKEDITOR.instances.content.setData(savedContent);
+          }
+
+          // 10초마다 저장 + 토스트 표시
+          setInterval(() => {
+            localStorage.setItem(LOCAL_TITLE_KEY, titleInput.value);
+            localStorage.setItem(LOCAL_CONTENT_KEY, CKEDITOR.instances.content.getData());
+            showAutoSaveToast();
+          }, 10000);
+        }
+      }
     });
   }
 
-  // 제목 글자 수 표시
+  // 제목 글자 수 표시 + 복원
   if (titleInput && titleCount) {
     const updateCount = () => {
       titleCount.textContent = `${titleInput.value.length} / 50자`;
     };
     titleInput.addEventListener('input', updateCount);
     updateCount();
+
+    const savedTitle = localStorage.getItem(LOCAL_TITLE_KEY);
+    if (savedTitle) titleInput.value = savedTitle;
   }
 
-  // 제출 시 유효성 검사 + 중복 방지
+  // 제출 시 유효성 검사 + 중복 방지 + localStorage 제거
   if (form) {
     form.addEventListener('submit', function (e) {
       const title = titleInput.value.trim();
@@ -51,11 +73,13 @@ window.addEventListener('DOMContentLoaded', function () {
         return;
       }
 
-      // ✅ 중복 제출 방지
       if (submitBtn) {
         submitBtn.disabled = true;
         submitBtn.textContent = '등록 중...';
       }
+
+      localStorage.removeItem(LOCAL_TITLE_KEY);
+      localStorage.removeItem(LOCAL_CONTENT_KEY);
     });
   }
 
@@ -99,9 +123,17 @@ window.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // 토스트 메시지 표시
+  // 등록 성공 토스트
   if (toast && toast.textContent.trim().length > 0) {
     toast.classList.add('show');
     setTimeout(() => toast.classList.remove('show'), 3000);
+  }
+
+  // 임시 저장 완료 토스트 표시
+  function showAutoSaveToast() {
+    if (autoSaveToast) {
+      autoSaveToast.classList.add('show');
+      setTimeout(() => autoSaveToast.classList.remove('show'), 2000);
+    }
   }
 });

@@ -9,6 +9,8 @@
 </h2>
 
 <form method="post" action="<c:url value='/admin/notice/addimpl'/>">
+  <div id="autosave-toast" class="toast" style="bottom: 80px;">임시 저장 완료</div>
+
   <div class="form-group">
     <label for="title">공지 제목</label>
     <input type="text" id="title" name="title" required class="form-control" maxlength="50">
