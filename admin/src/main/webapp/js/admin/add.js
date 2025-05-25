@@ -5,13 +5,20 @@ window.addEventListener('DOMContentLoaded', function () {
   const toast = document.getElementById('toast');
   const form = document.querySelector('form');
   const previewBtn = document.getElementById('previewBtn');
+  const submitBtn = document.querySelector('.submit-btn');
 
-  // CKEditor 적용
+  // CKEditor 적용 - 간소화된 툴바
   if (content) {
     CKEDITOR.replace('content', {
       height: 300,
       removePlugins: 'elementspath',
-      resize_enabled: false
+      resize_enabled: false,
+      toolbar: [
+        { name: 'basicstyles', items: ['Bold', 'Italic', 'Underline'] },
+        { name: 'paragraph', items: ['NumberedList', 'BulletedList'] },
+        { name: 'insert', items: ['Link', 'Image'] },
+        { name: 'tools', items: ['Maximize'] }
+      ]
     });
   }
 
@@ -24,7 +31,7 @@ window.addEventListener('DOMContentLoaded', function () {
     updateCount();
   }
 
-  // 제출 시 유효성 검사
+  // 제출 시 유효성 검사 + 중복 방지
   if (form) {
     form.addEventListener('submit', function (e) {
       const title = titleInput.value.trim();
@@ -43,10 +50,16 @@ window.addEventListener('DOMContentLoaded', function () {
         e.preventDefault();
         return;
       }
+
+      // ✅ 중복 제출 방지
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = '등록 중...';
+      }
     });
   }
 
-  // ✅ 미리보기 버튼 클릭 시 팝업 출력
+  // 미리보기 팝업
   if (previewBtn) {
     previewBtn.addEventListener('click', function () {
       const title = titleInput.value.trim();

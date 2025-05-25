@@ -26,12 +26,18 @@
     <button type="submit" class="btn btn-primary submit-btn">등록</button>
   </div>
 
-  <div id="toast" class="toast">공지 등록이 완료되었습니다!</div>
-
   <c:if test="${not empty success}">
-    <!-- 성공 처리 시 스크립트 삽입 가능 -->
+    <div id="toast" class="toast">공지 등록이 완료되었습니다!</div>
+    <script>
+      setTimeout(() => {
+        window.location.href = '<c:url value="/admin/notice/get"/>';
+      }, 3000);
+    </script>
   </c:if>
+
+
 </form>
 
-<script src="https://cdn.ckeditor.com/4.20.1/standard/ckeditor.js"></script>
+<!-- 🚀 LTS 제거 + 무료 안전 버전 적용 -->
+<script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
 <script src="/js/admin/add.js"></script>
