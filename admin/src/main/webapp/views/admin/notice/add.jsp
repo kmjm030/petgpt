@@ -20,11 +20,16 @@
     <textarea id="content" name="content" required class="form-control"></textarea>
   </div>
 
-  <button type="submit" class="submit-btn">등록</button>
+  <!-- 버튼 정렬 라인 -->
+  <div class="form-group d-flex justify-content-end gap-2">
+    <button type="button" id="previewBtn" class="btn btn-outline-dark mr-2">미리보기</button>
+    <button type="submit" class="btn btn-primary submit-btn">등록</button>
+  </div>
 
   <div id="toast" class="toast">공지 등록이 완료되었습니다!</div>
 
   <c:if test="${not empty success}">
+    <!-- 성공 처리 시 스크립트 삽입 가능 -->
   </c:if>
 </form>
 
