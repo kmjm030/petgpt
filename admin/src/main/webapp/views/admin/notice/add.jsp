@@ -20,7 +20,12 @@
     <textarea id="content" name="content" required class="form-control"></textarea>
   </div>
 
-  <!-- 버튼 정렬 라인 -->
+  <div class="form-group">
+    <label for="publishAt">공지 게시 시간 (선택)</label>
+    <input type="datetime-local" id="publishAt" name="publishAt" class="form-control">
+    <small class="text-muted">지정하지 않으면 즉시 게시됩니다.</small>
+  </div>
+
   <div class="form-group d-flex justify-content-end gap-2">
     <button type="button" id="previewBtn" class="btn btn-outline-dark mr-2">미리보기</button>
     <button type="submit" class="btn btn-primary submit-btn">등록</button>
@@ -34,10 +39,7 @@
       }, 3000);
     </script>
   </c:if>
-
-
 </form>
 
-<!-- 🚀 LTS 제거 + 무료 안전 버전 적용 -->
 <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
 <script src="/js/admin/add.js"></script>

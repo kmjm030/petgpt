@@ -6,6 +6,8 @@
 
     <select id="findAll" resultType="com.mc.app.dto.Notice">
         SELECT * FROM notice
+        WHERE publish_at <= NOW()
+        ORDER BY publish_at DESC
     </select>
 
     <select id="findById" parameterType="int" resultType="com.mc.app.dto.Notice">
@@ -15,10 +17,10 @@
     <insert id="insert" parameterType="com.mc.app.dto.Notice">
         INSERT INTO notice (
             notice_key, admin_key, notice_title, notice_writer,
-            notice_img, notice_hit, notice_rdate
+            notice_img, notice_hit, notice_rdate, publish_at
         ) VALUES (
                      #{noticeKey}, #{adminKey}, #{noticeTitle}, #{noticeWriter},
-                     #{noticeImg}, #{noticeHit}, #{noticeRdate}
+                     #{noticeImg}, #{noticeHit}, #{noticeRdate}, #{publishAt}
                  )
     </insert>
 
