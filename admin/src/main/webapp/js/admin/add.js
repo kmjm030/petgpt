@@ -7,7 +7,6 @@ window.addEventListener('DOMContentLoaded', function () {
   const previewBtn = document.getElementById('previewBtn');
   const submitBtn = document.querySelector('.submit-btn');
 
-  // CKEditor 적용 - 간소화된 툴바
   if (content) {
     CKEDITOR.replace('content', {
       height: 300,
@@ -22,7 +21,6 @@ window.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // 제목 글자 수 표시
   if (titleInput && titleCount) {
     const updateCount = () => {
       titleCount.textContent = `${titleInput.value.length} / 50자`;
@@ -31,35 +29,36 @@ window.addEventListener('DOMContentLoaded', function () {
     updateCount();
   }
 
-  // 제출 시 유효성 검사 + 중복 방지
-  if (form) {
-    form.addEventListener('submit', function (e) {
-      const title = titleInput.value.trim();
-      const contentData = CKEDITOR.instances.content.getData().trim();
+  form.addEventListener('submit', function (e) {
+    const title = titleInput.value.trim();
+    const contentData = CKEDITOR.instances.content.getData().trim();
 
-      if (!title) {
-        alert('공지 제목을 입력해주세요.');
-        titleInput.focus();
-        e.preventDefault();
-        return;
-      }
+    if (!title) {
+      alert('공지 제목을 입력해주세요.');
+      titleInput.focus();
+      e.preventDefault();
+      return;
+    }
 
-      if (!contentData) {
-        alert('공지 내용을 입력해주세요.');
-        CKEDITOR.instances.content.focus();
-        e.preventDefault();
-        return;
-      }
+    if (!contentData) {
+      alert('공지 내용을 입력해주세요.');
+      CKEDITOR.instances.content.focus();
+      e.preventDefault();
+      return;
+    }
 
-      // ✅ 중복 제출 방지
-      if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.textContent = '등록 중...';
-      }
-    });
-  }
+    const confirmResult = confirm('정말 이 공지를 등록하시겠습니까?');
+    if (!confirmResult) {
+      e.preventDefault();
+      return;
+    }
 
-  // 미리보기 팝업
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = '등록 중...';
+    }
+  });
+
   if (previewBtn) {
     previewBtn.addEventListener('click', function () {
       const title = titleInput.value.trim();
@@ -99,7 +98,6 @@ window.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // 토스트 메시지 표시
   if (toast && toast.textContent.trim().length > 0) {
     toast.classList.add('show');
     setTimeout(() => toast.classList.remove('show'), 3000);

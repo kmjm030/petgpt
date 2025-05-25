@@ -12,7 +12,13 @@
   <div class="form-group">
     <label for="title">공지 제목</label>
     <input type="text" id="title" name="title" required class="form-control" maxlength="50">
-    <small id="titleCount" class="text-muted">0 / 50자</small>
+    <div class="d-flex justify-content-between align-items-center mt-1">
+      <small id="titleCount" class="text-muted">0 / 50자</small>
+      <div class="form-check mb-0">
+        <input type="checkbox" class="form-check-input" id="pinned" name="pinned" value="true">
+        <label class="form-check-label" for="pinned" style="font-size: 0.9rem;">상단 고정</label>
+      </div>
+    </div>
   </div>
 
   <div class="form-group">

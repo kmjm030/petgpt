@@ -32,32 +32,32 @@ public class AdminNoticeController {
     }
 
     @GetMapping("/add")
-    public String add(Model model) {
+    public String add(Model model, HttpSession session) {
+        Admin admin = (Admin) session.getAttribute("admin");
+        model.addAttribute("admin", admin);
         model.addAttribute("center", "admin/notice/add");
         return "index";
     }
 
-  @PostMapping("/addimpl")
-  public String addImpl(@ModelAttribute AdminNotice notice, HttpSession session, RedirectAttributes redirectAttributes) {
-    try {
-      Admin admin = (Admin) session.getAttribute("admin");
-      if (admin != null) {
-        notice.setAdminId(admin.getAdminId());
-      }
-      adminNoticeService.writeNotice(notice);
-      redirectAttributes.addFlashAttribute("success", true);  // ✅ 성공 플래그 추가
-    } catch (Exception e) {
-      log.error("공지 등록 실패: {}", e.getMessage());
+    @PostMapping("/addimpl")
+    public String addImpl(@ModelAttribute AdminNotice notice, HttpSession session, RedirectAttributes redirectAttributes) {
+        try {
+            Admin admin = (Admin) session.getAttribute("admin");
+            if (admin != null) {
+                notice.setAdminId(admin.getAdminId());
+            }
+            adminNoticeService.writeNotice(notice);
+            redirectAttributes.addFlashAttribute("success", true);
+        } catch (Exception e) {
+            log.error("공지 등록 실패: {}", e.getMessage());
+        }
+        return "redirect:/admin/notice/add";
     }
-    return "redirect:/admin/notice/add";  // ✅ add 페이지로 리다이렉트 (Toast 표시용)
-  }
-
 
     @GetMapping("/detail")
     public String detail(@RequestParam("id") int id, Model model) {
         try {
-            AdminNotice notice = adminNoticeService.getNotice(id);
-            model.addAttribute("notice", notice);
+            model.addAttribute("notice", adminNoticeService.getNotice(id));
         } catch (Exception e) {
             log.warn("공지 조회 실패: {}", e.getMessage());
             model.addAttribute("notice", null);
@@ -76,18 +76,18 @@ public class AdminNoticeController {
         return "redirect:/admin/notice/get";
     }
 
-  @PostMapping("/editimpl")
-  public String editImpl(@ModelAttribute AdminNotice notice, HttpSession session, RedirectAttributes redirectAttributes) {
-    try {
-      Admin admin = (Admin) session.getAttribute("admin");
-      if (admin != null) {
-        notice.setAdminId(admin.getAdminId());
-      }
-      adminNoticeService.editNotice(notice);
-      redirectAttributes.addFlashAttribute("success", true);  // 수정 성공 플래그 추가
-    } catch (Exception e) {
-      log.error("공지 수정 실패: {}", e.getMessage());
+    @PostMapping("/editimpl")
+    public String editImpl(@ModelAttribute AdminNotice notice, HttpSession session, RedirectAttributes redirectAttributes) {
+        try {
+            Admin admin = (Admin) session.getAttribute("admin");
+            if (admin != null) {
+                notice.setAdminId(admin.getAdminId());
+            }
+            adminNoticeService.editNotice(notice);
+            redirectAttributes.addFlashAttribute("success", true);
+        } catch (Exception e) {
+            log.error("공지 수정 실패: {}", e.getMessage());
+        }
+        return "redirect:/admin/notice/detail?id=" + notice.getId();
     }
-    return "redirect:/admin/notice/detail?id=" + notice.getId();  // 수정 후 상세 페이지로 리다이렉트
-  }
 }

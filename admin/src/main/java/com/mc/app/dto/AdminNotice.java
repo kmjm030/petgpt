@@ -16,6 +16,7 @@ public class AdminNotice {
     private String content;
     private String createdAt;
     private String publishAt;
+    private boolean pinned;
     private String adminName;
 }
 
