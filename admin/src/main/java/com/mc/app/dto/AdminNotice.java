@@ -16,6 +16,5 @@ public class AdminNotice {
     private String content;
     private String createdAt;
     private String adminName;
-    private String publishAt;
 }
 
