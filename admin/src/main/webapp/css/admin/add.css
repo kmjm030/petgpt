@@ -1,6 +1,6 @@
 body {
   font-family: 'SF Pro Display', 'Noto Sans KR', sans-serif;
-  background-color: #f5f7fa;
+  background: linear-gradient(to bottom, #c2d8e8, #eaf2f7);
   color: #333;
   margin: 0;
   padding: 0;
@@ -9,6 +9,18 @@ body {
   align-items: center;
   height: 100vh;
   flex-direction: column;
+  overflow-x: hidden;
+  position: relative;
+}
+
+#snow-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
 }
 
 .container-fluid {
@@ -16,12 +28,13 @@ body {
   max-width: 900px;
   padding: 2rem;
   box-sizing: border-box;
+  z-index: 1;
 }
 
 h2 {
   font-size: 2rem;
   font-weight: 600;
-  color: #2c3e50;
+  color: #1a4c7e;
   margin-bottom: 1.5rem;
   display: flex;
   align-items: center;
@@ -33,15 +46,17 @@ h2 i {
 }
 
 form {
-  background-color: #fff;
+  background-color: #ffffffcc;
   border-radius: 16px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 20px rgba(0, 80, 160, 0.15);
   padding: 2rem;
   width: 100%;
   max-width: 800px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  backdrop-filter: blur(6px);
+  z-index: 1;
 }
 
 .form-group {
@@ -52,21 +67,22 @@ form {
 .form-group label {
   font-weight: 500;
   margin-bottom: 0.5rem;
-  color: #34495e;
+  color: #2b3e52;
   display: block;
 }
 
 .form-control {
   border-radius: 8px;
-  border: 1px solid #dcdde1;
+  border: 1px solid #bcdffb;
   padding: 0.6rem 1rem;
   transition: border 0.2s, box-shadow 0.2s;
   width: 100%;
+  background-color: #f8fcff;
 }
 
 .form-control:focus {
-  border-color: #4b7bec;
-  box-shadow: 0 0 0 3px rgba(75, 123, 236, 0.2);
+  border-color: #7cc3f1;
+  box-shadow: 0 0 0 3px rgba(124, 195, 241, 0.3);
 }
 
 #titleCount {
@@ -79,7 +95,7 @@ form {
   padding: 0.6rem 1.5rem;
   font-weight: 500;
   border-radius: 30px;
-  background: linear-gradient(90deg, #4b7bec, #34ace0);
+  background: linear-gradient(90deg, #6ec1ff, #95dfff);
   border: none;
   color: #fff;
   transition: background-color 0.3s, transform 0.2s;
@@ -89,7 +105,7 @@ form {
 }
 
 .submit-btn:hover {
-  background: linear-gradient(90deg, #34ace0, #4b7bec);
+  background: linear-gradient(90deg, #5bb7f8, #7fd6ff);
   transform: translateY(-2px);
 }
 
@@ -130,9 +146,8 @@ textarea.form-control {
   resize: vertical;
 }
 
-/* 다크모드 */
 body.dark-mode {
-  background-color: #1d1d1f;
+  background: linear-gradient(to bottom, #1d1d1f, #121212);
   color: #f5f5f7;
 }
 
@@ -183,4 +198,3 @@ body.dark-mode a.back-link {
 body.dark-mode a.back-link:hover {
   text-decoration: underline;
 }
-
