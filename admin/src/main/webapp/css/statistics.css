@@ -24,7 +24,11 @@ body.statistics-page {
   font-family: var(--font-title);
   color: var(--accent1);
   text-shadow: 0 0 8px var(--accent1);
-  margin-bottom: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+h1.mt-5 {
+  margin-top: 5rem !important;
 }
 
 .statistics-page .chart-container,
@@ -57,6 +61,7 @@ body.statistics-page {
 .highcharts-data-label text {
   fill: var(--text-color) !important;
   font-weight: bold;
+  font-size: 13px !important;
 }
 
 .highcharts-tooltip {
@@ -65,19 +70,14 @@ body.statistics-page {
   border: 1px solid var(--accent1) !important;
 }
 
-#salesDiffModal .modal-content {
-  background-color: #1a1a1a;
-  border: 1px solid var(--accent1);
-  color: var(--text-color);
-  font-family: var(--font-body);
-}
-
+#salesDiffModal .modal-content,
 body.statistics-page #salesDiffModal .modal-content {
   background-color: #140022;
   border: 2px solid var(--accent1);
   box-shadow: 0 0 24px var(--accent1);
   color: var(--text-color);
   border-radius: 12px;
+  font-family: var(--font-body);
 }
 
 body.statistics-page #salesDiffModal .modal-header {
@@ -101,15 +101,14 @@ body.statistics-page #salesDiffModal .modal-header .close {
 }
 
 body.statistics-page #activeUserBox {
-  background-color: rgba(23, 0, 40, 0.85);
-  border-left: 5px solid var(--accent1);
-  box-shadow: 0 0 16px var(--accent1);
-  color: var(--text-color);
-  font-family: var(--font-body);
+  background: radial-gradient(circle at center, rgba(183, 0, 255, 0.15), rgba(0, 0, 0, 0.85));
+  border: 2px solid var(--accent1);
   border-radius: 12px;
-  text-align: center;
+  box-shadow: 0 0 24px var(--accent1);
   padding: 1.5rem;
-  font-size: 1.4rem;
+  text-align: center;
+  font-family: 'Orbitron', sans-serif;
+  color: var(--accent1);
   transition: transform 0.2s ease;
 }
 
@@ -118,21 +117,12 @@ body.statistics-page #activeUserBox:hover {
   box-shadow: 0 0 24px var(--accent2);
 }
 
-body.statistics-page #activeUserBox {
-  background: radial-gradient(circle at center, rgba(183, 0, 255, 0.15), rgba(0,0,0,0.85));
-  border: 2px solid var(--accent1);
-  border-radius: 12px;
-  box-shadow: 0 0 24px var(--accent1);
-  padding: 1.5rem;
-  text-align: center;
-  font-family: 'Orbitron', sans-serif;
-  color: var(--accent1);
-}
-
 body.statistics-page #activeUserBox .label {
   font-size: 1rem;
-  color: #aaa;
+  color: var(--text-color);
   margin-bottom: 0.5rem;
+  background: none !important;
+  text-decoration: none !important;
 }
 
 body.statistics-page #activeUserBox .value {
@@ -169,10 +159,6 @@ body.statistics-page #activeUserBox .unit {
     box-shadow: 0 0 16px #B700FF;
   }
 
-  .highcharts-background {
-    fill: transparent !important;
-  }
-
   .highcharts-title {
     fill: #B700FF !important;
   }
@@ -195,7 +181,7 @@ body.statistics-page #activeUserBox .unit {
   }
 
   #activeUserBox {
-    background: radial-gradient(circle at center, rgba(183, 0, 255, 0.15), rgba(0,0,0,0.85));
+    background: radial-gradient(circle at center, rgba(183, 0, 255, 0.15), rgba(0, 0, 0, 0.85));
     border: 2px solid #B700FF;
     box-shadow: 0 0 24px #B700FF;
     color: #FF00F6;
@@ -203,12 +189,15 @@ body.statistics-page #activeUserBox .unit {
 }
 
 .neon-download-btn {
+  font-size: 0.95rem;
+  padding: 0.5rem 1.2rem;
   font-weight: bold;
   color: #FF00F6;
-  border-color: #FF00F6;
-  box-shadow: 0 0 8px #FF00F6;
+  border: 1px solid #FF00F6;
+  box-shadow: 0 0 10px #FF00F6;
   transition: 0.2s;
 }
+
 .neon-download-btn:hover {
   background-color: #FF00F6;
   color: black;
@@ -229,4 +218,19 @@ body.statistics-page #activeUserBox .unit {
 
 .pulse-border {
   animation: pulseBorder 2s infinite ease-in-out;
+}
+
+.map-wrapper {
+  position: relative;
+}
+
+.map-dark-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+  z-index: 2;
 }

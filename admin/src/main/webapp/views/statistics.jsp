@@ -9,13 +9,14 @@
 
 <body class="statistics-page">
 
-<div class="text-right mt-3 mb-0 pr-4">
-  <button id="pdfDownloadBtn" class="btn btn-sm btn-outline-info neon-download-btn">Summary</button>
-</div>
-
 <div id="pdfReportArea">
   <div class="container py-4">
-    <h1 class="mb-4">Real-Time Sales Statistics</h1>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h1 class="mb-0">Real-Time Sales Statistics</h1>
+      <button id="pdfDownloadBtn" class="btn btn-sm neon-download-btn">📝 Summary</button>
+    </div>
+
     <div class="row text-center">
       <div class="col-lg-4 col-md-6 mb-4">
         <div id="dailySalesChart" class="chart-container pulse-border" style="height: 300px;"></div>
@@ -60,7 +61,10 @@
     </div>
 
     <h1 class="mb-4 mt-5">Sales by Region</h1>
-    <div id="regionSalesMap" class="chart-container pulse-border" style="width: 100%; height: 600px;"></div>
+    <div class="map-wrapper">
+      <div id="regionSalesMap" class="chart-container pulse-border" style="width: 100%; height: 600px;"></div>
+      <div class="map-dark-overlay"></div>
+    </div>
   </div>
 </div>
 
