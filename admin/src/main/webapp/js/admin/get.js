@@ -30,3 +30,27 @@ function confirmDelete(event, noticeId) {
     alert("삭제가 취소되었습니다.");
   }
 }
+
+document.getElementById('searchInput')?.addEventListener('input', function () {
+  const keyword = this.value.toLowerCase();
+  const rows = document.querySelectorAll('#noticeTable .notice-row');
+
+  rows.forEach(row => {
+    const title = row.querySelector('.title-cell')?.textContent.toLowerCase() || '';
+    const writer = row.querySelector('.writer-cell')?.textContent.toLowerCase() || '';
+    const match = title.includes(keyword) || writer.includes(keyword);
+    row.style.display = match ? '' : 'none';
+  });
+});
+
+document.getElementById('searchInput')?.addEventListener('input', function () {
+  const keyword = this.value.toLowerCase();
+  const rows = document.querySelectorAll('#noticeTable .notice-row');
+
+  rows.forEach(row => {
+    const title = row.querySelector('.title-cell')?.textContent.toLowerCase() || '';
+    const writer = row.querySelector('.writer-cell')?.textContent.toLowerCase() || '';
+    const match = title.includes(keyword) || writer.includes(keyword);
+    row.style.display = match ? '' : 'none';
+  });
+});

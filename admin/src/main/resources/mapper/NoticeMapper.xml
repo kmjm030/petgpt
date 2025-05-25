@@ -12,13 +12,13 @@
         SELECT * FROM notice WHERE notice_key = #{noticeKey}
     </select>
 
-    <insert id="insert" parameterType="com.mc.app.dto.AdminNotice">
+    <insert id="insert" parameterType="com.mc.app.dto.Notice">
         INSERT INTO notice (
             notice_key, admin_key, notice_title, notice_writer,
-            notice_img, notice_hit, notice_rdate, publish_at, pinned
+            notice_img, notice_hit, notice_rdate
         ) VALUES (
                      #{noticeKey}, #{adminKey}, #{noticeTitle}, #{noticeWriter},
-                     #{noticeImg}, #{noticeHit}, #{noticeRdate}, #{publishAt}, #{pinned}
+                     #{noticeImg}, #{noticeHit}, #{noticeRdate}
                  )
     </insert>
 
