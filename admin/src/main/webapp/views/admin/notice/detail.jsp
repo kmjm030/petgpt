@@ -38,18 +38,22 @@
     <a href="<c:url value='/admin/notice/get'/>" class="back-link">← 목록으로</a>
   </form>
 
-  <div id="toast" class="toast">공지 수정이 완료되었습니다!</div>
-
   <c:if test="${not empty success}">
+    <div id="toast" class="toast">공지 수정이 완료되었습니다!</div>
     <script>
       window.addEventListener('DOMContentLoaded', function() {
         const toast = document.getElementById('toast');
         toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 3000);
+        setTimeout(() => {
+          toast.classList.remove('show');
+          history.replaceState(null, '', location.pathname);
+        }, 3000);
       });
     </script>
   </c:if>
 </div>
+
+<canvas id="snow-canvas"></canvas>
 
 <script src="https://cdn.ckeditor.com/4.20.1/standard/ckeditor.js"></script>
 <script src="/js/admin/detail.js"></script>

@@ -39,10 +39,9 @@
     </update>
 
     <delete id="delete" parameterType="int">
-        DELETE FROM qnaboard WHERE board_key = #{boardKey}
+        DELETE FROM qnaboard WHERE board_key = #{id}
     </delete>
 
-    <!-- 상품에 대한 QnA + 관리자 댓글 함께 조회 -->
     <select id="selectQnaWithCommentsByItemKey" parameterType="int" resultType="QnaWithComment">
         SELECT
             q.board_key,
@@ -60,6 +59,51 @@
                  LEFT JOIN admin_comments a ON q.board_key = a.board_key
         WHERE q.item_key = #{itemKey} AND q.board_re='답변있음'
         ORDER BY q.board_rdate DESC
+    </select>
+
+    <select id="selectPage" resultType="QnaBoard">
+        SELECT *
+        FROM qnaboard
+        ORDER BY board_key DESC
+            LIMIT #{limit} OFFSET #{offset}
+    </select>
+
+    <select id="count" resultType="int">
+        SELECT COUNT(*) FROM qnaboard
+    </select>
+
+    <select id="searchPage" resultType="QnaBoard">
+        SELECT * FROM qnaboard
+        WHERE
+        <choose>
+            <when test="field == 'title'">
+                board_title LIKE CONCAT('%', #{keyword}, '%')
+            </when>
+            <when test="field == 'content'">
+                board_content LIKE CONCAT('%', #{keyword}, '%')
+            </when>
+            <otherwise>
+                cust_id LIKE CONCAT('%', #{keyword}, '%')
+            </otherwise>
+        </choose>
+        ORDER BY board_key DESC
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+
+    <select id="searchCount" resultType="int">
+        SELECT COUNT(*) FROM qnaboard
+        WHERE
+        <choose>
+            <when test="field == 'title'">
+                board_title LIKE CONCAT('%', #{keyword}, '%')
+            </when>
+            <when test="field == 'content'">
+                board_content LIKE CONCAT('%', #{keyword}, '%')
+            </when>
+            <otherwise>
+                cust_id LIKE CONCAT('%', #{keyword}, '%')
+            </otherwise>
+        </choose>
     </select>
 
 </mapper>

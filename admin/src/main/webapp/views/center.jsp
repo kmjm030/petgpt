@@ -71,35 +71,8 @@
   </div>
 
   <div class="row mb-4">
-    <div class="col-lg-6 mb-4"><div id="dailySalesChart" style="height:300px;"></div></div>
-    <div class="col-lg-6 mb-4"><div id="categorySalesDonut" style="height:300px;"></div></div>
-    <div class="col-lg-6 mb-4"><div id="hourlySalesChart" style="height:300px;"></div></div>
-    <div class="col-lg-6 mb-4"><div id="monthlyCandleChart" style="height:300px;"></div></div>
-    <div class="col-lg-6 mb-4"><div id="lowStockBarChart" style="height:300px;"></div></div>
-    <div class="col-lg-6 mb-4"><div id="weeklySalesChart" style="height:300px;"></div></div>
-    <div class="col-lg-6 mb-4"><div id="monthlySalesChart" style="height:300px;"></div></div>
-    <div class="col-lg-6 mb-4"><div id="paymentMethodChart" style="height:300px;"></div></div>
-    <div class="col-lg-6 mb-4"><div id="deliveryStatusChart" style="height:300px;"></div></div>
-    <div class="col-lg-6 mb-4"><div id="priceRangeChart" style="height:300px;"></div></div>
-    <div class="col-lg-6 mb-4"><div id="categoryStockChart" style="height:300px;"></div></div>
-    <div class="col-lg-6 mb-4"><div id="monthlySignupChart" style="height:300px;"></div></div>
-    <div class="col-lg-6 mb-4"><div id="cartConversionChart" style="height:300px;"></div></div>
-    <div class="col-lg-12 mb-4">
-      <div class="dashboard-card">
-        <div class="card-title">📍 지역별 매출 분포</div>
-        <div id="salesMap" style="width:100%; height:400px;"></div>
-      </div>
-    </div>
-    <div class="col-lg-12 mb-4">
-      <div class="dashboard-card">
-        <div class="card-title">🔥 고객 밀집도</div>
-        <div id="userHeatmap" style="width:100%; height:400px;"></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="row mb-4">
-    <div class="col-lg-6 mb-4">
+    <!-- 관리자 알림 -->
+    <div class="col-lg-4 mb-4">
       <div class="dashboard-card">
         <div class="card-title">관리자 알림</div>
         <ul class="list-group list-group-flush">
@@ -112,7 +85,9 @@
         </ul>
       </div>
     </div>
-    <div class="col-lg-6 mb-4">
+
+    <!-- 상품 판매 TOP 10 -->
+    <div class="col-lg-4 mb-4">
       <div class="chart-card">
         <h6 class="card-title">상품 판매 TOP 10</h6>
         <ul class="list-group list-group-flush">
@@ -128,7 +103,9 @@
         </ul>
       </div>
     </div>
-    <div class="col-lg-6 mb-4">
+
+    <!-- 관리자 공지사항 -->
+    <div class="col-lg-4 mb-4">
       <div class="dashboard-card">
         <div class="card-title">관리자 공지사항</div>
         <ul class="list-group list-group-flush">
@@ -145,6 +122,9 @@
         </ul>
       </div>
     </div>
+  </div>
+
+  <div class="row mb-4">
     <div class="col-lg-12 mb-4">
       <div class="dashboard-card">
         <div class="card-title">최근 주문 내역</div>

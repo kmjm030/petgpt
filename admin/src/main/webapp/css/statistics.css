@@ -1,0 +1,236 @@
+:root {
+  --bg-color: #0A0A0A;
+  --text-color: #EEEEEE;
+  --accent1: #B700FF;
+  --accent2: #6F00FF;
+  --card-bg: rgba(0, 0, 0, 0.6);
+  --font-title: 'Orbitron', sans-serif;
+  --font-body: 'Roboto', sans-serif;
+}
+
+body.statistics-page {
+  background: linear-gradient(135deg, #0a0a0a, #1a001f) !important;
+  color: var(--text-color);
+  font-family: var(--font-body);
+  padding-top: 2rem;
+  min-height: 100vh;
+}
+
+.statistics-page h1,
+.statistics-page h2,
+.statistics-page h3,
+.statistics-page h4,
+.statistics-page h5 {
+  font-family: var(--font-title);
+  color: var(--accent1);
+  text-shadow: 0 0 8px var(--accent1);
+  margin-bottom: 2.5rem;
+}
+
+h1.mt-5 {
+  margin-top: 5rem !important;
+}
+
+.statistics-page .chart-container,
+.statistics-page .card,
+.statistics-page .dashboard-box {
+  background: var(--card-bg);
+  border: 1px solid var(--accent1);
+  border-radius: 12px;
+  box-shadow: 0 0 16px var(--accent1);
+  padding: 1rem;
+  margin: 1rem 0;
+  transition: box-shadow 0.3s ease;
+}
+
+.statistics-page .chart-container:hover,
+.statistics-page .card:hover {
+  box-shadow: 0 0 24px var(--accent2);
+}
+
+.highcharts-background {
+  fill: transparent !important;
+}
+
+.highcharts-title {
+  fill: var(--accent1) !important;
+  font-family: var(--font-title) !important;
+}
+
+.highcharts-axis-labels text,
+.highcharts-data-label text {
+  fill: var(--text-color) !important;
+  font-weight: bold;
+  font-size: 13px !important;
+}
+
+.highcharts-tooltip {
+  background-color: #111 !important;
+  color: var(--text-color) !important;
+  border: 1px solid var(--accent1) !important;
+}
+
+#salesDiffModal .modal-content,
+body.statistics-page #salesDiffModal .modal-content {
+  background-color: #140022;
+  border: 2px solid var(--accent1);
+  box-shadow: 0 0 24px var(--accent1);
+  color: var(--text-color);
+  border-radius: 12px;
+  font-family: var(--font-body);
+}
+
+body.statistics-page #salesDiffModal .modal-header {
+  background-color: rgba(183, 0, 255, 0.1);
+  border-bottom: 1px solid var(--accent2);
+  color: var(--accent1);
+  font-family: var(--font-title);
+  text-shadow: 0 0 6px var(--accent1);
+}
+
+body.statistics-page #salesDiffModal .modal-body {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--text-color);
+}
+
+body.statistics-page #salesDiffModal .modal-header .close {
+  color: var(--accent1);
+  text-shadow: 0 0 6px var(--accent1);
+  opacity: 1;
+}
+
+body.statistics-page #activeUserBox {
+  background: radial-gradient(circle at center, rgba(183, 0, 255, 0.15), rgba(0, 0, 0, 0.85));
+  border: 2px solid var(--accent1);
+  border-radius: 12px;
+  box-shadow: 0 0 24px var(--accent1);
+  padding: 1.5rem;
+  text-align: center;
+  font-family: 'Orbitron', sans-serif;
+  color: var(--accent1);
+  transition: transform 0.2s ease;
+}
+
+body.statistics-page #activeUserBox:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 24px var(--accent2);
+}
+
+body.statistics-page #activeUserBox .label {
+  font-size: 1rem;
+  color: var(--text-color);
+  margin-bottom: 0.5rem;
+  background: none !important;
+  text-decoration: none !important;
+}
+
+body.statistics-page #activeUserBox .value {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #FF00F6;
+  text-shadow: 0 0 12px #FF00F6, 0 0 24px #B700FF;
+}
+
+body.statistics-page #activeUserBox .unit {
+  font-size: 1.2rem;
+  color: #ccc;
+  margin-top: 0.3rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  body.statistics-page {
+    background: linear-gradient(135deg, #0a0a0a, #1a001f) !important;
+    color: #EEEEEE;
+  }
+
+  .statistics-page h1,
+  .statistics-page h2,
+  .statistics-page h3 {
+    color: #B700FF;
+    text-shadow: 0 0 8px #B700FF;
+  }
+
+  .statistics-page .chart-container,
+  .statistics-page .card,
+  .statistics-page .dashboard-box {
+    background-color: rgba(0, 0, 0, 0.6);
+    border: 1px solid #B700FF;
+    box-shadow: 0 0 16px #B700FF;
+  }
+
+  .highcharts-title {
+    fill: #B700FF !important;
+  }
+
+  .highcharts-axis-labels text,
+  .highcharts-data-label text {
+    fill: #EEEEEE !important;
+  }
+
+  .highcharts-tooltip {
+    background-color: #1a001f !important;
+    color: #EEEEEE !important;
+    border: 1px solid #B700FF !important;
+  }
+
+  #salesDiffModal .modal-content {
+    background-color: #1a1a1a;
+    border: 1px solid #B700FF;
+    color: #EEEEEE;
+  }
+
+  #activeUserBox {
+    background: radial-gradient(circle at center, rgba(183, 0, 255, 0.15), rgba(0, 0, 0, 0.85));
+    border: 2px solid #B700FF;
+    box-shadow: 0 0 24px #B700FF;
+    color: #FF00F6;
+  }
+}
+
+.neon-download-btn {
+  font-size: 0.95rem;
+  padding: 0.5rem 1.2rem;
+  font-weight: bold;
+  color: #FF00F6;
+  border: 1px solid #FF00F6;
+  box-shadow: 0 0 10px #FF00F6;
+  transition: 0.2s;
+}
+
+.neon-download-btn:hover {
+  background-color: #FF00F6;
+  color: black;
+  box-shadow: 0 0 16px #FF00F6;
+}
+
+@keyframes pulseBorder {
+  0% {
+    box-shadow: 0 0 6px var(--accent1), 0 0 12px var(--accent2);
+  }
+  50% {
+    box-shadow: 0 0 16px var(--accent2), 0 0 24px var(--accent1);
+  }
+  100% {
+    box-shadow: 0 0 6px var(--accent1), 0 0 12px var(--accent2);
+  }
+}
+
+.pulse-border {
+  animation: pulseBorder 2s infinite ease-in-out;
+}
+
+.map-wrapper {
+  position: relative;
+}
+
+.map-dark-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+  z-index: 2;
+}
