@@ -15,4 +15,6 @@ public interface QnaBoardRepository extends MCRepository<QnaBoard, Integer> {
     List<QnaBoard> findAllByCust(String custId) throws Exception;
     List<QnaBoard> findAllByItem(Integer itemKey) throws Exception;
     List<QnaWithComment> selectQnaWithCommentsByItemKey(Integer itemKey) throws Exception;
+    List<QnaBoard> selectPage(int offset, int limit) throws Exception;
+    int count() throws Exception;
 }

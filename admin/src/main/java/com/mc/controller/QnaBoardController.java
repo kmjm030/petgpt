@@ -26,17 +26,26 @@ public class QnaBoardController {
     private final AdminCommentsService adminCommentsService;
     String dir = "qnaboard/";
 
-    @RequestMapping("/get") //ksk
-    public String get(Model model) throws Exception {
-        List<QnaBoard> list = null;
+    @RequestMapping("/get")
+    public String get(Model model, @RequestParam(defaultValue = "1") int page) throws Exception {
+        int limit = 10;
+        int offset = (page - 1) * limit;
+
         try {
-            list = qnaService.get();
-            model.addAttribute("boards",list);
-            model.addAttribute("center",dir+"get");
-            log.info("OK==============================:{}",list);
+            List<QnaBoard> list = qnaService.getPage(offset, limit);
+            int totalCount = qnaService.getTotalCount();
+            int totalPages = (int) Math.ceil((double) totalCount / limit);
+
+            model.addAttribute("boards", list);
+            model.addAttribute("currentPage", page);
+            model.addAttribute("totalPages", totalPages);
+            model.addAttribute("center", dir + "get");
+
+            log.info("OK==============================:{}", list);
         } catch (Exception e) {
-            log.info("ERROR==============================:{}",e.getMessage());
+            log.info("ERROR==============================:{}", e.getMessage());
         }
+
         return "index";
     }
 

@@ -53,6 +53,13 @@ public class QnaBoardService implements MCService<QnaBoard, Integer> {
         return qnaRepository.selectQnaWithCommentsByItemKey(itemKey);
     }
 
+    public List<QnaBoard> getPage(int offset, int limit) throws Exception {
+        return qnaRepository.selectPage(offset, limit);
+    }
+
+    public int getTotalCount() throws Exception {
+        return qnaRepository.count();
+    }
 
 
 
