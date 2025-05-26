@@ -9,9 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -66,14 +64,23 @@ public class QnaBoardController {
 
     @RequestMapping("/detail")
     public String detail(Model model, @RequestParam("id") Integer id) {
-        QnaBoard board = null;
-        AdminComments adminComments = null;
-        Item item = null;
-
         try {
-            board = qnaService.get(id);
-            adminComments = adminCommentsService.get(id);
-            item = itemService.get(board.getItemKey());
+            QnaBoard board = qnaService.get(id);
+            if (board == null) {
+                log.warn("QnA not found: {}", id);
+                return "redirect:/qnaboard/get"; // 없는 글이면 리스트로
+            }
+
+            AdminComments adminComments = adminCommentsService.get(id);
+
+            Item item = null;
+            if (board.getItemKey() > 0) {
+                try {
+                    item = itemService.get(board.getItemKey());
+                } catch (Exception e) {
+                    log.warn("Item not found for itemKey: {}", board.getItemKey());
+                }
+            }
 
             model.addAttribute("board", board);
             model.addAttribute("item", item);
@@ -88,13 +95,26 @@ public class QnaBoardController {
         return "index";
     }
 
+
     @GetMapping("/delete")
     public String delete(@RequestParam("id") Integer id) {
         try {
             qnaService.del(id);
+            log.info("QnA deleted: {}", id);
         } catch (Exception e) {
             log.error("Error deleting QnA", e);
         }
         return "redirect:/qnaboard/get";
+    }
+
+    @PostMapping("/update")
+    public String update(QnaBoard board) {
+        try {
+            qnaService.mod(board);
+            log.info("QnA updated: {}", board.getBoardKey());
+        } catch (Exception e) {
+            log.error("Error updating QnA", e);
+        }
+        return "redirect:/qnaboard/detail?id=" + board.getBoardKey();
     }
 }

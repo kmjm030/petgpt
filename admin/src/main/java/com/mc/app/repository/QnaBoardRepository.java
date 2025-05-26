@@ -14,6 +14,8 @@ import java.util.List;
 @Mapper
 public interface QnaBoardRepository extends MCRepository<QnaBoard, Integer> {
 
+    void update(QnaBoard board) throws Exception;
+
     List<QnaBoard> findAllByCust(String custId) throws Exception;
     List<QnaBoard> findAllByItem(Integer itemKey) throws Exception;
     List<QnaWithComment> selectQnaWithCommentsByItemKey(Integer itemKey) throws Exception;
@@ -21,7 +23,6 @@ public interface QnaBoardRepository extends MCRepository<QnaBoard, Integer> {
     List<QnaBoard> selectPage(@Param("offset") int offset, @Param("limit") int limit) throws Exception;
     int count() throws Exception;
 
-    // ✅ 검색 + 페이징
     List<QnaBoard> searchPage(@Param("field") String field,
                               @Param("keyword") String keyword,
                               @Param("offset") int offset,
@@ -30,3 +31,4 @@ public interface QnaBoardRepository extends MCRepository<QnaBoard, Integer> {
     int searchCount(@Param("field") String field,
                     @Param("keyword") String keyword) throws Exception;
 }
+

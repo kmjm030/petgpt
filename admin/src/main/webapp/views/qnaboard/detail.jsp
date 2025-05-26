@@ -5,7 +5,8 @@
 <link rel="stylesheet" href="/css/qnaboard/detail.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
-<script src="/js/board.js"></script>
+<script src="/js/qnaboard/detail.js"></script>
+<canvas id="snow-canvas"></canvas>
 
 <div class="board-detail-container">
     <h1 class="mb-4">문의글 상세보기</h1>
@@ -28,10 +29,17 @@
                     <label for="content">Content</label>
                     <textarea name="boardContent" class="form-control" rows="5" id="content">${board.boardContent}</textarea>
                 </div>
+
                 <div class="form-group">
                     <label>상품 이미지</label><br>
-                    <img src="<c:url value='/img/item/${item.itemImg1}'/>" alt="상품 이미지" class="img-thumbnail" style="max-width: 150px;">
+                    <c:if test="${not empty item and not empty item.itemImg1}">
+                        <img src="<c:url value='/img/item/${item.itemImg1}'/>" alt="상품 이미지" class="img-thumbnail" style="max-width: 150px;">
+                    </c:if>
+                    <c:if test="${empty item}">
+                        <p class="text-muted">상품 정보 없음</p>
+                    </c:if>
                 </div>
+
                 <div class="form-group">
                     <label>옵션</label>
                     <p>${board.boardOption}</p>
