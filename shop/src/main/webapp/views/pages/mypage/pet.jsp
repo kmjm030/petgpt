@@ -76,7 +76,8 @@
           left: 50%;
           transform: translate(-50%, -50%);
           /* 중앙 정렬 핵심! */
-          width: 600px;
+          width: 90%;
+          max-width: 600px;
           /* 너비 조절 (원하는 값으로) */
           padding: 20px;
           border-radius: 10px;
@@ -93,10 +94,35 @@
           margin-top: 20px;
         }
 
+        .scroll-wrapper {
+          display: flex;
+          overflow-x: auto;
+          gap: 12px;
+          padding-bottom: 10px;
+          scrollbar-width: thin;
+        }
+
+        .scroll-wrapper::-webkit-scrollbar {
+          height: 6px;
+        }
+        .scroll-wrapper::-webkit-scrollbar-thumb {
+          background-color: #ccc;
+          border-radius: 10px;
+        }
+
+        /* 기본 item-box 스타일 */
+        .item-box {
+          flex: 0 0 auto;
+          width: 120px;
+          text-align: center;
+        }
+
         .item-box img {
           border-radius: 50%;
           margin-bottom: 10px;
           transition: transform 0.3s ease;
+          width: 100px;
+          height: 100px;
         }
 
         .item-box img:hover {
@@ -106,7 +132,17 @@
         .item-box p {
           font-size: 12px;
           font-family: 'NEXON Lv1 Gothic OTF';
+        }
 
+        /* 모바일용 크기 조절 */
+        @media (max-width: 768px) {
+          .item-box {
+            width: 80px;
+          }
+          .item-box img {
+            width: 50px;
+            height: 50px;
+          }
         }
 
         #product-box {
@@ -117,6 +153,7 @@
           overflow: hidden;
           position: relative;
         }
+
       </style>
 
 
@@ -239,7 +276,7 @@
                               </form>
                               <div class="pet-img-box">
                                 <img src="<c:url value='${p.petImg}'/>" alt="현재 첨부파일"
-                                  onclick="document.getElementById('fileInput').click();" style="cursor: pointer;">
+                                  onclick="document.getElementById('fileInput').click();" style="cursor: pointer; margin: 0 auto; display: block; margin-top:10px;">
                               </div>
                             </div>
                             <div class="col-sm-6">
@@ -300,7 +337,7 @@
                     <div class="row">
                       <div class="col-md-6">
                         <div class="pet-img-box">
-                          <img id="profile-img" name="img" src="<c:url value='/img/clients/profile.png'/>">
+                          <img id="profile-img" name="img" src="<c:url value='/img/clients/profile.png'/>" style="margin: 0 auto; display: block; margin-top:20px;">
                         </div>
                       </div>
                       <div class="col-md-6">

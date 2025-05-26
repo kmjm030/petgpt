@@ -256,7 +256,10 @@ $(document).ready(function () {
         const finalAmount = totalPrice - appliedPoint;
         finalPriceSpan.textContent = `${finalAmount.toLocaleString()}원`;
         finalAmountInput.value = finalAmount;
-        orderPoint.value = appliedPoint;
+        if(appliedPoint != null){
+            orderPoint.value = appliedPoint;
+        }
+
 
 
         // 사용 가능한 포인트 표시 업데이트
