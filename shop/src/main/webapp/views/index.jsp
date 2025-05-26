@@ -191,6 +191,47 @@
             font-weight: 800;
             font-style: normal;
           }
+
+          @media (max-width: 576px) {
+            .wishlist-preview {
+              bottom: 200px;
+              right: 12px;
+              width: 120px;
+              padding: 10px;
+              font-size: 12px;
+              animation: float 1.5s ease-in-out infinite;
+              transform: none !important; /* hover에서 scale 되는 거 방지 */
+            }
+
+            .wishlist-preview:hover {
+              transform: none; /* 모바일에선 커지는 효과 제거 */
+              box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+              animation: float 1.5s ease-in-out infinite; /* hover 시에도 유지 */
+            }
+
+            .wishlist-preview img {
+              border-radius: 8px;
+              margin: 6px 0;
+            }
+
+            .wishlist-preview p {
+              font-size: 12px;
+              margin: 4px 0;
+            }
+
+            .wishlist-preview .discount-badge {
+              font-size: 10px;
+              padding: 2px 4px;
+            }
+
+            .wishlist-preview .sale-price {
+              font-size: 13px;
+            }
+
+            .wishlist-preview .original-price {
+              font-size: 11px;
+            }
+          }
         </style>
 
       </head>
@@ -209,8 +250,16 @@
         <div class="offcanvas-menu-wrapper">
           <div class="offcanvas__option">
             <div class="offcanvas__links">
-              <a href="<c:url value='/signin'/>">로그인</a>
-              <a href="<c:url value='/signup'/>">회원가입</a>
+              <c:choose>
+                <c:when test="${sessionScope.cust.custId == null}">
+                    <a href="<c:url value='/signin'/>">로그인</a>
+                    <a href="<c:url value='/signup'/>">회원가입</a>
+                </c:when>
+                <c:otherwise>
+                    <a href="<c:url value='#'/>" style="color:gray;">${sessionScope.cust.custId}님, 안녕하세요!</a><br>
+                    <a href="<c:url value='/mypage?id=${sessionScope.cust.custId}'/>">마이페이지</a>
+                </c:otherwise>
+              </c:choose>
             </div>
             <div class="offcanvas__top__hover">
               <span>모드 선택 <i class="arrow_carrot-down"></i></span>
@@ -221,10 +270,9 @@
             </div>
           </div>
           <div class="offcanvas__nav__option">
-            <a href="#" class="search-switch"><img src="<c:url value='/img/icon/search.png'/>" alt=""></a>
-            <a href="#"><img src="<c:url value='/img/icon/heart.png'/>" alt=""></a>
-            <a href="#"><img src="<c:url value='/img/icon/cart.png'/>" alt=""> <span>0</span></a>
-            <div class="price">0원</div>
+            <a href="<c:url value='/mypage/like?id=${sessionScope.cust.custId}'/>"><img src="<c:url value='/img/icon/heart.png'/>" alt=""></a>
+            <a href="<c:url value='/cart'/>"><img src="<c:url value='/img/icon/cart.png'/>" alt=""> <span>0</span></a>
+            <div class="price"></div>
           </div>
           <div id="mobile-menu-wrap"></div>
 
@@ -238,7 +286,6 @@
           </div>
 
           <div class="offcanvas__text">
-            <p>반려동물 용품 전문 쇼핑몰🐶🐱</p>
           </div>
         </div>
         <!-- Offcanvas Menu End -->
