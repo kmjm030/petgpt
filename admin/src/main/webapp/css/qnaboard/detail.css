@@ -1,0 +1,112 @@
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: linear-gradient(to bottom, #cbdfee, #f0f6fb);
+    color: #2b3e52;
+}
+
+.board-detail-container {
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #ffffffcc;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 80, 160, 0.15);
+    backdrop-filter: blur(6px);
+}
+
+.board-detail-container h1 {
+    font-size: 1.8rem;
+    color: #1565c0;
+    font-weight: 700;
+    border-left: 6px solid #64b5f6;
+    padding-left: 12px;
+}
+
+.card {
+    border: none;
+    border-radius: 16px;
+    background-color: #ffffffcc;
+    box-shadow: 0 6px 18px rgba(0, 80, 160, 0.1);
+    backdrop-filter: blur(4px);
+    padding: 1.5rem;
+}
+
+.card-header {
+    background-color: #e1f3ff;
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+    font-weight: bold;
+    color: #1a4c7e;
+}
+
+.form-group {
+    margin-bottom: 1.2rem;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: #1a4c7e;
+    margin-bottom: 0.4rem;
+    display: inline-block;
+}
+
+.form-control {
+    background-color: #f9fdff;
+    border: 1px solid #b2dafa;
+    border-radius: 8px;
+    padding: 0.6rem;
+    color: #2b3e52;
+    transition: border-color 0.2s ease-in-out;
+}
+
+.form-control:focus {
+    border-color: #64b5f6;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(100, 181, 246, 0.2);
+}
+
+.img-thumbnail {
+    border: 1px solid #b2dafa;
+    border-radius: 12px;
+    background-color: #ffffffaa;
+    backdrop-filter: blur(3px);
+}
+
+.btn-group .btn {
+    padding: 0.5rem 1rem;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.btn-outline-primary {
+    color: #1565c0;
+    border-color: #64b5f6;
+}
+
+.btn-outline-primary:hover {
+    background-color: #e3f2fd;
+    color: #0d47a1;
+}
+
+.btn-outline-danger {
+    color: #c62828;
+    border-color: #ef9a9a;
+}
+
+.btn-outline-danger:hover {
+    background-color: #ffcdd2;
+    color: #b71c1c;
+}
+
+/* 날짜 텍스트 정렬 */
+.form-group p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #455a64;
+}
+
+/* 어드민 답변 컴포넌트 포함 영역도 여백 처리 */
+.board-detail-container .card + .card {
+    margin-top: 2rem;
+}
