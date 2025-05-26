@@ -5,7 +5,7 @@
 <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=1d80cc061f948248f9465d96f87b1f5c&libraries=services"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Roboto&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/css/statistics.css">
+<link rel="stylesheet" href="/css/stat/statistics.css">
 
 <body class="statistics-page">
 
@@ -85,7 +85,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="<c:url value='/js/statistics.js'/>"></script>
+<script src="<c:url value='/js/stat/statistics.js'/>"></script>
 <canvas id="mouseTrailCanvas" style="position:fixed;top:0;left:0;z-index:9999;pointer-events:none;"></canvas>
 
 </body>
