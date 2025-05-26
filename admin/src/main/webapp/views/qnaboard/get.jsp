@@ -64,11 +64,20 @@
                                     ${board.boardKey}
                             </a>
                         </td>
-                        <td>${board.boardRe}</td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${board.boardRe eq '답변있음'}">
+                                    ✅
+                                </c:when>
+                                <c:otherwise>
+                                    ❌
+                                </c:otherwise>
+                            </c:choose>
+                        </td>
                         <td>${board.itemKey}</td>
                         <td>${board.custId}</td>
                         <td>${board.boardTitle}</td>
-                        <td>
+                        <td class="text-nowrap no-truncate">
                             <fmt:formatDate value="${board.boardRdate}" pattern="yyyy-MM-dd HH:mm" />
                         </td>
                         <td class="text-start text-truncate" style="max-width: 300px;">

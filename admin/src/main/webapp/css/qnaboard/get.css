@@ -241,3 +241,12 @@ form.row.g-2 input::placeholder {
     pointer-events: none;
     z-index: 9999;
 }
+
+.text-nowrap {
+    white-space: nowrap;
+}
+
+.no-truncate {
+    overflow: visible !important;
+    text-overflow: unset !important;
+}
