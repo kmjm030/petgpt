@@ -52,7 +52,7 @@
                             <input type="hidden" id="finalAmount" name="orderTotalPrice" value="${totalCartPrice}">
                             <input type="hidden" value="${cust.custId}" id="custId" name="custId">
                             <input type="hidden" name="isCart" value="${isCart}" />
-                            <input type="hidden" id="orderPoint" name="orderPoint"/>
+                            <input type="hidden" id="orderPoint" name="orderPoint" value="0"/>
                           </div>
                         </div>
                       </div>

@@ -148,7 +148,7 @@
                       <div class="row">
                         <div class="col-lg-2">
                           <img src="<c:url value=" /img/product/${c.item.itemImg1}" />" width="100"
-                          style="border-radius:10px";>
+                          style="border-radius:10px; margin-bottom: 10px;";>
                         </div>
                         <div class="col-lg-10">
                           <h5><strong>[${c.item.itemName}]</strong></h5>
@@ -179,7 +179,7 @@
                       </div>
                       <div class="row">
                         <div class="col-lg-6">
-                          <div><button class="site-btn review-site-btn"
+                          <div><button class="site-btn review-site-btn" style="margin-bottom:5px;"
                               onclick="location.href='<c:url value='/review/detail?boardKey='/>${c.boardKey}'">수정하기</button>
                           </div>
                         </div>

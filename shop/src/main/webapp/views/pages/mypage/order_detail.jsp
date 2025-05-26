@@ -190,7 +190,7 @@
                   <br /><br />
                   <div class="row">
                     <div class="col-lg-6">
-                      <button class="site-btn order-site-btn"
+                      <button class="site-btn order-site-btn" style="margin-bottom: 5px;"
                         onclick="location.href='<c:url value='/qnaboard/add'/>?id=${cust.custId}'">교환/환불 신청</button>
                     </div>
                     <div class="col-lg-6">

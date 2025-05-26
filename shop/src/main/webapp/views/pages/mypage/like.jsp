@@ -11,30 +11,78 @@
         color: rosybrown;
       }
 
-      #like_img {
-        width: 150px;
-        height: 150px;
+      #item-img {
+        width: 120px;
+        height: 120px;
+        border-radius: 5%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
       }
 
-      #like_del_icon {
-        color: black;
+      #item-img:hover {
+        transform: scale(1.05);
+      }
+
+      .like-item {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        margin-bottom: 1.5rem;
+      }
+
+      .like-img {
+        flex: 0 0 120px;
+        margin-right: 1rem;
+      }
+
+      .like-content {
+        flex: 1;
+      }
+
+      .like-delete {
+        flex: 0 0 auto;
+        margin-left: auto;
+        padding-left: 1rem;
       }
 
       .discount-badge {
-        color: white;
         background-color: darkred;
+        color: white;
+        padding: 2px 6px;
+        font-size: 14px;
+        border-radius: 4px;
+        margin-left: 5px;
+        width: 50px;
+        text-align: center;
       }
 
-      .img-box img {
-        transition: transform 0.3s ease;
-        width: 100%;
-        height: 100%;
-        border-radius: 5%;
+      .original-price {
+        text-decoration: line-through;
+        color: gray;
+        font-size: 14px;
       }
 
-      .img-box img:hover {
-        transform: scale(1.05);
+      .sale-price {
+        font-weight: bold;
+        font-size: 16px;
       }
+
+      @media (max-width: 576px) {
+        .like-item {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .like-img {
+          margin-bottom: 0.5rem;
+        }
+
+        .like-delete {
+          align-self: flex-end;
+          margin-top: 0.5rem;
+        }
+      }
+
     </style>
 
     <!-- Breadcrumb Section Begin -->
@@ -128,77 +176,100 @@
 
             </div>
             <%-- 회원 정보 --%>
-              <div class="col-lg-9 container mt-3">
-                <h4><strong>💟 내가 찜한 상품 </strong></h4>
-                <p style="color:lightgray"><br>최근 1년간 찜한 내역이 유지됩니다.<br><br></p><hr>
-                <c:forEach var="c" items="${items}">
-                  <div class="row">
-                    <div class="col-md-2 img-box">
-                      <a href="<c:url value='/shop/details?itemKey=${c.itemKey}'/>">
-                      <img src="<c:url value='/img/product/${c.itemImg1}'/>"/></a>
-                    </div>
-                    <div class="col-md-9">
-                      <h6>${c.itemName}</h6>
-                      <div class="product__price">
-                        <c:if test="${c.itemSprice > 0 and c.itemSprice < c.itemPrice}">
+            <div class="col-lg-9 container mt-3">
+              <h4><strong>💟 내가 찜한 상품 </strong></h4>
+              <p style="color:lightgray"><br>최근 1년간 찜한 내역이 유지됩니다.<br><br></p>
+              <hr>
+
+              <c:forEach var="c" items="${items}">
+                <div class="like-item">
+                  <div class="like-img">
+                    <a href="<c:url value='/shop/details?itemKey=${c.itemKey}'/>">
+                      <img id="item-img" src="<c:url value='/img/product/${c.itemImg1}'/>" />
+                    </a>
+                  </div>
+
+                  <div class="like-content">
+                    <h6>${c.itemName}</h6>
+                    <div class="product__price">
+                      <c:choose>
+                        <c:when test="${c.itemSprice > 0 and c.itemSprice < c.itemPrice}">
                           <c:set var="discountRate" value="${100 - (c.itemSprice * 100 / c.itemPrice)}" />
-                          <div class="price-container">
-                                <span class="original-price" style="text-decoration: line-through;">
-                                  <fmt:formatNumber value="${c.itemPrice}" pattern="#,###" />원
-                                </span>
-                            <div class="sale-info">
-                                  <span class="sale-price">
-                                    <fmt:formatNumber value="${c.itemSprice}" pattern="#,###" />원
-                                  </span>
-                              <span class="discount-badge">
-                                    <fmt:formatNumber value="${discountRate}" pattern="#" />%
-                                  </span>
-                            </div>
-                          </div>
-                        </c:if>
-                        <c:if test="${!(c.itemSprice > 0 and c.itemSprice < c.itemPrice)}">
-                          <div class="price-container">
-                              <span class="sale-price">
-                                <fmt:formatNumber value="${c.itemPrice}" pattern="#,###" />원
-                              </span>
-                          </div>
-                        </c:if>
-                      </div>
-                    </div>
-                    <div class="col-md-1">
-                      <a href="#" onclick="like.del(${c.itemKey}, '${sessionScope.cust.custId}')">
-                        <i id="view_del_icon" class="fa fa-close" style="color:black;"></i>
-                      </a>
+                          <span class="original-price">
+                <fmt:formatNumber value="${c.itemPrice}" pattern="#,###" />원
+              </span>
+                          <span class="sale-price">
+                <fmt:formatNumber value="${c.itemSprice}" pattern="#,###" />원
+              </span>
+                          <span class="discount-badge">
+                <fmt:formatNumber value="${discountRate}" pattern="#" />%
+              </span>
+                        </c:when>
+                        <c:otherwise>
+              <span class="sale-price">
+                <fmt:formatNumber value="${c.itemPrice}" pattern="#,###" />원
+              </span>
+                        </c:otherwise>
+                      </c:choose>
                     </div>
                   </div>
-                  <hr>
-                </c:forEach>
-<%--                <table class="table">--%>
-<%--                  <thead>--%>
-<%--                    <tr>--%>
-<%--                      <th>이미지</th>--%>
-<%--                      <th>상품이름</th>--%>
-<%--                      <th>가격</th>--%>
-<%--                      <th></th>--%>
-<%--                    </tr>--%>
-<%--                  </thead>--%>
-<%--                  <tbody>--%>
-<%--                    <c:forEach var="c" items="${items}">--%>
-<%--                      <tr>--%>
-<%--                        <td><img id="like_img" src="<c:url value='/img/product/'/>${c.itemImg1}" /></td>--%>
-<%--                        <td>${c.itemName}</td>--%>
-<%--                        <td>${c.itemPrice}원</td>--%>
-<%--                        <td class="cart__close">--%>
-<%--                          <a href="#" onclick="like.del(${c.itemKey}, '${sessionScope.cust.custId}')">--%>
-<%--                            <i id="like_del_icon" class="fa fa-close"></i>--%>
-<%--                          </a>--%>
-<%--                        </td>--%>
-<%--                      </tr>--%>
-<%--                    </c:forEach>--%>
-<%--                  </tbody>--%>
-<%--                </table>--%>
-                <br /><br />
-              </div>
+
+                  <div class="like-delete">
+                    <a href="#" onclick="like.del(${c.itemKey}, '${sessionScope.cust.custId}')">
+                      <i class="fa fa-close" style="color:black;"></i>
+                    </a>
+                  </div>
+                </div>
+                <hr>
+              </c:forEach>
+            </div>
+<%--              <div class="col-lg-9 container mt-3">--%>
+<%--                <h4><strong>💟 내가 찜한 상품 </strong></h4>--%>
+<%--                <p style="color:lightgray"><br>최근 1년간 찜한 내역이 유지됩니다.<br><br></p><hr>--%>
+<%--                <c:forEach var="c" items="${items}">--%>
+<%--                  <div class="row">--%>
+<%--                    <div class="col-md-2 img-box">--%>
+<%--                      <a href="<c:url value='/shop/details?itemKey=${c.itemKey}'/>">--%>
+<%--                      <img id="item-img" src="<c:url value='/img/product/${c.itemImg1}'/>"/></a>--%>
+<%--                    </div>--%>
+<%--                    <div class="col-md-9">--%>
+<%--                      <h6>${c.itemName}</h6>--%>
+<%--                      <div class="product__price">--%>
+<%--                        <c:if test="${c.itemSprice > 0 and c.itemSprice < c.itemPrice}">--%>
+<%--                          <c:set var="discountRate" value="${100 - (c.itemSprice * 100 / c.itemPrice)}" />--%>
+<%--                          <div class="price-container">--%>
+<%--                                <span class="original-price" style="text-decoration: line-through;">--%>
+<%--                                  <fmt:formatNumber value="${c.itemPrice}" pattern="#,###" />원--%>
+<%--                                </span>--%>
+<%--                            <div class="sale-info">--%>
+<%--                                  <span class="sale-price">--%>
+<%--                                    <fmt:formatNumber value="${c.itemSprice}" pattern="#,###" />원--%>
+<%--                                  </span>--%>
+<%--                              <span class="discount-badge">--%>
+<%--                                    <fmt:formatNumber value="${discountRate}" pattern="#" />%--%>
+<%--                                  </span>--%>
+<%--                            </div>--%>
+<%--                          </div>--%>
+<%--                        </c:if>--%>
+<%--                        <c:if test="${!(c.itemSprice > 0 and c.itemSprice < c.itemPrice)}">--%>
+<%--                          <div class="price-container">--%>
+<%--                              <span class="sale-price">--%>
+<%--                                <fmt:formatNumber value="${c.itemPrice}" pattern="#,###" />원--%>
+<%--                              </span>--%>
+<%--                          </div>--%>
+<%--                        </c:if>--%>
+<%--                      </div>--%>
+<%--                    </div>--%>
+<%--                    <div class="col-md-1">--%>
+<%--                      <a href="#" onclick="like.del(${c.itemKey}, '${sessionScope.cust.custId}')">--%>
+<%--                        <i id="view_del_icon" class="fa fa-close" style="color:black;"></i>--%>
+<%--                      </a>--%>
+<%--                    </div>--%>
+<%--                  </div>--%>
+<%--                  <hr>--%>
+<%--                </c:forEach>--%>
+<%--                <br /><br />--%>
+<%--              </div>--%>
         </div>
       </div>
     </section>
