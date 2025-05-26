@@ -39,7 +39,7 @@ public class QnaBoardController {
         }
         return "index";
     }
-//ddd
+//asd
     @RequestMapping("/detail")  //ksk
     public String detail(Model model,@RequestParam("id") Integer id){
         QnaBoard board = null;
