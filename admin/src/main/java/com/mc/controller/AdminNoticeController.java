@@ -90,4 +90,5 @@ public class AdminNoticeController {
         }
         return "redirect:/admin/notice/detail?id=" + notice.getId();
     }
+
 }

@@ -126,3 +126,53 @@ h2 i {
   pointer-events: none;
   z-index: 0;
 }
+
+body.dark-mode {
+  background: linear-gradient(to bottom, #1e2a38, #2f3e50);
+  color: #e1e6ec;
+}
+
+body.dark-mode .notice-list {
+  background-color: #2f3e50cc;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode h2,
+body.dark-mode .notice-table td a,
+body.dark-mode .delete-btn,
+body.dark-mode .text-muted {
+  color: #e1e6ec;
+}
+
+body.dark-mode .notice-table td {
+  color: #e1e6ec;
+  border-bottom: 1px solid #4f6580;
+}
+
+body.dark-mode .search-input {
+  background-color: #3a4b5c;
+  border: 1px solid #4f6580;
+  color: #f0f4f9;
+}
+
+body.dark-mode .search-input:focus {
+  border-color: #8ccfff;
+  box-shadow: 0 0 0 3px rgba(140, 207, 255, 0.3);
+}
+
+body.dark-mode .add-btn {
+  background: linear-gradient(90deg, #478fdc, #74c6f0);
+}
+
+body.dark-mode .add-btn:hover {
+  background: linear-gradient(90deg, #3c81cc, #6cbbe8);
+}
+
+body.dark-mode .notice-table {
+  background-color: #3a4b5cc7;
+}
+
+body.dark-mode .notice-table th {
+  background-color: #2d3a49;
+  color: #cde6ff;
+}
