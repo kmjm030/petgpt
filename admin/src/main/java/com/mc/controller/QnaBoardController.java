@@ -27,47 +27,64 @@ public class QnaBoardController {
     String dir = "qnaboard/";
 
     @RequestMapping("/get")
-    public String get(Model model, @RequestParam(defaultValue = "1") int page) throws Exception {
+    public String get(Model model,
+                      @RequestParam(defaultValue = "1") int page,
+                      @RequestParam(required = false) String field,
+                      @RequestParam(required = false) String keyword) throws Exception {
+
         int limit = 10;
         int offset = (page - 1) * limit;
 
         try {
-            List<QnaBoard> list = qnaService.getPage(offset, limit);
-            int totalCount = qnaService.getTotalCount();
+            List<QnaBoard> list;
+            int totalCount;
+
+            if (field != null && keyword != null && !field.isEmpty() && !keyword.isEmpty()) {
+                list = qnaService.searchPage(field, keyword, offset, limit);
+                totalCount = qnaService.searchCount(field, keyword);
+            } else {
+                list = qnaService.getPage(offset, limit);
+                totalCount = qnaService.getTotalCount();
+            }
+
             int totalPages = (int) Math.ceil((double) totalCount / limit);
 
             model.addAttribute("boards", list);
             model.addAttribute("currentPage", page);
             model.addAttribute("totalPages", totalPages);
+            model.addAttribute("field", field);
+            model.addAttribute("keyword", keyword);
             model.addAttribute("center", dir + "get");
 
-            log.info("OK==============================:{}", list);
+            log.info("QnA list loaded: page={}, field={}, keyword={}", page, field, keyword);
         } catch (Exception e) {
-            log.info("ERROR==============================:{}", e.getMessage());
+            log.error("Error loading QnA list", e);
         }
 
         return "index";
     }
 
-    @RequestMapping("/detail")  //ksk
-    public String detail(Model model,@RequestParam("id") Integer id){
+    @RequestMapping("/detail")
+    public String detail(Model model, @RequestParam("id") Integer id) {
         QnaBoard board = null;
         AdminComments adminComments = null;
         Item item = null;
+
         try {
             board = qnaService.get(id);
             adminComments = adminCommentsService.get(id);
             item = itemService.get(board.getItemKey());
-            log.info("OK==============//================:{}",id);
-            log.info("OK===============//===============:{}",board);
-            log.info("OK================//==============:{}",adminComments);
+
             model.addAttribute("board", board);
-            model.addAttribute("item",item);
+            model.addAttribute("item", item);
             model.addAttribute("adminComments", adminComments);
-            model.addAttribute("center",dir+"detail");
+            model.addAttribute("center", dir + "detail");
+
+            log.info("QnA detail loaded: {}", id);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            log.error("Error loading QnA detail", e);
         }
+
         return "index";
     }
 
@@ -76,7 +93,7 @@ public class QnaBoardController {
         try {
             qnaService.del(id);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Error deleting QnA", e);
         }
         return "redirect:/qnaboard/get";
     }

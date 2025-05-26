@@ -4,14 +4,32 @@
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 <link rel="stylesheet" href="/css/qnaboard/get.css">
-<script src="/js/qnaboard/get.js"></script>
 
-<div class="container-fluid">
-    <h2 class="mb-4">상품 문의게시판</h2>
-    
-    <div class="card">
+<div class="container-fluid px-3 py-4">
+    <h2 class="mb-4 fw-bold text-primary">상품 문의게시판</h2>
+
+    <!-- ✅ 검색 영역 -->
+    <form method="get" action="/qnaboard/get" class="row g-2 align-items-center mb-4">
+        <div class="col-auto">
+            <select name="field" class="form-select">
+                <option value="title" ${field == 'title' ? 'selected' : ''}>제목</option>
+                <option value="content" ${field == 'content' ? 'selected' : ''}>내용</option>
+                <option value="cust_id" ${field == 'cust_id' ? 'selected' : ''}>작성자</option>
+            </select>
+        </div>
+        <div class="col">
+            <input type="text" name="keyword" class="form-control" placeholder="검색어 입력" value="${keyword}" />
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-outline-primary">
+                <i class="bi bi-search"></i> 검색
+            </button>
+        </div>
+    </form>
+
+    <div class="card shadow-sm rounded-4">
         <div class="table-responsive">
-            <table class="table table-bordered table-hover align-middle">
+            <table class="table table-bordered table-hover align-middle mb-0">
                 <colgroup>
                     <col style="width: 60px;">
                     <col style="width: 60px;">
@@ -24,7 +42,7 @@
                     <col style="width: 90px;">
                     <col style="width: 90px;">
                 </colgroup>
-                <thead class="table-light">
+                <thead class="table-light text-center">
                 <tr>
                     <th>번호</th>
                     <th>답변</th>
@@ -38,11 +56,11 @@
                     <th>삭제</th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody class="text-center">
                 <c:forEach var="board" items="${boards}">
                     <tr>
                         <td>
-                            <a href="<c:url value='/qnaboard/detail'/>?id=${board.boardKey}">
+                            <a href="<c:url value='/qnaboard/detail'/>?id=${board.boardKey}" class="text-decoration-none">
                                     ${board.boardKey}
                             </a>
                         </td>
@@ -53,20 +71,20 @@
                         <td>
                             <fmt:formatDate value="${board.boardRdate}" pattern="yyyy-MM-dd HH:mm" />
                         </td>
-                        <td>
-                            <a href="<c:url value='/qnaboard/detail'/>?id=${board.boardKey}">
+                        <td class="text-start text-truncate" style="max-width: 300px;">
+                            <a href="<c:url value='/qnaboard/detail'/>?id=${board.boardKey}" class="text-body text-decoration-none">
                                     ${board.boardContent}
                             </a>
                         </td>
                         <td>${board.boardOption}</td>
                         <td>
-                            <button onclick="board_get.update('${board.boardKey}')" class="btn btn-outline-primary btn-sm">
-                                <i class="bi bi-pencil-square"></i> 수정
+                            <button onclick="board_get.update('${board.boardKey}')" class="btn-icon" title="수정">
+                                <i class="bi bi-pencil-square"></i>
                             </button>
                         </td>
                         <td>
-                            <button onclick="board_get.delete('${board.boardKey}')" class="btn btn-outline-danger btn-sm">
-                                <i class="bi bi-trash"></i> 삭제
+                            <button onclick="board_get.delete('${board.boardKey}')" class="btn-icon danger" title="삭제">
+                                <i class="bi bi-trash"></i>
                             </button>
                         </td>
                     </tr>
@@ -76,13 +94,13 @@
         </div>
 
         <!-- ✅ 페이징 UI -->
-        <div class="pagination justify-content-center mt-4">
+        <div class="pagination justify-content-center py-3">
             <c:if test="${totalPages > 1}">
                 <nav>
                     <ul class="pagination">
                         <c:if test="${currentPage > 1}">
                             <li class="page-item">
-                                <a class="page-link" href="?page=${currentPage - 1}" aria-label="이전">
+                                <a class="page-link" href="?page=${currentPage - 1}&field=${field}&keyword=${keyword}" aria-label="이전">
                                     <span aria-hidden="true">&laquo;</span>
                                 </a>
                             </li>
@@ -90,13 +108,13 @@
 
                         <c:forEach var="i" begin="1" end="${totalPages}">
                             <li class="page-item ${i == currentPage ? 'active' : ''}">
-                                <a class="page-link" href="?page=${i}">${i}</a>
+                                <a class="page-link" href="?page=${i}&field=${field}&keyword=${keyword}">${i}</a>
                             </li>
                         </c:forEach>
 
                         <c:if test="${currentPage < totalPages}">
                             <li class="page-item">
-                                <a class="page-link" href="?page=${currentPage + 1}" aria-label="다음">
+                                <a class="page-link" href="?page=${currentPage + 1}&field=${field}&keyword=${keyword}" aria-label="다음">
                                     <span aria-hidden="true">&raquo;</span>
                                 </a>
                             </li>
@@ -107,3 +125,10 @@
         </div>
     </div>
 </div>
+
+<!-- 눈 내리는 canvas -->
+<canvas id="snow-canvas"></canvas>
+
+<!-- JS 스크립트 -->
+<script src="/js/qnaboard/get.js"></script>
+<script src="/js/qnaboard/snow.js"></script>

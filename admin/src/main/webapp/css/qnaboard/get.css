@@ -155,3 +155,89 @@ body.dark-mode .btn-outline-danger:hover {
     background-color: #994b4b;
     color: #ffffff;
 }
+
+form.row.g-2 {
+    background-color: #f0f8ffcc;
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    backdrop-filter: blur(4px);
+    box-shadow: 0 4px 12px rgba(126, 196, 243, 0.15);
+}
+form.row.g-2 select,
+form.row.g-2 input {
+    border: 1px solid #b2dafa;
+    background-color: #ffffff;
+    color: #1a4c7e;
+}
+
+form.row.g-2 input::placeholder {
+    color: #90a4ae;
+}
+
+.btn-icon {
+    border: none;
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(4px);
+    color: #1a4c7e;
+    border-radius: 10px;
+    padding: 0.45rem 0.65rem;
+    font-size: 1rem;
+    box-shadow: 0 2px 6px rgba(0, 80, 160, 0.1);
+    transition: background 0.2s ease-in-out, transform 0.2s ease;
+}
+
+.btn-icon:hover {
+    background: rgba(255, 255, 255, 0.85);
+    transform: translateY(-1px);
+}
+
+.btn-icon.danger {
+    color: #c62828;
+}
+
+.btn-icon.danger:hover {
+    background: #ffe5e5;
+}
+
+.btn-icon i {
+    font-size: 1.1rem;
+}
+
+.pagination {
+    gap: 0.3rem;
+}
+
+.pagination .page-item .page-link {
+    background-color: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(4px);
+    color: #1976d2;
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 2px 6px rgba(100, 181, 246, 0.2);
+}
+
+.pagination .page-item .page-link:hover {
+    background-color: #e3f2fd;
+    color: #0d47a1;
+    transform: translateY(-1px);
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #64b5f6;
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 3px 8px rgba(100, 181, 246, 0.4);
+    pointer-events: none;
+}
+
+#snow-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 9999;
+}
