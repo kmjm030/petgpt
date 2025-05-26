@@ -56,4 +56,5 @@ public class QnaBoardService implements MCService<QnaBoard, Integer> {
 
 
 
+
 }
