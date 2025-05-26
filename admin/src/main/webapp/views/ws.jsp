@@ -3,7 +3,6 @@
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
 <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/css/cherry-blossom.css">
 <link rel="stylesheet" href="/css/websocket.css">
 
 <div class="container chat-container">

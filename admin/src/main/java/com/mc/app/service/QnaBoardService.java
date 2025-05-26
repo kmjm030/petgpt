@@ -61,12 +61,10 @@ public class QnaBoardService implements MCService<QnaBoard, Integer> {
         return qnaRepository.count();
     }
 
-    // ✅ 검색 결과 페이징용
     public List<QnaBoard> searchPage(String field, String keyword, int offset, int limit) throws Exception {
         return qnaRepository.searchPage(field, keyword, offset, limit);
     }
 
-    // ✅ 검색 결과 수 조회
     public int searchCount(String field, String keyword) throws Exception {
         return qnaRepository.searchCount(field, keyword);
     }

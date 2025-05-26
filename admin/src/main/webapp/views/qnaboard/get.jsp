@@ -8,7 +8,6 @@
 <div class="container-fluid px-3 py-4">
     <h2 class="mb-4 fw-bold text-primary">상품 문의게시판</h2>
 
-    <!-- ✅ 검색 영역 -->
     <form method="get" action="/qnaboard/get" class="row g-2 align-items-center mb-4">
         <div class="col-auto">
             <select name="field" class="form-select">
@@ -102,7 +101,6 @@
             </table>
         </div>
 
-        <!-- ✅ 페이징 UI -->
         <div class="pagination justify-content-center py-3">
             <c:if test="${totalPages > 1}">
                 <nav>
@@ -135,9 +133,7 @@
     </div>
 </div>
 
-<!-- 눈 내리는 canvas -->
 <canvas id="snow-canvas"></canvas>
 
-<!-- JS 스크립트 -->
 <script src="/js/qnaboard/get.js"></script>
 <script src="/js/qnaboard/snow.js"></script>

@@ -22,7 +22,7 @@ public class QnaBoardController {
     private final QnaBoardService qnaService;
     private final ItemService itemService;
     private final AdminCommentsService adminCommentsService;
-    String dir = "qnaboard/";
+    private final String dir = "qnaboard/";
 
     @RequestMapping("/get")
     public String get(Model model,
@@ -68,7 +68,7 @@ public class QnaBoardController {
             QnaBoard board = qnaService.get(id);
             if (board == null) {
                 log.warn("QnA not found: {}", id);
-                return "redirect:/qnaboard/get"; // 없는 글이면 리스트로
+                return "redirect:/qnaboard/get";
             }
 
             AdminComments adminComments = adminCommentsService.get(id);
@@ -94,7 +94,6 @@ public class QnaBoardController {
 
         return "index";
     }
-
 
     @GetMapping("/delete")
     public String delete(@RequestParam("id") Integer id) {

@@ -1,31 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<script>
-  $(function () {
-    $("#toggleCommentFormBtn").click(() => {
-      $("#admin-comment-form-wrapper").slideToggle(200);
-    });
-
-    $("#submitCommentBtn").click(() => {
-      const formData = $("#adminCommentForm").serialize();
-      $.ajax({
-        type: "POST",
-        url: "/admincomments/addimpl",
-        data: formData,
-        success: () => {
-          alert("댓글이 등록되었습니다.");
-          location.reload();
-        },
-        error: (xhr) => {
-          alert("등록 실패: " + xhr.responseText);
-        }
-      });
-    });
-  });
-</script>
+<script src="/js/qnaboard/addadmincomments.js"></script>
 
 <div class="comment-section">
   <h3>관리자 답변</h3>
