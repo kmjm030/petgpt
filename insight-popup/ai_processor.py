@@ -5,9 +5,7 @@ from typing import List, Dict
 
 try:
     current_file_dir = os.path.dirname(os.path.abspath(__file__))
-    project_root_path = (
-        current_file_dir  
-    )
+    project_root_path = current_file_dir
 
     if project_root_path not in sys.path:
         sys.path.insert(0, project_root_path)
@@ -42,8 +40,8 @@ def get_text_description_from_image(image_bytes):
         """
 
         response = image_to_text_model.generate_content([prompt, image_part])
-        description_text = response.text.strip()  
-        if not description_text:  
+        description_text = response.text.strip()
+        if not description_text:
             print("Gemini가 이미지에서 설명을 추출하지 못했습니다 (빈 응답).")
             return "화면에서 특별한 정보를 찾지 못했습니다."
         print(f"이미지에서 추출된 텍스트 설명 (일부): {description_text[:250]}...")
@@ -59,6 +57,7 @@ def get_text_description_from_image(image_bytes):
             pass
         return "화면 정보를 분석하는 데 문제가 발생했습니다."
 
+
 def get_ai_response_based_on_screen_description(
     image_bytes, chat_history_frontend: List[Dict[str, str]] = []
 ):
@@ -72,7 +71,7 @@ def get_ai_response_based_on_screen_description(
         AIMessage,
         SystemMessage,
         BaseMessage,
-    ) 
+    )
 
     if not image_bytes:
         return "화면 이미지를 분석할 수 없습니다."
@@ -84,7 +83,7 @@ def get_ai_response_based_on_screen_description(
         or "화면 정보를 분석하는 데 문제가 발생했습니다." in screen_description
         or "특별한 정보를 찾지 못했습니다." in screen_description
     ):
-        return screen_description  
+        return screen_description
 
     user_query_for_rag = f"""안녕하세요! 제가 지금 반려동물 쇼핑몰에서 다음과 같은 내용의 화면을 보고 있어요:
     --- 화면 설명 시작 ---
@@ -107,9 +106,7 @@ def get_ai_response_based_on_screen_description(
             langchain_chat_history.append(HumanMessage(content=content))
         elif role == "assistant" or role == "ai" or role == "model":
             langchain_chat_history.append(AIMessage(content=content))
-        elif (
-            role == "system"
-        ): 
+        elif role == "system":
             langchain_chat_history.append(SystemMessage(content=content))
 
     try:

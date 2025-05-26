@@ -27,9 +27,9 @@ def periodic_task():
         current_chat_history_for_main = []
         ai_text = get_ai_response_based_on_screen_description(
             image_data,
-            chat_history_frontend=current_chat_history_for_main,  
+            chat_history_frontend=current_chat_history_for_main,
         )
-        print(f"AI (이미지 설명+RAG) 어시스턴트 답변: {ai_text}") 
+        print(f"AI (이미지 설명+RAG) 어시스턴트 답변: {ai_text}")
         if ai_text:
             message_queue.put(ai_text)
     else:
