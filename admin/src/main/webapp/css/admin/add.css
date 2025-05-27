@@ -1,6 +1,6 @@
 body {
   font-family: 'SF Pro Display', 'Noto Sans KR', sans-serif;
-  background-color: #f5f7fa;
+  background: linear-gradient(to bottom, #c2d8e8, #eaf2f7);
   color: #333;
   margin: 0;
   padding: 0;
@@ -9,6 +9,18 @@ body {
   align-items: center;
   height: 100vh;
   flex-direction: column;
+  overflow-x: hidden;
+  position: relative;
+}
+
+#snow-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
 }
 
 .container-fluid {
@@ -16,12 +28,13 @@ body {
   max-width: 900px;
   padding: 2rem;
   box-sizing: border-box;
+  z-index: 1;
 }
 
 h2 {
   font-size: 2rem;
   font-weight: 600;
-  color: #2c3e50;
+  color: #1a4c7e;
   margin-bottom: 1.5rem;
   display: flex;
   align-items: center;
@@ -33,15 +46,17 @@ h2 i {
 }
 
 form {
-  background-color: #fff;
+  background-color: #ffffffcc;
   border-radius: 16px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 20px rgba(0, 80, 160, 0.15);
   padding: 2rem;
   width: 100%;
   max-width: 800px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  backdrop-filter: blur(6px);
+  z-index: 1;
 }
 
 .form-group {
@@ -52,21 +67,23 @@ form {
 .form-group label {
   font-weight: 500;
   margin-bottom: 0.5rem;
-  color: #34495e;
+  color: #2b3e52;
   display: block;
 }
 
 .form-control {
   border-radius: 8px;
-  border: 1px solid #dcdde1;
+  border: 1px solid #bcdffb;
   padding: 0.6rem 1rem;
   transition: border 0.2s, box-shadow 0.2s;
   width: 100%;
+  background-color: #f8fcff;
+  color: #333;
 }
 
 .form-control:focus {
-  border-color: #4b7bec;
-  box-shadow: 0 0 0 3px rgba(75, 123, 236, 0.2);
+  border-color: #7cc3f1;
+  box-shadow: 0 0 0 3px rgba(124, 195, 241, 0.3);
 }
 
 #titleCount {
@@ -79,7 +96,7 @@ form {
   padding: 0.6rem 1.5rem;
   font-weight: 500;
   border-radius: 30px;
-  background: linear-gradient(90deg, #4b7bec, #34ace0);
+  background: linear-gradient(90deg, #6ec1ff, #95dfff);
   border: none;
   color: #fff;
   transition: background-color 0.3s, transform 0.2s;
@@ -89,7 +106,7 @@ form {
 }
 
 .submit-btn:hover {
-  background: linear-gradient(90deg, #34ace0, #4b7bec);
+  background: linear-gradient(90deg, #5bb7f8, #7fd6ff);
   transform: translateY(-2px);
 }
 
@@ -130,57 +147,62 @@ textarea.form-control {
   resize: vertical;
 }
 
-/* 다크모드 */
 body.dark-mode {
-  background-color: #1d1d1f;
-  color: #f5f5f7;
+  background: linear-gradient(to bottom, #1e2a38, #2f3e50);
+  color: #e1e6ec;
 }
 
 body.dark-mode h2 {
-  color: #f5f5f7;
+  color: #e1e6ec;
 }
 
 body.dark-mode form {
-  background-color: #2c2c2e;
+  background-color: #2f3e50cc;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
 }
 
 body.dark-mode .form-group label {
-  color: #f5f5f7;
+  color: #e1e6ec;
 }
 
 body.dark-mode .form-control {
-  background-color: #2c2c2e;
-  border: 1px solid #3a3a3c;
-  color: #f5f5f7;
+  background-color: #3a4b5c;
+  border: 1px solid #4f6580;
+  color: #f0f4f9;
 }
 
 body.dark-mode .form-control:focus {
-  border-color: #0a84ff;
-  box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.4);
+  border-color: #8ccfff;
+  box-shadow: 0 0 0 3px rgba(140, 207, 255, 0.3);
 }
 
 body.dark-mode #titleCount {
-  color: #bbbbbb;
+  color: #a0b4c8;
 }
 
 body.dark-mode .submit-btn {
-  background: linear-gradient(90deg, #0a84ff, #34ace0);
+  background: linear-gradient(90deg, #478fdc, #74c6f0);
 }
 
 body.dark-mode .submit-btn:hover {
-  background: linear-gradient(90deg, #34ace0, #0a84ff);
+  background: linear-gradient(90deg, #3c81cc, #6cbbe8);
 }
 
 body.dark-mode .toast {
-  background-color: #388e3c;
+  background-color: #3caa3c;
 }
 
 body.dark-mode a.back-link {
-  color: #0a84ff;
+  color: #8ccfff;
 }
 
 body.dark-mode a.back-link:hover {
   text-decoration: underline;
 }
 
+body.dark-mode .container-fluid {
+  background-color: #2f3e50cc;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  border-radius: 16px;
+}

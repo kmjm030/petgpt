@@ -87,5 +87,4 @@
     WHERE DATE_FORMAT(order_date, '%Y-%m') = DATE_FORMAT(NOW(), '%Y-%m')
       AND order_status = '결제완료'
   </select>
-
 </mapper>

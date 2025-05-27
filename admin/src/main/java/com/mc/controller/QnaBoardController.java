@@ -2,6 +2,7 @@ package com.mc.controller;
 
 import com.mc.app.dto.*;
 import com.mc.app.service.AdminCommentsService;
+import com.mc.app.service.GptService;
 import com.mc.app.service.ItemService;
 import com.mc.app.service.QnaBoardService;
 import jakarta.servlet.http.HttpSession;
@@ -9,11 +10,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @Slf4j
@@ -24,108 +25,116 @@ public class QnaBoardController {
     private final QnaBoardService qnaService;
     private final ItemService itemService;
     private final AdminCommentsService adminCommentsService;
-    String dir = "qnaboard/";
+    private final GptService gptService;
+    private final String dir = "qnaboard/";
 
-    @RequestMapping("/get") //ksk
-    public String get(Model model) throws Exception {
-        List<QnaBoard> list = null;
+    @RequestMapping("/get")
+    public String get(Model model,
+                      @RequestParam(defaultValue = "1") int page,
+                      @RequestParam(required = false) String field,
+                      @RequestParam(required = false) String keyword) throws Exception {
+
+        int limit = 10;
+        int offset = (page - 1) * limit;
+
         try {
-            list = qnaService.get();
-            model.addAttribute("boards",list);
-            model.addAttribute("center",dir+"get");
-            log.info("OK==============================:{}",list);
+            List<QnaBoard> list;
+            int totalCount;
+
+            if (field != null && keyword != null && !field.isEmpty() && !keyword.isEmpty()) {
+                list = qnaService.searchPage(field, keyword, offset, limit);
+                totalCount = qnaService.searchCount(field, keyword);
+            } else {
+                list = qnaService.getPage(offset, limit);
+                totalCount = qnaService.getTotalCount();
+            }
+
+            int totalPages = (int) Math.ceil((double) totalCount / limit);
+
+            model.addAttribute("boards", list);
+            model.addAttribute("currentPage", page);
+            model.addAttribute("totalPages", totalPages);
+            model.addAttribute("field", field);
+            model.addAttribute("keyword", keyword);
+            model.addAttribute("center", dir + "get");
+
+            log.info("QnA list loaded: page={}, field={}, keyword={}", page, field, keyword);
         } catch (Exception e) {
-            log.info("ERROR==============================:{}",e.getMessage());
+            log.error("Error loading QnA list", e);
         }
+
         return "index";
     }
 
-    @RequestMapping("/detail")  //ksk
-    public String detail(Model model,@RequestParam("id") Integer id){
-        QnaBoard board = null;
-        AdminComments adminComments = null;
-        Item item = null;
+    @RequestMapping("/detail")
+    public String detail(Model model, @RequestParam("id") Integer id) {
         try {
-            board = qnaService.get(id);
-            adminComments = adminCommentsService.get(id);
-            item = itemService.get(board.getItemKey());
-//            cust.setCustName(standardPBEStringEncryptor.decrypt(cust.getCustName()));
-//            if(adminComments == null){
-//                model.addAttribute("reply",board);
-//            }
-            log.info("OK==============//================:{}",id);
-            log.info("OK===============//===============:{}",board);
-            log.info("OK================//==============:{}",adminComments);
+            QnaBoard board = qnaService.get(id);
+            if (board == null) {
+                log.warn("QnA not found: {}", id);
+                return "redirect:/qnaboard/get";
+            }
+
+            AdminComments adminComments = adminCommentsService.get(id);
+
+            Item item = null;
+            if (board.getItemKey() > 0) {
+                try {
+                    item = itemService.get(board.getItemKey());
+                } catch (Exception e) {
+                    log.warn("Item not found for itemKey: {}", board.getItemKey());
+                }
+            }
+
             model.addAttribute("board", board);
-            model.addAttribute("item",item);
+            model.addAttribute("item", item);
             model.addAttribute("adminComments", adminComments);
-            model.addAttribute("center",dir+"detail");
+            model.addAttribute("center", dir + "detail");
+
+            log.info("QnA detail loaded: {}", id);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            log.error("Error loading QnA detail", e);
         }
+
         return "index";
     }
 
-//
-//
-//    @GetMapping("")
-//    public String mypage(Model model, @RequestParam("id") String id, HttpSession session) throws Exception{
-//
-//        // 세션에서 로그인된 사용자 확인
-//        Customer loggedInCustomer = (Customer)session.getAttribute("cust");
-//
-//        // 로그인하지 않았다면 로그인 페이지로 리다이렉트
-//        if (loggedInCustomer == null) {
-//            return "redirect:/login";  // 로그인 페이지로 리다이렉트
-//        }
-//
-//        // 로그인된 사용자만 자신의 QnA목록를 볼 수 있도록 처리
-//        if (!loggedInCustomer.getCustId().equals(id)) {
-//            return "redirect:/qnaboard?id=" + loggedInCustomer.getCustId();  // 자신의 마이페이지만 보여줌
-//        }
-//
-//        List<QnaBoard> qnaBoards =  qnaService.findAllByCust(id);
-//        model.addAttribute("qnaBoards", qnaBoards);
-//        model.addAttribute("currentPage", "pages");
-//        model.addAttribute("pageTitle", "QnA Board");
-//        model.addAttribute("centerPage", "pages/mypage/qnaboard.jsp");
-//        return "index";
-//    }
-//
-//    @RequestMapping("/add")
-//    public String add(Model model, HttpSession session) throws Exception{
-//        List<Item> items = itemService.get();
-//
-//        model.addAttribute("items", items);
-//        model.addAttribute("currentPage", "pages");
-//        model.addAttribute("pageTitle", "QnA Add");
-//        model.addAttribute("centerPage", "pages/mypage/qnaboard_add.jsp");
-//        return "index";
-//    }
-//
-//    @RequestMapping("/detail")
-//    public String detail(Model model, @RequestParam("boardKey") int boardKey, HttpSession session) throws Exception{
-//
-//        QnaBoard board = qnaService.get(boardKey);
-//
-//        model.addAttribute("board", board);
-//        model.addAttribute("currentPage", "pages");
-//        model.addAttribute("pageTitle", "QnA Detail");
-//        model.addAttribute("centerPage", "pages/mypage/qnaboard_detail.jsp");
-//        return "index";
-//    }
-//
-//    @RequestMapping("/addimpl")
-//    public String addimpl(Model model, @RequestParam("custId") String custId, QnaBoard board) throws Exception {
-//        board.setCustId(custId);
-//        qnaService.add(board);
-//        return "redirect:/qnaboard?id=" + custId;
-//    }
-//
-//    @RequestMapping("/updateimpl")
-//    public String updateimpl(Model model, @RequestParam("custId") String custId, QnaBoard board) throws Exception {
-//        qnaService.mod(board);
-//        return "redirect:/qnaboard?id=" + custId;
-//    }
+    @GetMapping("/gpt-reply")
+    @ResponseBody
+    public Map<String, String> getGptReply(@RequestParam("id") Integer id) {
+        Map<String, String> result = new HashMap<>();
+        try {
+            QnaBoard board = qnaService.get(id);
+            String reply = gptService.generateReply(board.getBoardContent());
+            result.put("status", "success");
+            result.put("reply", reply);
+        } catch (Exception e) {
+            log.warn("GPT 호출 실패: {}", e.getMessage());
+            result.put("status", "fail");
+            result.put("reply", "AI 응답 생성 중 오류가 발생했습니다.");
+        }
+        return result;
+    }
 
+    @GetMapping("/delete")
+    public String delete(@RequestParam("id") Integer id) {
+        try {
+            qnaService.del(id);
+            log.info("QnA deleted: {}", id);
+        } catch (Exception e) {
+            log.error("Error deleting QnA", e);
+        }
+        return "redirect:/qnaboard/get";
+    }
+
+    @PostMapping("/update")
+    public String update(QnaBoard board) {
+        try {
+            qnaService.mod(board);
+            log.info("QnA updated: {}", board.getBoardKey());
+        } catch (Exception e) {
+            log.error("Error updating QnA", e);
+        }
+        return "redirect:/qnaboard/detail?id=" + board.getBoardKey();
+    }
 }

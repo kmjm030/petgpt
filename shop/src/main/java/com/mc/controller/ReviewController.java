@@ -22,6 +22,7 @@ import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @Slf4j
@@ -80,7 +81,18 @@ public class ReviewController {
       return "redirect:/review?id=" + loggedInCustomer.getCustId();
     }
 
-    List<OrderDetail> orderDetails = orderDetailService.findNoReview(custId);
+      List<OrderDetail> orderDetails = orderDetailService.findNoReview(custId).stream()
+              .filter(detail -> {
+                  int orderKey = detail.getOrderKey();
+                  String status = null;
+                  try {
+                      status = totalOrderService.get(orderKey).getOrderStatus();
+                  } catch (Exception e) {
+                      throw new RuntimeException(e);
+                  }
+                  return "배송완료".equals(status);
+              })
+              .collect(Collectors.toList());
     Collections.reverse(orderDetails);
 
     Map<Integer, Item> itemMap = new HashMap<>();

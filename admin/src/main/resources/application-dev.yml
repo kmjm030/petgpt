@@ -13,9 +13,9 @@ spring:
       prefix: /views/
       suffix: .jsp
   datasource:
-    url: jdbc:mysql://118.67.143.55:3306/petgpt?characterEncoding=utf8
-    username: mcuser
-    password: 111111
+    url: jdbc:mysql://127.0.0.1:3306/petgpt?characterEncoding=utf8
+    username: root
+    password: 1234
   servlet:
     multipart:
       max-file-size: 10MB
@@ -43,7 +43,7 @@ app:
     uploadimgdir: C:/Users/Administrator/IdeaProjects/petgpt/admin/src/main/webapp/img/item/
 
   # 6. WebSocket 주소
-  url:
+  url:넘
     websocket-server-url: http://127.0.0.1:8088
 
 # NCP
@@ -57,3 +57,7 @@ ncp:
   papago:
     id: lep3u7pcmn
     key: F70kVB1NZpnSqCgbiaYmqyd0Faw1VqHIqRFg2HKX
+
+openai:
+  api:
+    key: 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

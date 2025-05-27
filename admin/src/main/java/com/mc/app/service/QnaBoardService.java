@@ -53,7 +53,24 @@ public class QnaBoardService implements MCService<QnaBoard, Integer> {
         return qnaRepository.selectQnaWithCommentsByItemKey(itemKey);
     }
 
+    public List<QnaBoard> getPage(int offset, int limit) throws Exception {
+        return qnaRepository.selectPage(offset, limit);
+    }
 
+    public int getTotalCount() throws Exception {
+        return qnaRepository.count();
+    }
 
+    public List<QnaBoard> searchPage(String field, String keyword, int offset, int limit) throws Exception {
+        return qnaRepository.searchPage(field, keyword, offset, limit);
+    }
+
+    public int searchCount(String field, String keyword) throws Exception {
+        return qnaRepository.searchCount(field, keyword);
+    }
+
+    public List<QnaBoard> getRecentQna(int limit) throws Exception {
+        return qnaRepository.findRecentQna(limit);
+    }
 
 }

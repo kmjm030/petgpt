@@ -1,12 +1,12 @@
 :root {
-    --primary-color: #e91e63;
-    --secondary-color: #ffd6e8;
-    --bg-color: #ffeaf0;
-    --text-color: #4a4a4a;
-    --card-bg: #ffffff;
-    --card-border: #f8c1d0;
-    --hover-bg: #fff0f6;
-    --shadow-color: rgba(233, 30, 99, 0.1);
+    --primary-color: #1a4c7e;
+    --secondary-color: #d7ebf8;
+    --bg-color: #eaf2f7;
+    --text-color: #2b3e52;
+    --card-bg: #ffffffcc;
+    --card-border: #bcdffb;
+    --shadow-color: rgba(0, 80, 160, 0.1);
+    --hover-bg: #f2faff;
 }
 
 * {
@@ -16,10 +16,9 @@
 }
 
 body {
-    background: var(--bg-color);
-    font-family: 'Noto Sans KR', sans-serif;
+    font-family: 'SF Pro Display', 'Noto Sans KR', sans-serif;
+    background: linear-gradient(to bottom, #c2d8e8, #eaf2f7);
     color: var(--text-color);
-    line-height: 1.6;
 }
 
 h1 {
@@ -32,23 +31,27 @@ h1 {
 .card-table {
     background: var(--card-bg);
     border: 1px solid var(--card-border);
-    border-radius: 12px;
-    box-shadow: 0 4px 12px var(--shadow-color);
+    border-radius: 16px;
+    box-shadow: 0 8px 20px var(--shadow-color);
+    backdrop-filter: blur(6px);
     margin: 0 auto 2rem;
     padding: 1rem;
     max-width: 1200px;
+    position: relative;
+    z-index: 1;
 }
 
-.table {
+table {
     width: 100%;
     border-collapse: collapse;
+    margin: 0;
 }
 
-.table thead {
-    background: var(--secondary-color);
+thead {
+    background: #f1f9ff;
 }
 
-.table thead th {
+thead th {
     color: var(--primary-color);
     font-weight: 600;
     border-bottom: 2px solid var(--card-border);
@@ -56,12 +59,12 @@ h1 {
     text-align: left;
 }
 
-.table tbody td {
+tbody td {
     padding: 0.75rem;
     vertical-align: middle;
 }
 
-.table tbody tr:hover {
+tbody tr:hover {
     background: var(--hover-bg);
 }
 
@@ -78,14 +81,17 @@ h1 {
 }
 
 .btn-primary {
-    background: var(--primary-color);
-    border: 1px solid var(--primary-color);
+    background-color: #1a4c7e;
+    border: 1px solid #1a4c7e;
     color: #fff;
+    box-shadow: none;
+    transition: background-color 0.2s, transform 0.2s;
 }
 
 .btn-primary:hover {
-    background: #d81b60;
-    border-color: #d81b60;
+    background-color: #163d66;
+    border-color: #163d66;
+    transform: translateY(-1px);
 }
 
 .btn-danger {
@@ -107,28 +113,7 @@ h1 {
     box-shadow: 0 2px 8px var(--shadow-color);
     margin-top: 0.5rem;
     padding: 1rem;
-}
-
-.dataTables_wrapper .pagination .page-link {
-    background-color: #fff !important;
-    color: var(--primary-color) !important;
-    border: 1px solid var(--card-border) !important;
-    border-radius: 8px !important;
-    font-weight: bold !important;
-    padding: 0.4rem 0.75rem !important;
-    margin: 0 4px !important;
-}
-
-.dataTables_wrapper .pagination .page-item.active .page-link {
-    background-color: var(--primary-color) !important;
-    color: #fff !important;
-    border-color: var(--primary-color) !important;
-}
-
-.dataTables_wrapper .pagination .page-link:hover {
-    background-color: var(--hover-bg) !important;
-    color: var(--primary-color) !important;
-    border-color: var(--card-border) !important;
+    backdrop-filter: blur(4px);
 }
 
 @media (max-width: 992px) {
@@ -144,23 +129,32 @@ h1 {
 }
 
 @media (max-width: 576px) {
-    table, thead, tbody, th, td, tr {
+    table,
+    thead,
+    tbody,
+    th,
+    td,
+    tr {
         display: block;
     }
+
     thead tr {
         position: absolute;
         top: -9999px;
         left: -9999px;
     }
+
     tr {
         margin: 0 0 1rem 0;
     }
+
     td {
         border: none;
         position: relative;
         padding-left: 50%;
         text-align: left;
     }
+
     td:before {
         position: absolute;
         top: 0;
@@ -170,6 +164,7 @@ h1 {
         white-space: nowrap;
         font-weight: 600;
     }
+
     td:nth-of-type(1):before { content: "주문번호"; }
     td:nth-of-type(2):before { content: "고객 ID"; }
     td:nth-of-type(3):before { content: "상품명"; }
@@ -179,6 +174,69 @@ h1 {
     td:nth-of-type(7):before { content: "액션"; }
 }
 
-.text-primary {
-    color: var(--primary-color) !important;
+body.dark-mode {
+    background: linear-gradient(to bottom, #1e2a38, #2f3e50);
+    color: #e1e6ec;
+}
+
+body.dark-mode .card-table {
+    background-color: #2f3e50cc;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .detail-panel,
+body.dark-mode .confirm-panel {
+    background-color: #3a4b5cc7;
+}
+
+body.dark-mode thead th {
+    background-color: #2d3a49;
+    color: #cde6ff;
+}
+
+body.dark-mode td {
+    color: #e1e6ec;
+    border-bottom: 1px solid #4f6580;
+}
+
+body.dark-mode .btn-primary {
+    background: linear-gradient(90deg, #478fdc, #74c6f0);
+}
+
+body.dark-mode .btn-primary:hover {
+    background: linear-gradient(90deg, #3c81cc, #6cbbe8);
+}
+
+.pagination .page-item .page-link {
+    background-color: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(4px);
+    color: #1976d2;
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 2px 6px rgba(100, 181, 246, 0.2);
+}
+
+.pagination .page-item .page-link:hover {
+    background-color: #e3f2fd;
+    color: #0d47a1;
+    transform: translateY(-1px);
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #64b5f6;
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 3px 8px rgba(100, 181, 246, 0.4);
+    pointer-events: none;
+}
+
+#snow-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 9999;
 }
