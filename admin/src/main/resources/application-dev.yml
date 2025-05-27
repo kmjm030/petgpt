@@ -43,7 +43,7 @@ app:
     uploadimgdir: C:/Users/Administrator/IdeaProjects/petgpt/admin/src/main/webapp/img/item/
 
   # 6. WebSocket 주소
-  url:
+  url:넘
     websocket-server-url: http://127.0.0.1:8088
 
 # NCP
