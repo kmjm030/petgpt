@@ -180,9 +180,12 @@
                           </td>
                           <td>${c.orderDetailPrice}</td>
                           <td>${c.orderDetailCount}</td>
-                          <td><button class="review-btn"
-                              onclick="location.href='<c:url value='/review/add'/>?itemKey=${c.itemKey}&orderKey=${c.orderKey}&orderDetailKey=${c.orderDetailKey}'">
-                              <strong>리뷰쓰기</strong></button></td>
+                          <td><c:if test="${order.orderStatus eq '배송완료'}">
+                            <button class="review-btn"
+                                    onclick="location.href='<c:url value='/review/add'/>?itemKey=${c.itemKey}&orderKey=${c.orderKey}&orderDetailKey=${c.orderDetailKey}'">
+                              <strong>리뷰쓰기</strong>
+                            </button>
+                          </c:if></td>
                         </tr>
                       </c:forEach>
                     </tbody>
