@@ -23,6 +23,7 @@ public class MainController {
     private final ItemService itemService;
     private final TotalOrderService totalOrderService;
     private final AdminNoticeService adminNoticeService;
+    private final QnaBoardService qnaBoardService;
 
     @Value("${app.url.websocket-server-url}")
     private String websocketServerUrl;
@@ -91,6 +92,14 @@ public class MainController {
         } catch (Exception e) {
             log.warn("[MainController] 최근 주문 로드 실패: {}", e.getMessage());
             model.addAttribute("recentOrders", new ArrayList<>());
+        }
+
+        try {
+            List<QnaBoard> recentQnaList = qnaBoardService.getRecentQna(5);
+            model.addAttribute("recentQnaList", recentQnaList);
+        } catch (Exception e) {
+            log.warn("[MainController] 최근 QnA 로드 실패: {}", e.getMessage());
+            model.addAttribute("recentQnaList", new ArrayList<>());
         }
 
         List<String> alerts = new ArrayList<>();

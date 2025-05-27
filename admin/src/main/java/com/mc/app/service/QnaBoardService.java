@@ -68,4 +68,9 @@ public class QnaBoardService implements MCService<QnaBoard, Integer> {
     public int searchCount(String field, String keyword) throws Exception {
         return qnaRepository.searchCount(field, keyword);
     }
+
+    public List<QnaBoard> getRecentQna(int limit) throws Exception {
+        return qnaRepository.findRecentQna(limit);
+    }
+
 }

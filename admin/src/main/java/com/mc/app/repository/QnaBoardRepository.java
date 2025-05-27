@@ -30,5 +30,7 @@ public interface QnaBoardRepository extends MCRepository<QnaBoard, Integer> {
 
     int searchCount(@Param("field") String field,
                     @Param("keyword") String keyword) throws Exception;
+
+    List<QnaBoard> findRecentQna(@Param("limit") int limit) throws Exception;
 }
 

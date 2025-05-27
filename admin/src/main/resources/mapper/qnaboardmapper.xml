@@ -106,4 +106,22 @@
         </choose>
     </select>
 
+    <select id="findRecentQna" parameterType="int" resultType="com.mc.app.dto.QnaBoard">
+        SELECT
+            board_key,
+            item_key,
+            order_key,
+            cust_id,
+            board_title AS boardTitle,
+            board_rdate AS boardRdate,
+            board_content,
+            board_img,
+            board_option,
+            board_update,
+            board_re
+        FROM qnaboard
+        ORDER BY board_rdate DESC
+            LIMIT #{limit}
+    </select>
+
 </mapper>
