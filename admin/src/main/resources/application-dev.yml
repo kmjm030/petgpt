@@ -57,3 +57,7 @@ ncp:
   papago:
     id: lep3u7pcmn
     key: F70kVB1NZpnSqCgbiaYmqyd0Faw1VqHIqRFg2HKX
+
+openai:
+  api:
+    key: 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

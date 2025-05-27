@@ -2,6 +2,7 @@ package com.mc.controller;
 
 import com.mc.app.dto.*;
 import com.mc.app.service.AdminCommentsService;
+import com.mc.app.service.GptService;
 import com.mc.app.service.ItemService;
 import com.mc.app.service.QnaBoardService;
 import jakarta.servlet.http.HttpSession;
@@ -11,7 +12,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @Slf4j
@@ -22,6 +25,7 @@ public class QnaBoardController {
     private final QnaBoardService qnaService;
     private final ItemService itemService;
     private final AdminCommentsService adminCommentsService;
+    private final GptService gptService;
     private final String dir = "qnaboard/";
 
     @RequestMapping("/get")
@@ -93,6 +97,23 @@ public class QnaBoardController {
         }
 
         return "index";
+    }
+
+    @GetMapping("/gpt-reply")
+    @ResponseBody
+    public Map<String, String> getGptReply(@RequestParam("id") Integer id) {
+        Map<String, String> result = new HashMap<>();
+        try {
+            QnaBoard board = qnaService.get(id);
+            String reply = gptService.generateReply(board.getBoardContent());
+            result.put("status", "success");
+            result.put("reply", reply);
+        } catch (Exception e) {
+            log.warn("GPT 호출 실패: {}", e.getMessage());
+            result.put("status", "fail");
+            result.put("reply", "AI 응답 생성 중 오류가 발생했습니다.");
+        }
+        return result;
     }
 
     @GetMapping("/delete")

@@ -73,4 +73,21 @@
             <jsp:include page="adminComments.jsp"/>
         </c:otherwise>
     </c:choose>
+
+    <div class="card mt-5 shadow-sm" style="background-color: #f6fbffcc; border-radius: 16px;">
+        <div class="card-header" style="background-color: #d0e7f9;">
+            <h5 class="mb-0">
+                <i class="bi bi-robot me-2"></i>AI 자동 응답 제안
+                <button id="generateGpt" type="button" class="btn btn-sm btn-outline-primary float-end ms-2">
+                    응답 생성하기
+                </button>
+                <button id="copyGpt" type="button" class="btn btn-sm btn-outline-secondary float-end">
+                    복사
+                </button>
+            </h5>
+        </div>
+        <div class="card-body">
+            <p id="gptReply" class="text-muted mb-0">버튼을 눌러 AI 응답을 생성하세요.</p>
+        </div>
+    </div>
 </div>

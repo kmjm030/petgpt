@@ -119,3 +119,45 @@ document.addEventListener('DOMContentLoaded', () => {
         canvas.height = H;
     });
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    const generateBtn = document.getElementById("generateGpt");
+    const copyBtn = document.getElementById("copyGpt");
+    const replyBox = document.getElementById("gptReply");
+
+    if (generateBtn) {
+        generateBtn.addEventListener("click", function () {
+            const boardId = document.getElementById("id").value;
+            replyBox.textContent = "AI 응답을 생성 중입니다...";
+
+            fetch(`/qnaboard/gpt-reply?id=${boardId}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === "success") {
+                        replyBox.textContent = data.reply;
+                    } else {
+                        replyBox.textContent = "AI 응답 생성에 실패했습니다.";
+                    }
+                })
+                .catch(() => {
+                    replyBox.textContent = "서버 오류 발생";
+                });
+        });
+    }
+
+    if (copyBtn) {
+        copyBtn.addEventListener("click", function () {
+            const text = replyBox.textContent;
+            if (!text || text.includes("생성 중") || text.includes("실패")) {
+                alert("복사할 응답이 없습니다.");
+                return;
+            }
+            navigator.clipboard.writeText(text).then(() => {
+                copyBtn.textContent = "복사됨!";
+                setTimeout(() => {
+                    copyBtn.textContent = "복사";
+                }, 1500);
+            });
+        });
+    }
+});
