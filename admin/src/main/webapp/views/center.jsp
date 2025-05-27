@@ -52,7 +52,6 @@
         </div>
       </div>
     </div>
-
     <div class="col-lg-6 mb-4">
       <div class="dashboard-card">
         <div class="card-title">배송 상태</div>
@@ -66,10 +65,16 @@
   </div>
 
   <div class="row mb-4">
-    <div class="col-lg-12 mb-4">
+    <div class="col-lg-6 mb-4">
       <div class="dashboard-card">
         <div class="card-title">최근 7일 매출 추이</div>
         <div id="dailySalesChart" style="height: 300px;"></div>
+      </div>
+    </div>
+    <div class="col-lg-6 mb-4">
+      <div class="dashboard-card">
+        <div class="card-title">카테고리별 판매 통계</div>
+        <div id="categorySalesDonut" style="height: 300px;"></div>
       </div>
     </div>
   </div>
@@ -169,6 +174,7 @@
 
 <script>
   window.dailySalesData = <c:out value="${empty dailySalesDataJson ? '[]' : dailySalesDataJson}" escapeXml="false" />;
+  window.categorySalesData = <c:out value="${empty categorySalesDataJson ? '[]' : categorySalesDataJson}" escapeXml="false" />;
 </script>
 
 <script src="https://code.highcharts.com/highcharts.js"></script>

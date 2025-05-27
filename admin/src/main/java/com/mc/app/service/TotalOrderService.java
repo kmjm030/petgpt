@@ -71,4 +71,8 @@ public class TotalOrderService {
         return totalOrderRepository.findDailySales(days);
     }
 
+    public List<Map<String, Object>> getSalesByCategory() throws Exception {
+        return totalOrderRepository.selectSalesByCategory();
+    }
+
 }

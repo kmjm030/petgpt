@@ -22,4 +22,5 @@ public interface TotalOrderRepository {
     List<TotalOrder> selectRecentOrders() throws Exception;
     int deleteOne(Integer orderKey) throws Exception;
     List<Map<String, Object>> findDailySales(int days) throws Exception;
+    List<Map<String, Object>> selectSalesByCategory() throws Exception;
 }

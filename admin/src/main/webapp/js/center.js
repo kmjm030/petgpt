@@ -54,3 +54,56 @@ document.addEventListener('DOMContentLoaded', function () {
     }]
   });
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+  if (window.dailySalesData && Array.isArray(window.dailySalesData)) {
+    const categories = window.dailySalesData.map(d => d.date);
+    const sales = window.dailySalesData.map(d => d.total);
+
+    Highcharts.chart('dailySalesChart', {
+      chart: { type: 'line' },
+      title: { text: null },
+      xAxis: { categories },
+      yAxis: {
+        title: { text: '매출 (원)' },
+        labels: {
+          formatter: function () {
+            return Highcharts.numberFormat(this.value, 0, '.', ',') + '원';
+          }
+        }
+      },
+      tooltip: {
+        pointFormat: '<b>{point.y:,.0f}원</b>'
+      },
+      series: [{
+        name: '일별 매출',
+        data: sales
+      }]
+    });
+  }
+
+  if (window.categorySalesData && Array.isArray(window.categorySalesData)) {
+    const donutData = window.categorySalesData.map(d => [d.categoryName, d.total]);
+
+    Highcharts.chart('categorySalesDonut', {
+      chart: { type: 'pie' },
+      title: { text: null },
+      plotOptions: {
+        pie: {
+          innerSize: '60%',
+          dataLabels: {
+            enabled: true,
+            format: '{point.name}: {point.y}원'
+          }
+        }
+      },
+      tooltip: {
+        pointFormat: '<b>{point.y:,.0f}원</b>'
+      },
+      series: [{
+        name: '카테고리 매출',
+        data: donutData
+      }]
+    });
+  }
+});

@@ -1,5 +1,6 @@
 package com.mc.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mc.app.dto.*;
 import com.mc.app.service.*;
 import jakarta.servlet.http.HttpSession;
@@ -141,18 +142,28 @@ public class MainController {
         }
 
         try {
-            List<Map<String, Object>> dailySalesData = totalOrderService.getDailySales(7); // ✅ 수정된 코드
-            model.addAttribute("dailySalesData", dailySalesData);
+            List<Map<String, Object>> dailySalesData = totalOrderService.getDailySales(7);
+            String dailySalesDataJson = new ObjectMapper().writeValueAsString(dailySalesData);
+            model.addAttribute("dailySalesDataJson", dailySalesDataJson);
         } catch (Exception e) {
             log.warn("[MainController] 일별 매출 로드 실패: {}", e.getMessage());
-            model.addAttribute("dailySalesData", new ArrayList<>());
+            model.addAttribute("dailySalesDataJson", "[]");
+        }
+
+        try {
+            List<Map<String, Object>> categorySales = totalOrderService.getSalesByCategory();
+            String categorySalesJson = new ObjectMapper().writeValueAsString(categorySales);
+            model.addAttribute("categorySalesDataJson", categorySalesJson);
+        } catch (Exception e) {
+            log.warn("[MainController] 카테고리 매출 로드 실패: {}", e.getMessage());
+            model.addAttribute("categorySalesDataJson", "[]");
         }
 
         model.addAttribute("serverurl", websocketServerUrl);
         model.addAttribute("center", "center");
         return "index";
-
     }
+
 
     @RequestMapping("/today")
     public String todayJoinList(Model model) {

@@ -86,4 +86,15 @@
         ORDER BY orderDate ASC
     </select>
 
+    <select id="selectSalesByCategory" resultType="map">
+        SELECT
+            c.category_name AS categoryName,
+            SUM(o.order_totalprice) AS total
+        FROM total_order o
+                 JOIN item i ON o.item_key = i.item_key
+                 JOIN category c ON i.category_key = c.category_key
+        WHERE o.order_status != '취소'
+        GROUP BY c.category_name
+    </select>
+
 </mapper>
