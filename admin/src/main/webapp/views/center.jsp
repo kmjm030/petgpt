@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <link rel="stylesheet" href="<c:url value='/css/center.css'/>">
 
@@ -51,6 +52,7 @@
         </div>
       </div>
     </div>
+
     <div class="col-lg-6 mb-4">
       <div class="dashboard-card">
         <div class="card-title">배송 상태</div>
@@ -59,6 +61,15 @@
           <li>배송 중: ${orderStatusMap['배송중']}</li>
           <li>배송 완료: ${orderStatusMap['배송완료']}</li>
         </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-lg-12 mb-4">
+      <div class="dashboard-card">
+        <div class="card-title">최근 7일 매출 추이</div>
+        <div id="dailySalesChart" style="height: 300px;"></div>
       </div>
     </div>
   </div>
@@ -134,6 +145,7 @@
         </ul>
       </div>
     </div>
+
     <div class="col-lg-6 mb-4">
       <div class="dashboard-card">
         <div class="card-title">최근 문의사항</div>
@@ -154,3 +166,10 @@
     </div>
   </div>
 </div>
+
+<script>
+  window.dailySalesData = <c:out value="${empty dailySalesDataJson ? '[]' : dailySalesDataJson}" escapeXml="false" />;
+</script>
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="<c:url value='/js/center.js'/>"></script>

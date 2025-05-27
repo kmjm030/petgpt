@@ -140,9 +140,18 @@ public class MainController {
             model.addAttribute("adminNotices", new ArrayList<>());
         }
 
+        try {
+            List<Map<String, Object>> dailySalesData = totalOrderService.getDailySales(7); // ✅ 수정된 코드
+            model.addAttribute("dailySalesData", dailySalesData);
+        } catch (Exception e) {
+            log.warn("[MainController] 일별 매출 로드 실패: {}", e.getMessage());
+            model.addAttribute("dailySalesData", new ArrayList<>());
+        }
+
         model.addAttribute("serverurl", websocketServerUrl);
         model.addAttribute("center", "center");
         return "index";
+
     }
 
     @RequestMapping("/today")

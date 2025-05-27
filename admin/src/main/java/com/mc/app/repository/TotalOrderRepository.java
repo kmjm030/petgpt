@@ -21,4 +21,5 @@ public interface TotalOrderRepository {
     TotalOrder selectOne(Integer orderKey) throws Exception;
     List<TotalOrder> selectRecentOrders() throws Exception;
     int deleteOne(Integer orderKey) throws Exception;
+    List<Map<String, Object>> findDailySales(int days) throws Exception;
 }

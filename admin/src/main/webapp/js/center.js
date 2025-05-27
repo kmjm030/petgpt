@@ -25,3 +25,32 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+  if (!window.dailySalesData) return;
+
+  const categories = window.dailySalesData.map(item => item.orderDate);
+  const data = window.dailySalesData.map(item => item.totalSales);
+
+  Highcharts.chart('dailySalesChart', {
+    chart: { type: 'line' },
+    title: { text: null },
+    xAxis: {
+      categories,
+      title: { text: '날짜' }
+    },
+    yAxis: {
+      title: { text: '매출 (원)' },
+      labels: { formatter: function () { return this.value.toLocaleString(); } }
+    },
+    tooltip: {
+      pointFormatter: function () {
+        return `<b>${this.y.toLocaleString()} 원</b>`;
+      }
+    },
+    series: [{
+      name: '일별 매출',
+      data
+    }]
+  });
+});
