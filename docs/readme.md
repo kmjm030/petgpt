@@ -44,7 +44,7 @@ AI 서비스 기반 반려동물 쇼핑몰: RAG 챗봇 상담 및 이미지 인�
 
 ## **⚙️ 프로젝트 로드맵**
 
-![PetGPT_Roadmap][./images/roadmap.png]
+![PetGPT_Roadmap][./docs/images/roadmap.png]
 
 ## **🗂️ ERD (데이터베이스 설계)**
 
@@ -61,27 +61,27 @@ AI 서비스 기반 반려동물 쇼핑몰: RAG 챗봇 상담 및 이미지 인�
    - 애매하거나 의외의 질문에 대한 예외 처리 능력
    - 의학적 질문에 대한 책임 회피 능력
    - 채팅 목록 저장 및 세션에 대한 대화 맥락 유지 능력
-   - ![맞춤형_상품_추천][./images/chatbot1.png]
-     ![상품_비교][./images/chatbot2.png]
-     ![고객_리뷰][./images/chatbot5.png]
-     ![예외_처리][./images/chatbot3.png]
-     ![의학적_질문][./images/chatbot4.png]
-     ![대화_맥락_1][./images/chatbot6.png]
-     ![대화_맥락_2][./images/chatbot7.png]
+   - ![맞춤형_상품_추천][./docs/images/chatbot1.png]
+     ![상품_비교][./docs/images/chatbot2.png]
+     ![고객_리뷰][./docs/images/chatbot5.png]
+     ![예외_처리][./docs/images/chatbot3.png]
+     ![의학적_질문][./docs/images/chatbot4.png]
+     ![대화_맥락_1][./docs/images/chatbot6.png]
+     ![대화_맥락_2][./docs/images/chatbot7.png]
 
 2. **Google Cloud Vision API 활용 품종 분석**
 
    - 사용자가 업로드한 반려동물 사진 분석하여 크기, 성격, 털관리, 활동량 4가지 정보 제공
    - 초보 보호자도 쉽게 맞춤 상품 검색 가능
-   - ![이미지_분석][./images/ai_analysis.png]
+   - ![이미지_분석][./docs/images/ai_analysis.png]
 
 3. **카카오 API 연동 (소셜 로그인, 지도 기반 서비스)**
 
    - 카카오 계정을 통한 간편 로그인
    - 카카오 맵 연동으로 "내 주변 매장 찾기" 검색 서비스
-     ![카카오_로그인_1][./images/login1.png]
-     ![카카오_로그인_2][./images/login2.png]
-     ![카카오_맵][./images/kakao_map.png]
+     ![카카오_로그인_1][./docs/images/login1.png]
+     ![카카오_로그인_2][./docs/images/login2.png]
+     ![카카오_맵][./docs/images/kakao_map.png]
 
 4. **아임포트 API 활용 간편 결제 시스템**
 
@@ -92,15 +92,15 @@ AI 서비스 기반 반려동물 쇼핑몰: RAG 챗봇 상담 및 이미지 인�
 
    - 사용자와 관리자 간 실시간 양방향 소통이 가능한 채팅 기능
    - 이를 통해 고객 문의에 대한 즉각적인 응대가 가능
-     ![실시간_채팅_1][./images/chat1.png]
-     ![실시간_채팅_2][./images/chat2.png]
+     ![실시간_채팅_1][./docs/images/chat1.png]
+     ![실시간_채팅_2][./docs/images/chat2.png]
 
 6. **스케줄러를 활용한 타임딜 이벤트**
    - 지정된 시간에 특정 상품을 할인된 가격으로 제공하는 타임딜 기능을 스케줄러를 통해 자동화
    - 주기적인 이벤트를 효율적으로 운영하고 사용자의 구매를 유도
-     ![타임딜_1][./images/time_deal1.png]
-     ![타임딜_2][./images/time_deal2.png]
-     ![타임딜_3][./images/time_deal3.png]
+     ![타임딜_1][./docs/images/time_deal1.png]
+     ![타임딜_2][./docs/images/time_deal2.png]
+     ![타임딜_3][./docs/images/time_deal3.png]
 
 ### **👨‍💼 관리자 페이지**
 
