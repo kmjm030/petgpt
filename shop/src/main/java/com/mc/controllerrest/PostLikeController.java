@@ -1,5 +1,6 @@
 package com.mc.controllerrest;
 
+import com.mc.app.dto.CommunityBoard;
 import com.mc.app.dto.Customer;
 import com.mc.app.dto.PostLike;
 import com.mc.app.service.CommunityBoardService;
@@ -46,7 +47,8 @@ public class PostLikeController {
                 result.put("liked", true);
             }
             
-            int likeCount = postLikeService.getPostLikeCount(postId);
+            CommunityBoard board = communityBoardService.getBoardDetailWithoutViewCount(postId);
+            Integer likeCount = board != null ? board.getLikeCount() : 0;
             result.put("likeCount", likeCount);
             
             return ResponseEntity.ok(result);
@@ -71,7 +73,8 @@ public class PostLikeController {
                 isLiked = postLikeService.isLikedByUser(postId, loggedInUser.getCustId());
             }
             
-            int likeCount = postLikeService.getPostLikeCount(postId);
+            CommunityBoard board = communityBoardService.getBoardDetailWithoutViewCount(postId);
+            Integer likeCount = board != null ? board.getLikeCount() : 0;
             
             Map<String, Object> result = new HashMap<>();
             result.put("liked", isLiked);
