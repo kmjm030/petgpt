@@ -124,9 +124,27 @@ public class CommunityBoardService {
         int offset = (page - 1) * PAGE_SIZE;
 
         List<CommunityBoard> posts = communityBoardRepository.searchBoards(
-                keyword, offset, PAGE_SIZE, sort);
+                keyword, null, offset, PAGE_SIZE, sort);
 
-        int totalPosts = communityBoardRepository.countBoardsByKeyword(keyword);
+        int totalPosts = communityBoardRepository.countBoardsByKeyword(keyword, null);
+        int totalPages = (int) Math.ceil((double) totalPosts / PAGE_SIZE);
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("posts", posts);
+        result.put("totalPosts", totalPosts);
+        result.put("totalPages", totalPages);
+        result.put("currentPage", page);
+
+        return result;
+    }
+
+    public Map<String, Object> searchBoards(String keyword, String category, int page, String sort) {
+        int offset = (page - 1) * PAGE_SIZE;
+
+        List<CommunityBoard> posts = communityBoardRepository.searchBoards(
+                keyword, category, offset, PAGE_SIZE, sort);
+
+        int totalPosts = communityBoardRepository.countBoardsByKeyword(keyword, category);
         int totalPages = (int) Math.ceil((double) totalPosts / PAGE_SIZE);
 
         Map<String, Object> result = new HashMap<>();

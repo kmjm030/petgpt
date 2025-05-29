@@ -20,12 +20,16 @@ public interface CommunityBoardRepository {
     );
     List<CommunityBoard> searchBoards(
             @Param("keyword") String keyword,
+            @Param("category") String category,
             @Param("offset") int offset,
             @Param("limit") int limit,
             @Param("sort") String sort
     );
     int countBoardsByCategory(@Param("category") String category);
-    int countBoardsByKeyword(@Param("keyword") String keyword);
+    int countBoardsByKeyword(
+            @Param("keyword") String keyword,
+            @Param("category") String category
+    );
     int increaseViewCount(int boardKey);
     int increaseLikeCount(int boardKey);
     int decreaseLikeCount(int boardKey);
