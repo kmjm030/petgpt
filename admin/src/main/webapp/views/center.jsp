@@ -1,15 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <link rel="stylesheet" href="<c:url value='/css/center.css'/>">
-<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-
-<script src="https://code.highcharts.com/stock/highstock.js"></script>
-<script src="<c:url value='/js/center.js'/>"></script>
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-<script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
-<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=1d80cc061f948248f9465d96f87b1f5c&libraries=services"></script>
 
 <div class="container-fluid">
   <div class="dashboard-header">메인화면</div>
@@ -71,35 +65,22 @@
   </div>
 
   <div class="row mb-4">
-    <div class="col-lg-6 mb-4"><div id="dailySalesChart" style="height:300px;"></div></div>
-    <div class="col-lg-6 mb-4"><div id="categorySalesDonut" style="height:300px;"></div></div>
-    <div class="col-lg-6 mb-4"><div id="hourlySalesChart" style="height:300px;"></div></div>
-    <div class="col-lg-6 mb-4"><div id="monthlyCandleChart" style="height:300px;"></div></div>
-    <div class="col-lg-6 mb-4"><div id="lowStockBarChart" style="height:300px;"></div></div>
-    <div class="col-lg-6 mb-4"><div id="weeklySalesChart" style="height:300px;"></div></div>
-    <div class="col-lg-6 mb-4"><div id="monthlySalesChart" style="height:300px;"></div></div>
-    <div class="col-lg-6 mb-4"><div id="paymentMethodChart" style="height:300px;"></div></div>
-    <div class="col-lg-6 mb-4"><div id="deliveryStatusChart" style="height:300px;"></div></div>
-    <div class="col-lg-6 mb-4"><div id="priceRangeChart" style="height:300px;"></div></div>
-    <div class="col-lg-6 mb-4"><div id="categoryStockChart" style="height:300px;"></div></div>
-    <div class="col-lg-6 mb-4"><div id="monthlySignupChart" style="height:300px;"></div></div>
-    <div class="col-lg-6 mb-4"><div id="cartConversionChart" style="height:300px;"></div></div>
-    <div class="col-lg-12 mb-4">
+    <div class="col-lg-6 mb-4">
       <div class="dashboard-card">
-        <div class="card-title">📍 지역별 매출 분포</div>
-        <div id="salesMap" style="width:100%; height:400px;"></div>
+        <div class="card-title">최근 7일 매출 추이</div>
+        <div id="dailySalesChart" style="height: 300px;"></div>
       </div>
     </div>
-    <div class="col-lg-12 mb-4">
+    <div class="col-lg-6 mb-4">
       <div class="dashboard-card">
-        <div class="card-title">🔥 고객 밀집도</div>
-        <div id="userHeatmap" style="width:100%; height:400px;"></div>
+        <div class="card-title">카테고리별 판매 통계</div>
+        <div id="categorySalesDonut" style="height: 300px;"></div>
       </div>
     </div>
   </div>
 
   <div class="row mb-4">
-    <div class="col-lg-6 mb-4">
+    <div class="col-lg-4 mb-4">
       <div class="dashboard-card">
         <div class="card-title">관리자 알림</div>
         <ul class="list-group list-group-flush">
@@ -112,7 +93,7 @@
         </ul>
       </div>
     </div>
-    <div class="col-lg-6 mb-4">
+    <div class="col-lg-4 mb-4">
       <div class="chart-card">
         <h6 class="card-title">상품 판매 TOP 10</h6>
         <ul class="list-group list-group-flush">
@@ -128,7 +109,7 @@
         </ul>
       </div>
     </div>
-    <div class="col-lg-6 mb-4">
+    <div class="col-lg-4 mb-4">
       <div class="dashboard-card">
         <div class="card-title">관리자 공지사항</div>
         <ul class="list-group list-group-flush">
@@ -145,7 +126,10 @@
         </ul>
       </div>
     </div>
-    <div class="col-lg-12 mb-4">
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-lg-6 mb-4">
       <div class="dashboard-card">
         <div class="card-title">최근 주문 내역</div>
         <ul class="list-group list-group-flush">
@@ -166,23 +150,32 @@
         </ul>
       </div>
     </div>
-  </div>
-</div>
 
-<div class="modal fade" id="orderDetailModal" tabindex="-1" role="dialog" aria-labelledby="orderDetailModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="orderDetailModalLabel">주문 상세 정보</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <p><strong>주문번호:</strong> <span id="modalOrderKey"></span></p>
-        <p><strong>주문자 ID:</strong> <span id="modalCustId"></span></p>
-        <p><strong>상태:</strong> <span id="modalStatus"></span></p>
-        <p><strong>주문일:</strong> <span id="modalDate"></span></p>
-        <p><strong>총 금액:</strong> <span id="modalTotalPrice"></span> 원</p>
+    <div class="col-lg-6 mb-4">
+      <div class="dashboard-card">
+        <div class="card-title">최근 문의사항</div>
+        <ul class="list-group list-group-flush">
+          <c:forEach var="qna" items="${recentQnaList}">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <a href="<c:url value='/qnaboard/detail?id=${qna.boardKey}'/>" style="text-decoration: none; color: inherit;">
+                  ${qna.boardTitle}
+              </a>
+              <fmt:formatDate value="${qna.boardRdate}" pattern="yyyy-MM-dd" />
+            </li>
+          </c:forEach>
+          <c:if test="${empty recentQnaList}">
+            <li class="list-group-item text-muted">최근 문의가 없습니다.</li>
+          </c:if>
+        </ul>
       </div>
     </div>
   </div>
 </div>
+
+<script>
+  window.dailySalesData = <c:out value="${empty dailySalesDataJson ? '[]' : dailySalesDataJson}" escapeXml="false" />;
+  window.categorySalesData = <c:out value="${empty categorySalesDataJson ? '[]' : categorySalesDataJson}" escapeXml="false" />;
+</script>
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="<c:url value='/js/center.js'/>"></script>

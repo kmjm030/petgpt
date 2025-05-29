@@ -41,7 +41,7 @@ public class SalesService {
   public Map<String, Long> getSalesSummary() {
     Map<String, Long> result = new HashMap<>();
     result.put("today", salesRepository.getTodaySales());
-    result.put("week", salesRepository.getWeekSales());
+    result.put("week",  salesRepository.getWeekSales());
     result.put("month", salesRepository.getMonthSales());
     return result;
   }

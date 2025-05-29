@@ -1,5 +1,6 @@
 package com.mc.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mc.app.dto.*;
 import com.mc.app.service.*;
 import jakarta.servlet.http.HttpSession;
@@ -23,6 +24,7 @@ public class MainController {
     private final ItemService itemService;
     private final TotalOrderService totalOrderService;
     private final AdminNoticeService adminNoticeService;
+    private final QnaBoardService qnaBoardService;
 
     @Value("${app.url.websocket-server-url}")
     private String websocketServerUrl;
@@ -93,6 +95,14 @@ public class MainController {
             model.addAttribute("recentOrders", new ArrayList<>());
         }
 
+        try {
+            List<QnaBoard> recentQnaList = qnaBoardService.getRecentQna(5);
+            model.addAttribute("recentQnaList", recentQnaList);
+        } catch (Exception e) {
+            log.warn("[MainController] 최근 QnA 로드 실패: {}", e.getMessage());
+            model.addAttribute("recentQnaList", new ArrayList<>());
+        }
+
         List<String> alerts = new ArrayList<>();
 
         try {
@@ -131,10 +141,29 @@ public class MainController {
             model.addAttribute("adminNotices", new ArrayList<>());
         }
 
+        try {
+            List<Map<String, Object>> dailySalesData = totalOrderService.getDailySales(7);
+            String dailySalesDataJson = new ObjectMapper().writeValueAsString(dailySalesData);
+            model.addAttribute("dailySalesDataJson", dailySalesDataJson);
+        } catch (Exception e) {
+            log.warn("[MainController] 일별 매출 로드 실패: {}", e.getMessage());
+            model.addAttribute("dailySalesDataJson", "[]");
+        }
+
+        try {
+            List<Map<String, Object>> categorySales = totalOrderService.getSalesByCategory();
+            String categorySalesJson = new ObjectMapper().writeValueAsString(categorySales);
+            model.addAttribute("categorySalesDataJson", categorySalesJson);
+        } catch (Exception e) {
+            log.warn("[MainController] 카테고리 매출 로드 실패: {}", e.getMessage());
+            model.addAttribute("categorySalesDataJson", "[]");
+        }
+
         model.addAttribute("serverurl", websocketServerUrl);
         model.addAttribute("center", "center");
         return "index";
     }
+
 
     @RequestMapping("/today")
     public String todayJoinList(Model model) {

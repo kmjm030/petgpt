@@ -68,7 +68,7 @@ function drawSalesChart(apiUrl, containerId, title) {
           labels: { style: { fontWeight: 'bold' } }
         },
         yAxis: {
-          title: { text: '매출 (원)' },
+          title: { text: 'Sales (KRW)' },
           labels: {
             formatter() {
               return this.value.toLocaleString();
@@ -76,18 +76,18 @@ function drawSalesChart(apiUrl, containerId, title) {
           }
         },
         tooltip: {
-          valueSuffix: ' 원',
+          valueSuffix: ' KRW',
           valueDecimals: 0,
           shared: true
         },
         series: [{
-          name: '매출',
+          name: 'Sales',
           data: data.map((d, i) => ({
             y: d.total_sales,
             label: d.label,
             index: i
           })),
-          color: '#007bff',
+          color: '#B700FF',
           point: {
             events: {
               click: function () {
@@ -99,13 +99,13 @@ function drawSalesChart(apiUrl, containerId, title) {
                   const rate = ((diff / prev.y) * 100).toFixed(1);
                   const sign = diff >= 0 ? '▲' : '▼';
                   content = `
-                    <p><strong>${this.label}</strong> 매출: ${current.toLocaleString()}원</p>
-                    <p>이전 대비: <span style="color:${diff >= 0 ? 'green' : 'red'}">
-                      ${sign} ${Math.abs(diff).toLocaleString()}원 (${Math.abs(rate)}%)
+                    <p><strong>${this.label}</strong> Sales: ${current.toLocaleString()} KRW</p>
+                    <p>Compared to previous: <span style="color:${diff >= 0 ? 'lime' : 'red'}">
+                      ${sign} ${Math.abs(diff).toLocaleString()} KRW (${Math.abs(rate)}%)
                     </span></p>`;
                 } else {
-                  content = `<p><strong>${this.label}</strong> 매출: ${current.toLocaleString()}원</p>
-                             <p>이전 데이터가 없어 비교할 수 없습니다.</p>`;
+                  content = `<p><strong>${this.label}</strong> Sales: ${current.toLocaleString()} KRW</p>
+                             <p>No previous data available for comparison.</p>`;
                 }
                 document.getElementById('salesDiffModalBody').innerHTML = content;
                 $('#salesDiffModal').modal('show');
@@ -116,7 +116,7 @@ function drawSalesChart(apiUrl, containerId, title) {
         credits: { enabled: false }
       });
     })
-    .catch(err => console.error(`[${containerId}] 차트 불러오기 실패:`, err));
+    .catch(err => console.error(`[${containerId}] Failed to load chart:`, err));
 }
 
 function fillMissingMonths(data) {
@@ -163,21 +163,21 @@ function drawUserChart(apiUrl, containerId, title) {
           labels: { style: { fontWeight: 'bold' } }
         },
         yAxis: {
-          title: { text: '가입자 수' },
+          title: { text: 'Number of Users' },
           allowDecimals: false
         },
         tooltip: {
-          valueSuffix: ' 명',
+          valueSuffix: ' users',
           shared: true
         },
         series: [{
-          name: '가입자 수',
+          name: 'Users',
           data: data.map((d, i) => ({
             y: d.count,
             label: d.label,
             index: i
           })),
-          color: '#28a745',
+          color: '#FF00F6',
           point: {
             events: {
               click: function () {
@@ -189,13 +189,13 @@ function drawUserChart(apiUrl, containerId, title) {
                   const rate = ((diff / prev.y) * 100).toFixed(1);
                   const sign = diff >= 0 ? '▲' : '▼';
                   content = `
-                    <p><strong>${this.label}</strong> 가입자 수: ${current.toLocaleString()}명</p>
-                    <p>이전 대비: <span style="color:${diff >= 0 ? 'green' : 'red'}">
-                      ${sign} ${Math.abs(diff).toLocaleString()}명 (${Math.abs(rate)}%)
+                    <p><strong>${this.label}</strong> Users: ${current.toLocaleString()}</p>
+                    <p>Compared to previous: <span style="color:${diff >= 0 ? 'lime' : 'red'}">
+                      ${sign} ${Math.abs(diff).toLocaleString()} (${Math.abs(rate)}%)
                     </span></p>`;
                 } else {
-                  content = `<p><strong>${this.label}</strong> 가입자 수: ${current.toLocaleString()}명</p>
-                             <p>이전 데이터가 없어 비교할 수 없습니다.</p>`;
+                  content = `<p><strong>${this.label}</strong> Users: ${current.toLocaleString()}</p>
+                             <p>No previous data available for comparison.</p>`;
                 }
                 document.getElementById('salesDiffModalBody').innerHTML = content;
                 $('#salesDiffModal').modal('show');
@@ -206,8 +206,9 @@ function drawUserChart(apiUrl, containerId, title) {
         credits: { enabled: false }
       });
     })
-    .catch(err => console.error(`[${containerId}] 가입자 차트 실패:`, err));
+    .catch(err => console.error(`[${containerId}] Failed to load user chart:`, err));
 }
+
 function drawRegionSalesMap() {
   fetch('/api/sales/region')
     .then(res => res.json())
@@ -260,43 +261,49 @@ function drawTopProductsChart() {
     .then(res => res.json())
     .then(data => {
       if (!Array.isArray(data)) {
-        console.error('[상품별 매출] API 응답이 배열이 아님:', data);
+        console.error('[Top Products] API response is not an array:', data);
         return;
       }
 
       Highcharts.chart('topProductsChart', {
         chart: { type: 'bar' },
-        title: { text: '상품별 매출 TOP 5' },
+        title: { text: 'Top 5 Products by Sales' },
         xAxis: {
           categories: data.map(p => p.product_name),
           title: { text: null }
         },
         yAxis: {
           min: 0,
-          title: { text: '매출 (원)', align: 'high' },
+          title: { text: 'Sales (KRW)', align: 'high' },
           labels: { overflow: 'justify' }
         },
         tooltip: {
-          valueSuffix: ' 원',
+          valueSuffix: ' KRW',
           valueDecimals: 0
         },
         plotOptions: {
           bar: {
             dataLabels: {
               enabled: true,
-              format: '{point.y:,.0f} 원'
+              format: '{point.y:,.0f} KRW',
+              style: {
+                color: '#FFFFFF',
+                fontWeight: 'bold',
+                textOutline: '1px contrast',
+                textShadow: '0 0 2px #000'
+              }
             }
           }
         },
         series: [{
-          name: '매출',
+          name: 'Sales',
           data: data.map(p => p.total_sales),
-          color: '#ffc107'
+          color: '#FF00F6'
         }],
         credits: { enabled: false }
       });
     })
-    .catch(err => console.error('[상품별 매출] 로딩 실패:', err));
+    .catch(err => console.error('[Top Products] Failed to load chart:', err));
 }
 
 function drawHourlySalesChart() {
@@ -304,7 +311,7 @@ function drawHourlySalesChart() {
     .then(res => res.json())
     .then(data => {
       if (!Array.isArray(data)) {
-        console.error('[시간대별 매출] 응답이 배열이 아님:', data);
+        console.error('[Hourly Sales] Response is not an array:', data);
         return;
       }
 
@@ -326,13 +333,13 @@ function drawHourlySalesChart() {
 
       Highcharts.chart('hourlySalesChart', {
         chart: { type: 'line' },
-        title: { text: '최근 6시간 매출' },
+        title: { text: 'Sales in the Last 6 Hours' },
         xAxis: {
-          categories: filled.map(d => `${d.hour}시`),
+          categories: filled.map(d => `${d.hour}:00`),
           labels: { style: { fontWeight: 'bold' } }
         },
         yAxis: {
-          title: { text: '매출 (원)' },
+          title: { text: 'Sales (KRW)' },
           labels: {
             formatter() {
               return this.value.toLocaleString();
@@ -340,18 +347,18 @@ function drawHourlySalesChart() {
           }
         },
         tooltip: {
-          valueSuffix: ' 원',
+          valueSuffix: ' KRW',
           shared: true
         },
         series: [{
-          name: '매출',
+          name: 'Sales',
           data: filled.map(d => d.total_sales),
-          color: '#17a2b8'
+          color: '#B700FF'
         }],
         credits: { enabled: false }
       });
     })
-    .catch(err => console.error('[시간대별 매출] 로딩 실패:', err));
+    .catch(err => console.error('[Hourly Sales] Failed to load chart:', err));
 }
 
 function updateActiveUsers() {
@@ -366,16 +373,82 @@ function updateActiveUsers() {
 setInterval(updateActiveUsers, 10000);
 
 document.addEventListener('DOMContentLoaded', () => {
-  drawSalesChart('/api/sales/daily', 'dailySalesChart', '일별 매출');
-  drawSalesChart('/api/sales/weekly', 'weeklySalesChart', '주별 매출');
-  drawSalesChart('/api/sales/monthly', 'monthlySalesChart', '월별 매출');
+  drawSalesChart('/api/sales/daily', 'dailySalesChart', 'Daily Sales');
+  drawSalesChart('/api/sales/weekly', 'weeklySalesChart', 'Weekly Sales');
+  drawSalesChart('/api/sales/monthly', 'monthlySalesChart', 'Monthly Sales');
 
-  drawUserChart('/api/users/daily', 'dailyUserChart', '일별 가입자 수');
-  drawUserChart('/api/users/monthly', 'monthlyUserChart', '월별 가입자 수');
-  drawUserChart('/api/users/yearly', 'yearlyUserChart', '연도별 가입자 수');
+  drawUserChart('/api/users/daily', 'dailyUserChart', 'Daily User Signups');
+  drawUserChart('/api/users/monthly', 'monthlyUserChart', 'Monthly User Signups');
+  drawUserChart('/api/users/yearly', 'yearlyUserChart', 'Yearly User Signups');
 
   drawRegionSalesMap();
   drawTopProductsChart();
   drawHourlySalesChart();
   updateActiveUsers();
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+  const closeBtn = document.querySelector('#salesDiffModal .close');
+  if (closeBtn) {
+    closeBtn.addEventListener('click', function () {
+      $('#salesDiffModal').modal('hide');
+    });
+  }
+});
+
+function downloadReportAsPDF() {
+  const element = document.getElementById('pdfReportArea');
+  const opt = {
+    margin:       0.5,
+    filename:     'monthly_sales_report.pdf',
+    image:        { type: 'jpeg', quality: 0.98 },
+    html2canvas:  { scale: 2 },
+    jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+  };
+
+  html2pdf().set(opt).from(element).save();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const btn = document.getElementById('pdfDownloadBtn');
+  if (btn) btn.addEventListener('click', downloadReportAsPDF);
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  const canvas = document.getElementById('mouseTrailCanvas');
+  if (!canvas) return;
+
+  const ctx = canvas.getContext('2d');
+  let width = window.innerWidth;
+  let height = window.innerHeight;
+  canvas.width = width;
+  canvas.height = height;
+
+  window.addEventListener('resize', () => {
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
+  });
+
+  const trail = [];
+
+  document.addEventListener('mousemove', e => {
+    trail.push({ x: e.clientX, y: e.clientY, alpha: 1 });
+    if (trail.length > 20) trail.shift();
+  });
+
+  function drawTrail() {
+    ctx.clearRect(0, 0, width, height);
+    trail.forEach(point => {
+      ctx.beginPath();
+      ctx.arc(point.x, point.y, 4, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255, 0, 246, ${point.alpha})`;
+      ctx.fill();
+      point.alpha *= 0.9;
+    });
+    requestAnimationFrame(drawTrail);
+  }
+
+  drawTrail();
 });

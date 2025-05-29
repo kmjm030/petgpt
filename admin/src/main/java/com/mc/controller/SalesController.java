@@ -2,10 +2,7 @@ package com.mc.controller;
 
 import com.mc.app.service.SalesService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -49,6 +46,6 @@ public class SalesController {
 
   @GetMapping("/summary")
   public Map<String, Long> getSalesSummary() {
-    return salesService.getSalesSummary();  // → service에서 summary map return
+    return salesService.getSalesSummary();
   }
 }

@@ -66,4 +66,13 @@ public class TotalOrderService {
     public void deleteOne(int orderKey) throws Exception {
         totalOrderRepository.deleteOne(orderKey);
     }
+
+    public List<Map<String, Object>> getDailySales(int days) throws Exception {
+        return totalOrderRepository.findDailySales(days);
+    }
+
+    public List<Map<String, Object>> getSalesByCategory() throws Exception {
+        return totalOrderRepository.selectSalesByCategory();
+    }
+
 }

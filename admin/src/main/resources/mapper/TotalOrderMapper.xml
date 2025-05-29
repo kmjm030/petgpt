@@ -74,4 +74,27 @@
         DELETE FROM total_order
         WHERE order_key = #{orderKey}
     </delete>
+
+    <select id="findDailySales" parameterType="int" resultType="map">
+        SELECT
+            DATE(order_date) AS orderDate,
+            SUM(order_totalprice) AS totalSales
+        FROM total_order
+        WHERE order_date >= DATE_SUB(CURDATE(), INTERVAL #{days} DAY)
+          AND order_status != '취소'
+        GROUP BY DATE(order_date)
+        ORDER BY orderDate ASC
+    </select>
+
+    <select id="selectSalesByCategory" resultType="map">
+        SELECT
+            c.category_name AS categoryName,
+            SUM(o.order_totalprice) AS total
+        FROM total_order o
+                 JOIN item i ON o.item_key = i.item_key
+                 JOIN category c ON i.category_key = c.category_key
+        WHERE o.order_status != '취소'
+        GROUP BY c.category_name
+    </select>
+
 </mapper>
