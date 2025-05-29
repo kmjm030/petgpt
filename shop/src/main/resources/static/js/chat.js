@@ -225,7 +225,7 @@ $(document).ready(function () {
         messageId: noticeId,
         sendid: "System",
         content1:
-          "번역 서비스가 활성화되었습니다. 이제부터 채팅이 자동으로 번역됩니다.",
+          "The translation service has been activated. From now on, the chat will be automatically translated.",
       });
       displayedMessageIds.add(noticeId);
     });
