@@ -13,7 +13,7 @@
     </select>
 
     <insert id="insert" parameterType="Customer">
-        INSERT INTO customer VALUES (#{custId}, #{custPwd}, #{custName}, #{custEmail}, #{custPhone},now(), null, 0, 1000, #{custNick}, #{custImg}, 1000, "가입축하")
+        INSERT INTO customer VALUES (#{custId}, #{custPwd}, #{custName}, #{custEmail}, #{custPhone},now(), 0, 1000, #{custNick}, #{custImg}, 1000, "가입축하")
     </insert>
 
     <update id="update" parameterType="Customer">
