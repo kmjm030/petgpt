@@ -73,6 +73,9 @@ public class CommunityBoard {
     public void onCreate() {
         regDate = LocalDateTime.now();
         updateDate = LocalDateTime.now();
+        viewCount = 0;
+        likeCount = 0;
+        commentCount = 0;
     }
 
     public void onUpdate() {
