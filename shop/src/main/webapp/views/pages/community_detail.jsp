@@ -95,6 +95,9 @@
                         <div class="comment-author-img">
                           <c:set var="profileImgUrl">
                             <c:choose>
+                              <c:when test="${comment.custId eq 'deleted'}">
+                                <c:url value="/img/default-profile.png" />
+                              </c:when>
                               <c:when test="${not empty comment.custProfileImgUrl}">
                                 ${comment.custProfileImgUrl}
                               </c:when>
@@ -296,13 +299,15 @@
             const commentSection = document.querySelector('.comment-section');
             if (!commentSection) return;
 
-            let profileImgUrl = comment.custProfileImgUrl;
-            if (!profileImgUrl) {
-              if (comment.custName) {
-                profileImgUrl = '<c:url value="/img/user/"/>' + comment.custName + '.png';
-              } else {
-                profileImgUrl = '<c:url value="/img/default-profile.png"/>';
-              }
+            let profileImgUrl;
+            if (comment.custId === 'deleted') {
+              profileImgUrl = '<c:url value="/img/default-profile.png"/>';
+            } else if (comment.custProfileImgUrl) {
+              profileImgUrl = comment.custProfileImgUrl;
+            } else if (comment.custName) {
+              profileImgUrl = '<c:url value="/img/user/"/>' + comment.custName + '.png';
+            } else {
+              profileImgUrl = '<c:url value="/img/default-profile.png"/>';
             }
             const formattedDate = formatDateTime(comment.commentsRdate);
             const commentId = comment.commentsKey || '';
@@ -605,8 +610,12 @@
 
           // --- 답글 화면 추가 함수 ---
           function appendReplyComment(replyData, parentCommentItem) {
-            let profileImgUrl = replyData.custProfileImgUrl;
-            if (!profileImgUrl && replyData.custName) {
+            let profileImgUrl;
+            if (replyData.custId === 'deleted') {
+              profileImgUrl = '<c:url value="/img/default-profile.png"/>';
+            } else if (replyData.custProfileImgUrl) {
+              profileImgUrl = replyData.custProfileImgUrl;
+            } else if (replyData.custName) {
               profileImgUrl = '<c:url value="/img/user/"/>' + replyData.custName + '.png';
             } else {
               profileImgUrl = '<c:url value="/img/default-profile.png"/>';
