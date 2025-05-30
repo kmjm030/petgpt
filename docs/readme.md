@@ -53,21 +53,23 @@ AI 서비스 기반 반려동물 쇼핑몰: RAG 챗봇 상담 및 이미지 인�
 
 1. **RAG 기반 AI 챗봇 상품 추천 및 상담**
 
-   - 쇼핑몰 내부 상품 정보, 고객 리뷰, 쇼핑몰 정책 등을 학습한 AI 챗봇
-   - 고객 질문 의도 파악 및 맞춤형 상품 추천, 상품 비교, 관련 고객 리뷰 등 상세 답변 실시간 제공
-   - ![맞춤형_상품_추천](./images/chatbot1.png)
-     ![상품_비교](./images/chatbot2.png)
-     ![고객_리뷰](./images/chatbot5.png)
+[챗봇\_readme](./chatbot-readme.md)
 
-   - 애매하거나 의외의 질문에 대한 예외 처리 능력
-     ![예외_처리](./images/chatbot3.png)
+- 쇼핑몰 내부 상품 정보, 고객 리뷰, 쇼핑몰 정책 등을 학습한 AI 챗봇
+- 고객 질문 의도 파악 및 맞춤형 상품 추천, 상품 비교, 관련 고객 리뷰 등 상세 답변 실시간 제공
+- ![맞춤형_상품_추천](./images/chatbot1.png)
+  ![상품_비교](./images/chatbot2.png)
+  ![고객_리뷰](./images/chatbot5.png)
 
-   - 의학적 질문에 대한 책임 회피 능력
-     ![의학적_질문](./images/chatbot4.png)
+- 애매하거나 의외의 질문에 대한 예외 처리 능력
+  ![예외_처리](./images/chatbot3.png)
 
-   - 채팅 목록 저장 및 세션에 대한 대화 맥락 유지 능력
-     ![대화_맥락_1](./images/chatbot6.png)
-     ![대화_맥락_2](./images/chatbot7.png)
+- 의학적 질문에 대한 책임 회피 능력
+  ![의학적_질문](./images/chatbot4.png)
+
+- 채팅 목록 저장 및 세션에 대한 대화 맥락 유지 능력
+  ![대화_맥락_1](./images/chatbot6.png)
+  ![대화_맥락_2](./images/chatbot7.png)
 
 2. **Google Cloud Vision API 활용 품종 분석**
 
