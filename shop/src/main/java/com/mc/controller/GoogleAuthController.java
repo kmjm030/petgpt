@@ -102,10 +102,18 @@ public class GoogleAuthController {
                 customer = Customer.builder()
                         .custId(generatedCustId)
                         .custPwd(null)
-                        .custName(userInfo.getName())
-                        .custNick(userInfo.getGiven_name())
-                        .custEmail(userInfo.getEmail())
-                        .custImg(userInfo.getPicture())
+                        .custName(userInfo.getName() != null ? 
+                                  (userInfo.getName().length() > 20 ? userInfo.getName().substring(0, 20) : userInfo.getName()) : 
+                                  "Google User")
+                        .custNick(userInfo.getGiven_name() != null ?
+                                  (userInfo.getGiven_name().length() > 50 ? userInfo.getGiven_name().substring(0, 50) : userInfo.getGiven_name()) :
+                                  "User")
+                        .custEmail(userInfo.getEmail() != null ?
+                                  (userInfo.getEmail().length() > 50 ? userInfo.getEmail().substring(0, 50) : userInfo.getEmail()) :
+                                  "google@example.com")
+                        .custImg(userInfo.getPicture() != null ?
+                                (userInfo.getPicture().length() > 255 ? userInfo.getPicture().substring(0, 255) : userInfo.getPicture()) :
+                                null)
                         .custAuth(0)
                         .custPoint(0)
                         .custRdate(LocalDateTime.now())
