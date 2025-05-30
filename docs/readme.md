@@ -39,7 +39,7 @@ AI 서비스 기반 반려동물 쇼핑몰: RAG 챗봇 상담 및 이미지 인�
 
 ## **⚙️ 프로젝트 로드맵**
 
-![PetGPT_Roadmap](./images/roadmap.png)
+![PetGPT_시스템_아키텍처_다이어그램](./images/PetGPT_시스템_아키텍처_다이어그램.png)
 
 ## **🗂️ ERD (데이터베이스 설계)**
 
