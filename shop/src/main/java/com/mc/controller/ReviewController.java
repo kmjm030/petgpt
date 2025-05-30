@@ -54,6 +54,7 @@ public class ReviewController {
         }
 
         List<QnaBoard> reviews = boardService.findReviewByCust(id);
+        reviews.sort((r1, r2) -> r2.getBoardRdate().compareTo(r1.getBoardRdate()));
         for (QnaBoard review : reviews) {
             Item item = itemService.get(review.getItemKey());
             review.setItem(item);
