@@ -3,7 +3,7 @@
 **PetGPT**는 사용자 질문을 실시간으로 분석하여
 쇼핑몰 DB, 쇼핑몰 정책 등의 문서를 근거로 **맞춤형 답변**을 제공하는 RAG‑기반 AI 챗봇 서비스입니다.
 
----
+<br>
 
 ## 기술 스택
 
@@ -16,7 +16,7 @@
 | **Frameworks**   | LangChain & LangChain Hub   | 프롬프트·체인 구성     |
 | **Ingestion**    | Firecrawl, MySQL → Markdown | 데이터 수집 & 청크     |
 
----
+<br>
 
 ## 디렉터리 구조
 
@@ -33,7 +33,7 @@
 ├── Pipfile              # 패키지/파이썬 버전 지정
 ```
 
----
+<br>
 
 ## 빠른 시작
 
@@ -77,7 +77,7 @@ uvicorn backend.api_server:app --reload
 streamlit run main.py
 ```
 
----
+<br>
 
 ## API 사용 예시
 
@@ -92,7 +92,7 @@ curl -X POST http://localhost:8000/api/chat-with-rag \
      -d '{"query": "고양이 사료 추천해줘"}'
 ```
 
----
+<br>
 
 ## 주요 스크립트
 
@@ -101,5 +101,3 @@ curl -X POST http://localhost:8000/api/chat-with-rag \
 | `ingestion.py`     | 웹/로컬 문서를 크롤링해 Pinecone 인덱스에 업로드  |
 | `mysql-to-docs.py` | MySQL 테이블 데이터를 Markdown으로 덤프 후 벡터화 |
 | `backend/core.py`  | `run_llm()` ‑ LLM + Retriever + Prompt 체인 구성  |
-
----
