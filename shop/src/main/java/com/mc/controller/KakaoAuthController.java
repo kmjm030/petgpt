@@ -154,6 +154,13 @@ public class KakaoAuthController {
             }
 
             log.info("카카오 로그인 성공, 메인 페이지로 리다이렉트");
+            
+            String redirectURL = (String) session.getAttribute("redirectURL");
+            if (redirectURL != null && !redirectURL.isEmpty()) {
+                session.removeAttribute("redirectURL");
+                return "redirect:" + redirectURL;
+            }
+            
             return "redirect:/"; 
         } catch (Exception e) {
             log.error("카카오 로그인 처리 중 오류 발생: {}", e.getMessage());

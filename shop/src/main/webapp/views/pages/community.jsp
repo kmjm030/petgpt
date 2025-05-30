@@ -29,7 +29,7 @@
           <div class="row">
             <div class="col-lg-3">
               <div class="shop__sidebar">
-                <a href="<c:url value='/community/write'/>" class="write-btn">게시글 작성</a>
+                <a href="<c:url value='/community/write?redirectAfterLogin=true'/>" class="write-btn">게시글 작성</a>
 
                 <div class="shop__sidebar__search">
                   <form action="<c:url value='/community/search'/>" method="GET">

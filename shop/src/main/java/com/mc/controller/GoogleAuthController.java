@@ -114,6 +114,13 @@ public class GoogleAuthController {
                 log.info("신규 회원 가입 완료: {}", customer.getCustId());
             }
             session.setAttribute("cust", customer);
+            
+            String redirectURL = (String) session.getAttribute("redirectURL");
+            if (redirectURL != null && !redirectURL.isEmpty()) {
+                session.removeAttribute("redirectURL");
+                return "redirect:" + redirectURL;
+            }
+            
             return "redirect:/";
         } catch (Exception e) {
             log.error("Google 로그인 프로세스 실패", e);
