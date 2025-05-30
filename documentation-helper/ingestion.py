@@ -1,6 +1,4 @@
 import os
-import re
-import pickle
 from langchain_core.documents import Document
 from dotenv import load_dotenv
 
@@ -10,12 +8,12 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_pinecone import PineconeVectorStore
 
-# ---------------- Global Configurations ----------------
+# Global Configurations 
 GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY")
 PINECONE_API_KEY = os.environ.get("PINECONE_API_KEY")
 PINECONE_INDEX_NAME = "petgpt-index"
 
-# Text Splitting Parameters for the combined document
+# Text Splitting Parameters
 COMBINED_DOC_CHUNK_SIZE = 10000
 COMBINED_DOC_CHUNK_OVERLAP = 1000
 
@@ -32,11 +30,8 @@ except Exception as e:
     embeddings = None
 
 
-# ---------------- Core Ingestion Logic ----------------
+# Core Ingestion Logic
 def ingest_combined_document_to_pinecone(single_large_document: Document):
-    """
-    하나의 매우 큰 Document 객체를 받아서 청크로 분할하고 Pinecone에 추가합니다.
-    """
     if not single_large_document or not single_large_document.page_content:
         print("Pinecone에 추가할 내용이 없습니다.")
         return
@@ -60,12 +55,12 @@ def ingest_combined_document_to_pinecone(single_large_document: Document):
 
     if not chunked_documents:
         print(
-            "문서 분할 후 Pinecone에 추가할 청크가 없습니다. 원본 문서가 너무 작거나 chunk_size가 너무 클 수 있습니다."
+            "문서 분할 후 Pinecone에 추가할 청크가 없습니다."
         )
         return
 
     print(
-        f"전체 텍스트를 {len(chunked_documents)}개의 청크로 분할했습니다 (청크 크기 목표: {COMBINED_DOC_CHUNK_SIZE})."
+        f"전체 텍스트를 {len(chunked_documents)}개의 청크로 분할했습니다."
     )
 
     for i, chunk in enumerate(chunked_documents):
@@ -134,7 +129,7 @@ def ingest_combined_document_to_pinecone(single_large_document: Document):
     print(f"\nSuccessfully attempted ingestion of {total_chunks} chunks into Pinecone.")
 
 
-# ---------------- Main Execution ----------------
+# Main Execution
 if __name__ == "__main__":
     if not embeddings:
         print("Exiting due to embedding initialization error.")
