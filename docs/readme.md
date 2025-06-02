@@ -1,11 +1,10 @@
-# **PetGPT 🐶**
+# **PetGPT 🐶😸**
+
+### 🎬 시연 영상 : [링크]()
 
 PM (Project Manager): 김민주  
 DEV: 강성경, 김현호, 김상우, 김준서  
 기간: 2025.03.24 ~ 2025.05.31
-
-- **웹 시연 영상**: \[여기에 링크 추가\]
-- **노션 링크**: \[여기에 링크 추가\]
 
 &nbsp;
 
@@ -13,7 +12,24 @@ DEV: 강성경, 김현호, 김상우, 김준서
 
 &nbsp;
 
-## **프로젝트 소개**
+<div align="center">
+  
+| 분류       | 기술 스택 |
+| ---------- | ---------- |
+| **개발 언어** | ![Java](https://img.shields.io/badge/Java-007396?style=flat&logo=oracle&logoColor=white) ![HTML](https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white) ![CSS](https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=css3&logoColor=white) ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black) |
+| **프레임워크 & 라이브러리** | ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-6DB33F?style=flat&logo=springboot&logoColor=white) ![MyBatis](https://img.shields.io/badge/MyBatis-BB1A1A?style=flat&logo=MyBatis&logoColor=white) ![JSP](https://img.shields.io/badge/JSP-007396?style=flat&logo=java&logoColor=white) ![Bootstrap](https://img.shields.io/badge/Bootstrap-7952B3?style=flat&logo=bootstrap&logoColor=white) |
+| **IDE** | ![IntelliJ IDEA](https://img.shields.io/badge/IntelliJ-000000?style=flat&logo=intellijidea&logoColor=white) <img src="https://img.shields.io/badge/Visual Studio Code-007ACC?style=flat-square&logo=Visual Studio Code&logoColor=white"/>
+|
+| **협업 도구** | ![Discord](https://img.shields.io/badge/Discord-5865F2?style=flat&logo=discord&logoColor=white) ![Zoom](https://img.shields.io/badge/Zoom-2D8CFF?style=flat&logo=zoom&logoColor=white)  ![Git](https://img.shields.io/badge/Git-F05032?style=flat&logo=Git&logoColor=white) ![Github](https://img.shields.io/badge/Github-181717?style=flat&logo=Github&logoColor=white) |
+| **DB** | ![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=flat&logo=mysql&logoColor=white) |
+| **API** | ![Gemini AI](https://img.shields.io/badge/Gemini%20AI-FF6F61?style=flat)  ![OPENAI](https://img.shields.io/badge/-OpenAI-eee?style=flat-square&logo=openai&logoColor=412991)|
+| **서버 배포** | ![NCP](https://img.shields.io/badge/Naver%20Cloud-03C75A?style=flat&logo=naver&logoColor=white) |
+
+</div>
+
+&nbsp;
+
+## **✨ 프로젝트 소개**
 
 ### 주제
 
@@ -31,7 +47,7 @@ AI 서비스 기반 반려동물 쇼핑몰: RAG 챗봇 상담 및 이미지 인�
 
 &nbsp;
 
-## **기술 스택**
+## **🛠️ 기술 스택**
 
 | 구분          | 내용                                                                                                 |
 | :------------ | :--------------------------------------------------------------------------------------------------- |
@@ -59,7 +75,7 @@ AI 서비스 기반 반려동물 쇼핑몰: RAG 챗봇 상담 및 이미지 인�
 
 ## **🗂️ ERD (데이터베이스 설계)**
 
-\[ERD 이미지 또는 설명\]
+![ERD](./images/ERD.png)
 
 &nbsp;
 
@@ -67,13 +83,25 @@ AI 서비스 기반 반려동물 쇼핑몰: RAG 챗봇 상담 및 이미지 인�
 
 ### **사용자 페이지**
 
-1. **상품 조회**
+1. **상품 관리**
+
+- 카테고리별 상품 조회, 상세 정보 확인, 가격 필터링, 정렬 기능 (최신순, 가격순 등)
 
 &nbsp;
 
 2. **커뮤니티**
 
+- **카테고리별 게시글 조회** (공지사항, 자유게시판, 펫자랑게시판 등)
+- **게시글 작성/수정/삭제**: Summernote 에디터, Papago API를 이용한 텍스트 번역 기능, 게시글 이미지 업로드 기능
+- **댓글**: 게시글에 대한 댓글 작성, 수정, 삭제, 좋아요 기능
+- **게시글 좋아요**: 게시글에 대한 '좋아요' 기능
+- **검색**: 게시글 제목 검색
+
 &nbsp;
+
+3. **비밀번호 찾기/재설정**
+
+- 이메일 인증을 통한 비밀번호 재설정
 
 3. **RAG 기반 AI 챗봇 상품 추천 및 상담**
 
@@ -169,6 +197,8 @@ AI 서비스 기반 반려동물 쇼핑몰: RAG 챗봇 상담 및 이미지 인�
 
      ![타임딜_3](./images/time_deal3.png)
 
+10. **다크 모드/라이트 모드**: UI 테마 변경 기능
+
 &nbsp;
 
 ### **관리자 페이지**
@@ -189,18 +219,9 @@ AI 서비스 기반 반려동물 쇼핑몰: RAG 챗봇 상담 및 이미지 인�
 
 &nbsp;
 
-## **🔧 일반 기능**
-
-### **사용자 페이지**
-
-### **관리자 페이지**
-
-&nbsp;
-
 ## **📊 WBS (Work Breakdown Structure)**
 
-\[WBS 내용\]
-
+[WBS](https://docs.google.com/spreadsheets/d/1WaKkOoaokv8sxJsjjT0YFSjdwtI9_H0zxr2BZEEwtgI/edit?gid=130692905#gid=130692905)
 &nbsp;
 
 ## **🚀 USER-FLOW**
@@ -211,7 +232,7 @@ AI 서비스 기반 반려동물 쇼핑몰: RAG 챗봇 상담 및 이미지 인�
 
 ## **🚀 ADMIN-FLOW**
 
-\[관리자 로그인 → 상품 관리(등록/수정/삭제) → 주문 관리 → 고객 관리 → 통계 확인\]
+![Admin Flow](./images/adminFlow.png)
 
 &nbsp;
 
