@@ -5,6 +5,112 @@
 
         <link rel="stylesheet" href="<c:url value='/css/community.css'/>" type="text/css">
 
+        <!-- 모바일 반응형 스타일 추가 -->
+        <style>
+          /* 상품 섹션 반응형 개선 */
+          @media (max-width: 576px) {
+            .product__item {
+              margin-bottom: 30px;
+            }
+
+            .product__item__pic {
+              height: 200px;
+              /* 모바일에서 더 작은 이미지 */
+            }
+
+            .product__item__text h6 {
+              font-size: 14px;
+            }
+
+            .product__price .original-price {
+              font-size: 12px;
+            }
+
+            .product__price .sale-price {
+              font-size: 14px;
+            }
+
+            .discount-badge {
+              padding: 2px 5px;
+              font-size: 10px;
+            }
+
+            /* 필터 컨트롤 크기 조정 */
+            .filter__controls li {
+              padding: 5px 10px;
+              margin-right: 5px;
+              font-size: 14px;
+            }
+          }
+
+          /* 태블릿 반응형 개선 */
+          @media (min-width: 577px) and (max-width: 991px) {
+            .product__item {
+              margin-bottom: 30px;
+            }
+
+            .product__item__pic {
+              height: 250px;
+            }
+          }
+
+          /* 커뮤니티 인기글 반응형 개선 */
+          @media (max-width: 576px) {
+            .blog__post {
+              padding: 15px;
+              margin-bottom: 20px;
+            }
+
+            .blog__post__title {
+              font-size: 16px;
+              line-height: 1.4;
+            }
+
+            .blog__post__meta {
+              flex-wrap: wrap;
+            }
+
+            .blog__post__meta span {
+              margin-right: 10px;
+              font-size: 12px;
+              margin-bottom: 5px;
+            }
+
+            .blog__post__content {
+              font-size: 13px;
+            }
+
+            .blog__post__footer {
+              flex-direction: column;
+              align-items: flex-start;
+            }
+
+            .blog__post__stats {
+              margin-bottom: 10px;
+            }
+
+            .stats__item {
+              margin-right: 8px;
+              font-size: 12px;
+            }
+
+            .blog__post__category {
+              margin-top: 5px;
+            }
+          }
+
+          /* 태블릿 반응형 개선 */
+          @media (min-width: 577px) and (max-width: 991px) {
+            .blog__post {
+              padding: 18px;
+            }
+
+            .blog__post__title {
+              font-size: 18px;
+            }
+          }
+        </style>
+
         <!-- Hero Section Begin -->
         <section class="hero">
           <div class="hero__slider owl-carousel">
@@ -295,6 +401,28 @@
             .categories__deal__timer {
               justify-content: center;
             }
+
+            /* 타이머 개선 */
+            .categories__deal__countdown h2 {
+              font-size: 18px;
+              margin-bottom: 10px;
+            }
+
+            .deal-title {
+              font-size: 16px;
+            }
+
+            .cd-item {
+              margin: 0 5px;
+            }
+
+            .cd-item span {
+              font-size: 24px;
+            }
+
+            .cd-item p {
+              font-size: 12px;
+            }
           }
         </style>
 
@@ -413,6 +541,42 @@
             font-weight: bold;
             cursor: pointer;
             z-index: 10001;
+          }
+
+          /* 인스타그램 섹션 모바일 반응형 개선 */
+          @media (max-width: 767px) {
+            .instagram__pic {
+              display: grid;
+              grid-template-columns: repeat(3, 1fr);
+              gap: 3px;
+            }
+
+            .instagram__pic__item {
+              height: 100px !important;
+            }
+
+            .instagram__text {
+              text-align: center;
+              margin-top: 20px;
+            }
+
+            .instagram__text h2 {
+              font-size: 22px;
+            }
+
+            .instagram__text p {
+              font-size: 14px;
+            }
+
+            .instagram__text h3 {
+              font-size: 16px;
+            }
+
+            .insta-modal-content {
+              width: 95%;
+              height: 60%;
+              margin: 20% auto;
+            }
           }
         </style>
 

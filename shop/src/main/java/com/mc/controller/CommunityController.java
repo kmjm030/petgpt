@@ -141,10 +141,14 @@ public class CommunityController {
 
     @GetMapping("/write")
     public String communityWriteForm(Model model,
-            @SessionAttribute(name = "cust", required = false) Customer customer) {
+            @SessionAttribute(name = "cust", required = false) Customer customer,
+            @RequestParam(name = "redirectAfterLogin", required = false) String redirectAfterLogin) {
 
         if (customer == null) {
             log.info("세션에 customer 객체가 없습니다. 로그인 페이지로 리다이렉트.");
+            if (redirectAfterLogin != null && redirectAfterLogin.equals("true")) {
+                return "redirect:/gologin?redirectURL=/community/write";
+            }
             return "redirect:/gologin";
         }
 

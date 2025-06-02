@@ -167,16 +167,29 @@ public class CommunityRestController {
     @GetMapping("/posts")
     public ResponseEntity<?> getPosts(
             @RequestParam(value = "page", defaultValue = "1") int page,
-            @RequestParam(value = "sort", required = false, defaultValue = "latest") String sort) {
+            @RequestParam(value = "category", required = false) String category,
+            @RequestParam(value = "sort", required = false, defaultValue = "latest") String sort,
+            @RequestParam(value = "keyword", required = false) String keyword) {
 
-        log.info("Entered GET /community/posts API endpoint with page={} and sort={}", page, sort);
+        log.info("Entered GET /community/posts API endpoint with page={}, category={}, sort={}, keyword={}", 
+                page, category, sort, keyword);
 
         try {
-            Map<String, Object> result = communityBoardService.getBoardList(null, page, sort);
+            Map<String, Object> result;
+            
+            if (keyword != null && !keyword.isEmpty()) {
+                // 검색어가 있는 경우
+                result = communityBoardService.searchBoards(keyword, category, page, sort);
+            } else {
+                // 일반 목록 조회 (카테고리 포함)
+                result = communityBoardService.getBoardList(category, page, sort);
+            }
+            
             return ResponseEntity.ok(result);
 
         } catch (Exception e) {
-            log.error("게시글 목록 조회 중 오류 발생 (API): page={}, sort={}", page, sort, e);
+            log.error("게시글 목록 조회 중 오류 발생 (API): page={}, category={}, sort={}", 
+                    page, category, sort, e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(Map.of("message", "게시글 목록 조회 중 오류가 발생했습니다."));
         }
@@ -231,7 +244,7 @@ public class CommunityRestController {
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "limit", defaultValue = "5") int limit) {
         try {
-            Map<String, Object> result = communityBoardService.getBoardList(null, page, "views");
+            Map<String, Object> result = communityBoardService.getBoardList("popular", page, "views");
             return ResponseEntity.ok(result);
         } catch (Exception e) {
             log.error("인기글 목록 조회 중 오류 발생: page={}, limit={}", page, limit, e);

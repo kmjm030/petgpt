@@ -90,6 +90,7 @@ class SpeechBubble:
         self.root = ctk.CTkToplevel()
         self.root.overrideredirect(True)
         self.root.wm_attributes("-topmost", True)
+        self.root.wm_attributes("-transparentcolor", self.root.cget("bg"))
 
         self.label_frame = ctk.CTkFrame(
             self.root,
@@ -163,10 +164,11 @@ class SpeechBubble:
 
         primary_monitor = self._get_primary_monitor_geometry()
         margin = 20
+        bookmark_bar_height = 200  # 북마크 바 높이 값 증가
 
         if primary_monitor:
             x_pos = primary_monitor.x + margin
-            y_pos = primary_monitor.y + margin
+            y_pos = primary_monitor.y + margin + bookmark_bar_height
         else:
             print(
                 "경고: 주 모니터 정보를 가져올 수 없습니다. 기본 화면 기준으로 위치합니다."

@@ -200,13 +200,16 @@
               padding: 10px;
               font-size: 12px;
               animation: float 1.5s ease-in-out infinite;
-              transform: none !important; /* hover에서 scale 되는 거 방지 */
+              transform: none !important;
+              /* hover에서 scale 되는 거 방지 */
             }
 
             .wishlist-preview:hover {
-              transform: none; /* 모바일에선 커지는 효과 제거 */
+              transform: none;
+              /* 모바일에선 커지는 효과 제거 */
               box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-              animation: float 1.5s ease-in-out infinite; /* hover 시에도 유지 */
+              animation: float 1.5s ease-in-out infinite;
+              /* hover 시에도 유지 */
             }
 
             .wishlist-preview img {
@@ -231,6 +234,45 @@
             .wishlist-preview .original-price {
               font-size: 11px;
             }
+
+            /* 헤더 검색창 모바일 반응형 개선 */
+            .header__search {
+              width: 100%;
+              margin-bottom: 15px;
+            }
+
+            .search-form .input-wrapper {
+              width: 100%;
+            }
+
+            /* 백투탑 버튼 모바일 위치 조정 */
+            .back-to-top {
+              bottom: 80px;
+              right: 15px;
+              width: 40px;
+              height: 40px;
+            }
+
+            .back-to-top.chat-open {
+              bottom: 500px;
+            }
+          }
+
+          /* 태블릿 반응형 개선 */
+          @media (min-width: 577px) and (max-width: 991px) {
+            .header__search {
+              width: 100%;
+              margin-bottom: 10px;
+            }
+
+            .back-to-top {
+              bottom: 100px;
+              right: 20px;
+            }
+
+            .back-to-top.chat-open {
+              bottom: 580px;
+            }
           }
         </style>
 
@@ -252,12 +294,12 @@
             <div class="offcanvas__links">
               <c:choose>
                 <c:when test="${sessionScope.cust.custId == null}">
-                    <a href="<c:url value='/signin'/>">로그인</a>
-                    <a href="<c:url value='/signup'/>">회원가입</a>
+                  <a href="<c:url value='/signin'/>">로그인</a>
+                  <a href="<c:url value='/signup'/>">회원가입</a>
                 </c:when>
                 <c:otherwise>
-                    <a href="<c:url value='#'/>" style="color:gray;">${sessionScope.cust.custId}님, 안녕하세요!</a><br>
-                    <a href="<c:url value='/mypage?id=${sessionScope.cust.custId}'/>">마이페이지</a>
+                  <a href="<c:url value='#'/>" style="color:gray;">${sessionScope.cust.custId}님, 안녕하세요!</a><br>
+                  <a href="<c:url value='/mypage?id=${sessionScope.cust.custId}'/>">마이페이지</a>
                 </c:otherwise>
               </c:choose>
             </div>
@@ -270,7 +312,8 @@
             </div>
           </div>
           <div class="offcanvas__nav__option">
-            <a href="<c:url value='/mypage/like?id=${sessionScope.cust.custId}'/>"><img src="<c:url value='/img/icon/heart.png'/>" alt=""></a>
+            <a href="<c:url value='/mypage/like?id=${sessionScope.cust.custId}'/>"><img
+                src="<c:url value='/img/icon/heart.png'/>" alt=""></a>
             <a href="<c:url value='/cart'/>"><img src="<c:url value='/img/icon/cart.png'/>" alt=""> <span>0</span></a>
             <div class="price"></div>
           </div>

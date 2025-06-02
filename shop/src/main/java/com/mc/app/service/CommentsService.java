@@ -62,7 +62,8 @@ public class CommentsService {
         comments.setCommentsUpdate(LocalDateTime.now());
 
         commentsRepository.insert(comments);
-        communityBoardService.increaseCommentCount(comments.getPboardKey());
+        // 컨트롤러에서 updateCommentCount를 호출하므로 increaseCommentCount는 주석 처리
+        // communityBoardService.increaseCommentCount(comments.getPboardKey());
     }
 
     @Transactional
@@ -114,8 +115,8 @@ public class CommentsService {
             throw new Exception("댓글 상태 업데이트(삭제 처리)에 실패했습니다. ID: " + commentsKey);
         }
         
-        // 게시글의 댓글 수 감소
-        communityBoardService.decreaseCommentCount(comment.getPboardKey());
+        // 컨트롤러에서 updateCommentCount를 호출하므로 decreaseCommentCount는 주석 처리
+        // communityBoardService.decreaseCommentCount(comment.getPboardKey());
     }
 
     @Transactional

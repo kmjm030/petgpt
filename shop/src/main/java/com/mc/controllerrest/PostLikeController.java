@@ -1,5 +1,6 @@
 package com.mc.controllerrest;
 
+import com.mc.app.dto.CommunityBoard;
 import com.mc.app.dto.Customer;
 import com.mc.app.dto.PostLike;
 import com.mc.app.service.CommunityBoardService;
@@ -46,9 +47,23 @@ public class PostLikeController {
                 result.put("liked", true);
             }
             
-            int likeCount = postLikeService.getPostLikeCount(postId);
-            result.put("likeCount", likeCount);
+            // 좋아요 수를 안전하게 조회
+            int likeCount = 0;
+            try {
+                CommunityBoard board = communityBoardService.getBoardDetailWithoutViewCount(postId);
+                if (board != null && board.getLikeCount() != null) {
+                    likeCount = board.getLikeCount();
+                } else {
+                    // DB에서 직접 좋아요 수 조회
+                    likeCount = postLikeService.getPostLikeCount(postId);
+                }
+            } catch (Exception e) {
+                log.warn("좋아요 수 조회 중 오류 발생, 기본값 사용: {}", e.getMessage());
+                // 좋아요 수를 직접 조회
+                likeCount = postLikeService.getPostLikeCount(postId);
+            }
             
+            result.put("likeCount", likeCount);
             return ResponseEntity.ok(result);
             
         } catch (NoSuchElementException e) {
@@ -71,7 +86,21 @@ public class PostLikeController {
                 isLiked = postLikeService.isLikedByUser(postId, loggedInUser.getCustId());
             }
             
-            int likeCount = postLikeService.getPostLikeCount(postId);
+            // 좋아요 수를 안전하게 조회
+            int likeCount = 0;
+            try {
+                CommunityBoard board = communityBoardService.getBoardDetailWithoutViewCount(postId);
+                if (board != null && board.getLikeCount() != null) {
+                    likeCount = board.getLikeCount();
+                } else {
+                    // DB에서 직접 좋아요 수 조회
+                    likeCount = postLikeService.getPostLikeCount(postId);
+                }
+            } catch (Exception e) {
+                log.warn("좋아요 수 조회 중 오류 발생, 기본값 사용: {}", e.getMessage());
+                // 좋아요 수를 직접 조회
+                likeCount = postLikeService.getPostLikeCount(postId);
+            }
             
             Map<String, Object> result = new HashMap<>();
             result.put("liked", isLiked);

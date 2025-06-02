@@ -57,9 +57,14 @@
         SELECT *
         FROM communityboard
         <where>
-            <if test="category != null and category != ''">
-                category = #{category}
-            </if>
+            <choose>
+                <when test="category == 'popular'">
+                    <!-- 인기글은 카테고리로 필터링하지 않고 모든 게시글 중에서 정렬 조건으로 선택 -->
+                </when>
+                <when test="category != null and category != '' and category != 'popular'">
+                    LOWER(category) = LOWER(#{category})
+                </when>
+            </choose>
         </where>
         <choose>
             <when test="sort == 'views'">
@@ -85,8 +90,11 @@
         SELECT *
         FROM communityboard
         WHERE 
-            board_title LIKE CONCAT('%', #{keyword}, '%')
-            OR board_content LIKE CONCAT('%', #{keyword}, '%')
+            (board_title LIKE CONCAT('%', #{keyword}, '%')
+            OR board_content LIKE CONCAT('%', #{keyword}, '%'))
+            <if test="category != null and category != '' and category != 'popular'">
+                AND LOWER(category) = LOWER(#{category})
+            </if>
         <choose>
             <when test="sort == 'views'">
                 ORDER BY view_count DESC
@@ -111,9 +119,14 @@
         SELECT COUNT(*)
         FROM communityboard
         <where>
-            <if test="category != null and category != ''">
-                category = #{category}
-            </if>
+            <choose>
+                <when test="category == 'popular'">
+                    <!-- 인기글은 카테고리로 필터링하지 않고 모든 게시글 카운트 -->
+                </when>
+                <when test="category != null and category != '' and category != 'popular'">
+                    LOWER(category) = LOWER(#{category})
+                </when>
+            </choose>
         </where>
     </select>
     
@@ -121,37 +134,40 @@
         SELECT COUNT(*)
         FROM communityboard
         WHERE 
-            board_title LIKE CONCAT('%', #{keyword}, '%')
-            OR board_content LIKE CONCAT('%', #{keyword}, '%')
+            (board_title LIKE CONCAT('%', #{keyword}, '%')
+            OR board_content LIKE CONCAT('%', #{keyword}, '%'))
+            <if test="category != null and category != '' and category != 'popular'">
+                AND LOWER(category) = LOWER(#{category})
+            </if>
     </select>
     
     <update id="increaseViewCount" parameterType="int">
         UPDATE communityboard
-        SET view_count = view_count + 1
+        SET view_count = COALESCE(view_count, 0) + 1
         WHERE board_key = #{boardKey}
     </update>
     
     <update id="increaseLikeCount" parameterType="int">
         UPDATE communityboard
-        SET like_count = like_count + 1
+        SET like_count = COALESCE(like_count, 0) + 1
         WHERE board_key = #{boardKey}
     </update>
     
     <update id="decreaseLikeCount" parameterType="int">
         UPDATE communityboard
-        SET like_count = GREATEST(0, like_count - 1)
+        SET like_count = GREATEST(0, COALESCE(like_count, 0) - 1)
         WHERE board_key = #{boardKey}
     </update>
     
     <update id="increaseCommentCount" parameterType="int">
         UPDATE communityboard
-        SET comment_count = comment_count + 1
+        SET comment_count = COALESCE(comment_count, 0) + 1
         WHERE board_key = #{boardKey}
     </update>
     
     <update id="decreaseCommentCount" parameterType="int">
         UPDATE communityboard
-        SET comment_count = GREATEST(0, comment_count - 1)
+        SET comment_count = GREATEST(0, COALESCE(comment_count, 0) - 1)
         WHERE board_key = #{boardKey}
     </update>
     
