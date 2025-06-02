@@ -142,7 +142,7 @@ AI 서비스 기반 반려동물 쇼핑몰: RAG 챗봇 상담 및 이미지 인�
 
 ## **📊 WBS (Work Breakdown Structure)**
 
-\[WBS 내용\]
+[WBS](https://docs.google.com/spreadsheets/d/1WaKkOoaokv8sxJsjjT0YFSjdwtI9_H0zxr2BZEEwtgI/edit?gid=130692905#gid=130692905)
 
 ## **🚀 USER-FLOW**
 
