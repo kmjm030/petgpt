@@ -150,7 +150,7 @@ AI 서비스 기반 반려동물 쇼핑몰: RAG 챗봇 상담 및 이미지 인�
 
 ## **🚀 ADMIN-FLOW**
 
-\[관리자 로그인 → 상품 관리(등록/수정/삭제) → 주문 관리 → 고객 관리 → 통계 확인\]
+![Admin Flow](./images/adminFlow.png)
 
 ## **🤔 트러블 슈팅 (Troubleshooting)**
 
