@@ -1,61 +1,112 @@
-# AI 어시스턴트 팝업
+# AI Assistant Popup
 
-> **AI 어시스턴트 팝업**은 데스크톱 화면을 실시간으로 분석해 Gemini Vision + RAG로 이해하고, 사용자를 위해 간결한 쇼핑 팁을 **말풍선 UI**로 띄워 주는 서비스입니다.
-
-## 디렉터리 구조
-
-```
-├── ai_processor.py      # Vision → 텍스트 → RAG
-├── display_bubble.py    # GUI 컴포넌트(CustomTkinter)
-├── screen_capture.py    # Pillow ImageGrab 헬퍼
-├── main.py              # 엔트리 포인트 / 스레딩
-├── backend/
-│   └── core.py          # LangChain 파이프라인
-├── assets/
-│   └── profile.png      # 아바타(없으면 기본)
-├── tests/
-│   ├── test_bubble.py   # 단위 테스트(pytest)
-│   └── ...
-└── Pipfile / Pipfile.lock
-```
+화면을 자동으로 분석하여 AI 기반 인사이트를 제공하는 데스크톱 팝업 애플리케이션입니다.
 
 ## 주요 기능
 
-| 모듈                | 설명                                                                            |
-| ------------------- | ------------------------------------------------------------------------------- |
-| `screen_capture.py` | **Pillow ImageGrab**으로 _CAPTURE_INTERVAL_SECONDS_ 간격으로 기본 모니터를 캡처 |
-| `ai_processor.py`   | 이미지 → **Gemini Vision** → 키워드 추출 → **LangChain RAG**로 질문             |
-| `display_bubble.py` | **CustomTkinter** 말풍선 카드 렌더링                                            |
-| `main.py`           | GUI 루프와 캡처 루프 스레드 관리, 우아한 종료 처리                              |
+- **자동 화면 캡처**: 설정된 주기(기본 60초)마다 화면을 자동으로 캡처
+- **AI 기반 분석**: Google Gemini AI를 활용하여 화면 내용을 분석하고 인사이트 제공
+- **스마트 팝업**: 분석 결과를 말풍선 형태로 화면에 표시
+- **RAG 지원**: 기존 문서와 연계하여 더욱 정확한 정보 제공
 
-## 아키텍처
+## 프로젝트 구조
 
 ```
-┌────────────┐    PNG 바이트   ┌──────────────┐   프롬프트    ┌──────────┐
-│screen_capture│ ───────────▶ │ ai_processor │ ───────────▶ │Gemini/RAG│
-└────────────┘                 └──────────────┘               └──────────┘
-       ▲                                │  조언 텍스트             │
-       │                                └──────────────┐          │
-       │                                               ▼          │
-       └─────── Tkinter 말풍선 ◀──────────── display_bubble ◀────┘
+insight-popup/
+├── main.py              # 메인 실행 파일
+├── display_bubble.py    # 팝업 UI 컴포넌트
+├── screen_capture.py    # 화면 캡처 기능
+├── ai_processor.py      # AI 분석 처리
+├── Pipfile             # Python 의존성 관리
+├── assets/             # 리소스 파일
+│   └── profile.png     # 프로필 이미지
+├── backend/            # 백엔드 핵심 로직
+└── docs/               # 문서 및 데이터
 ```
 
-## 시작하기
+## 설치 및 실행
 
-### 환경 변수
+### 필요 조건
 
-| 변수                                | 용도                     |
-| ----------------------------------- | ------------------------ |
-| `GOOGLE_API_KEY`                    | Gemini llm model         |
-| `PINECONE_API_KEY` / `PINECONE_ENV` | 벡터 스토어              |
-| `CAPTURE_INTERVAL_SECONDS`          | 기본 60 초 간격 덮어쓰기 |
+- Python 3.8 이상
+- Google API Key (Gemini AI 사용)
 
-`.env` 파일에 저장하세요.
+### 설치
 
-## 실행 방법
+1. **의존성 설치**
+
+   ```bash
+   cd insight-popup
+   pipenv install
+   ```
+
+2. **환경 변수 설정**
+   ```bash
+   export GOOGLE_API_KEY="your_google_api_key_here"
+   ```
+
+### 실행
 
 ```bash
-$ pipenv run python main.py
+pipenv run python main.py
 ```
 
-첫 인터벌 후 말풍선이 표시됩니다. **Esc** 키나 ✕ 아이콘으로 조기 종료할 수 있습니다.
+## 설정
+
+### 캡처 주기 변경
+
+`main.py` 파일에서 `CAPTURE_INTERVAL_SECONDS` 값을 수정하여 화면 캡처 주기를 조정할 수 있습니다.
+
+```python
+CAPTURE_INTERVAL_SECONDS = 60  # 초 단위
+```
+
+### 팝업 위치 조정
+
+`display_bubble.py` 파일에서 팝업 위치를 조정할 수 있습니다:
+
+```python
+# 팝업 위치 설정
+margin = 20
+bookmark_bar_height = 40  # 북마크 바 높이 고려
+```
+
+## 주요 컴포넌트
+
+### main.py
+
+- 애플리케이션의 메인 실행 로직
+- 주기적인 화면 캡처 및 AI 분석 스케줄링
+- 메시지 큐를 통한 UI 업데이트 관리
+
+### display_bubble.py
+
+- CustomTkinter를 사용한 팝업 UI 구현
+- 말풍선 형태의 인터페이스
+- 투명 배경 및 위치 조정 기능
+
+### screen_capture.py
+
+- PIL(Pillow)을 사용한 화면 캡처
+- 이미지를 바이트 스트림으로 변환
+
+### ai_processor.py
+
+- Google Gemini AI 모델 연동
+- 화면 이미지 분석 및 텍스트 추출
+- RAG 시스템과의 연계
+
+## UI 특징
+
+- **말풍선 디자인**: 친근한 채팅 인터페이스
+- **자동 위치 조정**: 브라우저 북마크 바를 고려한 위치 설정
+- **투명 배경**: 자연스러운 화면 오버레이
+- **자동 숨김**: 설정된 시간 후 자동으로 팝업 숨김
+
+## 작동 원리
+
+1. **화면 캡처**: 설정된 주기마다 전체 화면을 캡처
+2. **AI 분석**: Gemini AI가 캡처된 이미지를 분석하여 텍스트 설명 생성
+3. **RAG 처리**: 추출된 정보를 기반으로 관련 문서 검색
+4. **인사이트 생성**: AI가 상황에 맞는 유용한 정보나 제안사항 생성
+5. **팝업 표시**: 생성된 인사이트를 말풍선 형태로 화면에 표시
