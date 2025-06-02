@@ -47,7 +47,7 @@ $(document).ready(function () {
           "/livechat/public",
           function (messageOutput) {
             const message = JSON.parse(messageOutput.body);
-            // 이미 표시된 메시지는 무시
+
             if (!displayedMessageIds.has(message.messageId)) {
               showMessageOutput(message);
               displayedMessageIds.add(message.messageId);
@@ -63,9 +63,6 @@ $(document).ready(function () {
             displayedMessageIds.add(message.messageId);
           }
         });
-
-        // 서버에 사용자 입장 메시지 전송 -> 아직 구현안함
-        // stompClient.send("/app/livechat.addUser", {}, JSON.stringify({sender: username, type: 'JOIN'}));
       },
       function (error) {
         console.error("STOMP connection error: " + error);
@@ -78,9 +75,6 @@ $(document).ready(function () {
 
   function disconnectChat() {
     if (stompClient !== null && stompClient.connected) {
-      // 서버에 사용자 퇴장 메시지 전송 -> 아직 구현안함
-      // stompClient.send("/app/livechat.sendMessage", {}, JSON.stringify({sender: username, type: 'LEAVE', content:''}));
-
       if (subscription) {
         subscription.unsubscribe();
         subscription = null;
