@@ -158,6 +158,8 @@ AI 서비스 기반 반려동물 쇼핑몰: RAG 챗봇 상담 및 이미지 인�
 
 - [AI\_어시스턴트\_팝업\_readme](./assistant-popup.md)
 
+![어시스턴트_팝업](./images/어시스턴트_팝업.gif)
+
 &nbsp;
 
 5. **Google Cloud Vision API 활용 품종 분석**
@@ -201,12 +203,7 @@ AI 서비스 기반 반려동물 쇼핑몰: RAG 챗봇 상담 및 이미지 인�
 
    - 지정된 시간에 특정 상품을 할인된 가격으로 제공하는 타임딜 기능을 스케줄러를 통해 자동화
    - 주기적인 이벤트를 효율적으로 운영하고 사용자의 구매를 유도
-
-     ![타임딜_1](./images/time_deal1.png)
-
-     ![타임딜_2](./images/time_deal2.png)
-
-     ![타임딜_3](./images/time_deal3.png)
+     ![타임딜](./images/타임딜.gif)
 
 10. **다크 모드/라이트 모드**: UI 테마 변경 기능  
     ![다크모드](./images/다크모드.gif)
