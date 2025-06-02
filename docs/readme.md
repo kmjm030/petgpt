@@ -1,5 +1,7 @@
 # **PetGPT 🐶😸**
 
+&nbsp;
+
 ## 🎬 시연 영상 : [링크]()
 
 PM (Project Manager): 김민주  
@@ -97,19 +99,17 @@ AI 서비스 기반 반려동물 쇼핑몰: RAG 챗봇 상담 및 이미지 인�
 
 - **정렬**
 
-  ![커뮤니티_게시글_정렬](./images/좋아요_정렬.gif)
+  ![커뮤니티_게시글_정렬](./images/게시글_정렬.gif)
 
 - **게시글 작성/수정/삭제**: Summernote 에디터, Papago API를 이용한 텍스트 번역 기능, 게시글 이미지 업로드 기능
 
   ![커뮤니티_게시글_작성](./images/게시글_작성.gif)
 
+  ![커뮤니티_게시글_수정_삭제](./images/게시글_수정_삭제.gif)
+
 - **댓글**: 게시글에 대한 댓글 작성, 수정, 삭제, 좋아요 기능
 
   ![커뮤니티_댓글](./images/댓글.gif)
-
-- **게시글 좋아요**: 게시글에 대한 '좋아요' 기능
-
-  ![커뮤니티_게시글_좋아요](./images/게시글_좋아요.gif)
 
 &nbsp;
 
@@ -278,10 +278,11 @@ AI 서비스 기반 반려동물 쇼핑몰: RAG 챗봇 상담 및 이미지 인�
 
 ## **📊 WBS (Work Breakdown Structure)**
 
-- ![WBS](./images/wbs.png)
+![WBS](./images/wbs.png)
 
 - [🚗 Visit WBS](https://docs.google.com/spreadsheets/d/1WaKkOoaokv8sxJsjjT0YFSjdwtI9_H0zxr2BZEEwtgI/edit?gid=130692905#gid=130692905)
-  &nbsp;
+
+&nbsp;
 
 ## **🚀 USER-FLOW**
 
