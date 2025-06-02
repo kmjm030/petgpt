@@ -215,10 +215,14 @@ AI 서비스 기반 반려동물 쇼핑몰: RAG 챗봇 상담 및 이미지 인�
 
      ![어드민메인](./adminimages/main.gif)
 
+     &nbsp;
+
 2. **사용자(고객 관리)**
 
    - 회원 정보 조회 및 관리
      ![어드민고객관리](./adminimages/customer.gif)
+
+     &nbsp;
 
 3. **상품 및 재고 관리 (CRUD)**
 
@@ -227,10 +231,14 @@ AI 서비스 기반 반려동물 쇼핑몰: RAG 챗봇 상담 및 이미지 인�
    - 상품별 문의글 보기
      ![어드민상품관리](./adminimages/item.gif)
 
+     &nbsp;
+
 4. **주문 및 배송 관리**
 
    - 주문 내역 확인 및 상태 변경 (결제 완료, 배송 중, 배송 완료 등)
      ![어드민주문관리](./adminimages/order.gif)
+
+     &nbsp;
 
 5. **문의글 관리**
 
@@ -239,11 +247,15 @@ AI 서비스 기반 반려동물 쇼핑몰: RAG 챗봇 상담 및 이미지 인�
    - AI 자동응답제안 - 자동 응답 생성
      ![어드민문의글관리](./adminimages/qna.gif)
 
+     &nbsp;
+
 6. **공지관리**
 
    - 관리자 공지사항 등록, 수정, 삭제 관리
    - CKEditor API사용
      ![어드민통계](./adminimages/noti.gif)
+
+     &nbsp;
 
 7. ** 사이트 통계 **
    - 매출, 고객변동, 상품별 판매량 등 주요 지표 시각화
@@ -265,7 +277,7 @@ AI 서비스 기반 반려동물 쇼핑몰: RAG 챗봇 상담 및 이미지 인�
 
 ## **🚀 ADMIN-FLOW**
 
-![Admin Flow](./images/adminFlow.png)
+![Admin Flow](./images/adminflow.png)
 
 &nbsp;
 
