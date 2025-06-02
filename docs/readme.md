@@ -188,7 +188,7 @@ AI 서비스 기반 반려동물 쇼핑몰: RAG 챗봇 상담 및 이미지 인�
 
    - 카카오 맵 연동으로 "내 주변 매장 찾기" 검색 서비스
 
-     ![카카오_맵](./images/kakao_map.png)
+     ![카카오맵](./images/카카오맵.gif)
 
 &nbsp;
 
@@ -225,9 +225,13 @@ AI 서비스 기반 반려동물 쇼핑몰: RAG 챗봇 상담 및 이미지 인�
 &nbsp;
 
 12. **날씨알림**
-   - OpenWeatherMap API를 활용해 실시간으로 날씨를 보여주고, 그에 따라 강아지 산책관련 문구를 출력
-   - ![날씨](./images/hotdeal_weather.gif)
-   
+
+- OpenWeatherMap API를 활용해 실시간으로 날씨를 보여주고, 그에 따라 강아지 산책관련 문구를 출력
+- ![날씨](./images/hotdeal_weather.gif)
+
+13. **반응형 디자인**
+
+    ![반응형_디자인](./images/반응형_디자인.gif)
 
 ### **👨‍💼 관리자 페이지**
 
