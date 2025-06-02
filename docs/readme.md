@@ -126,7 +126,7 @@ AI 서비스 기반 반려동물 쇼핑몰: RAG 챗봇 상담 및 이미지 인�
 
 7. **날씨알림**
    - OpenWeatherMap API를 활용해 실시간으로 날씨를 보여주고, 그에 따라 강아지 산책관련 문구를 출력
-     ![날씨](./images/hotdeal_weather.gif)
+   - ![날씨](./images/hotdeal_weather.gif)
    
 
 ### **👨‍💼 관리자 페이지**
