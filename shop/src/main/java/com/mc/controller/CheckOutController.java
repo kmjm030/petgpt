@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -202,17 +203,18 @@ public class CheckOutController {
         }
 
         List<TotalOrder> orderList = totalOrderService.findAllByCust(id);
+        orderList.sort((o1, o2) -> o2.getOrderDate().compareTo(o1.getOrderDate()));
         Map<Integer, String> itemNames = new HashMap<>();
 
         for (TotalOrder order : orderList) {
             Item item = itemService.get(order.getItemKey());
-            itemNames.put(order.getOrderKey(), item.getItemName());
+            if (item != null) {
+                itemNames.put(order.getOrderKey(), item.getItemName());
+            }
         }
 
         model.addAttribute("orderList", orderList);
         model.addAttribute("itemNames", itemNames);
-
-        model.addAttribute("orderList", orderList);
         model.addAttribute("currentPage", "pages");
         model.addAttribute("pageTitle", "Order List");
         model.addAttribute("viewName", "order");
