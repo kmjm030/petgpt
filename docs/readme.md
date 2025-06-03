@@ -50,17 +50,17 @@ AI 서비스 기반 반려동물 쇼핑몰: RAG 챗봇 상담 및 이미지 인�
 
 ## **🛠️ 기술 스택**
 
-| 구분          | 내용                                                                                                 |
-| :------------ | :--------------------------------------------------------------------------------------------------- |
-| **IDE**       | IntelliJ IDEA, Visual Studio Code, Cursor                                                            |
-| **Language**  | Java, JavaScript, Python                                                                             |
-| **Framework** | Spring Boot, MyBatis, JSP (View)                                                                     |
-| **Database**  | MySQL, Pinecone                                                                                      |
-| **Server**    | Apache Tomcat, Naver Cloud Platform                                                                  |
-| **VCS**       | Git, GitHub                                                                                          |
-| **APIs**      | 카카오 소셜 로그인 API, 카카오 맵 API, 아임포트 결제 API, Google Cloud Vision API, Google Gemini API |
-| **Tools**     | ERDCloud, Slack, Notion, Miro                                                                        |
-| **기타**      | LangChain                                                                                            |
+| 구분          | 내용                                                                                             |
+| :------------ |:-----------------------------------------------------------------------------------------------|
+| **IDE**       | IntelliJ IDEA, Visual Studio Code, Cursor                                                      |
+| **Language**  | Java, JavaScript, Python                                                                       |
+| **Framework** | Spring Boot, MyBatis, JSP (View)                                                               |
+| **Database**  | MySQL, Pinecone                                                                                |
+| **Server**    | Apache Tomcat, Naver Cloud Platform                                                            |
+| **VCS**       | Git, GitHub                                                                                    |
+| **APIs**      | 카카오 소셜 로그인 API, 카카오 맵 API, 아임포트 결제 API, Google Cloud Vision API, Google Gemini API, OpenAI API |
+| **Tools**     | ERDCloud, Slack, Notion, Miro                                                                  |
+| **기타**      | LangChain                                                                                      |
 
 &nbsp;
 
